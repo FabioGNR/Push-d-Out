@@ -1,5 +1,5 @@
-# SDL Setup
-SDL Setup is a basic C++ template project to get started with SDL, using CMake and the Clion IDE.
+# Push'd Out!
+Push'd Out! The Ultimate Push-Out Brawling Game.
 
 ## Getting started
 ### Prerequisites
@@ -117,8 +117,3 @@ Follow Windows steps 1-4: you do not need DLL's. It will work out of the box.
 2. Create a `build` folder, cd into it.
 3. `cmake ..` to generate build files. `make` to compile.
 4. Executable can be found in project/bin.
-
----
-
-Running the executable should result in a blank 640x480 window, that you can move around and close.
-
