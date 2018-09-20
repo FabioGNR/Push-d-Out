@@ -1,7 +1,3 @@
-//
-// Created by Matthias Aarnoutse on 19/09/2018.
-//
-
 #include <iostream>
 #include <Box2D/Box2D.h>
 #include "PhysicsManager.h"
