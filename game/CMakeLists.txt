@@ -1,4 +1,5 @@
 set(GAME_SRC
+        main.cpp
         )
 
 add_executable(SDL_Game ${GAME_SRC})

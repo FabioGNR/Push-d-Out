@@ -5,3 +5,4 @@ cmake-build-*/
 .idea/
 CMakeSettings.json
 .DS_STORE
+external/
