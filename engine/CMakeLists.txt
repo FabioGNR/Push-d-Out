@@ -8,8 +8,12 @@ include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${BOX2D_INCLUDE_DIR})
 
 set(ECS_SRC
+        ecs/Entity.h ecs/Entity.cpp
+        ecs/EntityManager.h ecs/EntityManager.cpp
+        ecs/Component.h ecs/Component.cpp
+        ecs/ComponentManager.h ecs/ComponentManager.cpp
+        ecs/World.h
         )
-
 set(GRAPHICS_SRC
         )
 

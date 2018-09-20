@@ -1,10 +1,8 @@
-//
-// Created by Matthias Aarnoutse on 19/09/2018.
-//
-
+#include <iostream>
 #include <engine/physics/PhysicsManager.h>
 
-int main() {
+int main(int /*argc*/, char* /*argv[]*/) {
+    std::cout << "Hello, World!\n";
     PhysicsManager pm {};
     pm.doPhysics();
     return 0;
