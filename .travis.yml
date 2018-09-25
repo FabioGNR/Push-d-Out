@@ -1,0 +1,42 @@
+language: cpp
+compiler: gcc
+
+os: linux
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-6.0
+    packages:
+      - g++-8
+      - clang-6.0
+      - clang-tools-6.0
+      - clang-format-6.0
+      - clang-tidy-6.0
+      - libsdl2-dev
+      - libbox2d-dev
+
+python:
+  - "2.7"
+
+install:
+  - pip install --user -U pip
+  - pip install --user cmake
+
+before_script:
+  - export CC=gcc-8
+  - export CXX=g++-8
+
+script:
+  - mkdir build
+  - cd build
+  - cmake .. -DENABLE_CLANG_TIDY=ON
+  - make  
+  - ./tests/tests
+  - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
+  - make tidy &> output.txt
+  - |
+    if [[ -n $(awk  '/^[^[:blank:]]/{p=0} /warning:/||/error:/||/note:/{p=1} p' output.txt) ]]; then
+        awk  '/^[^[:blank:]]/{p=0} /warning:/||/error:/||/note:/{p=1} p' output.txt | grep --color=always -z -E 'warning|error|note|\^'  
+        exit -1;
+    fi

@@ -1,5 +1,4 @@
-#ifndef SDL_GAME_COMPONENTMANAGER_H
-#define SDL_GAME_COMPONENTMANAGER_H
+#pragma once
 
 #include "Component.h"
 #include "Entity.h"
@@ -92,5 +91,3 @@ public:
 };
 
 } // end namespace engine
-
-#endif //SDL_GAME_COMPONENTMANAGER_H

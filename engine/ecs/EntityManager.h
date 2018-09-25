@@ -1,5 +1,4 @@
-#ifndef SDL_GAME_ENTITYMANAGER_H
-#define SDL_GAME_ENTITYMANAGER_H
+#pragma once
 
 #include <cassert>
 #include <memory>
@@ -27,5 +26,3 @@ private:
 };
 
 } // end namespace engine
-
-#endif //SDL_GAME_ENTITYMANAGER_H

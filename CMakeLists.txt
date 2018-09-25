@@ -25,9 +25,9 @@ add_subdirectory(engine)
 add_subdirectory(game)
 
 target_include_directories(
-        engine PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    engine PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 ## Tests
@@ -37,7 +37,7 @@ add_subdirectory(tests)
 
 enable_testing()
 add_test(
-        NAME UnitTests COMMAND tests
+    NAME UnitTests COMMAND tests
 )
 
 ## Clang Tidy
@@ -55,13 +55,13 @@ if(ENABLE_CLANG_TIDY)
     endif()
 
     list(APPEND RUN_CLANG_TIDY_BIN_ARGS
-            -clang-tidy-binary ${CLANG_TIDY_BIN}
-            -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor
-            )
+        -clang-tidy-binary ${CLANG_TIDY_BIN}
+        -checks=clan*,cert*,misc*,perf*,cppc*,read*,mode*,-cert-err58-cpp,-misc-noexcept-move-constructor
+    )
 
     add_custom_target(
-            tidy
-            COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
-            COMMENT "running clang tidy"
+        tidy
+        COMMAND ${RUN_CLANG_TIDY_BIN} ${RUN_CLANG_TIDY_BIN_ARGS}
+        COMMENT "running clang tidy"
     )
 endif()

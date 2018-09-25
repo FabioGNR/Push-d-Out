@@ -1,5 +1,4 @@
-#ifndef SDL_GAME_COMPONENT_H
-#define SDL_GAME_COMPONENT_H
+#pragma once
 
 #include <cassert>
 #include <cstdint>
@@ -38,5 +37,3 @@ struct BaseComponent : public IComponent {
 };
 
 } // end namespace engine
-
-#endif //SDL_GAME_COMPONENT_H

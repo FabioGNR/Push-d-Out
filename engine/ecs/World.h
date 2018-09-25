@@ -1,5 +1,4 @@
-#ifndef SDL_GAME_WORLD_H
-#define SDL_GAME_WORLD_H
+#pragma once
 
 #include "Component.h"
 #include "ComponentManager.h"
@@ -52,5 +51,3 @@ private:
 };
 
 } // end namespace engine
-
-#endif // SDL_GAME_WORLD_H

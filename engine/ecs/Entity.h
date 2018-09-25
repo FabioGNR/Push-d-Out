@@ -1,5 +1,4 @@
-#ifndef SDL_GAME_ENTITY_H
-#define SDL_GAME_ENTITY_H
+#pragma once
 
 #include "Component.h"
 
@@ -45,16 +44,14 @@ public:
         static_assert(std::is_base_of<IComponent, Component>::value,
             "Component must be inherited from BaseComponent");
 
-        m_componentSignature.set((std::size_t)Component::familyId(), 1);
+        m_componentSignature.set((std::size_t)Component::familyId(), true);
     }
 
     template <typename Component>
     void unregisterComponent()
     {
-        m_componentSignature.set((std::size_t)Component::familyId(), 0);
+        m_componentSignature.set((std::size_t)Component::familyId(), false);
     }
 };
 
 } // end namespace engine
-
-#endif //SDL_GAME_ENTITY_H

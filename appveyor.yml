@@ -1,0 +1,26 @@
+image:
+  - Visual Studio 2017
+clone_folder: c:\projects\source
+cache: c:\tools\vcpkg\installed\
+build_script:
+- ps: >-
+    cd 'c:\tools\vcpkg'
+
+    .\vcpkg.exe install sdl2
+
+    .\vcpkg.exe install box2d
+
+    .\vcpkg.exe integrate install
+    
+    cd 'c:\projects\source'
+
+    mkdir build
+
+    cd build
+    
+    cmake .. "-DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake"
+
+    cmake --build .
+
+    .\tests\Debug\tests.exe
+

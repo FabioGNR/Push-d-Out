@@ -1,9 +1,9 @@
-#include <iostream>
 #include <engine/physics/PhysicsManager.h>
+#include <iostream>
 
-int main(int argc, char* argv[]) {
-    std::cout << "Hello, World!\n";
-    PhysicsManager pm {};
+int main()
+{
+    PhysicsManager pm{};
     pm.doPhysics();
     return 0;
 }
