@@ -15,12 +15,12 @@ set(ECS_SRC
 )
 
 set(GRAPHICS_SRC
-        )
+)
 
 set(PHYSICS_SRC
-        physics/PhysicsManager.h
-        physics/PhysicsManager.cpp
-        )
+    physics/PhysicsManager.h
+    physics/PhysicsManager.cpp
+)
 
 # more engine stuff
 add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC})

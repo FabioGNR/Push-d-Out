@@ -32,7 +32,7 @@ script:
   - cd build
   - cmake .. -DENABLE_CLANG_TIDY=ON
   - make  
-  - ./tests/tests
+  - ../bin/tests
   - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
   - make tidy &> output.txt
   - |
