@@ -17,19 +17,20 @@ add_custom_command(
 if (MSYS OR MINGW)
     get_filename_component(COMPILER_BIN_PATH ${CMAKE_CXX_COMPILER}} DIRECTORY)
 
-    set( THIRD_PARTY_DLLS
+    set(THIRD_PARTY_DLLS
         ${COMPILER_BIN_PATH}/libBox2D.dll
+	${COMPILER_BIN_PATH}/SDL2.dll
         ${COMPILER_BIN_PATH}/libstdc++-6.dll
         ${COMPILER_BIN_PATH}/libgcc_s_seh-1.dll
         ${COMPILER_BIN_PATH}/libwinpthread-1.dll
     )
 
-    foreach( file_i ${THIRD_PARTY_DLLS})
+    foreach(file_i ${THIRD_PARTY_DLLS})
         add_custom_command(
             TARGET PushdOut
             POST_BUILD
             COMMAND ${CMAKE_COMMAND}
             ARGS -E copy ${file_i} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
         )
-    endforeach( file_i )
+    endforeach(file_i)
 endif()
