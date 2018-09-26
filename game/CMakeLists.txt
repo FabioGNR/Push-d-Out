@@ -1,6 +1,5 @@
 set(GAME_SRC
-    main.cpp
-)
+    main.cpp)
 
 add_executable(PushdOut ${GAME_SRC})
 
