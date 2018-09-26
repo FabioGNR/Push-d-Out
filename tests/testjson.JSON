@@ -1,0 +1,10 @@
+{
+  "Object1" : {
+    "firstInt" : 10,
+    "firstString" : "test",
+    "Object2" : {
+      "innerInt" : 20,
+      "innerString": "innertest"
+    }
+  }
+}

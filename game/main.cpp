@@ -1,6 +1,7 @@
 #include "engine/events/SDLEventManager.h"
 #include "engine/window/SDLWindow.h"
 #include "physics/PhysicsManager.h"
+#include "level/levelReader/levelReader.h"
 #include <iostream>
 #include <memory>
 
@@ -16,6 +17,8 @@ int main()
     PhysicsManager pm{};
     pm.doPhysics();
     std::unique_ptr<engine::EventManager> evtManager{ new engine::SDLEventManager() };
+
+    levelReader::readJSON("assets/levels/base_level.JSON");
 
     bool runGame = true;
     while (runGame) {

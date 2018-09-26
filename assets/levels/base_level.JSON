@@ -1,7 +1,7 @@
 {
   "Meta": {
     "name": "Base level",
-    "theme": "earth",
+    "theme": "0",
     "height": 24,
     "width": 40
   },
@@ -10,116 +10,112 @@
       "x": 25,
       "y": 13,
       "sprite": "leftCornerSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 26,
       "y": 13,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 27,
       "y": 13,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 28,
       "y": 13,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 29,
       "y": 13,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 30,
       "y": 13,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 31,
       "y": 13,
       "sprite": "rightCornerSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 11,
       "y": 16,
       "sprite": "leftCornerSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 12,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 13,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 14,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 15,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 16,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 17,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 18,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 19,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 20,
       "y": 16,
       "sprite": "middleSingleDepth",
-      "kind": 1
+      "kind": 0
     },
     {
       "x": 21,
       "y": 16,
       "sprite": "rightCornerSingleDepth",
-      "kind": 1
+      "kind": 0
     }
   ],
   "CharacterSpawns": [
-    {
-      "x": 8,
-      "y": 7
-    },
     {
       "x": 14,
       "y": 13
