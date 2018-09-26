@@ -4,8 +4,14 @@ project(PushdOut)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-## Compiler Flags
+# Move executables to 'bin' folder
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+    string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_SOURCE_DIR}/bin)
+endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
+## Compiler Flags
 if (MSVC)
     # Force to always compile with W4
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -65,3 +71,4 @@ if(ENABLE_CLANG_TIDY)
         COMMENT "running clang tidy"
     )
 endif()
+

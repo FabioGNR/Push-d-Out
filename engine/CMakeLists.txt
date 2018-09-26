@@ -15,12 +15,12 @@ set(ECS_SRC
 )
 
 set(GRAPHICS_SRC
-        )
+)
 
 set(PHYSICS_SRC
-        physics/PhysicsManager.h
-        physics/PhysicsManager.cpp
-        )
+    physics/PhysicsManager.h
+    physics/PhysicsManager.cpp
+)
 
 set(EVENTS_SRC
 		events/EventManager.h
