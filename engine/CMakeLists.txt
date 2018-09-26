@@ -22,11 +22,24 @@ set(PHYSICS_SRC
     physics/PhysicsManager.cpp
 )
 
+set(INPUT_SRC
+		InputHandeling/InputManager.cpp InputHandeling/InputManager.h)
+
 set(EVENTS_SRC
-		events/EventManager.h
-		events/SDLEventManager.h
-		events/SDLEventManager.cpp
-		)
+
+		SDLAdapters/SDLEventAdapter.cpp
+		SDLAdapters/SDLEventAdapter.h
+		EventHandling/EventManager.cpp
+		EventHandling/EventManager.h
+		EventHandling/Events/QuitEvent.cpp
+		EventHandling/Events/QuitEvent.h
+		EventHandling/Events/UnknownEvent.cpp
+		EventHandling/Events/UnknownEvent.h
+		EventHandling/Events/WindowEvent.cpp
+		EventHandling/Events/WindowEvent.h
+		EventHandling/Events/IEvent.cpp
+		EventHandling/Events/IEvent.h
+		EventHandling/Events/KeyEvent.cpp EventHandling/Events/KeyEvent.h)
 
 set(WINDOW_SRC
 		window/SDLWindow.h
@@ -36,5 +49,5 @@ set(WINDOW_SRC
 		)
 
 # more engine stuff
-add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC} ${WINDOW_SRC} ${EVENTS_SRC})
+add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC} ${WINDOW_SRC} ${EVENTS_SRC} ${INPUT_SRC})
 target_link_libraries(engine ${SDL2_LIBRARY} ${BOX2D_LIBRARY})
