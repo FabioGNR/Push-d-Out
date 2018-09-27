@@ -4,28 +4,20 @@
 
 
 #include "levelReader.h"
+#include "../levelDomain.h"
 
 json levelReader::readJSON(std::string fileName) {
-    try {
-        std::ifstream i(fileName);
-        json j;
-        i >> j;
-        return j;
-    } catch (std::exception& e) {
-        std::cout << e.what() << "\n" << std::endl;
-    }
+    std::ifstream i("D:\\Users\\Joris\\Documents\\HBO-ICT\\Jaar 4\\Minor\\Project\\Push_d_out\\tests\\testjson.JSON");
+    json j;
+    i >> j;
+    return j;
 }
 
 level levelReader::getLevel(json j) {
-    try {
-        level level = j;
-        return level;
-    } catch(std::exception& e) {
-        std::cout << e.what() << "\n" << std::endl;
-        return level();
-    }
+    level level = j;
+    return level;
 }
 
 void levelReader::createEntities(level level) {
-
+    level.name;
 }

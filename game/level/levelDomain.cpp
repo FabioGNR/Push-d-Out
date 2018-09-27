@@ -1,27 +1,13 @@
 //
-// Created by Joris on 25-9-2018.
+// Created by Joris on 27-9-2018.
 //
 
-#pragma once
+#include "levelDomain.h"
+#include "external/JSON/json.hpp"
 
-#include <vector>
-#include "tile.h"
-#include "themes.h"
-#include "spawnPoint.h"
+using json = nlohmann::json;
 
 namespace levelDomain {
-    struct level {
-        std::string name;
-        Theme theme;
-
-        // Size of the level in Tiles
-        int height;
-        int width;
-
-        std::vector<tile> tiles;
-        std::vector<spawnPoint> CharacterSpawns;
-    };
-
     // JSON conversions for tile
     void to_json(json& j, const tile& t) {
         j = json {
@@ -53,14 +39,14 @@ namespace levelDomain {
     // JSON conversions for level
     void to_json(json& j, const level& l) {
         j = json{
-            {"Meta" , {
-                  {"name", l.name},
-                  {"theme", static_cast<int>(l.theme)},
-                  {"height", l.height},
-                  {"width", l.width}
-            }},
-            {"PlatformTiles", l.tiles},
-            {"CharacterSpawns", l.CharacterSpawns}
+                {"Meta" , {
+                                  {"name", l.name},
+                                  {"theme", static_cast<int>(l.theme)},
+                                  {"height", l.height},
+                                  {"width", l.width}
+                          }},
+                {"PlatformTiles", l.tiles},
+                {"CharacterSpawns", l.CharacterSpawns}
         };
     }
     void from_json(const json& j, level& l) {
@@ -73,4 +59,3 @@ namespace levelDomain {
         l.CharacterSpawns = j.at("CharacterSpawns").get<std::vector<spawnPoint>>();
     }
 }
-

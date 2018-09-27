@@ -18,7 +18,10 @@ int main()
     pm.doPhysics();
     std::unique_ptr<engine::EventManager> evtManager{ new engine::SDLEventManager() };
 
-    levelReader::readJSON("assets/levels/base_level.JSON");
+    json j = levelReader::readJSON("D:\\Users\\Joris\\Documents\\HBO-ICT\\Jaar 4\\Minor\\Project\\Push_d_out\\assets\\levels\\base_level.JSON");
+    std::cout << "JSON: " << j << std::endl;
+    level l = levelReader::getLevel(j);
+    std::cout << "level: " << l.name << std::endl;
 
     bool runGame = true;
     while (runGame) {

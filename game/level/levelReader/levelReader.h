@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <game/level/level.h>
+#include <game/level/levelDomain.h>
 #include "external/JSON/json.hpp"
 
 using namespace levelDomain;
