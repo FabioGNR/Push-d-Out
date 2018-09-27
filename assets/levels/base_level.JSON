@@ -1,7 +1,7 @@
 {
   "Meta": {
     "name": "Base level",
-    "theme": "0",
+    "theme": 0,
     "height": 24,
     "width": 40
   },

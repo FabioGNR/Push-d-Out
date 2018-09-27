@@ -1,6 +1,6 @@
 set(GAME_SRC
     main.cpp
-        level/levelReader/levelReader.h level/levelReader/levelReader.cpp level/levelDomain.cpp level/levelDomain.h)
+        level/levelReader/LevelReader.h level/levelReader/LevelReader.cpp level/LevelDomain.cpp level/LevelDomain.h)
 
 add_executable(PushdOut ${GAME_SRC})
 target_link_libraries(PushdOut engine)
