@@ -1,10 +1,12 @@
 set(GAME_SRC
-    main.cpp)
+    main.cpp
+        )
 
+#more engine stuff
 add_executable(PushdOut ${GAME_SRC})
 target_link_libraries(PushdOut engine)
 
-# Copy asset folder to bin folder
+#Copy asset folder to bin folder
 add_custom_command(
     TARGET PushdOut
     POST_BUILD
@@ -12,13 +14,13 @@ add_custom_command(
     ${CMAKE_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 
-# If needed, copy some DLLs over to bin folder
+#If needed, copy some DLLs over to bin folder
 if (MSYS OR MINGW)
-    get_filename_component(COMPILER_BIN_PATH ${CMAKE_CXX_COMPILER}} DIRECTORY)
+    get_filename_component(COMPILER_BIN_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 
     set(THIRD_PARTY_DLLS
         ${COMPILER_BIN_PATH}/libBox2D.dll
-	${COMPILER_BIN_PATH}/SDL2.dll
+        ${COMPILER_BIN_PATH}/SDL2.dll
         ${COMPILER_BIN_PATH}/libstdc++-6.dll
         ${COMPILER_BIN_PATH}/libgcc_s_seh-1.dll
         ${COMPILER_BIN_PATH}/libwinpthread-1.dll

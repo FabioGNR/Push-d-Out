@@ -15,7 +15,6 @@ class EntityManager {
 
 public:
     EntityManager() = default;
-
     Entity& create();
     Entity& entity(EntityId entityId);
     void destroy(const Entity& entity);

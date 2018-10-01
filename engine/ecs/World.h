@@ -4,6 +4,8 @@
 #include "ComponentManager.h"
 #include "Entity.h"
 #include "EntityManager.h"
+#include "System.h"
+#include "SystemManager.h"
 
 #include <algorithm>
 #include <functional>
@@ -12,21 +14,66 @@
 namespace engine {
 
 class World {
-    EntityManager& m_entityManager;
-    ComponentManager& m_componentManager;
+private:
+    EntityManager* m_entityManager;
+    ComponentManager* m_componentManager;
+    SystemManager* m_systemManager;
 
 public:
-    World(EntityManager& entityManager, ComponentManager& componentManager)
-        : m_entityManager(entityManager)
-        , m_componentManager(componentManager)
+    World()
     {
+        m_entityManager = new EntityManager();
+        m_componentManager = new ComponentManager();
+        m_systemManager = new SystemManager();
+    }
+
+    virtual ~World()
+    {
+        delete m_entityManager;
+        delete m_componentManager;
+        delete m_systemManager;
+    }
+
+    Entity& createEntity();
+
+    void destroyEntity(Entity& entity);
+
+    template <typename Component>
+    Component& getComponent(const Entity& entity) const
+    {
+        return m_componentManager->getManager<Component>().get(entity);
+    }
+
+    template <typename Component, typename... ComponentArgs>
+    Component& addComponent(Entity& entity, ComponentArgs&&... args)
+    {
+        static_assert(std::is_base_of<IComponent, Component>::value,
+            "Component must be inherited from BaseComponent");
+        entity.registerComponent<Component>();
+        return m_componentManager->getManager<Component>().add(entity, std::forward<ComponentArgs>(args)...);
+    }
+
+    template <typename Component>
+    void removeComponent(Entity& entity)
+    {
+        static_assert(std::is_base_of<IComponent, Component>::value,
+            "Component must be inherited from BaseComponent");
+
+        m_componentManager->remove<Component>(entity);
+        entity.unregisterComponent<Component>();
+    }
+
+    template <typename Component>
+    void addComponentManager()
+    {
+        m_componentManager->addManager<Component>();
     }
 
     template <typename... Components>
     void forEachEntityWith(std::function<void(Entity&)>&& func)
     {
         const std::vector<std::reference_wrapper<ComponentMap>> componentMaps = {
-            m_componentManager.getManager<Components>().getAll()...
+            m_componentManager->getManager<Components>()->getAll()...
         };
 
         const auto& smallestMapRef = *std::min_element(componentMaps.cbegin(), componentMaps.cend(),
@@ -35,11 +82,17 @@ public:
             });
 
         for (auto& entityIterator : smallestMapRef.get()) {
-            auto& entity = m_entityManager.entity(entityIterator.first);
+            auto& entity = m_entityManager->entity(entityIterator.first);
             if (entityHasComponents<Components...>(entity)) {
                 func(entity);
             }
         }
+    }
+
+    template <typename System, typename... SystemArgs>
+    void addSystem(SystemPriority priority, SystemArgs&&... args)
+    {
+        m_systemManager->add<System>(priority, args...);
     }
 
 private:

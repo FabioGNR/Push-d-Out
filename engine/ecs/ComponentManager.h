@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Entity.h"
+#include "engine/exceptions/ComponentManagerNotFoundException.h"
 
 #include <cassert>
 #include <memory>
@@ -15,6 +16,8 @@ class IComponentManager {
 public:
     IComponentManager();
     virtual ~IComponentManager();
+    virtual void remove(const EntityId entity) = 0;
+    virtual void remove(Entity& entity) = 0;
 };
 
 using ComponentMap = std::unordered_map<EntityId, std::unique_ptr<IComponent>>;
@@ -32,11 +35,21 @@ public:
         auto component = std::make_unique<Component>(std::forward<ComponentArgs>(args)...);
         auto* componentPtr = component.get();
 
-        // FIXME: Check if insertion was validC
+        // TODO: Check if component insertion was valid
         m_components.insert({ entity.id(), std::move(component) });
 
         entity.registerComponent<Component>();
         return *componentPtr;
+    }
+
+    void remove(const EntityId entity) override
+    {
+        m_components.erase(entity);
+    }
+
+    void remove(Entity& entity) override
+    {
+        m_components.erase(entity.id());
     }
 
     Component& get(const EntityId entityId) const
@@ -56,7 +69,7 @@ public:
 };
 
 using ManagerMap = std::unordered_map<engine::ComponentId, std::unique_ptr<IComponentManager>>;
-class ComponentManager : public IComponentManager {
+class ComponentManager {
     ManagerMap m_managers;
 
 public:
@@ -71,13 +84,38 @@ public:
     }
 
     template <typename Component>
-    BaseComponentManager<Component>& getManager()
+    BaseComponentManager<Component>& getManager() const
     {
         static_assert(std::is_base_of<IComponent, Component>::value,
             "Component must be inherited from BaseComponent");
 
         //auto& managerUptr = m_managers.at(Component::familyId());
-        return *reinterpret_cast<BaseComponentManager<Component>*>(m_managers.at(Component::familyId()).get());
+        auto familyId = Component::familyId();
+
+        bool found = m_managers.count(familyId) != 0;
+        if (!found) {
+            throw ComponentManagerNotFoundException();
+        }
+
+        auto& manager = m_managers.at(familyId);
+        return *reinterpret_cast<BaseComponentManager<Component>*>(manager.get());
+    }
+
+    template <typename Component>
+    Component& get(const EntityId entityId) const
+    {
+        return getManager<Component>().get(entityId);
+    }
+
+    template <typename Component>
+    Component& get(const Entity& entity) const
+    {
+        return getManager<Component>().get(entity);
+    }
+
+    ManagerMap& getAll()
+    {
+        return m_managers;
     }
 
     template <typename Component, typename... ComponentArgs>
@@ -86,7 +124,26 @@ public:
         static_assert(std::is_base_of<IComponent, Component>::value,
             "Component must be inherited from BaseComponent");
 
-        return getManager<Component>().add(entity, std::forward<ComponentArgs>(args)...);
+        try {
+            auto& manager = getManager<Component>();
+            return manager.add(entity, std::forward<ComponentArgs>(args)...);
+        } catch (ComponentManagerNotFoundException& exception) {
+            this->addManager<Component>();
+            return getManager<Component>()
+                .add(entity, std::forward<ComponentArgs>(args)...);
+        }
+    }
+
+    template <typename Component>
+    void remove(Entity& entity)
+    {
+        getManager<Component>().remove(entity);
+    }
+
+    template <typename Component>
+    void remove(const EntityId entity)
+    {
+        getManager<Component>().remove(entity);
     }
 };
 

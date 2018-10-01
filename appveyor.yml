@@ -22,6 +22,4 @@ build_script:
 
     cmake --build .
 
-     ..\bin\tests.exe
-
-
+    ..\bin\tests.exe
