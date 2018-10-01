@@ -6,6 +6,7 @@
 #include "EntityManager.h"
 #include "System.h"
 #include "SystemManager.h"
+#include "definitions/SystemPriority.h"
 
 #include <algorithm>
 #include <functional>
@@ -74,7 +75,7 @@ public:
     }
 
     template <typename System, typename... SystemArgs>
-    void addSystem(SystemPriority priority, SystemArgs&&... args)
+    void addSystem(definitions::SystemPriority priority, SystemArgs&&... args)
     {
         m_systemManager.add<System>(priority, args...);
     }

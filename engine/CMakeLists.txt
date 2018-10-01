@@ -76,10 +76,14 @@ set(WINDOW_SRC
     window/WindowProperties.h
 )
 
+set(DEFINITION_SRC
+        definitions/SystemPriority.h
+)
+
 set(EXCEPTION_SRC
     exceptions/ComponentManagerNotFoundException.h
 )
 
 # more engine stuff
-add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC} ${WINDOW_SRC} ${EVENTS_SRC} ${EXCEPTION_SRC})
+add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC} ${WINDOW_SRC} ${EVENTS_SRC} ${EXCEPTION_SRC} ${DEFINITION_SRC})
 target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

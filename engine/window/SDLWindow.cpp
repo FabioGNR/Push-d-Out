@@ -42,7 +42,7 @@ int SDLWindow::getFlags() const
     return flags;
 }
 
-int SDLWindow::getPosition(const int coord) const
+int SDLWindow::getPosition(int coord) const
 {
     if (m_properties.centered) {
         return static_cast<int>(SDL_WINDOWPOS_CENTERED);

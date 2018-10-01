@@ -1,7 +1,6 @@
-#include <utility>
-
 #pragma once
 
+#include <utility>
 #include <common/Vector2D.h>
 #include "WindowProperties.h"
 
