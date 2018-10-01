@@ -2,7 +2,8 @@
 [Bb]uild/
 cmake-build-*/
 .vs/
+.ccls-cache/
 .idea/
 CMakeSettings.json
 .DS_STORE
-external/
+external/Box2D
