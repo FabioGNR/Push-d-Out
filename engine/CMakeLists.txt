@@ -11,6 +11,10 @@ include_directories(${SDL2_TTF_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 include_directories(${BOX2D_INCLUDE_DIR})
 
+set(COMMON_SRC
+        common/Vector2D.h
+        )
+
 set(ECS_SRC
     ecs/Entity.h
     ecs/Entity.cpp
@@ -47,9 +51,17 @@ set(GRAPHICS_SRC
 )
 
 set(PHYSICS_SRC
-    physics/PhysicsManager.h
-    physics/PhysicsManager.cpp
-)
+        physics/PhysicsManager.h
+        physics/PhysicsManager.cpp
+        physics/World.h
+        physics/World.cpp
+        physics/Body.h
+        physics/DynamicBody.cpp
+        physics/DynamicBody.h
+        physics/StaticBody.h
+        physics/StaticBody.cpp
+        physics/Body.cpp
+        )
 
 set(EVENTS_SRC
     events/EventManager.h

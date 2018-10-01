@@ -1,6 +1,8 @@
 #include <utility>
 
 #pragma once
+
+#include <common/Vector2D.h>
 #include "WindowProperties.h"
 
 namespace engine {
@@ -11,6 +13,8 @@ public:
     {
     }
     virtual ~Window() = default;
+
+    virtual const common::Vector2D getDimensions() const = 0;
 
 protected:
     WindowProperties m_properties;

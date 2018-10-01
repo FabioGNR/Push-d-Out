@@ -6,7 +6,6 @@
 #include <graphics/drawable/RectangleShape.h>
 #include <graphics/drawable/Sprite.h>
 
-#include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <memory>
@@ -44,7 +43,7 @@ void SDLRenderVisitor::visit(const RectangleShape& shape)
 
     SDL_Rect positionRect{
         shape.x(),
-        shape.y(),
+        (int) m_renderer.flipY(shape.y()),
         shape.width(),
         shape.height()
     };

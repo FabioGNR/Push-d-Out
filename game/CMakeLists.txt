@@ -1,9 +1,16 @@
 set(GAME_SRC
-    main.cpp
+        main.cpp
+        )
+
+set(THEMES_SRC
+        themes/Earth.h
+        themes/Moon.h
+        themes/Theme.h
+        themes/Theme.cpp
         )
 
 #more engine stuff
-add_executable(PushdOut ${GAME_SRC})
+add_executable(PushdOut ${GAME_SRC} ${THEMES_SRC})
 target_link_libraries(PushdOut engine)
 
 #Copy asset folder to bin folder

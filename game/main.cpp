@@ -1,51 +1,91 @@
+#include <events/EventManager.h>
+#include <events/SDLEventManager.h>
+#include <game/themes/Earth.h>
 #include <iostream>
 #include <memory>
-#include <thread>
+#include <sstream>
+#include <chrono>
 
-#include <engine/events/SDLEventManager.h>
-#include <engine/graphics/Color.h>
 #include <engine/graphics/IRenderer.h>
+#include <engine/graphics/SDL/SDLRenderVisitor.h>
 #include <engine/graphics/SDL/SDLRenderer.h>
-#include <engine/graphics/drawable/Font.h>
-#include <engine/graphics/drawable/LineShape.h>
 #include <engine/graphics/drawable/RectangleShape.h>
-#include <engine/graphics/drawable/Sprite.h>
 #include <engine/physics/PhysicsManager.h>
+#include <engine/physics/Body.h>
 #include <engine/window/SDLWindow.h>
+#include <engine/window/Window.h>
+#include <engine/window/WindowProperties.h>
+#include <game/themes/Moon.h>
+
+using namespace std::chrono_literals;
+
+static const int UNIT_MULTIPLIER = 2;
 
 int main()
 {
+    // we use a fixed timestep of 1 / (60 fps) = 16 milliseconds
+    std::chrono::nanoseconds timestep(16ms);
+
     engine::WindowProperties windowProperties{};
-    windowProperties.title = "Push'd out!";
+    windowProperties.title = "Push'd Out!";
     windowProperties.maximized = false;
     windowProperties.centered = true;
-    windowProperties.width = 640;
+    windowProperties.width = 800;
     windowProperties.height = 480;
+
     std::unique_ptr<engine::Window> window{ new engine::SDLWindow(windowProperties) };
     std::unique_ptr<engine::EventManager> evtManager{ new engine::SDLEventManager() };
-    std::unique_ptr<engine::IRenderer> renderer{ new engine::SDLRenderer((engine::SDLWindow&)*window) };
+    auto renderer{ new engine::SDLRenderer(*(engine::SDLWindow*)window.get()) };
 
-    engine::RectangleShape shape(620 / 2, 480 / 2, 300, 300, Color{ 0, 0, 255, 0 });
-    engine::LineShape line(30, 100, 30, 100);
-    engine::Font font(
-        "assets/fonts/Pixeled.ttf", "Hello, World!", 80,
-        Color{ 0, 255, 0, 0 },
-        50, 50);
+    using clock = std::chrono::high_resolution_clock;
 
-    engine::Sprite sprite("assets/sprites/feelsgoodman.png", 50, 250, 0, 0, .2f);
+    std::chrono::nanoseconds lag(0ns);
+    auto timeStart = clock::now();
+    bool loop = true;
 
-    bool runGame = true;
-    while (runGame) {
-        runGame = evtManager->processEvents();
+    engine::physics::PhysicsManager pm(/* size of one unit */ 16 * UNIT_MULTIPLIER);
+
+    game::themes::Theme theme = game::themes::Earth{};
+    engine::physics::World* world = pm.createWorld(theme.getGravity(), theme.getFriction());
+
+    // falls out of the sky
+    world->createDynamicBody(5, 200, 1, 2);
+    world->createDynamicBody(6, 200, 1, 2);
+    world->createDynamicBody(8, 100, 1, 2);
+    world->createDynamicBody(5, 50, 1, 2);
+    world->createDynamicBody(15, 30, 2, 2);
+
+    // ground
+    world->createStaticBody(0, 1, 100, 1);
+
+    while (loop) {
+        auto deltaTime = clock::now() - timeStart;
+        timeStart = clock::now();
+        lag += std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime);
+
+        loop = evtManager->processEvents();
+
+        // update game logic as lag permits
+        while (lag >= timestep) {
+            lag -= timestep;
+
+            world->update(); // update at a fixed rate each time
+        }
+
         renderer->clear();
 
-        renderer->draw(shape);
-        renderer->draw(line);
-        renderer->draw(font);
-        renderer->draw(sprite);
+        for (auto body : world->getBodies()) {
+            body->applyForce(common::Vector2D(0.1, 0.0), body->getCenterPoint());
+
+            common::Vector2D pos = body->getPosition();
+            common::Vector2D size = body->getDimensions();
+
+            engine::RectangleShape shape(pos.x, pos.y, size.x, size.y, engine::Color {255, 255, 255, 100} );
+            renderer->draw(shape);
+        }
 
         renderer->show();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+
     return 0;
 }

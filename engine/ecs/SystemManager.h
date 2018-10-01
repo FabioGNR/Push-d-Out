@@ -14,6 +14,7 @@ enum class SystemPriority {
     low = 3
 };
 
+
 class SystemManager {
     std::map<SystemPriority,
         std::unordered_map<SystemId, std::unique_ptr<ISystem>>>
