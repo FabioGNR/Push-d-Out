@@ -1,11 +1,13 @@
+#include <utility>
+
 #pragma once
 #include "WindowProperties.h"
 
 namespace engine {
 class Window {
 public:
-    Window(WindowProperties properties)
-        : m_properties{ properties }
+    explicit Window(WindowProperties properties)
+        : m_properties{std::move(properties)}
     {
     }
     virtual ~Window() = default;

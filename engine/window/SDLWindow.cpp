@@ -1,4 +1,5 @@
 #include "SDLWindow.h"
+
 #include <SDL.h>
 
 namespace engine {
@@ -41,7 +42,7 @@ int SDLWindow::getFlags() const
 int SDLWindow::getPosition(const int coord) const
 {
     if (m_properties.centered) {
-        return SDL_WINDOWPOS_CENTERED;
+        return static_cast<int>(SDL_WINDOWPOS_CENTERED);
     }
     return coord;
 }

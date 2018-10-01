@@ -7,9 +7,12 @@
 #include <unordered_map>
 
 namespace engine {
-enum class SystemPriority { high = 1,
+
+enum class SystemPriority {
+    high = 1,
     medium = 2,
-    low = 3 };
+    low = 3
+};
 
 class SystemManager {
     std::map<SystemPriority,

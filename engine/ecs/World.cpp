@@ -3,13 +3,13 @@
 
 engine::Entity& engine::World::createEntity()
 {
-    return m_entityManager->create();
+    return m_entityManager.create();
 }
 
 void engine::World::destroyEntity(engine::Entity& entity)
 {
-    for (auto& manager : m_componentManager->getAll()) {
+    for (auto& manager : m_componentManager.getAll()) {
         manager.second->remove(entity);
     }
-    m_entityManager->destroy(entity);
+    m_entityManager.destroy(entity);
 }

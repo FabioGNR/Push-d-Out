@@ -16,7 +16,7 @@ class IComponentManager {
 public:
     IComponentManager();
     virtual ~IComponentManager();
-    virtual void remove(const EntityId entity) = 0;
+    virtual void remove(EntityId entity) = 0;
     virtual void remove(Entity& entity) = 0;
 };
 
