@@ -35,9 +35,7 @@ set(EVENTS_SRC
 		EventHandling/Events/QuitEvent.h
 		EventHandling/Events/UnknownEvent.cpp
 		EventHandling/Events/UnknownEvent.h
-		EventHandling/Events/WindowEvent.cpp
-		EventHandling/Events/WindowEvent.h
-		EventHandling/Events/IEvent.cpp
+        EventHandling/Events/IEvent.cpp
 		EventHandling/Events/IEvent.h
 		EventHandling/Events/KeyEvent.cpp EventHandling/Events/KeyEvent.h)
 

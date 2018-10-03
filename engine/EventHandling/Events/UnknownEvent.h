@@ -6,5 +6,5 @@ class UnknownEvent : public IEvent {
 private:
 public:
     void printType() override;
-    char store() override;
+    void store(std::vector<IEvent *> *controlEvents, std::vector<IEvent *> *otherEvents) override;
 };

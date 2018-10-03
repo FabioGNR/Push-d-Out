@@ -5,7 +5,7 @@ void QuitEvent::printType()
     std::cout << "Quit Event: " << std::endl;
 }
 
-char QuitEvent::store()
+void QuitEvent::store(std::vector<IEvent*>* controlEvents, std::vector<IEvent*>* otherEvents)
 {
-    return storeType;
+    otherEvents->push_back(this);
 }

@@ -2,9 +2,10 @@
 
 void UnknownEvent::printType()
 {
-    std::cout << "Unknown Event: " << std::endl;
+    //std::cout << "Unknown Event: " << std::endl;
 }
 
-char UnknownEvent::store() {
-    return 'E';
+void UnknownEvent::store(std::vector<IEvent*>* controlEvents, std::vector<IEvent*>* otherEvents)
+{
+    otherEvents->push_back(this);
 }
