@@ -11,7 +11,7 @@ bool EventManager::getEvents()
     std::vector<IEvent*> test = ea.getEvents();
 
     for (IEvent* event : test) {
-        event->printType();
+        //event->printType();
         if (dynamic_cast<IControlEvent*>(event)) {
             im.storeInput((IControlEvent*)event);
         } else if (dynamic_cast<QuitEvent*>(event)) { // TODO eventually delete this

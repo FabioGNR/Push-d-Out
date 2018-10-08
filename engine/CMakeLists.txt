@@ -43,7 +43,7 @@ set(WINDOW_SRC
 		window/SDLWindow.cpp
 		window/Window.h
 		window/WindowProperties.h
-        EventHandling/Events/IControlEvent.h EventHandling/Events/IOtherEvent.h SDLAdapters/SDLKeyMap.cpp SDLAdapters/SDLKeyMap.h)
+        EventHandling/Events/IControlEvent.h EventHandling/Events/IOtherEvent.h SDLAdapters/SDLKeyMap.cpp SDLAdapters/SDLKeyMap.h InputHandeling/IObserver.h)
 
 # more engine stuff
 add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC} ${WINDOW_SRC} ${EVENTS_SRC} ${INPUT_SRC})
