@@ -22,15 +22,17 @@ namespace physics {
         std::unique_ptr<common::Vector2D> m_friction;
         std::vector<Body*> m_bodies;
 
+        common::Vector2D m_size;
         int m_unitSize;
 
     public:
-        explicit World(double gravity, double friction, int unitSize);
+        explicit World(common::Vector2D size, double gravity, double friction, int unitSize);
         ~World();
 
         void update();
         const common::Vector2D getGravity() const;
         const common::Vector2D getFriction() const;
+        const common::Vector2D getSize() const;
         void createStaticBody(int x, int y, int width, int height);
         void createDynamicBody(int x, int y, int width, int height);
         const std::vector<Body*> getBodies() const;

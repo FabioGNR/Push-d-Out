@@ -6,8 +6,7 @@ namespace engine {
 namespace physics {
     DynamicBody::DynamicBody(double x, double y, double width, double height, int unitSize,
         World& world)
-        : Body(x, y, width, height, unitSize)
-        , m_world{ world }
+        : Body(x, y, width, height, unitSize, world)
     {
         b2BodyDef bodyDef;
         // You must set the body type to b2_dynamicBody if you want the body to move in response to forces
@@ -41,8 +40,8 @@ namespace physics {
     void DynamicBody::update()
     {
         // 1 unit = 1 meter, 16 pixels are 1 unit
-        m_position->x = m_body->GetPosition().x * m_unitSize;
-        m_position->y = m_body->GetPosition().y * m_unitSize;
+        m_position.x = m_body->GetPosition().x;
+        m_position.y = m_body->GetPosition().y;
 
         m_angle = m_body->GetAngle();
     }

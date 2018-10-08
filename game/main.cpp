@@ -46,17 +46,17 @@ int main()
     engine::physics::PhysicsManager pm(/* size of one unit */ 16 * UNIT_MULTIPLIER);
 
     game::themes::Theme theme = game::themes::Earth{};
-    engine::physics::World* world = pm.createWorld(theme.getGravity(), theme.getFriction());
-
-    // falls out of the sky
-    world->createDynamicBody(5, 200, 1, 2);
-    world->createDynamicBody(6, 200, 1, 2);
-    world->createDynamicBody(8, 100, 1, 2);
-    world->createDynamicBody(5, 50, 1, 2);
-    world->createDynamicBody(15, 30, 2, 2);
+    engine::physics::World* world = pm.createWorld(common::Vector2D(25, 15), theme.getGravity(), theme.getFriction());
 
     // ground
-    world->createStaticBody(0, 1, 100, 1);
+    world->createStaticBody(0, 0, 100, 1);
+
+    // falls out of the sky
+    world->createDynamicBody(10, 20, 1, 2);
+    world->createDynamicBody(5, 10, 1, 2);
+    world->createDynamicBody(20, 50, 1, 2);
+    world->createDynamicBody(9, 30, 2, 2);
+
 
     while (loop) {
         auto deltaTime = clock::now() - timeStart;
@@ -75,8 +75,6 @@ int main()
         renderer->clear();
 
         for (auto body : world->getBodies()) {
-            body->applyForce(common::Vector2D(0.1, 0.0), body->getCenterPoint());
-
             common::Vector2D pos = body->getPosition();
             common::Vector2D size = body->getDimensions();
 
