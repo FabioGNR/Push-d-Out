@@ -9,7 +9,6 @@
 namespace game {
 namespace components {
     struct CharacterSpawnComponent : public engine::BaseComponent<CharacterSpawnComponent> {
-        double width, height;
 
         CharacterSpawnComponent() {};
     };

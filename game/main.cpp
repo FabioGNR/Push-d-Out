@@ -63,9 +63,9 @@ int main()
     world->createDynamicBody(9, 30, 2, 2);
 
     world->createStaticBody(0, 1, 100, 1);
-    json j = levelReader::readJSON("assets\\levels\\base_level.JSON");
+    json j = game::levelReader::readJSON("assets\\levels\\base_level.JSON");
     std::cout << "JSON: " << j << std::endl;
-    level l = levelReader::getLevel(j);
+    level l = game::levelReader::getLevel(j);
     std::cout << "level: " << l.name << std::endl;
 
     bool runGame = true;

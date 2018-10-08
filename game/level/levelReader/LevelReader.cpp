@@ -3,6 +3,7 @@
 #include <iostream>
 #include <game/components/SpriteComponent.h>
 #include <game/components/CharacterSpawnComponent.h>
+#include <game/components/LevelMetaComponent.h>
 
 #include "LevelReader.h"
 #include "engine/ecs/World.h"
@@ -28,6 +29,10 @@ level levelReader::getLevel(json j)
 engine::World levelReader::createEntities(level level)
 {
     auto world = engine::World();
+
+    auto& entity = world.createEntity();
+    auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
+    world.addComponent<components::LevelMetaComponent>(entity, levelMetaComponent);
 
     for (int i = 0; i < level.tiles.size(); i++) {
         tile curTile = level.tiles[i];

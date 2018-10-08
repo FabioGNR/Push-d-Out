@@ -14,7 +14,7 @@ set(COMPONENT_SRC
     components/BodyComponent.h
     components/DimensionComponent.h
     components/SpriteComponent.h
-        components/CharacterSpawnComponent.h)
+        components/CharacterSpawnComponent.h components/LevelMetaComponent.h)
 
 set(SYSTEM_SRC
     systems/MoveSystem.cpp
