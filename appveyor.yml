@@ -8,6 +8,10 @@ build_script:
 
     .\vcpkg.exe install sdl2
 
+    .\vcpkg.exe install sdl2-ttf
+
+    .\vcpkg.exe install sdl2-image
+
     .\vcpkg.exe install box2d
 
     .\vcpkg.exe integrate install

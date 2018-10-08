@@ -8,13 +8,17 @@ We will use the provided package manager with MSYS, which is Pacman. To start of
 Start the MSYS2 terminal.
 
 1. `pacman -Syuu`. Do this twice; the first time you will be asked to quit the terminal, do so. Then update again.
-2. Install the following dependencies:
+2. Install the following dependencies. If prompted to select packages, install the default (just press enter):
 
     `pacman -S mingw-w64-x86_64-toolchain`
 
     `pacman -S mingw-w64-x86_64-box2d`
 
     `pacman -S mingw-w64-x86_64-SDL2`
+
+    `pacman -S mingw-w64-x86_64-SDL2_ttf`
+
+    `pacman -S mingw-w64-x86_64-SDL2_image`
 
 ## Clion
 
