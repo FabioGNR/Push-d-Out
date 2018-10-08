@@ -2,16 +2,15 @@
 // Created by Joris on 27-9-2018.
 //
 
-
 #pragma once
 
+#include "external/JSON/json.hpp"
 #include <string>
 #include <vector>
-#include "external/JSON/json.hpp"
 
 using json = nlohmann::json;
 
-
+namespace game {
 namespace levelDomain {
     enum class Theme {
         Earth = 0,
@@ -50,14 +49,18 @@ namespace levelDomain {
         std::vector<spawnPoint> CharacterSpawns;
     };
 
+    std::string getSheetName(Theme theme);
+
     void to_json(json& j, const tile& t);
+
     void from_json(const json& j, tile& t);
 
     void to_json(json& j, const spawnPoint& t);
+
     void from_json(const json& j, spawnPoint& t);
 
     void to_json(json& j, const level& t);
+
     void from_json(const json& j, level& t);
 }
-
-
+}
