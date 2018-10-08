@@ -11,5 +11,4 @@ class IEvent {
 private:
 public:
     virtual void printType() = 0;
-    virtual void store(std::vector<IEvent*>* controlEvents, std::vector<IEvent*>* otherEvents) = 0;
 };

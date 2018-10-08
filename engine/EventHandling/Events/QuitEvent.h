@@ -1,10 +1,9 @@
 #pragma once
 
-#include "IEvent.h"
+#include "IOtherEvent.h"
 
-class QuitEvent : public IEvent {
+class QuitEvent : public IOtherEvent {
 private:
 public:
     void printType() override;
-    void store(std::vector<IEvent *> *controlEvents, std::vector<IEvent *> *otherEvents) override;
 };

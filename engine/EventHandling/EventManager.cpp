@@ -10,18 +10,15 @@ bool EventManager::getEvents()
     SDLEventAdapter ea;
     std::vector<IEvent*> test = ea.getEvents();
 
-    std::vector<IEvent*> controlEvents;
-    std::vector<IEvent*> otherEvents;
-
     for (IEvent* event : test) {
-        event->store(&controlEvents, &otherEvents);
-
-        if (dynamic_cast<QuitEvent*>(event)) {
-            return false;
-        }
-
         event->printType();
+        if (dynamic_cast<IControlEvent*>(event)) {
+            im.storeInput((IControlEvent*)event);
+        } else if (dynamic_cast<QuitEvent*>(event)) { // TODO eventually delete this
+            return false;
+        } else if (dynamic_cast<IOtherEvent*>(event)) {
+            // do nothing
+        }
     }
-    //im.storeInput(controlEvents); TODO this
     return true;
 }

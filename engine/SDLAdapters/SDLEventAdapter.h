@@ -7,15 +7,14 @@
 #include "EventHandling/Events/KeyEvent.h"
 #include "EventHandling/Events/QuitEvent.h"
 #include "EventHandling/Events/UnknownEvent.h"
-#include <SDL2/SDL.h>
-#include <map>
+#include "SDLKeyMap.h"
+//#include <SDL2/SDL.h>
 #include <vector>
 
 class SDLEventAdapter {
 private:
-    std::map<SDL_Keycode, char> KeyCode;
     IEvent* sortEvents(SDL_Event event);
-    char getKeyValue(SDL_Event event);
+    SDLKeyMap km;
 
 public:
     std::vector<IEvent*> getEvents();

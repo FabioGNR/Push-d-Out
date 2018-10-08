@@ -1,6 +1,8 @@
 #include "InputManager.h"
 
-void InputManager::storeInput(IEvent*)
+void InputManager::storeInput(IControlEvent* event)
 {
-    //save input
+    char value = 'A';
+
+    keyMap->insert(std::pair<char, IControlEvent*>(value, event));
 }

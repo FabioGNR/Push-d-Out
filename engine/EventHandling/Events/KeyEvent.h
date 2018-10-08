@@ -1,13 +1,12 @@
 #pragma once
 
-#include "IEvent.h"
+#include "IControlEvent.h"
 
-class KeyEvent : public IEvent {
+class KeyEvent : public IControlEvent {
 private:
     char value;
     bool pressed;
 public:
     KeyEvent(char value, bool pressed);
     void printType() override;
-    void store(std::vector<IEvent*>* controlEvents, std::vector<IEvent*>* otherEvents) override;
 };

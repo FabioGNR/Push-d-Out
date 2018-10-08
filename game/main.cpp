@@ -13,8 +13,8 @@ int main(int, char**)
     windowProperties.width = 640;
     windowProperties.height = 480;
     std::unique_ptr<engine::Window> window { new engine::SDLWindow(windowProperties) };
-    PhysicsManager pm {};
-    pm.doPhysics();
+    //PhysicsManager pm {};
+    //pm.doPhysics();
 
     bool runGame = true;
     EventManager em;
