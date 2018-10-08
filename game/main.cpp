@@ -61,7 +61,7 @@ int main()
     world->createDynamicBody(5, 10, 1, 2);
     world->createDynamicBody(20, 50, 1, 2);
     world->createDynamicBody(9, 30, 2, 2);
-    
+
     world->createStaticBody(0, 1, 100, 1);
     json j = levelReader::readJSON("assets\\levels\\base_level.JSON");
     std::cout << "JSON: " << j << std::endl;

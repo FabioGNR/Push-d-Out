@@ -1,15 +1,21 @@
 #pragma once
 
 #include "external/JSON/json.hpp"
+#include "engine/ecs/World.h"
 #include <game/level/LevelDomain.h>
 #include <string>
 
-using namespace levelDomain;
+using namespace game::levelDomain;
+
+namespace game {
 using json = nlohmann::json;
 
 class levelReader {
 public:
     static json readJSON(std::string fileName);
+
     static level getLevel(json j);
-    static void createEntities(level level);
+
+    static engine::World createEntities(level level);
 };
+}
