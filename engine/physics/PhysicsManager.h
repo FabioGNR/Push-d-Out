@@ -17,7 +17,7 @@ namespace physics {
 
         ~PhysicsManager();
 
-        World* createWorld(double gravity, double friction);
+        World* createWorld(common::Vector2D size, double gravity, double friction);
 
         int getUnitSize() const;
     };

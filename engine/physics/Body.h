@@ -5,15 +5,18 @@
 
 namespace engine {
 namespace physics {
+    class World;
     class Body {
     protected:
-        std::unique_ptr<common::Vector2D> m_position;
-        std::unique_ptr<common::Vector2D> m_dimensions;
+        common::Vector2D m_position;
+        common::Vector2D m_dimensions;
 
         double m_angle = 0;
         int m_unitSize;
+
+        World& m_world;
     public:
-        Body(double x, double y, double width, double height, int unitSize);
+        Body(double x, double y, double width, double height, int unitSize, World& world);
         virtual ~Body() = default;
 
         virtual void update() = 0;

@@ -11,14 +11,13 @@
 namespace engine {
 namespace physics {
 
-    World::World(double gravity, double friction, int unitSize)
+    World::World(common::Vector2D size, double gravity, double friction, int unitSize) : m_size{size}, m_unitSize{unitSize}
     {
         b2Vec2 grav{ 0, (float32)gravity };
 
         m_gravity = std::make_unique<common::Vector2D>(0.0, gravity);
         m_friction = std::make_unique<common::Vector2D>(friction, 0.0);
         m_b2World = new b2World(grav);
-        m_unitSize = unitSize;
         m_bodies = std::vector<Body*>{};
     }
 
@@ -75,6 +74,10 @@ namespace physics {
         for (auto body : m_bodies) {
             body->update();
         }
+    }
+
+    const common::Vector2D World::getSize() const {
+        return m_size;
     }
 }
 }

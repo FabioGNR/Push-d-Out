@@ -11,9 +11,18 @@ namespace physics {
         m_unitSize = unitSize;
     }
 
-    World* PhysicsManager::createWorld(double gravity, double friction)
+    /**
+     * @param size in units
+     * @param gravity
+     * @param friction
+     * @return pointer to World object
+     */
+    World* PhysicsManager::createWorld(common::Vector2D size, double gravity, double friction)
     {
-        auto world = new World{ gravity, friction, m_unitSize };
+        size.x *= m_unitSize;
+        size.y *= m_unitSize;
+
+        auto world = new World(size, gravity, friction, m_unitSize);
         m_worlds.push_back(world);
         return world;
     }

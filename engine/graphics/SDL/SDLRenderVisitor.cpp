@@ -43,7 +43,7 @@ void SDLRenderVisitor::visit(const RectangleShape& shape)
 
     SDL_Rect positionRect{
         shape.x(),
-        (int) m_renderer.flipY(shape.y()),
+        shape.y(),
         shape.width(),
         shape.height()
     };

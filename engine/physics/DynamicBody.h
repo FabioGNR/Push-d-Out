@@ -11,7 +11,6 @@ namespace physics {
     class World;
     class DynamicBody : public Body {
     private:
-        World& m_world;
         b2Body* m_body;
 
     public:
