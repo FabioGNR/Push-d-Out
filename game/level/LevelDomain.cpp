@@ -68,7 +68,11 @@ namespace levelDomain {
     {
         json Meta = j.at("Meta").get<json>();
         l.name = Meta.at("name").get<std::string>();
-        l.theme = static_cast<Theme>(Meta.at("theme").get<int>());
+        int themeInt = Meta.at("theme").get<int>();
+        if(themeInt > 3) {
+            themeInt = 0;
+        }
+        l.theme = static_cast<Theme>(themeInt);
         l.height = Meta.at("height").get<int>();
         l.width = Meta.at("width").get<int>();
         l.tiles = j.at("PlatformTiles").get<std::vector<tile>>();
