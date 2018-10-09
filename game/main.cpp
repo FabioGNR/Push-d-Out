@@ -67,6 +67,7 @@ int main()
     std::cout << "JSON: " << j << std::endl;
     level l = game::levelReader::getLevel(j);
     std::cout << "level: " << l.name << std::endl;
+    engine::ecs::World ecsWorld = game::levelReader::createEntities(l);
 
     bool runGame = true;
     while (loop) {

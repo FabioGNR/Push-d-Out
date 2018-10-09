@@ -8,7 +8,7 @@
 
 namespace game {
 namespace components {
-    struct CharacterSpawnComponent : public engine::BaseComponent<CharacterSpawnComponent> {
+struct CharacterSpawnComponent : public engine::ecs::BaseComponent<CharacterSpawnComponent> {
 
         CharacterSpawnComponent() {};
     };

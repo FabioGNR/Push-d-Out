@@ -26,23 +26,32 @@ level levelReader::getLevel(json j)
     return level;
 }
 
-engine::World levelReader::createEntities(level level)
+engine::ecs::World levelReader::createEntities(level level)
 {
-    auto world = engine::World();
+    engine::ecs::World world;
 
     auto& entity = world.createEntity();
     auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
+    world.addComponentManager<components::LevelMetaComponent>();
     world.addComponent<components::LevelMetaComponent>(entity, levelMetaComponent);
 
     for (int i = 0; i < level.tiles.size(); i++) {
         tile curTile = level.tiles[i];
         auto& entity = world.createEntity();
 
+        // Add a position component to tile entity
         auto posComponent = components::PositionComponent(curTile.x, curTile.y);
+        world.addComponentManager<components::PositionComponent>();
         world.addComponent<components::PositionComponent>(entity, posComponent);
+
+        // Add a body component to tile entity
         auto bodyComponent = components::BodyComponent(definitions::Body::Static);
+        world.addComponentManager<components::BodyComponent>();
         world.addComponent<components::BodyComponent>(entity, bodyComponent);
+
+        // Add a sprite component to tile entity
         auto spriteComponent = components::SpriteComponent(levelDomain::getSheetName(level.theme), curTile.sprite);
+        world.addComponentManager<components::SpriteComponent>();
         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
     }
 
@@ -50,11 +59,19 @@ engine::World levelReader::createEntities(level level)
         spawnPoint curSpawn = level.CharacterSpawns[i];
         auto& entity = world.createEntity();
 
+        // Add a position component to characterspawn entity
         auto posComponent = components::PositionComponent(curSpawn.x, curSpawn.y);
+        world.addComponentManager<components::PositionComponent>();
         world.addComponent<components::PositionComponent>(entity, posComponent);
+
+        // Add a sprite component to characterspawn entity
         auto spriteComponent = components::SpriteComponent(levelDomain::getSheetName(level.theme), "characterSpawn");
+        world.addComponentManager<components::SpriteComponent>();
         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+
+        // Add a characterspawn component to characterspawn entity
         auto characterSpawnComponent = components::CharacterSpawnComponent();
+        world.addComponentManager<components::CharacterSpawnComponent>();
         world.addComponent<components::CharacterSpawnComponent>(entity, characterSpawnComponent);
     }
     return world;

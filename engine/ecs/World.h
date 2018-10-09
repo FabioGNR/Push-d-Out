@@ -24,6 +24,9 @@ namespace ecs {
         World() = default;
         virtual ~World() = default;
 
+        World(World&& other) = default;
+        World& operator=(World&& other) = default;
+
         Entity& createEntity();
 
         void destroyEntity(Entity& entity);

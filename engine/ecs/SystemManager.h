@@ -18,6 +18,10 @@ namespace ecs {
         SystemManager() = default;
         SystemManager(const SystemManager& other) = delete;
         SystemManager& operator=(const SystemManager& other) = delete;
+
+        SystemManager(SystemManager &&other) = default;
+        SystemManager& operator=(SystemManager &&other) = default;
+
         virtual ~SystemManager() = default;
 
         template <typename System, typename... SystemArgs>

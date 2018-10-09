@@ -10,7 +10,7 @@
 
 namespace game {
 namespace components {
-    struct LevelMetaComponent : public engine::BaseComponent<LevelMetaComponent> {
+struct LevelMetaComponent : public engine::ecs::BaseComponent<LevelMetaComponent> {
         std::string name;
         levelDomain::Theme theme;
         int height, width;

@@ -16,6 +16,6 @@ public:
 
     static level getLevel(json j);
 
-    static engine::World createEntities(level level);
+    static engine::ecs::World createEntities(level level);
 };
 }
