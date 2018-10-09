@@ -41,7 +41,7 @@ engine::ecs::World levelReader::createEntities(level level)
     world.addSystem<systems::BodySystem>(engine::definitions::SystemPriority::Medium);
     world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
-    for (int i = 0; i < level.tiles.size(); i++) {
+    for (size_t i = 0; i < level.tiles.size(); i++) {
         tile curTile = level.tiles[i];
         auto& entity = world.createEntity();
 
@@ -58,7 +58,7 @@ engine::ecs::World levelReader::createEntities(level level)
         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
     }
 
-    for (int i = 0; i < level.CharacterSpawns.size(); i++) {
+    for (size_t i = 0; i < level.CharacterSpawns.size(); i++) {
         spawnPoint curSpawn = level.CharacterSpawns[i];
         auto& entity = world.createEntity();
 
