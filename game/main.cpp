@@ -32,7 +32,7 @@ int main()
     windowProperties.centered = true;
     windowProperties.width = 800;
     windowProperties.height = 480;
-    
+
     auto game = std::make_unique<game::Game>(windowProperties);
     auto menuState = std::make_shared<game::MainMenuState>();
     auto gameState = std::make_shared<game::GameState>();
