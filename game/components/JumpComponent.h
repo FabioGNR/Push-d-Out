@@ -4,7 +4,7 @@
 
 namespace game {
 namespace components {
-    struct JumpComponent : public engine::BaseComponent<JumpComponent> {
+    struct JumpComponent : public engine::ecs::BaseComponent<JumpComponent> {
         double deltaY, velocity;
 
         JumpComponent(double deltaY, double velocity)

@@ -4,7 +4,7 @@
 
 namespace game {
 namespace systems {
-    class SpriteSystem : public engine::BaseSystem<SpriteSystem> {
+    class SpriteSystem : public engine::ecs::BaseSystem<SpriteSystem> {
     public:
         SpriteSystem();
 

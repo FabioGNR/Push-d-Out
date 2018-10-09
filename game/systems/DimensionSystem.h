@@ -4,7 +4,7 @@
 
 namespace game {
 namespace systems {
-    class DimensionSystem : public engine::BaseSystem<DimensionSystem> {
+    class DimensionSystem : public engine::ecs::BaseSystem<DimensionSystem> {
     public:
         DimensionSystem();
 

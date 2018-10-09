@@ -4,7 +4,7 @@
 
 namespace game {
 namespace systems {
-    class PlayerInputSystem : public engine::BaseSystem<PlayerInputSystem> {
+    class PlayerInputSystem : public engine::ecs::BaseSystem<PlayerInputSystem> {
     public:
         PlayerInputSystem();
 

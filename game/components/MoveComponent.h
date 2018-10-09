@@ -4,7 +4,7 @@
 
 namespace game {
 namespace components {
-    struct MoveComponent : public engine::BaseComponent<MoveComponent> {
+    struct MoveComponent : public engine::ecs::BaseComponent<MoveComponent> {
         double deltaX, velocity;
 
         MoveComponent(double deltaX, double velocity)

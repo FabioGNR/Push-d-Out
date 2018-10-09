@@ -7,7 +7,7 @@
 
 namespace game {
 namespace components {
-    struct PlayerInputComponent : public engine::BaseComponent<PlayerInputComponent> {
+    struct PlayerInputComponent : public engine::ecs::BaseComponent<PlayerInputComponent> {
         int controllerId;
         // TODO: Replace char with the key scheme made by Richard
         std::map<definitions::Action, char> controls;

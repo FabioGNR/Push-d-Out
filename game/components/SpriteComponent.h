@@ -4,7 +4,7 @@
 
 namespace game {
 namespace components {
-    struct SpriteComponent : public engine::BaseComponent<SpriteComponent> {
+    struct SpriteComponent : public engine::ecs::BaseComponent<SpriteComponent> {
         double width, height, x, y;
 
         SpriteComponent(double width, double height, double x, double y)

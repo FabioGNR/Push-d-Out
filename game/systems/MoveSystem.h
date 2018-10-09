@@ -4,7 +4,7 @@
 
 namespace game {
 namespace systems {
-    class MoveSystem : public engine::BaseSystem<MoveSystem> {
+class MoveSystem : public engine::ecs::BaseSystem<MoveSystem> {
     public:
         MoveSystem();
 
