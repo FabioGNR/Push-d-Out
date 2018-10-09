@@ -1,5 +1,5 @@
-set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-set (SDL2_BUILDING_LIBRARY ON)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(SDL2_BUILDING_LIBRARY ON)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
@@ -11,44 +11,49 @@ include_directories(${SDL2_TTF_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 include_directories(${BOX2D_INCLUDE_DIR})
 
+set(ENGINE_GAME_SRC
+        game/IGame.h
+        game/State.h
+        )
+
 set(COMMON_SRC
         common/Vector2D.h
         )
 
 set(ECS_SRC
-    ecs/Entity.h
-    ecs/Entity.cpp
-    ecs/EntityManager.h
-    ecs/EntityManager.cpp
-    ecs/Component.h
-    ecs/Component.cpp
-    ecs/ComponentManager.h
-    ecs/ComponentManager.cpp
-    ecs/World.h
-    ecs/World.cpp
-    ecs/System.h
-    ecs/SystemManager.cpp
-    ecs/SystemManager.h
-)
+        ecs/Entity.h
+        ecs/Entity.cpp
+        ecs/EntityManager.h
+        ecs/EntityManager.cpp
+        ecs/Component.h
+        ecs/Component.cpp
+        ecs/ComponentManager.h
+        ecs/ComponentManager.cpp
+        ecs/World.h
+        ecs/World.cpp
+        ecs/System.h
+        ecs/SystemManager.cpp
+        ecs/SystemManager.h
+        )
 
 set(GRAPHICS_SRC
-    graphics/IRenderer.h
-    graphics/IRenderVisitor.h
-    graphics/IGraphicsElement.h
-    graphics/SDL/SDLRenderVisitor.cpp
-    graphics/SDL/SDLRenderVisitor.h
-    graphics/SDL/SDLRenderer.cpp
-    graphics/SDL/SDLRenderer.h
-    graphics/drawable/RectangleShape.cpp
-    graphics/drawable/RectangleShape.h
-    graphics/drawable/LineShape.cpp
-    graphics/drawable/LineShape.h
-    graphics/drawable/Font.cpp
-    graphics/drawable/Font.h
-    graphics/drawable/Sprite.cpp
-    graphics/drawable/Sprite.h 
-    graphics/Color.h
-)
+        graphics/IRenderer.h
+        graphics/IRenderVisitor.h
+        graphics/IGraphicsElement.h
+        graphics/SDL/SDLRenderVisitor.cpp
+        graphics/SDL/SDLRenderVisitor.h
+        graphics/SDL/SDLRenderer.cpp
+        graphics/SDL/SDLRenderer.h
+        graphics/drawable/RectangleShape.cpp
+        graphics/drawable/RectangleShape.h
+        graphics/drawable/LineShape.cpp
+        graphics/drawable/LineShape.h
+        graphics/drawable/Font.cpp
+        graphics/drawable/Font.h
+        graphics/drawable/Sprite.cpp
+        graphics/drawable/Sprite.h
+        graphics/Color.h
+        )
 
 set(PHYSICS_SRC
         physics/PhysicsManager.h
@@ -64,26 +69,33 @@ set(PHYSICS_SRC
         )
 
 set(EVENTS_SRC
-    events/EventManager.h
-    events/SDLEventManager.h
-    events/SDLEventManager.cpp
-)
+        events/EventManager.h
+        events/SDLEventManager.h
+        events/SDLEventManager.cpp
+        )
 
 set(WINDOW_SRC
-    window/SDLWindow.h
-    window/SDLWindow.cpp
-    window/Window.h
-    window/WindowProperties.h
-)
+        window/SDLWindow.h
+        window/SDLWindow.cpp
+        window/Window.h
+        window/WindowProperties.h
+        )
 
 set(DEFINITION_SRC
         definitions/SystemPriority.h
-)
+        )
 
 set(EXCEPTION_SRC
-    exceptions/ComponentManagerNotFoundException.h
 )
 
 # more engine stuff
-add_library(engine ${ECS_SRC} ${GRAPHICS_SRC} ${PHYSICS_SRC} ${WINDOW_SRC} ${EVENTS_SRC} ${EXCEPTION_SRC} ${DEFINITION_SRC})
+add_library(engine
+        ${ENGINE_GAME_SRC}
+        ${ECS_SRC}
+        ${GRAPHICS_SRC}
+        ${PHYSICS_SRC}
+        ${WINDOW_SRC}
+        ${EVENTS_SRC}
+        ${EXCEPTION_SRC}
+        ${DEFINITION_SRC})
 target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

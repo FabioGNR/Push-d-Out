@@ -2,7 +2,6 @@
 
 #include "Component.h"
 #include "Entity.h"
-#include "engine/exceptions/ComponentManagerNotFoundException.h"
 
 #include <cassert>
 #include <memory>
@@ -84,17 +83,17 @@ namespace ecs {
         }
 
         template <typename Component>
-        BaseComponentManager<Component>& getManager() const
+        BaseComponentManager<Component>& getManager()
         {
             static_assert(std::is_base_of<IComponent, Component>::value,
                 "Component must be inherited from BaseComponent");
 
-            //auto& managerUptr = m_managers.at(Component::familyId());
             auto familyId = Component::familyId();
-
             bool found = m_managers.count(familyId) != 0;
+
             if (!found) {
-                throw ComponentManagerNotFoundException();
+                this->addManager<Component>();
+                familyId = Component::familyId();
             }
 
             auto& manager = m_managers.at(familyId);
@@ -124,14 +123,8 @@ namespace ecs {
             static_assert(std::is_base_of<IComponent, Component>::value,
                 "Component must be inherited from BaseComponent");
 
-            try {
-                auto& manager = getManager<Component>();
-                return manager.add(entity, std::forward<ComponentArgs>(args)...);
-            } catch (ComponentManagerNotFoundException& exception) {
-                this->addManager<Component>();
-                return getManager<Component>()
-                    .add(entity, std::forward<ComponentArgs>(args)...);
-            }
+            auto& manager = getManager<Component>();
+            return manager.add(entity, std::forward<ComponentArgs>(args)...);
         }
 
         template <typename Component>

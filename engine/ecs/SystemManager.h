@@ -10,19 +10,17 @@
 namespace engine {
 namespace ecs {
     class SystemManager {
-        std::map<definitions::SystemPriority,
-            std::map<SystemId, std::unique_ptr<ISystem>>>
-            m_systems;
+        std::map<definitions::SystemPriority, std::map<SystemId, std::unique_ptr<ISystem>>> m_systems;
 
     public:
         SystemManager() = default;
+        virtual ~SystemManager() = default;
+
         SystemManager(const SystemManager& other) = delete;
         SystemManager& operator=(const SystemManager& other) = delete;
 
         SystemManager(SystemManager &&other) = default;
         SystemManager& operator=(SystemManager &&other) = default;
-
-        virtual ~SystemManager() = default;
 
         template <typename System, typename... SystemArgs>
         void add(definitions::SystemPriority priority, SystemArgs&&... args)

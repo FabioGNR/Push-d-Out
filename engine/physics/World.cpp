@@ -2,6 +2,8 @@
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Dynamics/b2World.h>
 #include <memory>
+#include <chrono>
+#include <iostream>
 
 #include "Body.h"
 #include "DynamicBody.h"
@@ -67,9 +69,10 @@ namespace physics {
         return m_bodies;
     }
 
-    void World::update()
+    void World::update(std::chrono::nanoseconds deltaTime)
     {
-        m_b2World->Step((float32)m_timeStep, m_velocityIterations, m_positionIterations);
+        // convert to seconds
+        m_b2World->Step(deltaTime.count() / 1.0e9f, m_velocityIterations, m_positionIterations);
 
         for (auto body : m_bodies) {
             body->update();
