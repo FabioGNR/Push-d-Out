@@ -7,6 +7,7 @@
 #include <game/systems/PositionSystem.h>
 #include <game/systems/BodySystem.h>
 #include <game/systems/SpriteSystem.h>
+#include <game/components/DimensionComponent.h>
 
 #include "LevelReader.h"
 #include "engine/ecs/World.h"
@@ -56,6 +57,9 @@ engine::ecs::World levelReader::createEntities(level level)
         // Add a sprite component to tile entity
         auto spriteComponent = components::SpriteComponent(levelDomain::getSheetName(level.theme), curTile.sprite);
         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+
+        auto dimensionComponent = components::DimensionComponent(1, 1);
+        world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
     }
 
     for (size_t i = 0; i < level.CharacterSpawns.size(); i++) {
