@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <common/Vector2D.h>
 #include <graphics/Color.h>
 #include <graphics/IGraphicsElement.h>
 
@@ -12,11 +13,10 @@ class Font : public IGraphicsElement {
     int m_fontSize;
     Color m_color;
 
-    // TODO: Use Vector2d's for coordinates.
-    int m_x, m_y;
+    common::Vector2D m_position;
 
 public:
-    Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, int x, int y);
+    Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D position);
 
     void accept(IRenderVisitor& visitor) const override;
 
@@ -24,14 +24,13 @@ public:
 
     const std::string& fontPath() const;
 
-    int x() const;
-    int y() const;
+    common::Vector2D position() const;
     int fontSize() const;
     const Color& color() const;
 
     void setText(const std::string& text);
     void setFontSize(int fontSize);
-    void setX(int x);
-    void setY(int y);
+    void setPosition(common::Vector2D position);
+    void setColor(const Color& color);
 };
 } // end namespace engine

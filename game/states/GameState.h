@@ -15,9 +15,10 @@ private:
     engine::physics::World* m_world;
 
 public:
-    GameState();
+    GameState(engine::IGame& game);
     ~GameState() override = default;
 
+    void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
     void render(engine::IRenderer &renderer) override;
 };

@@ -4,7 +4,6 @@ set(GAME_SRC
         level/levelReader/LevelReader.cpp
         level/LevelDomain.cpp
         level/LevelDomain.h
-        main.cpp
         Game.cpp
         Game.h
         states/GameState.cpp

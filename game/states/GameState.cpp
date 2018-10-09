@@ -8,7 +8,7 @@
 #include "game/level/levelReader/LevelReader.h"
 
 namespace game {
-GameState::GameState() : State()
+GameState::GameState(engine::IGame& game) : engine::State(game)
 {
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>(UNIT_SIZE * UNIT_MULTIPLIER);
 
@@ -24,11 +24,16 @@ GameState::GameState() : State()
     m_world->createDynamicBody(20, 50, 1, 2);
     m_world->createDynamicBody(9, 30, 2, 2);
 
-    json j = game::levelReader::readJSON("assets\\levels\\base_level.json");
+
+    json j = game::levelReader::readJSON("assets/levels/base-level.json");
     std::cout << "JSON: " << j << std::endl;
     level l = game::levelReader::getLevel(j);
     std::cout << "level: " << l.name << std::endl;
     engine::ecs::World ecsWorld = game::levelReader::createEntities(l);
+}
+
+void GameState::init()
+{
 }
 
 void GameState::update(std::chrono::nanoseconds timeStep)
@@ -36,13 +41,13 @@ void GameState::update(std::chrono::nanoseconds timeStep)
     m_world->update(timeStep);
 }
 
-void GameState::render(engine::IRenderer &renderer)
+void GameState::render(engine::IRenderer& renderer)
 {
     for (const auto body : m_world->getBodies()) {
         common::Vector2D pos = body->getPosition();
         common::Vector2D size = body->getDimensions();
 
-        engine::RectangleShape shape(pos.x, pos.y, size.x, size.y, engine::Color{ 255, 255, 255, 100 });
+        engine::RectangleShape shape(pos, size, engine::Color{ 255, 255, 255, 100 });
         renderer.draw(shape);
     }
 }

@@ -5,8 +5,7 @@
     "height": 24,
     "width": 40
   },
-  "PlatformTiles": [
-    {
+  "PlatformTiles": [{
       "x": 25,
       "y": 13,
       "sprite": "leftCornerSingleDepth",
@@ -115,10 +114,8 @@
       "kind": 0
     }
   ],
-  "CharacterSpawns": [
-    {
-      "x": 14,
-      "y": 13
-    }
-  ]
+  "CharacterSpawns": [{
+    "x": 14,
+    "y": 13
+  }]
 }

@@ -1,7 +1,3 @@
-//
-// Created by Joris on 27-9-2018.
-//
-
 #include "LevelDomain.h"
 #include "external/JSON/json.hpp"
 
@@ -10,20 +6,26 @@ using json = nlohmann::json;
 namespace game {
 namespace levelDomain {
 
-    std::string getSheetName(Theme theme) {
-        switch(theme) {
-            case Theme::Earth: return "earthThemeSpriteSheet.png";
-            case Theme::Moon: return "moonThemeSpriteSheet.png";
-            case Theme::Temple: return "templeThemeSpriteSheet.png";
-            case Theme::City: return "cityThemeSpriteSheet.png";
-            default: throw "Unknown theme";
+    std::string getSheetName(Theme theme)
+    {
+        switch (theme) {
+        case Theme::Earth:
+            return "earthThemeSpriteSheet.png";
+        case Theme::Moon:
+            return "moonThemeSpriteSheet.png";
+        case Theme::Temple:
+            return "templeThemeSpriteSheet.png";
+        case Theme::City:
+            return "cityThemeSpriteSheet.png";
+        default:
+            throw "Unknown theme";
         }
     }
 
     // JSON conversions for tile
     void to_json(json& j, const tile& t)
     {
-        j = json {
+        j = json{
             { "x", t.x },
             { "y", t.y },
             { "sprite", t.sprite },
@@ -42,7 +44,7 @@ namespace levelDomain {
     // JSON conversions for spawnPoint
     void to_json(json& j, const spawnPoint& s)
     {
-        j = json {
+        j = json{
             { "x", s.x },
             { "y", s.y }
         };
@@ -57,7 +59,7 @@ namespace levelDomain {
     // JSON conversions for level
     void to_json(json& j, const level& l)
     {
-        j = json {
+        j = json{
             { "Meta", { { "name", l.name }, { "theme", static_cast<int>(l.theme) }, { "height", l.height }, { "width", l.width } } },
             { "PlatformTiles", l.tiles },
             { "CharacterSpawns", l.CharacterSpawns }
@@ -69,7 +71,7 @@ namespace levelDomain {
         json Meta = j.at("Meta").get<json>();
         l.name = Meta.at("name").get<std::string>();
         int themeInt = Meta.at("theme").get<int>();
-        if(themeInt > 3) {
+        if (themeInt > 3) {
             themeInt = 0;
         }
         l.theme = static_cast<Theme>(themeInt);

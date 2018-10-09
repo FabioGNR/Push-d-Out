@@ -2,32 +2,25 @@
 
 #include <graphics/Color.h>
 #include <graphics/IGraphicsElement.h>
+#include "common/Vector2D.h"
 
 namespace engine {
 class RectangleShape : public IGraphicsElement {
-    // TODO: Use Vector2d's for size.
-    int m_width;
-    int m_height;
-    // TODO: Use Vector2d's for coordinates.
-    int m_x;
-    int m_y;
+    common::Vector2D m_position;
+    common::Vector2D m_size;
 
     Color m_color;
 
 public:
-    RectangleShape(int x, int y, int width, int height, const Color& color);
+    RectangleShape(common::Vector2D position, common::Vector2D size, const Color& color);
 
     void accept(IRenderVisitor& visitor) const override;
 
-    int width() const;
-    int height() const;
-    int x() const;
-    int y() const;
+    common::Vector2D size() const;
+    common::Vector2D position() const;
     const Color& color() const;
 
-    void setWidth(int width);
-    void setHeight(int height);
-    void setX(int x);
-    void setY(int y);
+    void setSize(common::Vector2D size);
+    void setPosition(common::Vector2D pos);
 };
 } // end namespace engine

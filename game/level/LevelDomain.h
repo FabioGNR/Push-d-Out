@@ -1,7 +1,3 @@
-//
-// Created by Joris on 27-9-2018.
-//
-
 #pragma once
 
 #include "external/JSON/json.hpp"

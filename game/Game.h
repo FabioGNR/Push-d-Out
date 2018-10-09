@@ -15,15 +15,10 @@ private:
     std::unique_ptr<engine::EventManager> m_eventManager;
     std::unique_ptr<engine::SDLRenderer> m_renderer;
 
-    std::stack<std::shared_ptr<engine::State>> m_states;
-
 public:
     explicit Game(engine::WindowProperties& properties);
 
-    void next(std::shared_ptr<engine::State> state);
-    void previous();
-
-    void onInit() override;
+    void init() override;
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
 };

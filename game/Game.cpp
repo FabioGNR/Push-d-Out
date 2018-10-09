@@ -17,7 +17,7 @@ Game::Game(engine::WindowProperties& properties)
     m_renderer = std::make_unique<engine::SDLRenderer>(*(engine::SDLWindow*)m_window.get());
 }
 
-void Game::onInit()
+void Game::init()
 {
 }
 
@@ -34,17 +34,5 @@ void Game::onRender()
     m_renderer->clear();
     m_states.top()->render(*m_renderer);
     m_renderer->show();
-}
-
-void Game::previous()
-{
-    m_states.pop();
-    if (m_states.empty()) {
-        stop();
-    }
-}
-
-void Game::next(std::shared_ptr<engine::State> state) {
-    m_states.push(state);
 }
 }

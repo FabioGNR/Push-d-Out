@@ -3,12 +3,10 @@
 #include <graphics/IRenderVisitor.h>
 
 namespace engine {
-Sprite::Sprite(const std::string& spritePath, int x, int y, int width, int height, double scale)
+Sprite::Sprite(const std::string& spritePath, common::Vector2D position, common::Vector2D size, double scale)
     : m_spritePath(spritePath)
-    , m_x(x)
-    , m_y(y)
-    , m_width(width)
-    , m_height(height)
+    , m_position(position)
+    , m_size(size)
     , m_scale(scale)
 {
 }
@@ -23,24 +21,14 @@ const std::string& Sprite::spritePath() const
     return m_spritePath;
 }
 
-int Sprite::x() const
+common::Vector2D Sprite::position() const
 {
-    return m_x;
+    return m_position;
 }
 
-int Sprite::y() const
+common::Vector2D Sprite::size() const
 {
-    return m_y;
-}
-
-int Sprite::width() const
-{
-    return m_width;
-}
-
-int Sprite::height() const
-{
-    return m_height;
+    return m_size;
 }
 
 double Sprite::scale() const

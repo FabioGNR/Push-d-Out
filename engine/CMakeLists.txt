@@ -13,6 +13,7 @@ include_directories(${BOX2D_INCLUDE_DIR})
 
 set(ENGINE_GAME_SRC
         game/IGame.h
+        game/IGame.cpp
         game/State.h
         )
 
@@ -86,16 +87,48 @@ set(DEFINITION_SRC
         )
 
 set(EXCEPTION_SRC
-)
+        )
+
+
+set(UI_SRC
+        ui/Frame.cpp
+        ui/Frame.h
+        ui/UISystem.cpp
+        ui/UISystem.h
+        ui/components/Component.h
+        ui/DrawContext.h
+        ui/components/Button.cpp
+        ui/components/Button.h
+        ui/components/IAction.h
+        ui/components/OpenFrameAction.cpp
+        ui/components/OpenFrameAction.h
+        ui/components/Label.cpp
+        ui/components/Label.h
+        ui/components/FlowDirection.h
+        ui/components/LayoutAnchor.h
+        ui/components/WrappedComponent.h
+        ui/components/ComponentSize.h
+        ui/components/ComponentSizeType.h
+        ui/components/StackPanel.cpp
+        ui/components/StackPanel.h
+        ui/components/LayoutPanel.cpp
+        ui/components/LayoutPanel.h
+        ui/components/ComponentSize.cpp
+        ui/UIRenderer.h
+        ui/components/TextComponent.h
+        ui/components/TextComponent.cpp ui/components/ComponentPanel.h
+        )
 
 # more engine stuff
 add_library(engine
         ${ENGINE_GAME_SRC}
         ${ECS_SRC}
         ${GRAPHICS_SRC}
+        ${COMMON_SRC}
         ${PHYSICS_SRC}
         ${WINDOW_SRC}
         ${EVENTS_SRC}
         ${EXCEPTION_SRC}
+        ${UI_SRC}
         ${DEFINITION_SRC})
 target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

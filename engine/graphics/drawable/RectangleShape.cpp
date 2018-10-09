@@ -7,53 +7,31 @@ void RectangleShape::accept(IRenderVisitor& visitor) const
     visitor.visit(*this);
 }
 
-int RectangleShape::width() const
+common::Vector2D RectangleShape::size() const
 {
-    return m_width;
+    return m_size;
 }
 
-int RectangleShape::height() const
+common::Vector2D RectangleShape::position() const
 {
-    return m_height;
+    return m_position;
 }
 
-int RectangleShape::x() const
-{
-    return m_x;
-}
-
-int RectangleShape::y() const
-{
-    return m_y;
-}
-
-RectangleShape::RectangleShape(int x, int y, int width, int height, const Color& color)
-    : m_width(width)
-    , m_height(height)
-    , m_x(x)
-    , m_y(y)
+RectangleShape::RectangleShape(common::Vector2D position, common::Vector2D size, const Color& color)
+    : m_position(position)
+    , m_size(size)
     , m_color(color)
 {
 }
 
-void RectangleShape::setWidth(int width)
+void RectangleShape::setSize(common::Vector2D size)
 {
-    m_width = width;
+    m_size = size;
 }
 
-void RectangleShape::setHeight(int height)
+void RectangleShape::setPosition(common::Vector2D position)
 {
-    m_height = height;
-}
-
-void RectangleShape::setX(int x)
-{
-    m_x = x;
-}
-
-void RectangleShape::setY(int y)
-{
-    m_y = y;
+    m_position = position;
 }
 
 const Color& RectangleShape::color() const
