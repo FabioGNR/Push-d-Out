@@ -1,14 +1,17 @@
 #include <exception>
 #include <fstream>
-#include <iostream>
-#include <game/components/SpriteComponent.h>
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/LevelMetaComponent.h>
+#include <game/components/SpriteComponent.h>
+#include <iostream>
+#include <game/systems/PositionSystem.h>
+#include <game/systems/BodySystem.h>
+#include <game/systems/SpriteSystem.h>
 
 #include "LevelReader.h"
 #include "engine/ecs/World.h"
-#include "game/components/PositionComponent.h"
 #include "game/components/BodyComponent.h"
+#include "game/components/PositionComponent.h"
 #include "game/level/LevelDomain.h"
 
 namespace game {
@@ -38,6 +41,10 @@ engine::ecs::World levelReader::createEntities(level level)
         tile curTile = level.tiles[i];
         auto& entity = world.createEntity();
 
+        world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium);
+        world.addSystem<systems::BodySystem>(engine::definitions::SystemPriority::Medium);
+        world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
+
         // Add a position component to tile entity
         auto posComponent = components::PositionComponent(curTile.x, curTile.y);
         world.addComponent<components::PositionComponent>(entity, posComponent);
@@ -54,6 +61,9 @@ engine::ecs::World levelReader::createEntities(level level)
     for (int i = 0; i < level.CharacterSpawns.size(); i++) {
         spawnPoint curSpawn = level.CharacterSpawns[i];
         auto& entity = world.createEntity();
+
+        world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium);
+        world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
         // Add a position component to characterspawn entity
         auto posComponent = components::PositionComponent(curSpawn.x, curSpawn.y);
