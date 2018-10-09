@@ -3,6 +3,7 @@
 #include <common/Vector2D.h>
 #include <vector>
 #include <memory>
+#include <chrono>
 
 class b2World;
 
@@ -14,7 +15,6 @@ namespace physics {
         friend class DynamicBody;
         friend class StaticBody;
 
-        constexpr static double m_timeStep = 1.0 / 60.0;
         constexpr static int m_velocityIterations = 6;
         constexpr static int m_positionIterations = 2;
 
@@ -29,7 +29,7 @@ namespace physics {
         explicit World(common::Vector2D size, double gravity, double friction, int unitSize);
         ~World();
 
-        void update();
+        void update(std::chrono::nanoseconds deltaTime);
         const common::Vector2D getGravity() const;
         const common::Vector2D getFriction() const;
         const common::Vector2D getSize() const;
