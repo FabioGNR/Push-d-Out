@@ -4,7 +4,7 @@
 
 namespace game {
 namespace systems {
-    class BodySystem : public engine::BaseSystem<BodySystem> {
+    class BodySystem : public engine::ecs::BaseSystem<BodySystem> {
     public:
         BodySystem();
 

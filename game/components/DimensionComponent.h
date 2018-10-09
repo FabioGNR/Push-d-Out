@@ -4,7 +4,7 @@
 
 namespace game {
 namespace components {
-    struct DimensionComponent : public engine::BaseComponent<DimensionComponent> {
+    struct DimensionComponent : public engine::ecs::BaseComponent<DimensionComponent> {
         double width, height;
 
         DimensionComponent(double width, double height)

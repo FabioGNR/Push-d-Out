@@ -5,7 +5,7 @@
 
 namespace game {
 namespace components {
-    struct BodyComponent : public engine::BaseComponent<BodyComponent> {
+    struct BodyComponent : public engine::ecs::BaseComponent<BodyComponent> {
         definitions::Body body;
 
         BodyComponent(definitions::Body body)

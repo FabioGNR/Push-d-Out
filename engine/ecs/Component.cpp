@@ -1,6 +1,8 @@
 #include "Component.h"
 
 namespace engine {
-IComponent::IComponent() = default;
-IComponent::~IComponent() = default;
+namespace ecs {
+    IComponent::IComponent() = default;
+    IComponent::~IComponent() = default;
+}
 }

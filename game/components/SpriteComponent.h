@@ -5,7 +5,7 @@
 
 namespace game {
 namespace components {
-    struct SpriteComponent : public engine::BaseComponent<SpriteComponent> {
+struct SpriteComponent : public engine::ecs::BaseComponent<SpriteComponent> {
         std::string sheetPath, spriteName;
 
         SpriteComponent(std::string sheetPath, std::string spriteName)

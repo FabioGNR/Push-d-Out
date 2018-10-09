@@ -4,7 +4,7 @@
 
 namespace game {
 namespace systems {
-    class JumpSystem : public engine::BaseSystem<JumpSystem> {
+    class JumpSystem : public engine::ecs::BaseSystem<JumpSystem> {
     public:
         JumpSystem();
 
