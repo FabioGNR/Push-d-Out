@@ -37,13 +37,13 @@ engine::ecs::World levelReader::createEntities(level level)
     auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
     world.addComponent<components::LevelMetaComponent>(entity, levelMetaComponent);
 
+    world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium);
+    world.addSystem<systems::BodySystem>(engine::definitions::SystemPriority::Medium);
+    world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
+
     for (int i = 0; i < level.tiles.size(); i++) {
         tile curTile = level.tiles[i];
         auto& entity = world.createEntity();
-
-        world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium);
-        world.addSystem<systems::BodySystem>(engine::definitions::SystemPriority::Medium);
-        world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
         // Add a position component to tile entity
         auto posComponent = components::PositionComponent(curTile.x, curTile.y);
@@ -61,9 +61,6 @@ engine::ecs::World levelReader::createEntities(level level)
     for (int i = 0; i < level.CharacterSpawns.size(); i++) {
         spawnPoint curSpawn = level.CharacterSpawns[i];
         auto& entity = world.createEntity();
-
-        world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium);
-        world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
         // Add a position component to characterspawn entity
         auto posComponent = components::PositionComponent(curSpawn.x, curSpawn.y);
