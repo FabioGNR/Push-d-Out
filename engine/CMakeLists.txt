@@ -86,8 +86,7 @@ set(DEFINITION_SRC
         )
 
 set(EXCEPTION_SRC
-        exceptions/ComponentManagerNotFoundException.h
-        )
+)
 
 # more engine stuff
 add_library(engine
