@@ -5,6 +5,8 @@
 #include <graphics/drawable/RectangleShape.h>
 #include <iostream>
 
+#include "game/level/levelReader/LevelReader.h"
+
 namespace game {
 GameState::GameState() : State()
 {
@@ -21,6 +23,12 @@ GameState::GameState() : State()
     m_world->createDynamicBody(5, 10, 1, 2);
     m_world->createDynamicBody(20, 50, 1, 2);
     m_world->createDynamicBody(9, 30, 2, 2);
+
+    json j = game::levelReader::readJSON("assets\\levels\\base_level.json");
+    std::cout << "JSON: " << j << std::endl;
+    level l = game::levelReader::getLevel(j);
+    std::cout << "level: " << l.name << std::endl;
+    engine::ecs::World ecsWorld = game::levelReader::createEntities(l);
 }
 
 void GameState::update(std::chrono::nanoseconds timeStep)

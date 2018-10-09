@@ -1,17 +1,17 @@
 #pragma once
 
 #include <engine/ecs/Component.h>
+#include <string>
 
 namespace game {
 namespace components {
-    struct SpriteComponent : public engine::ecs::BaseComponent<SpriteComponent> {
-        double width, height, x, y;
+struct SpriteComponent : public engine::ecs::BaseComponent<SpriteComponent> {
+        std::string sheetPath, spriteName;
 
-        SpriteComponent(double width, double height, double x, double y)
-            : width(width)
-            , height(height)
-            , x(x)
-            , y(y) {};
+        SpriteComponent(std::string sheetPath, std::string spriteName)
+            : sheetPath(sheetPath),
+              spriteName(spriteName)
+              {};
     };
 }
 }

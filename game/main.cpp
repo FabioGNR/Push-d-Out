@@ -1,3 +1,8 @@
+
+#include "engine/events/SDLEventManager.h"
+#include "engine/window/SDLWindow.h"
+#include "game/level/levelReader/LevelReader.h"
+#include "physics/PhysicsManager.h"
 #include <events/EventManager.h>
 #include <events/SDLEventManager.h>
 #include <game/themes/Earth.h>
