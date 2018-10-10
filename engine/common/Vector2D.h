@@ -114,6 +114,13 @@ struct Vector2D {
         return left;
     }
 
+    friend bool operator==(const Vector2D left, const Vector2D& right) {
+        return left.x == right.x && left.y == right.y;
+    }
+    friend bool operator!=(const Vector2D left, const Vector2D right) {
+        return left.x != right.x || left.y != right.y;
+    }
+
     // mathematical properties
     Vector2D max(Vector2D other)
     {
