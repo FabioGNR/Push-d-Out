@@ -2,9 +2,14 @@
 
 void InputManager::storeInput(IControlEvent* event)
 {
-    char value = 'A';
+    //char value = 'A';
 
-    keyMap->insert(std::pair<char, IControlEvent*>(value, event));
+    keyMap->insert(std::pair<char, IControlEvent*>(event->getValue(), event));
+}
+
+void InputManager::startInput()
+{
+    keyMap->clear();
 }
 
 void InputManager::subscribe(IObserver* observer)
@@ -14,7 +19,10 @@ void InputManager::subscribe(IObserver* observer)
 
 void InputManager::notify()
 {
+    if (keyMap->empty()) {
+        return;
+    }
     for (int i = 0; i < observers.size(); i++) {
-        observers[i]->update();
+        observers[i]->update(*keyMap);
     }
 }

@@ -11,6 +11,6 @@ IEvent* SDLKeyMap::getKeyValue(SDL_Event event, bool pressed)
     case SDLK_b:
         return new KeyEvent('B', pressed);
     default:
-        return new KeyEvent(event.key.keysym.sym, pressed);
+        return new KeyEvent('m', pressed);
     }
 }

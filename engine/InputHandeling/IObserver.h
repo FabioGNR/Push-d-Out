@@ -1,9 +1,11 @@
 #pragma once
 
-#include "InputManager.h"
+#include "EventHandling/Events/IControlEvent.h"
+#include <map>
+#include <memory>
 
 class IObserver {
 
 public:
-    virtual void update() = 0;
+    virtual void update(std::map<char, IControlEvent*>& keyMap) = 0;
 };

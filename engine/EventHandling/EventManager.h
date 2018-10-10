@@ -10,6 +10,8 @@
 
 class EventManager {
 private:
+    InputManager im;
 public:
     bool getEvents();
+    InputManager* getInput();
 };

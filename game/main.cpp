@@ -1,9 +1,11 @@
 #include "engine/EventHandling/EventManager.h"
 #include "engine/window/SDLWindow.h"
 #include "physics/PhysicsManager.h"
+#include "InputObserver.h"
 #include <iostream>
 #include <memory>
-
+#include <thread>
+#include <chrono>
 int main(int, char**)
 {
     engine::WindowProperties windowProperties {};
@@ -18,9 +20,14 @@ int main(int, char**)
 
     bool runGame = true;
     EventManager em;
+    InputManager* im = em.getInput();
+    InputObserver* io = new InputObserver();
+    im->subscribe(io);
 
     while (runGame) {
         runGame = em.getEvents();
+        ///std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        im->notify();
         //runGame = evtManager->processEvents();
     }
     return 0;

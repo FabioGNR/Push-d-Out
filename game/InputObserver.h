@@ -5,5 +5,5 @@
 class InputObserver : public IObserver {
 private:
 public:
-    InputObserver();
+    void update(std::map<char, IControlEvent *> &keyMap) override;
 };

@@ -9,4 +9,5 @@ private:
 public:
     KeyEvent(char value, bool pressed);
     void printType() override;
+    char getValue() override;
 };

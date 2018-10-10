@@ -6,10 +6,10 @@
 
 bool EventManager::getEvents()
 {
-    InputManager im;
     SDLEventAdapter ea;
     std::vector<IEvent*> test = ea.getEvents();
 
+    im.startInput();
     for (IEvent* event : test) {
         //event->printType();
         if (dynamic_cast<IControlEvent*>(event)) {
@@ -21,4 +21,8 @@ bool EventManager::getEvents()
         }
     }
     return true;
+}
+
+InputManager* EventManager::getInput() {
+    return &im;
 }
