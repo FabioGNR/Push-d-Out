@@ -130,7 +130,9 @@ struct Vector2D {
     }
 
     double magnitude() const {
-        return sqrt(pow(this->x, 2)+pow(this->y, 2));
+        return sqrt(
+                pow(this->x, 2) +
+                pow(this->y, 2));
     }
 
     // Vector mathematics
