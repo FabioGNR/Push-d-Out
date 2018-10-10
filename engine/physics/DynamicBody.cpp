@@ -4,9 +4,8 @@
 
 namespace engine {
 namespace physics {
-    DynamicBody::DynamicBody(double x, double y, double width, double height, int unitSize,
-        World& world)
-        : Body(x, y, width, height, unitSize, world)
+    DynamicBody::DynamicBody(double x, double y, double width, double height, World& world)
+        : Body(x, y, width, height, world)
     {
         b2BodyDef bodyDef;
         // You must set the body type to b2_dynamicBody if you want the body to move in response to forces

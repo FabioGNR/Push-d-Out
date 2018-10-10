@@ -74,7 +74,7 @@ void MainMenuState::init()
 void MainMenuState::update(std::chrono::nanoseconds timeStep)
 {
     auto now = std::chrono::steady_clock::now();
-    if (now - m_started >= std::chrono::seconds(5s)) {
+    if (now - m_started >= std::chrono::seconds(10s)) {
         m_context.next(std::make_shared<GameState>(m_context));
     }
 }
@@ -82,6 +82,6 @@ void MainMenuState::update(std::chrono::nanoseconds timeStep)
 void MainMenuState::render(engine::IRenderer& renderer)
 {
     auto uiRenderer = engine::ui::UIRenderer{ renderer };
-    m_system->draw(uiRenderer, common::Vector2D(800, 480));
+    m_system->draw(uiRenderer, common::Vector2D(1280, 768));
 }
 }

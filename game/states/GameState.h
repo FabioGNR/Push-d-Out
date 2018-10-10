@@ -1,6 +1,8 @@
 #pragma once
 
+#include "engine/ecs/World.h"
 #include <game/State.h>
+#include <game/systems/RenderSystem.h>
 #include <memory>
 #include <physics/PhysicsManager.h>
 #include <physics/World.h>
@@ -13,6 +15,7 @@ private:
 
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     engine::physics::World* m_world;
+    engine::ecs::World m_ecsWorld;
 
 public:
     GameState(engine::IGame& game);
@@ -20,6 +23,6 @@ public:
 
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
-    void render(engine::IRenderer &renderer) override;
+    void render(engine::IRenderer& renderer) override;
 };
 }

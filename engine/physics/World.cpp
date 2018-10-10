@@ -13,7 +13,7 @@
 namespace engine {
 namespace physics {
 
-    World::World(common::Vector2D size, double gravity, double friction, int unitSize) : m_size{size}, m_unitSize{unitSize}
+    World::World(common::Vector2D size, double gravity, double friction) : m_size{size}
     {
         b2Vec2 grav{ 0, (float32)gravity };
 
@@ -45,10 +45,11 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    void World::createStaticBody(int x, int y, int width, int height)
+    const Body* World::createStaticBody(int x, int y, int width, int height)
     {
-        auto body = new StaticBody(x, y, width, height, m_unitSize, *this);
+        auto body = new StaticBody(x, y, width, height, *this);
         m_bodies.push_back(body); // save body
+        return body;
     }
 
     /**
@@ -58,10 +59,11 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    void World::createDynamicBody(int x, int y, int width, int height)
+    const Body* World::createDynamicBody(int x, int y, int width, int height)
     {
-        auto body = new DynamicBody(x, y, width, height, m_unitSize, *this);
+        auto body = new DynamicBody(x, y, width, height, *this);
         m_bodies.push_back(body); // save body
+        return body;
     }
 
     const std::vector<Body*> World::getBodies() const

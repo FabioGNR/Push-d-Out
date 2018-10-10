@@ -8,7 +8,8 @@ class MoveSystem : public engine::ecs::BaseSystem<MoveSystem> {
     public:
         MoveSystem();
 
-        void update(double frameTime) override;
+        void update(std::chrono::nanoseconds timeStep) override;
+        void render(engine::IRenderer& renderer) override;
     };
 }
 }

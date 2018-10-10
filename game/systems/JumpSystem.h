@@ -8,7 +8,8 @@ namespace systems {
     public:
         JumpSystem();
 
-        void update(double frameTime) override;
+        void update(std::chrono::nanoseconds timeStep) override;
+        void render(engine::IRenderer& renderer) override;
     };
 }
 }

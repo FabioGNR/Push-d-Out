@@ -112,6 +112,72 @@
       "y": 16,
       "sprite": "rightCornerSingleDepth",
       "kind": 0
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "sprite": "leftCornerSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "sprite": "middleSingleDepth",
+      "kind": 0
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "sprite": "rightCornerSingleDepth",
+      "kind": 0
     }
   ],
   "CharacterSpawns": [{

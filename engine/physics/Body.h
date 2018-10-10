@@ -15,8 +15,9 @@ namespace physics {
         int m_unitSize;
 
         World& m_world;
+
     public:
-        Body(double x, double y, double width, double height, int unitSize, World& world);
+        Body(double x, double y, double width, double height, World& world);
         virtual ~Body() = default;
 
         virtual void update() = 0;
@@ -27,7 +28,7 @@ namespace physics {
 
         virtual double getAngle() const;
 
-        virtual void applyForce(const common::Vector2D &force, const common::Vector2D &point) = 0;
+        virtual void applyForce(const common::Vector2D& force, const common::Vector2D& point) = 0;
     };
 }
 }

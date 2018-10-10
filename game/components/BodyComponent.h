@@ -2,14 +2,15 @@
 
 #include "game/definitions/Body.h"
 #include <engine/ecs/Component.h>
+#include <engine/physics/Body.h>
 
 namespace game {
 namespace components {
     struct BodyComponent : public engine::ecs::BaseComponent<BodyComponent> {
-        definitions::Body body;
+        const engine::physics::Body* body;
 
-        BodyComponent(definitions::Body body)
-            : body(body) {};
+        BodyComponent(const engine::physics::Body* body)
+            : body(body){};
     };
 }
 }

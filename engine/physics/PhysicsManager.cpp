@@ -5,10 +5,9 @@
 
 namespace engine {
 namespace physics {
-    PhysicsManager::PhysicsManager(int unitSize)
+    PhysicsManager::PhysicsManager()
+        : m_world{ nullptr }
     {
-        m_worlds = std::vector<World*>();
-        m_unitSize = unitSize;
     }
 
     /**
@@ -19,24 +18,16 @@ namespace physics {
      */
     World* PhysicsManager::createWorld(common::Vector2D size, double gravity, double friction)
     {
-        size.x *= m_unitSize;
-        size.y *= m_unitSize;
+        auto world = new World(size, gravity, friction);
 
-        auto world = new World(size, gravity, friction, m_unitSize);
-        m_worlds.push_back(world);
+        delete m_world; // delete last world
+        m_world = world;
         return world;
     }
 
     PhysicsManager::~PhysicsManager()
     {
-        for (World* world : m_worlds) {
-            delete world;
-        }
-    }
-
-    int PhysicsManager::getUnitSize() const
-    {
-        return m_unitSize;
+        delete m_world;
     }
 }
 }

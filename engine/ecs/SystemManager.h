@@ -3,6 +3,7 @@
 #include "System.h"
 #include "definitions/SystemPriority.h"
 
+#include <chrono>
 #include <map>
 #include <memory>
 #include <unordered_map>
@@ -19,8 +20,8 @@ namespace ecs {
         SystemManager(const SystemManager& other) = delete;
         SystemManager& operator=(const SystemManager& other) = delete;
 
-        SystemManager(SystemManager &&other) = default;
-        SystemManager& operator=(SystemManager &&other) = default;
+        SystemManager(SystemManager&& other) = default;
+        SystemManager& operator=(SystemManager&& other) = default;
 
         template <typename System, typename... SystemArgs>
         void add(definitions::SystemPriority priority, SystemArgs&&... args)
@@ -32,7 +33,8 @@ namespace ecs {
                 std::make_unique<System>(std::forward<SystemArgs>(args)...) });
         }
 
-        void update(double frameTime);
+        void update(std::chrono::nanoseconds timeStep);
+        void render(engine::IRenderer& timeStep);
     };
 }
 }

@@ -9,6 +9,7 @@
 #include "definitions/SystemPriority.h"
 
 #include <algorithm>
+#include <chrono>
 #include <functional>
 #include <vector>
 
@@ -28,11 +29,13 @@ namespace ecs {
         World& operator=(World&& other) = default;
 
         Entity& createEntity();
+        void update(std::chrono::nanoseconds timeStep);
+        void render(engine::IRenderer& renderer);
 
         void destroyEntity(Entity& entity);
 
         template <typename Component>
-        Component& getComponent(const Entity& entity) const
+        Component& getComponent(const Entity& entity)
         {
             return m_componentManager.getManager<Component>().get(entity);
         }
@@ -60,7 +63,7 @@ namespace ecs {
         void forEachEntityWith(std::function<void(Entity&)>&& func)
         {
             const std::vector<std::reference_wrapper<ComponentMap>> componentMaps = {
-                m_componentManager.getManager<Components>()->getAll()...
+                m_componentManager.getManager<Components>().getAll()...
             };
 
             const auto& smallestMapRef = *std::min_element(componentMaps.cbegin(), componentMaps.cend(),
