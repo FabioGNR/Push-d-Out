@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
+#include <ostream>
 
 namespace common {
 struct Vector2D {
@@ -161,5 +162,11 @@ struct Vector2D {
         double cosAngle = dot/(this->magnitude() * other.magnitude());
         return acos(cosAngle);
     }
+
 };
+    inline std::ostream& operator<<(std::ostream& Str, const Vector2D& v) {
+        // print something from v to str, e.g: Str << v.getX();
+        Str << "{" << v.x << ", " << v.y << "}";
+        return Str;
+    }
 }
