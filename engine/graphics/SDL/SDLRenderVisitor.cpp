@@ -42,10 +42,10 @@ void SDLRenderVisitor::visit(const RectangleShape& shape)
         (uint8_t)(shape.color().a));
 
     SDL_Rect positionRect{
-        shape.position().x_int(),
-        shape.position().y_int(),
-        shape.size().x_int(),
-        shape.size().y_int()
+        shape.position().x,
+        shape.position().y,
+        shape.size().x,
+        shape.size().y
     };
 
     SDL_RenderFillRect(renderer, &positionRect);
@@ -58,8 +58,8 @@ void SDLRenderVisitor::visit(const LineShape& shape)
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
     SDL_RenderDrawLine(renderer,
-        shape.position1().x_int(), shape.position1().y_int(),
-        shape.position2().x_int(), shape.position2().y_int());
+        shape.position1().x, shape.position1().y,
+        shape.position2().x, shape.position2().y);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 }
 
@@ -98,8 +98,8 @@ void SDLRenderVisitor::visit(const Font& font)
     }
 
     SDL_Rect positionRect{
-        font.position().x_int(),
-        font.position().y_int(),
+        font.position().x,
+        font.position().y,
         surfaceMessage->w,
         surfaceMessage->h
     };
@@ -129,8 +129,8 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
 
     // TODO: Do something with sprite width/height
     SDL_Rect positionRect = {
-        sprite.position().x_int(),
-        sprite.position().y_int(),
+        sprite.position().x,
+        sprite.position().y,
         (int)(surfaceImage->w * sprite.scale()),
         (int)(surfaceImage->h * sprite.scale())
     };

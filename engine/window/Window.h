@@ -13,7 +13,7 @@ public:
     }
     virtual ~Window() = default;
 
-    virtual const common::Vector2D getDimensions() const = 0;
+    virtual const common::Vector2D<int> getDimensions() const = 0;
 
 protected:
     WindowProperties m_properties;

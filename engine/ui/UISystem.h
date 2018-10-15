@@ -8,7 +8,7 @@ namespace ui {
 
     class UISystem {
     public:
-        void draw(UIRenderer& renderer, common::Vector2D screenSize);
+        void draw(UIRenderer& renderer, common::Vector2D<int> screenSize);
         void push(Frame frame);
         void processInputEvent();
 

@@ -14,7 +14,7 @@ namespace physics {
          * @param unitSize  size of 1 unit
          * @param world     Box2D's world object
          */
-    Body::Body(common::Vector2D position, common::Vector2D dimension, World& world)
+    Body::Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
         : m_position{ position }
         , m_dimensions{ dimension }
         , m_world{ world }
@@ -26,19 +26,19 @@ namespace physics {
         return m_angle;
     }
 
-    const common::Vector2D Body::getPosition() const
+    const common::Vector2D<double> Body::getPosition() const
     {
-        return common::Vector2D(m_position.x, -(m_position.y) + m_world.getSize().y - 1);
+        return common::Vector2D<double>(m_position.x, -(m_position.y) + m_world.getSize().y - 1);
     }
 
-    const common::Vector2D Body::getDimensions() const
+    const common::Vector2D<double> Body::getDimensions() const
     {
-        return common::Vector2D(m_dimensions.x, m_dimensions.y);
+        return m_dimensions;
     }
 
-    const common::Vector2D Body::getCenterPoint() const
+    const common::Vector2D<double> Body::getCenterPoint() const
     {
-        return common::Vector2D((m_dimensions.x) / 2.0, (m_dimensions.y) / 2.0);
+        return common::Vector2D<double>((m_dimensions.x) / 2.0, (m_dimensions.y) / 2.0);
     }
 }
 }

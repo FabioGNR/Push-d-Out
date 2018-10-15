@@ -4,7 +4,7 @@
 
 namespace engine {
 namespace physics {
-    DynamicBody::DynamicBody(common::Vector2D position, common::Vector2D dimension, World& world)
+    DynamicBody::DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
         : Body(position, dimension, world)
     {
         b2BodyDef bodyDef;
@@ -45,7 +45,7 @@ namespace physics {
         m_angle = m_body->GetAngle();
     }
 
-    void DynamicBody::applyForce(const common::Vector2D& force, const common::Vector2D& point)
+    void DynamicBody::applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point)
     {
         b2Vec2 b2Force((float32)force.x, (float32)force.y);
         b2Vec2 b2Point((float32)point.x, (float32)point.y);

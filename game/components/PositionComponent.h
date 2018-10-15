@@ -6,9 +6,9 @@
 namespace game {
 namespace components {
     struct PositionComponent : public engine::ecs::BaseComponent<PositionComponent> {
-        common::Vector2D position;
+        common::Vector2D<double> position;
 
-        PositionComponent(common::Vector2D vector)
+        PositionComponent(common::Vector2D<double> vector)
             : position(vector) {};
     };
 }

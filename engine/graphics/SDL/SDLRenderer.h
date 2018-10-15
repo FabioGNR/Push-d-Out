@@ -11,7 +11,7 @@ class SDLRenderer : public IRenderer {
     friend class SDLRenderVisitor;
 
     std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)> m_renderer;
-    common::Vector2D m_dimensions;
+    common::Vector2D<int> m_dimensions;
 
 public:
     explicit SDLRenderer(const SDLWindow& window);

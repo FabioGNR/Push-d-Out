@@ -16,7 +16,7 @@ namespace physics {
      * @param friction
      * @return pointer to World object
      */
-    World* PhysicsManager::createWorld(common::Vector2D size, double gravity, double friction)
+    World* PhysicsManager::createWorld(common::Vector2D<int> size, double gravity, double friction)
     {
         auto world = new World(size, gravity, friction);
 

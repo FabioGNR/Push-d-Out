@@ -6,7 +6,7 @@ namespace engine {
 namespace ui {
     class ComponentSize {
     public:
-        ComponentSize(ComponentSizeType typeX, ComponentSizeType typeY, common::Vector2D relativeSize)
+        ComponentSize(ComponentSizeType typeX, ComponentSizeType typeY, common::Vector2D<double> relativeSize)
             : m_typeX{ typeX }
             , m_typeY{ typeY }
             , m_relativeRatio{ relativeSize }
@@ -15,23 +15,23 @@ namespace ui {
         {
         }
         ComponentSize(ComponentSizeType typeX, ComponentSizeType typeY)
-            : ComponentSize(typeX, typeY, common::Vector2D(1, 1))
+            : ComponentSize(typeX, typeY, common::Vector2D<double>(1, 1))
         {
         }
-        void setMargin(const common::Vector2D margin) { m_margin = margin; }
-        common::Vector2D getMargin() const { return m_margin; }
-        common::Vector2D getPadding() const { return m_padding; }
-        common::Vector2D getRelativeRatio() const { return m_relativeRatio; }
+        void setMargin(const common::Vector2D<int> margin) { m_margin = margin; }
+        common::Vector2D<int> getMargin() const { return m_margin; }
+        common::Vector2D<int> getPadding() const { return m_padding; }
+        common::Vector2D<double> getRelativeRatio() const { return m_relativeRatio; }
 
-        common::Vector2D getSize(common::Vector2D requiredSize,
-            common::Vector2D availableSize) const;
+        common::Vector2D<int> getSize(common::Vector2D<int> requiredSize,
+            common::Vector2D<int> availableSize) const;
 
     private:
         ComponentSizeType m_typeX;
         ComponentSizeType m_typeY;
-        common::Vector2D m_relativeRatio;
-        common::Vector2D m_padding;
-        common::Vector2D m_margin;
+        common::Vector2D<double> m_relativeRatio;
+        common::Vector2D<int> m_padding;
+        common::Vector2D<int> m_margin;
     };
 }
 }

@@ -6,21 +6,21 @@
 
 namespace engine {
 class RectangleShape : public IGraphicsElement {
-    common::Vector2D m_position;
-    common::Vector2D m_size;
+    common::Vector2D<int> m_position;
+    common::Vector2D<int> m_size;
 
     Color m_color;
 
 public:
-    RectangleShape(common::Vector2D position, common::Vector2D size, const Color& color);
+    RectangleShape(common::Vector2D<int> position, common::Vector2D<int> size, const Color& color);
 
     void accept(IRenderVisitor& visitor) const override;
 
-    common::Vector2D size() const;
-    common::Vector2D position() const;
+    common::Vector2D<int> size() const;
+    common::Vector2D<int> position() const;
     const Color& color() const;
 
-    void setSize(common::Vector2D size);
-    void setPosition(common::Vector2D pos);
+    void setSize(common::Vector2D<int> size);
+    void setPosition(common::Vector2D<int> pos);
 };
 } // end namespace engine

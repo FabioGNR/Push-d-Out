@@ -31,7 +31,7 @@ level levelReader::getLevel(json j)
 
 void levelReader::createEntities(engine::ecs::World& world, engine::physics::World& physics, level level)
 {
-    common::Vector2D dimension { 1, 1 };
+    common::Vector2D<double> dimension { 1, 1 };
 
     auto& entityMeta = world.createEntity();
     auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
@@ -42,7 +42,7 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
 
     for (size_t i = 0; i < level.tiles.size(); i++) {
         tile curTile = level.tiles[i];
-        common::Vector2D position { (double)curTile.x, (double)curTile.y };
+        common::Vector2D<double> position { (double)curTile.x, (double)curTile.y };
 
 
         auto& entity = world.createEntity();
@@ -65,7 +65,7 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
 
     for (size_t i = 0; i < level.CharacterSpawns.size(); i++) {
         spawnPoint curSpawn = level.CharacterSpawns[i];
-        common::Vector2D position { (double)curSpawn.x, (double)curSpawn.y };
+        common::Vector2D<double> position { (double)curSpawn.x, (double)curSpawn.y };
 
         auto& entity = world.createEntity();
 
