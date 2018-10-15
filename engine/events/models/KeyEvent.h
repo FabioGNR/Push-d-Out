@@ -4,15 +4,16 @@
 
 namespace engine {
 namespace events {
-    class KeyEvent : public IControlEvent {
+    struct KeyEvent : public IControlEvent {
     private:
-        input::Keys value;
-        bool pressed;
+        input::Keys m_value;
+        bool m_pressed;
 
     public:
-        KeyEvent(input::Keys value, bool pressed);
+        KeyEvent(input::Keys value, bool pressed)
+            : m_value{ value }
+            , m_pressed{ pressed } {};
 
-        void printType() override;
         input::Keys getValue() override;
     };
 }

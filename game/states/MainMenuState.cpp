@@ -87,8 +87,8 @@ void MainMenuState::render(engine::IRenderer& renderer)
     m_system->draw(uiRenderer, common::Vector2D(1280, 768));
 }
 
-void MainMenuState::onInputUpdate(std::map<engine::input::Keys, engine::events::IControlEvent*>& keyMap)
+void MainMenuState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> &keymap)
 {
-    m_keymap = keyMap;
+    m_keymap = keymap;
 }
 }

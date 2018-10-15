@@ -9,9 +9,8 @@
 namespace engine {
 namespace input {
     class IObserver {
-
     public:
-        virtual void onInputUpdate(std::map<Keys, events::IControlEvent *> &keyMap) = 0;
+        virtual void onInputUpdate(std::map<Keys, std::shared_ptr<events::IControlEvent>>& keymap) = 0;
     };
 }
 }

@@ -9,7 +9,7 @@ namespace game {
 class MainMenuState : public engine::State, engine::input::IObserver {
 private:
     std::unique_ptr<engine::ui::UISystem> m_system;
-    std::map<engine::input::Keys, engine::events::IControlEvent*> m_keymap;
+    std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> m_keymap;
 
 public:
     explicit MainMenuState(engine::IGame& game);
@@ -19,6 +19,6 @@ public:
     void render(engine::IRenderer& renderer) override;
 
 private:
-    void onInputUpdate(std::map<engine::input::Keys, engine::events::IControlEvent *> &keyMap) override;
+    void onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> &keymap) override;
 };
 }

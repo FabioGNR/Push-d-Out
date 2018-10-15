@@ -1,13 +1,10 @@
 #pragma once
 
-#include "IOtherEvent.h"
+#include "IEvent.h"
 
 namespace engine {
 namespace events {
-    class QuitEvent : public IOtherEvent {
-    private:
-    public:
-        void printType() override;
+    struct QuitEvent : public IEvent {
     };
 }
 }

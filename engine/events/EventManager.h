@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SDLEventAdapter.h"
+#include "SDLEventManager.h"
 #include "input/InputManager.h"
 #include <vector>
 

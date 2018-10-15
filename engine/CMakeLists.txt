@@ -74,21 +74,17 @@ set(INPUT_SRC
         input/InputManager.cpp
         input/Keys.h
         input/IObserver.h
-        input/SDLKeyMap.cpp
-        input/SDLKeyMap.h
+        input/SDLKeys.cpp
+        input/SDLKeys.h
         )
 
 set(EVENTS_SRC
-        events/SDLEventAdapter.cpp
-        events/SDLEventAdapter.h
+        events/SDLEventManager.cpp
+        events/SDLEventManager.h
         events/EventManager.cpp
         events/EventManager.h
         events/models/IControlEvent.h
-        events/models/IOtherEvent.h
-        events/models/QuitEvent.cpp
         events/models/QuitEvent.h
-        events/models/UnknownEvent.cpp
-        events/models/UnknownEvent.h
         events/models/IEvent.h
         events/models/KeyEvent.cpp
         events/models/KeyEvent.h

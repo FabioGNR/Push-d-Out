@@ -9,11 +9,11 @@ namespace input {
     class InputManager {
     private:
         std::vector<IObserver*> observers;
-        std::unique_ptr<std::map<Keys, events::IControlEvent*>> keyMap{ new std::map<Keys, events::IControlEvent*> };
+        std::unique_ptr<std::map<Keys, std::shared_ptr<events::IControlEvent>>> m_keymap{ new std::map<Keys, std::shared_ptr<events::IControlEvent>> };
 
     public:
         void startInput();
-        void storeInput(events::IControlEvent* event);
+        void storeInput(std::shared_ptr<events::IControlEvent> event);
         void subscribe(IObserver* observer);
         void notify();
     };

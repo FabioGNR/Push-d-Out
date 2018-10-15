@@ -17,7 +17,7 @@ private:
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     engine::physics::World* m_world;
     engine::ecs::World m_ecsWorld;
-    std::map<engine::input::Keys, engine::events::IControlEvent*> m_keymap;
+    std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> m_keymap;
 
 public:
     explicit GameState(engine::IGame& game);
@@ -25,7 +25,7 @@ public:
 
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
-    void onInputUpdate(std::map<engine::input::Keys, engine::events::IControlEvent*>& keyMap) override;
+    void onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> &keymap) override;
     void render(engine::IRenderer& renderer) override;
 };
 }

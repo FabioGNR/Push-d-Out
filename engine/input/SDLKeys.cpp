@@ -1,15 +1,9 @@
-#pragma once
-
-#include <SDL2/SDL.h>
-#include <events/models/IEvent.h>
-#include <input/Keys.h>
-#include <map>
+#include "SDLKeys.h"
+#include <events/models/KeyEvent.h>
 
 namespace engine {
 namespace input {
-    class SDLKeyMap {
-    private:
-        std::map<SDL_Keycode, Keys> keyCode = {
+    const std::map<SDL_Keycode, Keys> SDLKeys::KEYCODES = {
             { SDLK_a, Keys::A },
             { SDLK_b, Keys::B },
             { SDLK_c, Keys::C },
@@ -60,10 +54,11 @@ namespace input {
             { SDLK_DELETE, Keys::BACKSPACE },
             { SDLK_BACKSPACE, Keys::BACKSPACE },
             { SDLK_KP_ENTER, Keys::RETURN }
-        };
-
-    public:
-        events::IEvent* getKeyValue(SDL_Event event, bool pressed);
     };
+
+    input::Keys SDLKeys::get(SDL_Keycode keycode)
+    {
+        return SDLKeys::KEYCODES.at(keycode);
+    }
 }
 }

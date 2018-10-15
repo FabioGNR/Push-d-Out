@@ -5,10 +5,8 @@
 
 namespace engine {
 namespace events {
-    class IEvent {
-    private:
-    public:
-        virtual void printType() = 0;
+    struct IEvent {
+        virtual ~IEvent() = default;
     };
 }
 }

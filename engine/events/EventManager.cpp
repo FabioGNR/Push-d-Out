@@ -6,17 +6,15 @@ namespace engine {
 namespace events {
     bool EventManager::getEvents()
     {
-        SDLEventAdapter ea;
-        std::vector<IEvent*> test = ea.getEvents();
+        SDLEventManager eventAdapter;
+        std::vector<std::shared_ptr<IEvent>> events = eventAdapter.getEvents();
 
         m_inputManager.startInput();
-        for (IEvent* event : test) {
-            if (dynamic_cast<IControlEvent*>(event)) {
-                m_inputManager.storeInput((IControlEvent*)event);
-            } else if (dynamic_cast<QuitEvent*>(event)) { // TODO: eventually remove this
+        for (const auto& event : events) {
+            if (auto e = std::dynamic_pointer_cast<IControlEvent>(event)) {
+                m_inputManager.storeInput(e);
+            } else if (std::dynamic_pointer_cast<QuitEvent>(event)) { // TODO: eventually remove this
                 return false;
-            } else if (dynamic_cast<IOtherEvent*>(event)) {
-                // do nothing
             }
         }
         return true;

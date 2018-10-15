@@ -5,8 +5,7 @@
 
 namespace engine {
 namespace events {
-    class IControlEvent : public IEvent {
-    public:
+    struct IControlEvent : public IEvent {
         virtual input::Keys getValue() = 0;
     };
 }

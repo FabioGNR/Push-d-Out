@@ -3,14 +3,14 @@
 
 namespace engine {
 namespace input {
-    void InputManager::storeInput(events::IControlEvent* event)
+    void InputManager::storeInput(std::shared_ptr<events::IControlEvent> event)
     {
-        keyMap->insert(std::pair<Keys, events::IControlEvent*>(event->getValue(), event));
+        m_keymap->insert(std::pair<Keys, std::shared_ptr<events::IControlEvent>>(event->getValue(), event));
     }
 
     void InputManager::startInput()
     {
-        keyMap->clear();
+        m_keymap->clear();
     }
 
     void InputManager::subscribe(IObserver* observer)
@@ -20,11 +20,11 @@ namespace input {
 
     void InputManager::notify()
     {
-        if (keyMap->empty()) {
+        if (m_keymap->empty()) {
             return;
         }
         for (auto& observer : observers) {
-            observer->onInputUpdate(*keyMap);
+            observer->onInputUpdate(*m_keymap);
         }
     }
 }
