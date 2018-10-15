@@ -1,8 +1,9 @@
 #pragma once
 
 #include "external/JSON/json.hpp"
-#include "engine/ecs/World.h"
-#include <game/level/LevelDomain.h>
+#include "game/level/LevelDomain.h"
+#include <engine/ecs/World.h>
+#include <engine/physics/World.h>
 #include <string>
 
 using namespace game::levelDomain;
@@ -16,6 +17,6 @@ public:
 
     static level getLevel(json j);
 
-    static engine::ecs::World createEntities(level level);
+    static void createEntities(engine::ecs::World& world, engine::physics::World& physics, level level);
 };
 }

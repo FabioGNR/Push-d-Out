@@ -9,16 +9,13 @@ namespace engine {
 namespace physics {
     class PhysicsManager {
     private:
-        std::vector<World*> m_worlds;
-        int m_unitSize;
+        World* m_world;
 
     public:
-        explicit PhysicsManager(int unitSize);
-
+        PhysicsManager();
         ~PhysicsManager();
 
         World* createWorld(common::Vector2D size, double gravity, double friction);
-
         int getUnitSize() const;
     };
 }

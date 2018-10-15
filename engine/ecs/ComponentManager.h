@@ -92,7 +92,7 @@ namespace ecs {
             bool found = m_managers.count(familyId) != 0;
 
             if (!found) {
-                this->addManager<Component>();
+                addManager<Component>();
                 familyId = Component::familyId();
             }
 

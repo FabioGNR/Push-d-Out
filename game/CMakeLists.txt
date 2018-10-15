@@ -31,12 +31,10 @@ set(SYSTEM_SRC
         systems/JumpSystem.h
         systems/PositionSystem.cpp
         systems/PositionSystem.h
-        systems/BodySystem.cpp
-        systems/BodySystem.h
-        systems/DimensionSystem.cpp
-        systems/DimensionSystem.h
         systems/SpriteSystem.cpp
         systems/SpriteSystem.h
+        systems/RenderSystem.cpp
+        systems/RenderSystem.h
         )
 
 set(DEFINITION_SRC

@@ -1,10 +1,21 @@
 #include "PositionSystem.h"
+#include <engine/physics/Body.h>
+#include <game/components/BodyComponent.h>
+#include <game/components/PositionComponent.h>
 
-game::systems::PositionSystem::PositionSystem() = default;
+namespace game {
+namespace systems {
+    void PositionSystem::update(std::chrono::nanoseconds /* timeStep */)
+    {
+        m_world.forEachEntityWith<components::BodyComponent, components::PositionComponent>([&](engine::ecs::Entity& entity) {
+            auto body = m_world.getComponent<components::BodyComponent>(entity).body;
+            auto& positionComponent = m_world.getComponent<components::PositionComponent>(entity);
 
-void game::systems::PositionSystem::update(double frameTime)
-{
-    // BaseSystem::update(frameTime);
+            positionComponent.position.x = body->getPosition().x;
+            positionComponent.position.y = body->getPosition().y;
+        });
+    }
 
-    // Do something
+    void PositionSystem::render(engine::IRenderer& /*renderer*/) {}
+}
 }

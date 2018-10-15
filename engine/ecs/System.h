@@ -1,5 +1,7 @@
 #pragma once
 
+#include "graphics/IRenderer.h"
+#include <chrono>
 #include <cstdint>
 
 namespace engine {
@@ -22,13 +24,16 @@ namespace ecs {
 
     class ISystem {
     public:
-        virtual void update(double deltaTime) = 0;
+        virtual void update(std::chrono::nanoseconds timeStep) = 0;
+        virtual void render(engine::IRenderer& renderer) = 0;
     };
 
     template <typename System>
     class BaseSystem : public ISystem {
     public:
-        void update(double deltaTime) override = 0;
+        void update(std::chrono::nanoseconds timeStep) override = 0;
+        void render(engine::IRenderer& renderer) override = 0;
+
         static SystemId getSystemId()
         {
             return internal::getNextSystemFamilyId<System>();

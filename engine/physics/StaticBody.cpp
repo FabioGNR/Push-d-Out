@@ -4,19 +4,18 @@
 
 namespace engine {
 namespace physics {
-    StaticBody::StaticBody(double x, double y, double width, double height, int unitSize,
-        World& world)
-        : Body(x, y, width, height, unitSize, world)
+    StaticBody::StaticBody(double x, double y, double width, double height, World& world)
+        : Body(x, y, width, height, world)
     {
         b2BodyDef groundBodyDef; // set position
-        groundBodyDef.position.Set((float32)x, (float32)y);
+        groundBodyDef.position.Set(static_cast<float32>(x), static_cast<float32>(y));
 
         // create the body
         b2Body* b2Body = m_world.m_b2World->CreateBody(&groundBodyDef);
 
-        b2PolygonShape groundBox; // set height and width
-        groundBox.SetAsBox(((float32)width / 2.0f), ((float32)height / 2.0f));
-        b2Body->CreateFixture(&groundBox, 0.0f /* density, is not used when body is static */);
+        b2PolygonShape groundBox; // set half-height and half-width
+        groundBox.SetAsBox(static_cast<float32>(width) / 2.0f, static_cast<float32>(height) /* TODO: /2.0f */);
+        b2Body->CreateFixture(&groundBox, 1.0f /* density, is not used when body is static */);
 
         // set the body
         m_body = b2Body;

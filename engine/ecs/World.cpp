@@ -15,5 +15,13 @@ namespace ecs {
         }
         m_entityManager.destroy(entity);
     }
+
+    void World::update(std::chrono::nanoseconds timeStep) {
+        m_systemManager.update(timeStep);
+    }
+
+    void World::render(engine::IRenderer& renderer) {
+        m_systemManager.render(renderer);
+    }
 }
 }
