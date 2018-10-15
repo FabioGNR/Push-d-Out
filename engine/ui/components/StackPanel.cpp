@@ -11,7 +11,7 @@ namespace ui {
     {
 
         DrawContext childContext{ context };
-        childContext.availableSize = (context.availableSize / sumRelativeSize()).getIntVector();
+        childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
             DrawContext updatedContext = component->draw(childContext);
@@ -28,7 +28,7 @@ namespace ui {
     common::Vector2D<int> StackPanel::calculateSize(common::Vector2D<int> availableSize) const
     {
         common::Vector2D<int> requiredSize{ 0, 0 };
-        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).getIntVector();
+        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
             common::Vector2D<int> componentSize = component->calculateSize(availableChildSize);
@@ -55,7 +55,7 @@ namespace ui {
         } else {
             sum.y = 1;
         }
-        return common::Vector2D<double>::max(sum, minimumSize.getDoubleVector());
+        return common::Vector2D<double>::max(sum, minimumSize.castTo<double>());
     }
 
     std::shared_ptr<Component> StackPanel::getNavigatableAt(size_t index) const

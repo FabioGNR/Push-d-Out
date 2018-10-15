@@ -13,7 +13,7 @@ namespace ui {
     {
         DrawContext compositeContext{ context };
         DrawContext childContext{ context };
-        childContext.availableSize = (context.availableSize / sumRelativeSize()).getIntVector();
+        childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
         for (const auto& component : m_components) {
             common::Vector2D<int> childPosition = getChildPosition(component,
                 childContext.availableSize,
@@ -29,7 +29,7 @@ namespace ui {
     common::Vector2D<int> LayoutPanel::calculateSize(common::Vector2D<int> availableSize) const
     {
         common::Vector2D<int> requiredSize{ 0, 0 };
-        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).getIntVector();
+        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
             common::Vector2D<int> componentSize = component->getComponent()->calculateSize(availableChildSize);
@@ -56,7 +56,7 @@ namespace ui {
         } else {
             sum.y = 1;
         }
-        return common::Vector2D<double>::max(sum, minimumSize.getDoubleVector());
+        return common::Vector2D<double>::max(sum, minimumSize.castTo<double>());
     }
 
     common::Vector2D<int> LayoutPanel::getChildPosition(std::shared_ptr<WrappedComponent> component,
