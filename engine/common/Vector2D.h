@@ -80,21 +80,7 @@ struct Vector2D {
         return *this;
     }
 
-    friend Vector2D<T> operator/(Vector2D<T> left,
-        const Vector2D& right)
-    {
-        left.x /= right.x;
-        left.y /= right.y;
-        return left;
-    }
 
-    friend Vector2D<T> operator/(Vector2D<T> left,
-        double factor)
-    {
-        left.x /= factor;
-        left.y /= factor;
-        return left;
-    }
 
     Vector2D<T>& operator-=(const Vector2D<T>& other)
     {
@@ -167,6 +153,25 @@ struct Vector2D {
         Str << "{" << this->x << ", " << this->y << "}";
         return Str;
     }
+
+    Vector2D<int> getIntVector() {
+        return {(int)this->x, (int)this->y};
+    }
+
+    Vector2D<double> getDoubleVector() {
+        return {(double)this->x, (double)this->y};
+    }
 };
+
+    template <typename X, typename Y>
+    Vector2D<Y> operator/(Vector2D<X> left,
+                                 const Vector2D<Y>& right)
+    {
+        left.x /= right.x;
+        left.y /= right.y;
+        Y newX = left.x / right.x;
+        Y newY = left.y / right.y;
+        return {newX, newY};
+    }
 
 }

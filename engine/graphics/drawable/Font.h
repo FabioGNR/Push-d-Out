@@ -13,10 +13,10 @@ class Font : public IGraphicsElement {
     int m_fontSize;
     Color m_color;
 
-    common::Vector2D m_position;
+    common::Vector2D<int> m_position;
 
 public:
-    Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D position);
+    Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D<int> position);
 
     void accept(IRenderVisitor& visitor) const override;
 
@@ -24,13 +24,13 @@ public:
 
     const std::string& fontPath() const;
 
-    common::Vector2D position() const;
+    common::Vector2D<int> position() const;
     int fontSize() const;
     const Color& color() const;
 
     void setText(const std::string& text);
     void setFontSize(int fontSize);
-    void setPosition(common::Vector2D position);
+    void setPosition(common::Vector2D<int> position);
     void setColor(const Color& color);
 };
 } // end namespace engine

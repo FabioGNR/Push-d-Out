@@ -35,8 +35,8 @@ namespace physics {
         m_angle = m_body->GetAngle();
     }
 
-    void StaticBody::applyForce(const common::Vector2D& /* force */,
-        const common::Vector2D& /* point */)
+    void StaticBody::applyForce(const common::Vector2D<double>& /* force */,
+        const common::Vector2D<int>& /* point */)
     {
         // don't apply forces.
     }

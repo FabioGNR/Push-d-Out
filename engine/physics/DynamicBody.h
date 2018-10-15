@@ -20,7 +20,7 @@ namespace physics {
 
         void update() override;
 
-        void applyForce(const common::Vector2D& force, const common::Vector2D& point) override;
+        void applyForce(const common::Vector2D<double>& force, const common::Vector2D<int>& point) override;
     };
 }
 }

@@ -34,11 +34,6 @@ int main()
     windowProperties.width = 1280;
     windowProperties.height = 768;
 
-    // TODO: remove
-    common::Vector2D testVector(3, 5);
-    auto areEqual = common::Vector2D(-5, 3) == testVector.rotateCounterClockwise(38);
-    std::cout << areEqual << std::endl;
-
     auto game = std::make_unique<game::Game>(windowProperties);
 
     auto menuState = std::make_shared<game::MainMenuState>(*game);

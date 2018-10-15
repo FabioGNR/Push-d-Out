@@ -11,7 +11,7 @@ namespace ui {
     {
 
         DrawContext childContext{ context };
-        childContext.availableSize = context.availableSize / sumRelativeSize();
+        childContext.availableSize = (context.availableSize / sumRelativeSize()).getIntVector();
 
         for (const auto& component : m_components) {
             DrawContext updatedContext = component->draw(childContext);
@@ -25,13 +25,13 @@ namespace ui {
         return context;
     }
 
-    common::Vector2D StackPanel::calculateSize(common::Vector2D availableSize) const
+    common::Vector2D<int> StackPanel::calculateSize(common::Vector2D<int> availableSize) const
     {
-        common::Vector2D requiredSize{ 0, 0 };
-        common::Vector2D availableChildSize = availableSize / sumRelativeSize();
+        common::Vector2D<int> requiredSize{ 0, 0 };
+        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).getIntVector();
 
         for (const auto& component : m_components) {
-            common::Vector2D componentSize = component->calculateSize(availableChildSize);
+            common::Vector2D<int> componentSize = component->calculateSize(availableChildSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
                 requiredSize.y = std::max(requiredSize.y, componentSize.y);
@@ -43,10 +43,10 @@ namespace ui {
         return m_size.getSize(requiredSize, availableSize);
     }
 
-    common::Vector2D StackPanel::sumRelativeSize() const
+    common::Vector2D<double> StackPanel::sumRelativeSize() const
     {
-        common::Vector2D minimumSize{ 1, 1 };
-        common::Vector2D sum{ 0, 0 };
+        common::Vector2D<int> minimumSize{ 1, 1 };
+        common::Vector2D<double> sum{ 0, 0 };
         for (const auto& component : m_components) {
             sum += component->getSize().getRelativeRatio();
         }
@@ -55,7 +55,7 @@ namespace ui {
         } else {
             sum.y = 1;
         }
-        return common::Vector2D::max(sum, minimumSize);
+        return common::Vector2D<double>::max(sum, minimumSize.getDoubleVector());
     }
 
     std::shared_ptr<Component> StackPanel::getNavigatableAt(size_t index) const

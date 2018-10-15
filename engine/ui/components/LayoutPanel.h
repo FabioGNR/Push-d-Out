@@ -17,9 +17,9 @@ namespace ui {
         {
         }
 
-        common::Vector2D calculateSize(common::Vector2D availableSize) const override;
+        common::Vector2D<int> calculateSize(common::Vector2D<int> availableSize) const override;
 
-        common::Vector2D sumRelativeSize() const;
+        common::Vector2D<double> sumRelativeSize() const;
 
         DrawContext draw(DrawContext context) override;
 
@@ -37,10 +37,10 @@ namespace ui {
 
     private:
         std::set<std::shared_ptr<WrappedComponent>, sortByAnchor> m_components;
-        common::Vector2D getChildPosition(
+        common::Vector2D<int> getChildPosition(
             std::shared_ptr<WrappedComponent> component,
-            common::Vector2D availableSize,
-            common::Vector2D parentSize) const;
+            common::Vector2D<int> availableSize,
+            common::Vector2D<int> parentSize) const;
     };
 }
 }

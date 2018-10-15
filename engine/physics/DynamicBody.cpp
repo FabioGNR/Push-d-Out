@@ -45,7 +45,7 @@ namespace physics {
         m_angle = m_body->GetAngle();
     }
 
-    void DynamicBody::applyForce(const common::Vector2D& force, const common::Vector2D& point)
+    void DynamicBody::applyForce(const common::Vector2D<double>& force, const common::Vector2D<int>& point)
     {
         b2Vec2 b2Force((float32)force.x, (float32)force.y);
         b2Vec2 b2Point((float32)point.x, (float32)point.y);

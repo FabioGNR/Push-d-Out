@@ -13,12 +13,12 @@
 namespace engine {
 namespace physics {
 
-    World::World(common::Vector2D size, double gravity, double friction) : m_size{size}
+    World::World(common::Vector2D<int> size, double gravity, double friction) : m_size{size}
     {
         b2Vec2 grav{ 0, (float32)gravity };
 
-        m_gravity = std::make_unique<common::Vector2D>(0.0, gravity);
-        m_friction = std::make_unique<common::Vector2D>(friction, 0.0);
+        m_gravity = std::make_unique<common::Vector2D<double>>(0.0, gravity);
+        m_friction = std::make_unique<common::Vector2D<double>>(friction, 0.0);
         m_b2World = new b2World(grav);
         m_bodies = std::vector<Body*>{};
     }
@@ -28,12 +28,12 @@ namespace physics {
         delete m_b2World;
     }
 
-    const common::Vector2D World::getGravity() const
+    const common::Vector2D<double> World::getGravity() const
     {
         return *m_gravity;
     }
 
-    const common::Vector2D World::getFriction() const
+    const common::Vector2D<double> World::getFriction() const
     {
         return *m_friction;
     }
@@ -81,7 +81,7 @@ namespace physics {
         }
     }
 
-    const common::Vector2D World::getSize() const {
+    const common::Vector2D<int> World::getSize() const {
         return m_size;
     }
 }

@@ -14,8 +14,8 @@ namespace systems {
             auto& positionComponent = world.getComponent<components::PositionComponent>(entity);
             auto& dimensionComponent = world.getComponent<components::DimensionComponent>(entity);
 
-            common::Vector2D position{ positionComponent.position.x * m_unitSize, positionComponent.position.y * m_unitSize };
-            common::Vector2D size{ dimensionComponent.dimension.x * m_unitSize, dimensionComponent.dimension.y * m_unitSize };
+            common::Vector2D<int> position{ (int)positionComponent.position.x * m_unitSize, (int)positionComponent.position.y * m_unitSize };
+            common::Vector2D<int> size{ (int)dimensionComponent.dimension.x * m_unitSize, (int)dimensionComponent.dimension.y * m_unitSize };
             engine::Color color{ rand() % 255, rand() % 255, rand() % 255, 100 };
 
             engine::RectangleShape shape{ position, size, color };

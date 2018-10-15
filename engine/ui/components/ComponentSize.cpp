@@ -2,8 +2,8 @@
 
 namespace engine {
 namespace ui {
-    common::Vector2D ComponentSize::getSize(common::Vector2D requiredSize,
-        common::Vector2D availableSize) const
+    common::Vector2D<int> ComponentSize::getSize(common::Vector2D<int> requiredSize,
+        common::Vector2D<int> availableSize) const
     {
         // add padding for left,top and then right,bottom
         requiredSize += m_padding;
@@ -13,7 +13,7 @@ namespace ui {
             requiredSize.x = availableSize.x * m_relativeRatio.x;
             break;
         case ComponentSizeType::Minimum:
-            requiredSize.x = std::max(requiredSize.x, availableSize.x * m_relativeRatio.x);
+            requiredSize.x = std::max(requiredSize.x, static_cast<int>(availableSize.x * m_relativeRatio.x));
             break;
         case ComponentSizeType::Fit:
         default:
@@ -24,7 +24,7 @@ namespace ui {
             requiredSize.y = availableSize.y * m_relativeRatio.y;
             break;
         case ComponentSizeType::Minimum:
-            requiredSize.y = std::max(requiredSize.y, availableSize.y * m_relativeRatio.y);
+            requiredSize.y = std::max(requiredSize.y, static_cast<int>(availableSize.y * m_relativeRatio.y));
             break;
         case ComponentSizeType::Fit:
         default:

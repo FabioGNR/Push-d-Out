@@ -46,7 +46,7 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
         auto& entity = world.createEntity();
 
         // Add a position component to tile entity
-        common::Vector2D position { (double)curTile.x, (double)curTile.y };
+        common::Vector2D<double> position { (double)curTile.x, (double)curTile.y };
         auto posComponent = components::PositionComponent(position);
         world.addComponent<components::PositionComponent>(entity, posComponent);
 
@@ -58,7 +58,7 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
         auto spriteComponent = components::SpriteComponent(levelDomain::getSheetName(level.theme), curTile.sprite);
         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
 
-        common::Vector2D dimension { TILE_WIDTH, TILE_HEIGHT };
+        common::Vector2D<double> dimension { TILE_WIDTH, TILE_HEIGHT };
         auto dimensionComponent = components::DimensionComponent(dimension);
         world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
     }
@@ -68,7 +68,7 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
         auto& entity = world.createEntity();
 
         // Add a position component to character spawn entity
-        common::Vector2D position { (double)curSpawn.x, (double)curSpawn.y };
+        common::Vector2D<double> position { (double)curSpawn.x, (double)curSpawn.y };
         auto posComponent = components::PositionComponent(position);
         world.addComponent<components::PositionComponent>(entity, posComponent);
 
