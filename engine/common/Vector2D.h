@@ -154,12 +154,9 @@ struct Vector2D {
         return Str;
     }
 
-    Vector2D<int> getIntVector() {
-        return {(int)this->x, (int)this->y};
-    }
-
-    Vector2D<double> getDoubleVector() {
-        return {(double)this->x, (double)this->y};
+    template <typename X>
+    Vector2D<X> castTo() {
+        return{static_cast<X>(this->x), static_cast<X>(this->y)};
     }
 };
 
