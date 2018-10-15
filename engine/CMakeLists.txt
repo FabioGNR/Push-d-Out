@@ -70,8 +70,8 @@ set(PHYSICS_SRC
         )
 
 set(INPUT_SRC
-        input/InputManager.cpp
         input/InputManager.h
+        input/InputManager.cpp
         input/Keys.h
         input/IObserver.h
         input/SDLKeyMap.cpp
@@ -142,6 +142,7 @@ set(UI_SRC
 add_library(engine
         ${ENGINE_GAME_SRC}
         ${ECS_SRC}
+        ${INPUT_SRC}
         ${GRAPHICS_SRC}
         ${COMMON_SRC}
         ${PHYSICS_SRC}
