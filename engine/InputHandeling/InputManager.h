@@ -4,11 +4,10 @@
 #include <queue>
 #include <vector>
 
-
 class InputManager {
 private:
     std::vector<IObserver*> observers;
-    std::unique_ptr<std::map<char, IControlEvent*>> keyMap { new std::map<char, IControlEvent*> };
+    std::unique_ptr<std::map<Keys, IControlEvent*>> keyMap{ new std::map<Keys, IControlEvent*> };
 
 public:
     void startInput();

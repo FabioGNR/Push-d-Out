@@ -2,16 +2,16 @@
 
 void KeyEvent::printType()
 {
-    std::cout << "KeyEvent: " << value << " pressed: " << pressed << std::endl;
+    std::cout << "KeyEvent: " << value << ", KeyDown: " << pressed << std::endl;
 }
 
-KeyEvent::KeyEvent(char value, bool pressed)
+KeyEvent::KeyEvent(Keys value, bool pressed)
 {
     this->value = value;
     this->pressed = pressed;
 }
 
-char KeyEvent::getValue()
+Keys KeyEvent::getValue()
 {
     return value;
 }

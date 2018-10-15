@@ -4,10 +4,10 @@
 
 class KeyEvent : public IControlEvent {
 private:
-    char value;
+    Keys value;
     bool pressed;
 public:
-    KeyEvent(char value, bool pressed);
+    KeyEvent(Keys value, bool pressed);
     void printType() override;
-    char getValue() override;
+    Keys getValue() override;
 };
