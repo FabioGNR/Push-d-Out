@@ -10,7 +10,7 @@ namespace ui {
         requiredSize += m_padding;
         switch (m_typeX) {
         case ComponentSizeType::Stretch:
-            requiredSize.x = availableSize.x * m_relativeRatio.x;
+            requiredSize.x = static_cast<int>(availableSize.x * m_relativeRatio.x);
             break;
         case ComponentSizeType::Minimum:
             requiredSize.x = std::max(requiredSize.x, static_cast<int>(availableSize.x * m_relativeRatio.x));
@@ -21,7 +21,7 @@ namespace ui {
         }
         switch (m_typeY) {
         case ComponentSizeType::Stretch:
-            requiredSize.y = availableSize.y * m_relativeRatio.y;
+            requiredSize.y = static_cast<int>(availableSize.y * m_relativeRatio.y);
             break;
         case ComponentSizeType::Minimum:
             requiredSize.y = std::max(requiredSize.y, static_cast<int>(availableSize.y * m_relativeRatio.y));
