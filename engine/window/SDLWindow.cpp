@@ -1,12 +1,16 @@
 #include "SDLWindow.h"
+
 #include <SDL.h>
+#include <graphics/SDL/SDLRenderer.h>
 
 namespace engine {
+
 SDLWindow::SDLWindow(WindowProperties properties)
     : Window(std::move(properties))
     , m_window{ nullptr, nullptr }
 {
     SDL_Init(SDL_INIT_VIDEO);
+
     // creates a SDL_Window in a unique_ptr, specifying a custom delete function
     // namely the SDL_DestroyWindow function
     m_window
@@ -38,11 +42,16 @@ int SDLWindow::getFlags() const
     return flags;
 }
 
-int SDLWindow::getPosition(const int coord) const
+int SDLWindow::getPosition(int coord) const
 {
     if (m_properties.centered) {
-        return SDL_WINDOWPOS_CENTERED;
+        return static_cast<int>(SDL_WINDOWPOS_CENTERED);
     }
     return coord;
+}
+
+const common::Vector2D SDLWindow::getDimensions() const
+{
+    return common::Vector2D(m_properties.width, m_properties.height);
 }
 }

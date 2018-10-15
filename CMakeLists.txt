@@ -36,9 +36,11 @@ target_include_directories(
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-## Tests
+## External tools/libs
 
 include_directories(${CMAKE_SOURCE_DIR}/external)
+
+## Tests
 add_subdirectory(tests)
 
 enable_testing()

@@ -1,38 +1,59 @@
 # Linux
 ## Toolchain
 Building on Linux is much easier. For this setup, we will be using Ubuntu 18.04/Debian. Install either g++ or clang++ using apt.
-`sudo apt-get install clang++ g++`
+
+`sudo apt-get install g++`
+
+`sudo apt-get install cmake`
 
 ## Package manager
 Linux does not need a package manager, besides its own. On Ubuntu:
+
 `sudo apt-get install libsdl2-dev`
-`sudo apt-get install libsdl2-dev`
+
+`sudo apt-get install libsdl2-ttf-dev`
+
+`sudo apt-get install libsdl2-image-dev`
+
+`sudo apt-get install libbox2d-dev`
+
 
 # MacOS
 ## Toolchain
-Building on Mac is nearly the same as Linux. MacOS comes with Clang as default, when
-installing the XCode development tools.
+Building on Mac is nearly the same as Linux; macOS comes with Clang, when
+the Xcode development tools are installed.
 
-When entering `gcc` into the terminal, it will open a prompt asking you if you want to install development tools.
-Install them there.
+Do this by running `xcode-select --install` in the terminal.
 
-## Package manager
-You can use *brew* to install SDL, and CMake if you want to compile on the terminal.
-
-`brew install sdl2`
-
+Use *brew* to install CMake.
 
 `brew install cmake`
 
-TODO: Box2D
+## Package manager
+You have to use *vcpkg* for both SDL2, and Box2D.
 
-# Building
+Inside your vcpkg folder run:
 
-```bash
-mkdir build
-cd build
-cmake ..
-cmake --build .
-```
+`./vcpkg install sdl2`
 
-Executable can be found in bin/PushdOut
+`./vcpkg install sdl2-ttf`
+
+`./vcpkg install sdl2-image`
+
+`./vcpkg install box2d`
+
+## Building
+Once you have everything installed, open the project folder and run the following commands in the terminal:
+
+1. `mkdir build`
+2. `cd build`
+3. `cmake .. -DCMAKE_TOOLCHAIN_FILE="<vcpkg location>/scripts/buildsystems/vcpkg.cmake"`
+
+This will generate the necessary files to run the project. Import the project in CLion using existing sources.
+
+## Clion
+Clion is optional, use whatever CMake-compatible IDE, or your favorite text editor if you want to. Building can be done
+in the terminal.
+
+Clion can be installed using the default settings.
+

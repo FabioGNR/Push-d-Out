@@ -1,5 +1,6 @@
 #include "EventManager.h"
 #include <events/models/QuitEvent.h>
+#include <input/InputManager.h>
 
 namespace engine {
 namespace events {
@@ -8,10 +9,10 @@ namespace events {
         SDLEventAdapter ea;
         std::vector<IEvent*> test = ea.getEvents();
 
-        im.startInput();
+        m_inputManager.startInput();
         for (IEvent* event : test) {
             if (dynamic_cast<IControlEvent*>(event)) {
-                im.storeInput((IControlEvent*)event);
+                m_inputManager.storeInput((IControlEvent*)event);
             } else if (dynamic_cast<QuitEvent*>(event)) { // TODO: eventually remove this
                 return false;
             } else if (dynamic_cast<IOtherEvent*>(event)) {
@@ -21,9 +22,9 @@ namespace events {
         return true;
     }
 
-    input::InputManager* EventManager::getInput()
+    input::InputManager& EventManager::getInput()
     {
-        return &im;
+        return m_inputManager;
     }
 }
 }

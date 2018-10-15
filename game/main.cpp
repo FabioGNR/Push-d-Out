@@ -1,32 +1,34 @@
-#include "engine/events/EventManager.h"
-#include "engine/window/SDLWindow.h"
+#include "Game.h"
+#include "game/level/levelReader/LevelReader.h"
 #include "physics/PhysicsManager.h"
-#include "InputObserver.h"
-#include <iostream>
-#include <memory>
+#include <engine/graphics/SDL/SDLRenderVisitor.h>
+#include <engine/graphics/drawable/RectangleShape.h>
+#include <engine/physics/Body.h>
+#include <engine/ui/UISystem.h>
+#include <game/states/GameState.h>
+#include <game/states/MainMenuState.h>
+#include <game/themes/Earth.h>
+#include <game/themes/Moon.h>
+#include <sstream>
 #include <thread>
-#include <chrono>
-int main(int, char**)
+
+int main()
 {
-    engine::WindowProperties windowProperties {};
-    windowProperties.title = "Push'd out!";
-    windowProperties.maximized = true;
+    engine::WindowProperties windowProperties{};
+    windowProperties.title = "Push'd Out!";
+    windowProperties.maximized = false;
     windowProperties.centered = true;
-    windowProperties.width = 640;
-    windowProperties.height = 480;
-    std::unique_ptr<engine::Window> window { new engine::SDLWindow(windowProperties) };
-    //PhysicsManager pm {};
-    //pm.doPhysics();
+    windowProperties.width = 1280;
+    windowProperties.height = 768;
 
-    bool runGame = true;
-    engine::events::EventManager em;
-    auto* im = em.getInput();
-    auto* io = new InputObserver();
-    im->subscribe(io);
+    auto game = std::make_unique<game::Game>(windowProperties);
+    //    auto menuState = std::make_shared<game::MainMenuState>(*game);
+    auto gameState = std::make_shared<game::GameState>(*game);
 
-    while (runGame) {
-        runGame = em.getEvents();
-        im->notify();
-    }
+    //    game->next(menuState);
+    game->next(gameState);
+    game->init();
+    game->run();
+
     return 0;
 }

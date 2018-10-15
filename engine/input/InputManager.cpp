@@ -1,4 +1,5 @@
 #include "InputManager.h"
+#include <events/models/IControlEvent.h>
 
 namespace engine {
 namespace input {

@@ -23,9 +23,12 @@ PS> .\bootstrap-vcpkg.bat
 PS> .\vcpkg integrate install
 ```
 
-3. Install SDL
+3. Install libraries
 ```powershell
 PS> .\vcpkg install sdl2
+PS> .\vcpkg install sdl2-ttf
+PS> .\vcpkg install sdl2-image
+PS> .\vcpkg install box2d
 ```
 
 ## Building

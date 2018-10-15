@@ -8,12 +8,13 @@ namespace engine {
 namespace events {
     class EventManager {
     private:
-        input::InputManager im;
+        input::InputManager m_inputManager;
 
     public:
-        bool getEvents();
+        EventManager() = default;
 
-        input::InputManager* getInput();
+        bool getEvents();
+        input::InputManager& getInput();
     };
 }
 }

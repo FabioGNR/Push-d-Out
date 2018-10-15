@@ -1,11 +1,33 @@
 #include "PhysicsManager.h"
 #include <Box2D/Box2D.h>
 #include <iostream>
+#include <physics/World.h>
 
-void PhysicsManager::doPhysics()
-{
-    std::cout << "Hello, world" << std::endl;
-    b2Vec2 gravity(0.0f, -9.81f);
-    b2World world{ gravity };
-    std::cout << gravity.y << std::endl;
+namespace engine {
+namespace physics {
+    PhysicsManager::PhysicsManager()
+        : m_world{ nullptr }
+    {
+    }
+
+    /**
+     * @param size in units
+     * @param gravity
+     * @param friction
+     * @return pointer to World object
+     */
+    World* PhysicsManager::createWorld(common::Vector2D size, double gravity, double friction)
+    {
+        auto world = new World(size, gravity, friction);
+
+        delete m_world; // delete last world
+        m_world = world;
+        return world;
+    }
+
+    PhysicsManager::~PhysicsManager()
+    {
+        delete m_world;
+    }
+}
 }

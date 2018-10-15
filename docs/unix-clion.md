@@ -1,11 +1,19 @@
 # Linux
 ## Toolchain
 Building on Linux is much easier. For this setup, we will be using Ubuntu 18.04. Install either g++ or clang++ using apt.
-`sudo apt-get install clang++ g++`
+
+`sudo apt-get install g++`
+
+`sudo apt-get install cmake`
 
 ## Package manager
 Linux does not need a package manager, besides its own. On Ubuntu:
+
 `sudo apt-get install libsdl2-dev`
+
+`sudo apt-get install libsdl2-ttf-dev`
+
+`sudo apt-get install libsdl2-image-dev`
 
 `sudo apt-get install libbox2d-dev`
 
@@ -31,9 +39,11 @@ You have to use *vcpkg* for both SDL2, and Box2D.
 
 Inside your vcpkg folder run:
 
-`./vcpkg install SDL2`
+`./vcpkg install sdl2`
 
-`./vcpkg install Box2D`
+`./vcpkg install sdl2-ttf`
+
+`./vcpkg install box2d`
 
 ## Building
 Once you have everything installed, open the project folder and run the following commands in the terminal:
