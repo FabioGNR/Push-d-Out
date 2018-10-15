@@ -45,8 +45,7 @@ void GameState::render(engine::IRenderer& renderer)
     m_ecsWorld.render(renderer);
 }
 
-void GameState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> &keymap)
+void GameState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>>& /*keymap*/)
 {
-    m_keymap = keymap;
 }
 }

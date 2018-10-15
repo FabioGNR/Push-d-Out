@@ -17,7 +17,6 @@ private:
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     engine::physics::World* m_world;
     engine::ecs::World m_ecsWorld;
-    std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> m_keymap;
 
 public:
     explicit GameState(engine::IGame& game);

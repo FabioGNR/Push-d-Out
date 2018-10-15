@@ -75,10 +75,6 @@ void MainMenuState::init()
 
 void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
 {
-    // check if map contains input for 'SPACE'
-    if (m_keymap.find(engine::input::SPACE) != m_keymap.end()) {
-        m_context.next(std::make_shared<GameState>(m_context));
-    }
 }
 
 void MainMenuState::render(engine::IRenderer& renderer)
@@ -87,8 +83,11 @@ void MainMenuState::render(engine::IRenderer& renderer)
     m_system->draw(uiRenderer, common::Vector2D<int>(1280, 768));
 }
 
-void MainMenuState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> &keymap)
+void MainMenuState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>>& keymap)
 {
-    m_keymap = keymap;
+    // check if map contains input for 'SPACE'
+    if (keymap.find(engine::input::SPACE) != keymap.end()) {
+        m_context.next(std::make_shared<GameState>(m_context));
+    }
 }
 }

@@ -9,7 +9,6 @@ namespace game {
 class MainMenuState : public engine::State, engine::input::IObserver {
 private:
     std::unique_ptr<engine::ui::UISystem> m_system;
-    std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> m_keymap;
 
 public:
     explicit MainMenuState(engine::IGame& game);
