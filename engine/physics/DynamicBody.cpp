@@ -4,19 +4,19 @@
 
 namespace engine {
 namespace physics {
-    DynamicBody::DynamicBody(double x, double y, double width, double height, World& world)
-        : Body(x, y, width, height, world)
+    DynamicBody::DynamicBody(common::Vector2D position, common::Vector2D dimension, World& world)
+        : Body(position, dimension, world)
     {
         b2BodyDef bodyDef;
         // You must set the body type to b2_dynamicBody if you want the body to move in response to forces
         bodyDef.type = b2_dynamicBody;
-        bodyDef.position.Set((float32)x, (float32)y);
+        bodyDef.position.Set((float32)position.x, (float32)position.y);
         bodyDef.fixedRotation = true;
 
         // create new body from world object
         b2Body* b2Body = m_world.m_b2World->CreateBody(&bodyDef);
         b2PolygonShape dynamicBox; // set height and width
-        dynamicBox.SetAsBox((float32)width / 2.0f, (float32)height / 2.0f);
+        dynamicBox.SetAsBox((float32)dimension.x / 2.0f, (float32)dimension.y / 2.0f);
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &dynamicBox;

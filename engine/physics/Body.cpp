@@ -14,9 +14,9 @@ namespace physics {
          * @param unitSize  size of 1 unit
          * @param world     Box2D's world object
          */
-    Body::Body(double x, double y, double width, double height, World& world)
-        : m_position{ common::Vector2D(x, y) }
-        , m_dimensions{ common::Vector2D(width, height) }
+    Body::Body(common::Vector2D position, common::Vector2D dimension, World& world)
+        : m_position{ position }
+        , m_dimensions{ dimension }
         , m_world{ world }
     {
     }

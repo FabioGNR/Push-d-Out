@@ -45,9 +45,9 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    const Body* World::createStaticBody(int x, int y, int width, int height)
+    const Body* World::createStaticBody(common::Vector2D position, common::Vector2D dimension)
     {
-        auto body = new StaticBody(x, y, width, height, *this);
+        auto body = new StaticBody(position, dimension, *this);
         m_bodies.push_back(body); // save body
         return body;
     }
@@ -59,9 +59,9 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    const Body* World::createDynamicBody(int x, int y, int width, int height)
+    const Body* World::createDynamicBody(common::Vector2D position, common::Vector2D dimension)
     {
-        auto body = new DynamicBody(x, y, width, height, *this);
+        auto body = new DynamicBody(position, dimension, *this);
         m_bodies.push_back(body); // save body
         return body;
     }

@@ -14,7 +14,7 @@ namespace physics {
         b2Body* m_body;
 
     public:
-        StaticBody(double x, double y, double width, double height, World& world);
+        StaticBody(common::Vector2D position, common::Vector2D dimension, World& world);
 
         void update() override;
 

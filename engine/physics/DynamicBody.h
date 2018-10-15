@@ -14,7 +14,7 @@ namespace physics {
         b2Body* m_body;
 
     public:
-        DynamicBody(double x, double y, double width, double height, World& world);
+        DynamicBody(common::Vector2D position, common::Vector2D, World& world);
 
         ~DynamicBody() override;
 

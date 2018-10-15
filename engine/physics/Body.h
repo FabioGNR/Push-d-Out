@@ -17,7 +17,7 @@ namespace physics {
         World& m_world;
 
     public:
-        Body(double x, double y, double width, double height, World& world);
+        Body(common::Vector2D position, common::Vector2D dimension, World& world);
         virtual ~Body() = default;
 
         virtual void update() = 0;
