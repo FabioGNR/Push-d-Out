@@ -8,14 +8,14 @@
 
 namespace game {
 namespace systems {
-    void RenderSystem::update(std::chrono::nanoseconds timeStep)
+    void RenderSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         world.forEachEntityWith<components::PositionComponent, components::DimensionComponent>([&](engine::ecs::Entity& entity) {
             auto& positionComponent = world.getComponent<components::PositionComponent>(entity);
             auto& dimensionComponent = world.getComponent<components::DimensionComponent>(entity);
 
-            common::Vector2D position{ positionComponent.x * m_unitSize, positionComponent.y * m_unitSize };
-            common::Vector2D size{ dimensionComponent.width * m_unitSize, dimensionComponent.height * m_unitSize };
+            common::Vector2D position{ positionComponent.position.x * m_unitSize, positionComponent.position.y * m_unitSize };
+            common::Vector2D size{ dimensionComponent.dimension.x * m_unitSize, dimensionComponent.dimension.y * m_unitSize };
             engine::Color color{ rand() % 255, rand() % 255, rand() % 255, 100 };
 
             engine::RectangleShape shape{ position, size, color };

@@ -71,7 +71,7 @@ void MainMenuState::init()
     m_system->push(frame);
 }
 
-void MainMenuState::update(std::chrono::nanoseconds timeStep)
+void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
 {
     auto now = std::chrono::steady_clock::now();
     if (now - m_started >= std::chrono::seconds(10s)) {
