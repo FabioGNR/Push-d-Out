@@ -1,9 +1,9 @@
 #pragma once
 
-#include "InputHandeling/IObserver.h"
+#include "input/IObserver.h"
 
-class InputObserver : public IObserver {
+class InputObserver : public engine::input::IObserver {
 private:
 public:
-    void update(std::map<Keys, IControlEvent *> &keyMap) override;
+    void update(std::map<engine::input::Keys, engine::events::IControlEvent *> &keyMap) override;
 };

@@ -23,27 +23,28 @@ set(PHYSICS_SRC
         )
 
 set(INPUT_SRC
-        InputHandeling/InputManager.cpp
-        InputHandeling/InputManager.h
-        InputHandeling/Keys.h
-        InputHandeling/IObserver.h
+        input/InputManager.cpp
+        input/InputManager.h
+        input/Keys.h
+        input/IObserver.h
+        input/SDLKeyMap.cpp
+        input/SDLKeyMap.h
         )
 
 set(EVENTS_SRC
-        SDLAdapters/SDLKeyMap.cpp SDLAdapters/SDLKeyMap.h
-        SDLAdapters/SDLEventAdapter.cpp
-        SDLAdapters/SDLEventAdapter.h
-        EventHandling/EventManager.cpp
-        EventHandling/EventManager.h
-        EventHandling/Events/IControlEvent.h
-        EventHandling/Events/IOtherEvent.h
-        EventHandling/Events/QuitEvent.cpp
-        EventHandling/Events/QuitEvent.h
-        EventHandling/Events/UnknownEvent.cpp
-        EventHandling/Events/UnknownEvent.h
-        EventHandling/Events/IEvent.h
-        EventHandling/Events/KeyEvent.cpp
-        EventHandling/Events/KeyEvent.h
+        events/SDLEventAdapter.cpp
+        events/SDLEventAdapter.h
+        events/EventManager.cpp
+        events/EventManager.h
+        events/models/IControlEvent.h
+        events/models/IOtherEvent.h
+        events/models/QuitEvent.cpp
+        events/models/QuitEvent.h
+        events/models/UnknownEvent.cpp
+        events/models/UnknownEvent.h
+        events/models/IEvent.h
+        events/models/KeyEvent.cpp
+        events/models/KeyEvent.h
         )
 
 set(WINDOW_SRC

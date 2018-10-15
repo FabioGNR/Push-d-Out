@@ -1,4 +1,4 @@
-#include "engine/EventHandling/EventManager.h"
+#include "engine/events/EventManager.h"
 #include "engine/window/SDLWindow.h"
 #include "physics/PhysicsManager.h"
 #include "InputObserver.h"
@@ -19,16 +19,14 @@ int main(int, char**)
     //pm.doPhysics();
 
     bool runGame = true;
-    EventManager em;
-    InputManager* im = em.getInput();
-    InputObserver* io = new InputObserver();
+    engine::events::EventManager em;
+    auto* im = em.getInput();
+    auto* io = new InputObserver();
     im->subscribe(io);
 
     while (runGame) {
         runGame = em.getEvents();
-        ///std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         im->notify();
-        //runGame = evtManager->processEvents();
     }
     return 0;
 }
