@@ -1,10 +1,10 @@
-#include "SDLEventManager.h"
+#include "SDLEventHandler.h"
 #include <events/models/KeyEvent.h>
 #include <events/models/QuitEvent.h>
 
 namespace engine {
 namespace events {
-    std::vector<std::shared_ptr<IEvent>> SDLEventManager::getEvents()
+    std::vector<std::shared_ptr<IEvent>> SDLEventHandler::getEvents()
     {
         std::vector<std::shared_ptr<IEvent>> events;
         SDL_Event event;
@@ -15,7 +15,7 @@ namespace events {
         return events;
     }
 
-    std::shared_ptr<IEvent> SDLEventManager::mapEvent(SDL_Event event)
+    std::shared_ptr<IEvent> SDLEventHandler::mapEvent(SDL_Event event)
     {
         switch (event.type) {
         case SDL_QUIT:

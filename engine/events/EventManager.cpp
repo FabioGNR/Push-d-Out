@@ -6,8 +6,7 @@ namespace engine {
 namespace events {
     bool EventManager::getEvents()
     {
-        SDLEventManager eventAdapter;
-        std::vector<std::shared_ptr<IEvent>> events = eventAdapter.getEvents();
+        std::vector<std::shared_ptr<IEvent>> events = m_handler->getEvents();
 
         m_inputManager.startInput();
         for (const auto& event : events) {

@@ -1,15 +1,17 @@
 #pragma once
 
+#include "IEventHandler.h"
 #include "input/SDLKeys.h"
 #include <vector>
 
 namespace engine {
 namespace events {
-    class SDLEventManager {
+    class SDLEventHandler : public IEventHandler {
     private:
         std::shared_ptr<IEvent> mapEvent(SDL_Event event);
+
     public:
-        std::vector<std::shared_ptr<IEvent>> getEvents();
+        std::vector<std::shared_ptr<IEvent>> getEvents() override;
     };
 }
 }

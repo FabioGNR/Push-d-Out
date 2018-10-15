@@ -1,10 +1,11 @@
 #include "Game.h"
 #include <common/Vector2D.h>
 #include <events/EventManager.h>
-#include <input/InputManager.h>
+#include <events/SDLEventHandler.h>
 #include <game/states/GameState.h>
 #include <graphics/SDL/SDLRenderer.h>
 #include <graphics/drawable/RectangleShape.h>
+#include <input/InputManager.h>
 #include <window/SDLWindow.h>
 #include <window/Window.h>
 
@@ -13,7 +14,7 @@ Game::Game(engine::WindowProperties& properties)
     : IGame()
 {
     m_window = std::make_unique<engine::SDLWindow>(properties);
-    m_eventManager = std::make_unique<engine::events::EventManager>();
+    m_eventManager = std::make_unique<engine::events::EventManager>(std::make_unique<engine::events::SDLEventHandler>());
     m_renderer = std::make_unique<engine::SDLRenderer>(*(engine::SDLWindow*)m_window.get());
 }
 

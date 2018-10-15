@@ -79,8 +79,9 @@ set(INPUT_SRC
         )
 
 set(EVENTS_SRC
-        events/SDLEventManager.cpp
-        events/SDLEventManager.h
+        events/IEventHandler.h
+        events/SDLEventHandler.cpp
+        events/SDLEventHandler.h
         events/EventManager.cpp
         events/EventManager.h
         events/models/IControlEvent.h
