@@ -8,8 +8,8 @@ namespace physics {
     class World;
     class Body {
     protected:
-        common::Vector2D m_position;
-        common::Vector2D m_dimensions;
+        common::Vector2D<double> m_position;
+        common::Vector2D<double> m_dimensions;
 
         double m_angle = 0;
         int m_unitSize;
@@ -17,18 +17,18 @@ namespace physics {
         World& m_world;
 
     public:
-        Body(common::Vector2D position, common::Vector2D dimension, World& world);
+        Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
         virtual ~Body() = default;
 
         virtual void update() = 0;
 
-        virtual const common::Vector2D getPosition() const;
-        virtual const common::Vector2D getDimensions() const;
-        virtual const common::Vector2D getCenterPoint() const;
+        virtual const common::Vector2D<double> getPosition() const;
+        virtual const common::Vector2D<double> getDimensions() const;
+        virtual const common::Vector2D<double> getCenterPoint() const;
 
         virtual double getAngle() const;
 
-        virtual void applyForce(const common::Vector2D& force, const common::Vector2D& point) = 0;
+        virtual void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) = 0;
     };
 }
 }

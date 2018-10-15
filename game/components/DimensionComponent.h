@@ -6,9 +6,9 @@
 namespace game {
 namespace components {
     struct DimensionComponent : public engine::ecs::BaseComponent<DimensionComponent> {
-        common::Vector2D dimension;
+        common::Vector2D<double> dimension;
 
-        DimensionComponent(common::Vector2D vector)
+        DimensionComponent(common::Vector2D<double> vector)
             : dimension(vector) {};
     };
 }

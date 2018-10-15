@@ -14,9 +14,9 @@ namespace ui {
         {
         }
 
-        common::Vector2D calculateSize(common::Vector2D availableSize) const override;
+        common::Vector2D<int> calculateSize(common::Vector2D<int> availableSize) const override;
 
-        common::Vector2D sumRelativeSize() const;
+        common::Vector2D<double> sumRelativeSize() const;
 
         DrawContext draw(DrawContext context) override;
 

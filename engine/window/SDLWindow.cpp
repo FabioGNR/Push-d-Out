@@ -50,8 +50,8 @@ int SDLWindow::getPosition(int coord) const
     return coord;
 }
 
-const common::Vector2D SDLWindow::getDimensions() const
+const common::Vector2D<int> SDLWindow::getDimensions() const
 {
-    return common::Vector2D(m_properties.width, m_properties.height);
+    return common::Vector2D<int>(m_properties.width, m_properties.height);
 }
 }

@@ -19,7 +19,7 @@ GameState::GameState(engine::IGame& game)
 {
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
     themes::Theme theme = themes::Earth{};
-    m_world = m_physicsManager->createWorld(common::Vector2D(40, 24), theme.getGravity(), theme.getFriction());
+    m_world = m_physicsManager->createWorld(common::Vector2D<int>(40, 24), theme.getGravity(), theme.getFriction());
 
     dynamic_cast<Game&>(game).getInputManager()->subscribe(this);
 }

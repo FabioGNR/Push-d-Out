@@ -4,7 +4,7 @@
 
 namespace engine {
 namespace physics {
-    StaticBody::StaticBody(common::Vector2D position, common::Vector2D dimension, World& world)
+    StaticBody::StaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
         : Body(position, dimension, world)
     {
         b2BodyDef groundBodyDef; // set position
@@ -29,14 +29,14 @@ namespace physics {
     void StaticBody::update()
     {
         // 1 unit = 1 meter, 16 pixels are 1 unit
-        m_position.x = m_body->GetPosition().x;
-        m_position.y = m_body->GetPosition().y;
+        m_position.x = static_cast<double>(m_body->GetPosition().x);
+        m_position.y = static_cast<double>(m_body->GetPosition().y);
 
         m_angle = m_body->GetAngle();
     }
 
-    void StaticBody::applyForce(const common::Vector2D& /* force */,
-        const common::Vector2D& /* point */)
+    void StaticBody::applyForce(const common::Vector2D<double>& /* force */,
+        const common::Vector2D<double>& /* point */)
     {
         // don't apply forces.
     }

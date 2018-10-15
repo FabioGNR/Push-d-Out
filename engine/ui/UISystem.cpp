@@ -10,7 +10,7 @@ namespace ui {
         }
     }
 
-    void UISystem::draw(UIRenderer& renderer, common::Vector2D screenSize)
+    void UISystem::draw(UIRenderer& renderer, common::Vector2D<int> screenSize)
     {
         if (!m_frames.empty()) {
             Frame& currentFrame = m_frames.top();

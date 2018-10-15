@@ -12,7 +12,7 @@ namespace ui {
         if (context.focusedComponent.get() == this) {
             btnColor.r = 0;
         }
-        common::Vector2D calculatedSize = calculateSize(context.availableSize);
+        common::Vector2D<int> calculatedSize = calculateSize(context.availableSize);
         RectangleShape shape{ context.pos, calculatedSize, btnColor };
 
         context.renderer.draw(shape);
@@ -22,11 +22,11 @@ namespace ui {
         return context;
     }
 
-    common::Vector2D Button::calculateSize(common::Vector2D availableSize) const
+    common::Vector2D<int> Button::calculateSize(common::Vector2D<int> availableSize) const
     {
         // add availableSize required for text
-        common::Vector2D requiredSize = calculateTextSize();
-        common::Vector2D size = m_size.getSize(requiredSize, availableSize);
+        common::Vector2D<int> requiredSize = calculateTextSize();
+        common::Vector2D<int> size = m_size.getSize(requiredSize, availableSize);
         return size;
     }
 

@@ -9,7 +9,7 @@ namespace ui {
     public:
         explicit TextComponent(const std::string& text, int textSize = 14)
             : m_font{
-                "assets/fonts/Pixeled.ttf", text, textSize, Color(), common::Vector2D(0,0)
+                "assets/fonts/Pixeled.ttf", text, textSize, Color(), common::Vector2D<int>(0,0)
             }
         {
         }
@@ -19,7 +19,7 @@ namespace ui {
 
     protected:
         Font m_font;
-        common::Vector2D calculateTextSize() const;
+        common::Vector2D<int> calculateTextSize() const;
     };
 }
 }

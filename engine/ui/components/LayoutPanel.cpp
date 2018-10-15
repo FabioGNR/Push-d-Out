@@ -13,26 +13,26 @@ namespace ui {
     {
         DrawContext compositeContext{ context };
         DrawContext childContext{ context };
-        childContext.availableSize = context.availableSize / sumRelativeSize();
+        childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
         for (const auto& component : m_components) {
-            common::Vector2D childPosition = getChildPosition(component,
+            common::Vector2D<int> childPosition = getChildPosition(component,
                 childContext.availableSize,
                 context.availableSize);
 
             childContext.pos = childPosition + context.pos;
             DrawContext updatedContext = component->draw(childContext);
-            compositeContext.pos = compositeContext.pos.max(updatedContext.pos);
+            compositeContext.pos = common::Vector2D<int>::max(compositeContext.pos, updatedContext.pos);
         }
         return compositeContext;
     }
 
-    common::Vector2D LayoutPanel::calculateSize(common::Vector2D availableSize) const
+    common::Vector2D<int> LayoutPanel::calculateSize(common::Vector2D<int> availableSize) const
     {
-        common::Vector2D requiredSize{ 0, 0 };
-        common::Vector2D availableChildSize = availableSize / sumRelativeSize();
+        common::Vector2D<int> requiredSize{ 0, 0 };
+        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
-            common::Vector2D componentSize = component->getComponent()->calculateSize(availableChildSize);
+            common::Vector2D<int> componentSize = component->getComponent()->calculateSize(availableChildSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
                 requiredSize.y = std::max(requiredSize.y, componentSize.y);
@@ -44,10 +44,10 @@ namespace ui {
         return m_size.getSize(requiredSize, availableSize);
     }
 
-    common::Vector2D LayoutPanel::sumRelativeSize() const
+    common::Vector2D<double> LayoutPanel::sumRelativeSize() const
     {
-        common::Vector2D minimumSize{ 1, 1 };
-        common::Vector2D sum{ 1, 1 };
+        common::Vector2D<int> minimumSize{ 1, 1 };
+        common::Vector2D<double> sum{ 1, 1 };
         for (const auto& component : m_components) {
             sum += component->getComponent()->getSize().getRelativeRatio();
         }
@@ -56,15 +56,15 @@ namespace ui {
         } else {
             sum.y = 1;
         }
-        return sum.max(minimumSize);
+        return common::Vector2D<double>::max(sum, minimumSize.castTo<double>());
     }
 
-    common::Vector2D LayoutPanel::getChildPosition(std::shared_ptr<WrappedComponent> component,
-        common::Vector2D availableSize,
-        common::Vector2D parentSize) const
+    common::Vector2D<int> LayoutPanel::getChildPosition(std::shared_ptr<WrappedComponent> component,
+        common::Vector2D<int> availableSize,
+        common::Vector2D<int> parentSize) const
     {
-        common::Vector2D position{ 0, 0 };
-        common::Vector2D calculatedSize = component->getComponent()->calculateSize(availableSize);
+        common::Vector2D<int> position{ 0, 0 };
+        common::Vector2D<int> calculatedSize = component->getComponent()->calculateSize(availableSize);
 
         switch (component->getAnchor()) {
         case LayoutAnchor::Start:

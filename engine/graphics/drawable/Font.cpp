@@ -4,7 +4,7 @@
 
 namespace engine {
 
-Font::Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D position)
+Font::Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D<int> position)
     : m_fontPath(fontPath)
     , m_text(text)
     , m_fontSize(fontSize)
@@ -28,7 +28,7 @@ const std::string& Font::fontPath() const
     return m_fontPath;
 }
 
-common::Vector2D Font::position() const
+common::Vector2D<int> Font::position() const
 {
     return m_position;
 }
@@ -48,7 +48,7 @@ void Font::setFontSize(int fontSize)
     m_fontSize = fontSize;
 }
 
-void Font::setPosition(common::Vector2D position)
+void Font::setPosition(common::Vector2D<int> position)
 {
     m_position = position;
 }

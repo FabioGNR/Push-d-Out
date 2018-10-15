@@ -14,13 +14,13 @@ namespace physics {
         b2Body* m_body;
 
     public:
-        StaticBody(common::Vector2D position, common::Vector2D dimension, World& world);
+        StaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
 
         void update() override;
 
         ~StaticBody() override;
 
-        void applyForce(const common::Vector2D& force, const common::Vector2D& point) override;
+        void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) override;
     };
 }
 }
