@@ -32,8 +32,8 @@ namespace physics {
         const common::Vector2D<double> getGravity() const;
         const common::Vector2D<double> getFriction() const;
         const common::Vector2D<int> getSize() const;
-        const Body* createStaticBody(int x, int y, int width, int height);
-        const Body* createDynamicBody(int x, int y, int width, int height);
+        const Body* createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
+        const Body* createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
         const std::vector<Body*> getBodies() const;
 
         b2World* m_b2World;
