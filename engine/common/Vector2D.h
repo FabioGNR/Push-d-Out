@@ -122,18 +122,18 @@ struct Vector2D {
     }
 
     // mathematical properties
-    Vector2D max(Vector2D other)
+    static Vector2D max(Vector2D left, Vector2D& right)
     {
-        other.x = std::max(x, other.x);
-        other.y = std::max(y, other.y);
-        return other;
+        left.x = std::max(left.x, right.x);
+        left.y = std::max(left.y, right.y);
+        return left;
     }
 
-    Vector2D min(Vector2D other)
+    static Vector2D min(Vector2D left, Vector2D& right)
     {
-        other.x = std::min(x, other.x);
-        other.y = std::min(y, other.y);
-        return other;
+        left.x = std::min(left.x, right.x);
+        left.y = std::min(left.y, right.y);
+        return left;
     }
 
     double magnitude() const {
