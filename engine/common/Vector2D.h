@@ -13,8 +13,7 @@ struct Vector2D {
 
     int PRECISION = 1000000;
 
-
-    explicit Vector2D(T x1, T y1)
+    Vector2D(T x1, T y1)
         : x{ x1 }
         , y{ y1 }
     {
@@ -112,11 +111,11 @@ struct Vector2D {
         return left;
     }
 
-    friend bool operator==(const Vector2D<T>& left, const Vector2D<T>& right) {
+    friend bool operator==(const Vector2D& left, const Vector2D& right) {
         auto returnValue = (left.x == right.x && left.y == right.y);
         return returnValue;
     }
-    friend bool operator!=(const Vector2D<T>& left, const Vector2D<T>& right) {
+    friend bool operator!=(const Vector2D& left, const Vector2D& right) {
         auto returnValue = left.x != right.x || left.y != right.y;
         return returnValue;
     }
