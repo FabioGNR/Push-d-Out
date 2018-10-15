@@ -11,7 +11,7 @@ namespace input {
     class IObserver {
 
     public:
-        virtual void update(std::map<Keys, events::IControlEvent*>& keyMap) = 0;
+        virtual void onInputUpdate(std::map<Keys, events::IControlEvent *> &keyMap) = 0;
     };
 }
 }

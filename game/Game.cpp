@@ -23,6 +23,7 @@ void Game::init()
 
 void Game::onUpdate(std::chrono::nanoseconds timeStep)
 {
+    m_eventManager->getInput().notify();
     if (!m_eventManager->getEvents()) {
         stop();
     }
@@ -36,8 +37,8 @@ void Game::onRender()
     m_renderer->show();
 }
 
-const engine::input::InputManager& Game::getInputManager()
+engine::input::InputManager* Game::getInputManager()
 {
-    return m_eventManager->getInput();
+    return &m_eventManager->getInput();
 }
 }

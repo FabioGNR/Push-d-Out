@@ -3,12 +3,13 @@
 #include <chrono>
 #include <engine/ui/UISystem.h>
 #include <game/State.h>
+#include <input/IObserver.h>
 
 namespace game {
-class MainMenuState : public engine::State {
+class MainMenuState : public engine::State, engine::input::IObserver {
 private:
     std::unique_ptr<engine::ui::UISystem> m_system;
-    std::chrono::time_point<std::chrono::steady_clock> m_started;
+    std::map<engine::input::Keys, engine::events::IControlEvent*> m_keymap;
 
 public:
     explicit MainMenuState(engine::IGame& game);
@@ -16,5 +17,8 @@ public:
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
     void render(engine::IRenderer& renderer) override;
+
+private:
+    void onInputUpdate(std::map<engine::input::Keys, engine::events::IControlEvent *> &keyMap) override;
 };
 }

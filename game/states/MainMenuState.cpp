@@ -1,8 +1,9 @@
 #include "MainMenuState.h"
 #include "GameState.h"
+#include "game/Game.h"
 #include <engine/common/Vector2D.h>
-#include <engine/game/State.h>
 #include <engine/game/IGame.h>
+#include <engine/game/State.h>
 #include <engine/ui/components/Button.h>
 #include <engine/ui/components/Label.h>
 #include <engine/ui/components/LayoutPanel.h>
@@ -15,7 +16,8 @@ MainMenuState::MainMenuState(engine::IGame& game)
     : engine::State(game)
 {
     m_system = std::make_unique<engine::ui::UISystem>();
-    m_started = std::chrono::steady_clock::now();
+
+    dynamic_cast<Game&>(game).getInputManager()->subscribe(this);
 }
 
 void MainMenuState::init()
@@ -73,8 +75,8 @@ void MainMenuState::init()
 
 void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
 {
-    auto now = std::chrono::steady_clock::now();
-    if (now - m_started >= std::chrono::seconds(10s)) {
+    // check if map contains input for 'SPACE'
+    if (m_keymap.find(engine::input::SPACE) != m_keymap.end()) {
         m_context.next(std::make_shared<GameState>(m_context));
     }
 }
@@ -83,5 +85,10 @@ void MainMenuState::render(engine::IRenderer& renderer)
 {
     auto uiRenderer = engine::ui::UIRenderer{ renderer };
     m_system->draw(uiRenderer, common::Vector2D(1280, 768));
+}
+
+void MainMenuState::onInputUpdate(std::map<engine::input::Keys, engine::events::IControlEvent*>& keyMap)
+{
+    m_keymap = keyMap;
 }
 }

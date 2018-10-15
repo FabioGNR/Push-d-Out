@@ -24,7 +24,7 @@ namespace input {
             return;
         }
         for (auto& observer : observers) {
-            observer->update(*keyMap);
+            observer->onInputUpdate(*keyMap);
         }
     }
 }

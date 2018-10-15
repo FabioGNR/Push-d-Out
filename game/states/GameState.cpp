@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "game/Game.h"
 #include "game/systems/RenderSystem.h"
 #include <engine/physics/Body.h>
 #include <game/components/DimensionComponent.h>
@@ -19,6 +20,8 @@ GameState::GameState(engine::IGame& game)
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
     themes::Theme theme = themes::Earth{};
     m_world = m_physicsManager->createWorld(common::Vector2D(40, 24), theme.getGravity(), theme.getFriction());
+
+    dynamic_cast<Game&>(game).getInputManager()->subscribe(this);
 }
 
 void GameState::init()
@@ -40,5 +43,10 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 void GameState::render(engine::IRenderer& renderer)
 {
     m_ecsWorld.render(renderer);
+}
+
+void GameState::onInputUpdate(std::map<engine::input::Keys, engine::events::IControlEvent*>& keyMap)
+{
+    m_keymap = keyMap;
 }
 }

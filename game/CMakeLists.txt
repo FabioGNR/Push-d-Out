@@ -1,6 +1,4 @@
 set(GAME_SRC
-        InputObserver.cpp
-        InputObserver.h
         main.cpp
         level/levelReader/LevelReader.h
         level/levelReader/LevelReader.cpp
