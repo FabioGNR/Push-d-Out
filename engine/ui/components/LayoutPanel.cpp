@@ -21,7 +21,7 @@ namespace ui {
 
             childContext.pos = childPosition + context.pos;
             DrawContext updatedContext = component->draw(childContext);
-            compositeContext.pos = compositeContext.pos.max(updatedContext.pos);
+            compositeContext.pos = common::Vector2D::max(compositeContext.pos, updatedContext.pos);
         }
         return compositeContext;
     }
@@ -56,7 +56,7 @@ namespace ui {
         } else {
             sum.y = 1;
         }
-        return sum.max(minimumSize);
+        return common::Vector2D::max(sum, minimumSize);
     }
 
     common::Vector2D LayoutPanel::getChildPosition(std::shared_ptr<WrappedComponent> component,

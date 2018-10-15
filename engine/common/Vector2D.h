@@ -122,18 +122,19 @@ struct Vector2D {
     }
 
     // mathematical properties
-    Vector2D max(Vector2D<T> other)
+    static Vector2D<T> max(Vector2D<T> left,const Vector2D<T>& right)
     {
-        other.x = std::max(x, other.x);
-        other.y = std::max(y, other.y);
-        return other;
+        static_assert(std::is_arithmetic<T>(), "Vector2D can only use arithmetic types");
+        left.x = std::max(left.x, right.x);
+        left.y = std::max(left.y, right.y);
+        return left;
     }
 
-    Vector2D min(Vector2D<T> other)
+    static Vector2D<T> min(Vector2D<T> left, const Vector2D<T>& right)
     {
-        other.x = std::min(x, other.x);
-        other.y = std::min(y, other.y);
-        return other;
+        left.x = std::min(left.x, right.x);
+        left.y = std::min(left.y, right.y);
+        return left;
     }
 
     T magnitude() const {

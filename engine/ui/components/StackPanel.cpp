@@ -55,7 +55,7 @@ namespace ui {
         } else {
             sum.y = 1;
         }
-        return sum.max(minimumSize);
+        return common::Vector2D::max(sum, minimumSize);
     }
 
     std::shared_ptr<Component> StackPanel::getNavigatableAt(size_t index) const
