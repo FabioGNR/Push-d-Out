@@ -2,59 +2,56 @@
 #include <algorithm>
 #include <cmath>
 #include <ostream>
+#include <iostream>
+#include <type_traits>
 
 namespace common {
+template <class T>
 struct Vector2D {
-    double x;
-    double y;
+    T x;
+    T y;
 
-    explicit Vector2D(double x1, double y1)
+    int PRECISION = 1000000;
+
+
+    explicit Vector2D(T x1, T y1)
         : x{ x1 }
         , y{ y1 }
     {
-    }
-
-    int x_int()
-    {
-        return static_cast<int>(x);
-    }
-
-    int y_int()
-    {
-        return static_cast<int>(y);
+        static_assert(std::is_arithmetic<T>(), "Vector2D can only be created with arithmetic types");
     }
 
     // basic arithmetic functions
-    Vector2D& operator+=(const Vector2D& other)
+    Vector2D<T>& operator+=(const Vector2D<T>& other)
     {
         x += other.x;
         y += other.y;
         return *this;
     }
 
-    friend Vector2D operator+(Vector2D left,
-        const Vector2D& right)
+    friend Vector2D<T> operator+(Vector2D<T> left,
+        const Vector2D<T>& right)
     {
         left.x += right.x;
         left.y += right.y;
         return left;
     }
 
-    Vector2D& operator*=(double factor)
+    Vector2D<T>& operator*=(double factor)
     {
         x *= factor;
         y *= factor;
         return *this;
     }
 
-    Vector2D& operator*=(const Vector2D& other)
+    Vector2D<T>& operator*=(const Vector2D<T>& other)
     {
         x *= other.x;
         y *= other.y;
         return *this;
     }
 
-    friend Vector2D operator*(Vector2D left,
+    friend Vector2D<T> operator*(Vector2D<T> left,
         double factor)
     {
         left.x *= factor;
@@ -62,29 +59,29 @@ struct Vector2D {
         return left;
     }
 
-    friend Vector2D operator*(Vector2D left,
-        const Vector2D& right)
+    friend Vector2D<T> operator*(Vector2D<T> left,
+        const Vector2D<T>& right)
     {
         left.x *= right.x;
         left.y *= right.y;
         return left;
     }
 
-    Vector2D& operator/=(double factor)
+    Vector2D<T>& operator/=(double factor)
     {
         x /= factor;
         y /= factor;
         return *this;
     }
 
-    Vector2D& operator/=(const Vector2D& other)
+    Vector2D<T>& operator/=(const Vector2D<T>& other)
     {
         x /= other.x;
         y /= other.y;
         return *this;
     }
 
-    friend Vector2D operator/(Vector2D left,
+    friend Vector2D<T> operator/(Vector2D<T> left,
         const Vector2D& right)
     {
         left.x /= right.x;
@@ -92,7 +89,7 @@ struct Vector2D {
         return left;
     }
 
-    friend Vector2D operator/(Vector2D left,
+    friend Vector2D<T> operator/(Vector2D<T> left,
         double factor)
     {
         left.x /= factor;
@@ -100,73 +97,76 @@ struct Vector2D {
         return left;
     }
 
-    Vector2D& operator-=(const Vector2D& other)
+    Vector2D<T>& operator-=(const Vector2D<T>& other)
     {
         x -= other.x;
         y -= other.y;
         return *this;
     }
 
-    friend Vector2D operator-(Vector2D left,
-                              const Vector2D& right)
+    friend Vector2D<T> operator-(Vector2D<T> left,
+                              const Vector2D<T>& right)
     {
         left.x -= right.x;
         left.y -= right.y;
         return left;
     }
 
-    friend bool operator==(const Vector2D left, const Vector2D& right) {
-        return left.x == right.x && left.y == right.y;
+    friend bool operator==(const Vector2D<T>& left, const Vector2D<T>& right) {
+        auto returnValue = (left.x == right.x && left.y == right.y);
+        return returnValue;
     }
-    friend bool operator!=(const Vector2D left, const Vector2D right) {
-        return left.x != right.x || left.y != right.y;
+    friend bool operator!=(const Vector2D<T>& left, const Vector2D<T>& right) {
+        auto returnValue = left.x != right.x || left.y != right.y;
+        return returnValue;
     }
 
     // mathematical properties
-    Vector2D max(Vector2D other)
+    Vector2D max(Vector2D<T> other)
     {
         other.x = std::max(x, other.x);
         other.y = std::max(y, other.y);
         return other;
     }
 
-    Vector2D min(Vector2D other)
+    Vector2D min(Vector2D<T> other)
     {
         other.x = std::min(x, other.x);
         other.y = std::min(y, other.y);
         return other;
     }
 
-    double magnitude() const {
+    T magnitude() const {
         return sqrt(
                 pow(this->x, 2) +
                 pow(this->y, 2));
     }
 
     // Vector mathematics
-    Vector2D rotate(double angle) {
-        double newX = this->x*cos(angle) - this->y*sin(angle);
-        double newY = this->x*sin(angle) - this->y*cos(angle);
-
-        return Vector2D(newX, newY);
+    Vector2D<T> rotateCounterClockwise(double degrees) const {
+        double angle = degrees * (M_PI/180);
+        auto newX = round((this->x*cos(angle) - this->y*sin(angle)) * PRECISION)/PRECISION;
+        auto newY = round((this->x*sin(angle) + this->y*cos(angle)) * PRECISION)/PRECISION;
+        Vector2D<T> returnVector(newX, newY);
+        return returnVector;
     }
 
-    double dotProduct(const Vector2D& other) {
+    T dotProduct(const Vector2D<T>& other) {
         return
             this->x * other.x +
             this->y * other.y;
     }
 
-    double findAngle(const Vector2D& other) {
-        double dot = this->dotProduct(other);
-        double cosAngle = dot/(this->magnitude() * other.magnitude());
+    T findAngle(const Vector2D<T>& other) {
+        T dot = this->dotProduct(other);
+        auto cosAngle = dot/(this->magnitude() * other.magnitude());
         return acos(cosAngle);
     }
-
-};
-    inline std::ostream& operator<<(std::ostream& Str, const Vector2D& v) {
+    inline std::ostream& operator<<(std::ostream& Str) {
         // print something from v to str, e.g: Str << v.getX();
-        Str << "{" << v.x << ", " << v.y << "}";
+        Str << "{" << this->x << ", " << this->y << "}";
         return Str;
     }
+};
+
 }
