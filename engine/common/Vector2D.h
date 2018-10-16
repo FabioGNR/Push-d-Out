@@ -148,6 +148,14 @@ struct Vector2D {
         auto cosAngle = dot/(this->magnitude() * other.magnitude());
         return acos(cosAngle);
     }
+
+    double distance(const Vector2D<T>& other) const {
+        T deltaXSquared = pow(other.x - x, 2);
+        T deltaYSquared = pow(other.y - y, 2);
+        double distance = sqrt(deltaXSquared+deltaYSquared);
+        return distance;
+    }
+
     inline std::ostream& operator<<(std::ostream& Str) {
         // print something from v to str, e.g: Str << v.getX();
         Str << "{" << this->x << ", " << this->y << "}";

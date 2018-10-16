@@ -20,6 +20,8 @@ set(COMPONENT_SRC
         components/BodyComponent.h
         components/DimensionComponent.h
         components/SpriteComponent.h
+        components/InventoryComponent.h
+        components/EquipableComponent.h
         )
 
 set(SYSTEM_SRC
@@ -35,6 +37,8 @@ set(SYSTEM_SRC
         systems/SpriteSystem.h
         systems/RenderSystem.cpp
         systems/RenderSystem.h
+        systems/InventorySystem.cpp
+        systems/InventorySystem.h
         )
 
 set(DEFINITION_SRC
