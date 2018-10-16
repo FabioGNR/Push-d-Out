@@ -15,7 +15,7 @@ namespace definitions {
         Melee,
         GrabItem,
         UseItem,
-        GrabWeapon,
+        PickupEquippable,
         SwitchWeapon,
         UseWeapon,
         UseWeaponAlternative,
