@@ -22,15 +22,15 @@ namespace levelDomain {
     };
 
     struct tile {
-        int x;
-        int y;
+        double x;
+        double y;
         std::string sprite;
         PlatformKind kind;
     };
 
     struct spawnPoint {
-        int x;
-        int y;
+        double x;
+        double y;
     };
 
     struct level {
