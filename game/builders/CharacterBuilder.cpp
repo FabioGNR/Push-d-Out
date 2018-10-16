@@ -10,6 +10,9 @@
 #include "game/systems/PositionSystem.h"
 #include "game/systems/SpriteSystem.h"
 #include <engine/definitions/SystemPriority.h>
+#include <game/components/InventoryComponent.h>
+#include <game/components/WeaponComponent.h>
+#include <game/systems/WeaponSystem.h>
 
 namespace game {
 namespace builders {
@@ -26,6 +29,7 @@ namespace builders {
         m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium);
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
+        m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld);
 
         // Create a dynamic body for the Physics World
         components::BodyComponent bodyComponent { m_physicsWorld.createDynamicBody(position, dimension) };
@@ -48,6 +52,15 @@ namespace builders {
         // Create the sprite component for the player entity
         components::SpriteComponent spriteComponent { "sheet", "spriteName" };
         m_ecsWorld.addComponent<game::components::SpriteComponent>(player, spriteComponent);
+
+        //Creating forcegun entity
+        auto& gunEntity = m_ecsWorld.createEntity();
+        components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
+        m_ecsWorld.addComponent<components::WeaponComponent>(gunEntity, weaponComponent);
+
+        components::InventoryComponent inventoryComponent{};
+        inventoryComponent.activeEquipment.set(&gunEntity);
+        m_ecsWorld.addComponent<components::InventoryComponent>(player, inventoryComponent);
     }
 }
 }

@@ -39,6 +39,8 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
 
     projectileBody->applyForce(common::Vector2D<double>(20, 0), playerPosition);
 
+    std::cout<< "Firing force gun!" << std::endl;
+
     return projectileEntity;
 }
 
@@ -48,10 +50,10 @@ namespace systems {
     WeaponSystem::WeaponSystem(engine::ecs::World &m_ecsWorld, engine::physics::World &m_physicsWorld)
             : m_ecsWorld(m_ecsWorld)
             , m_physicsWorld(m_physicsWorld) {
+        std::cout << "Before inserting in to map" << std::endl;
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
+        std::cout << "After inserting in to map" << std::endl;
     }
-
-
 
     void game::systems::WeaponSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
@@ -60,11 +62,12 @@ namespace systems {
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
             if(inventory.activeEquipment.hasValue()) {
                 engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
-                auto weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
+                auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
                 auto action = definitions::Action::UseWeapon;
+                std::cout << "trying to fire" << std::endl;
                 if(auto control = inputComponent.controls.find(action) != inputComponent.controls.end()) {
                     if(true /*TODO: replace with actual input handling*/) {
-                        auto position = m_ecsWorld.getComponent<PositionComponent>(entity);
+                        auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
                         fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
                     }
                 }
