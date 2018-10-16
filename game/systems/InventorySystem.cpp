@@ -1,5 +1,4 @@
 #include "InventorySystem.h"
-#include "game/components/InventoryComponent.h"
 #include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/definitions/Action.h"
@@ -19,21 +18,36 @@ namespace systems {
                 // determine if control is pressed
                 bool isPressed = false;
                 if (isPressed) {
+                    attemptPickup(entity, inventoryComponent);
                 }
             }
         });
     }
 
-    void InventorySystem::attemptPickup(engine::ecs::Entity& player) const
+    void InventorySystem::attemptPickup(engine::ecs::Entity& player, InventoryComponent& inventoryComponent)
     {
+        double equipableCandidateDistance = -1;
+        engine::ecs::Entity* equipableCandidate = nullptr;
         m_world.forEachEntityWith<EquipableComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             const auto& playerPosition = m_world.getComponent<PositionComponent>(player).position;
-            const auto& equippablePosition = m_world.getComponent<PositionComponent>(entity).position;
-            const auto distance = playerPosition.distance(equippablePosition);
-            if (distance < 10) {
-                // pick up
+            const auto& equipablePosition = m_world.getComponent<PositionComponent>(entity).position;
+            const auto distance = playerPosition.distance(equipablePosition);
+            if (distance < PICKUP_RANGE) {
+                if(distance < equipableCandidateDistance || equipableCandidate == nullptr) {
+                    equipableCandidateDistance = distance;
+                    equipableCandidate = &entity;
+                }
             }
         });
+        if(equipableCandidate != nullptr) {
+            m_world.removeComponent<EquipableComponent>(*equipableCandidate);
+            if(inventoryComponent.otherEquipment.hasItem()) {
+                inventoryComponent.activeEquipment.set(equipableCandidate);
+            }
+            else {
+                inventoryComponent.otherEquipment.set(equipableCandidate);
+            }
+        }
     }
 
     void InventorySystem::render(engine::IRenderer& /*renderer*/)
