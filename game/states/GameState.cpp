@@ -11,12 +11,16 @@
 #include <game/themes/Earth.h>
 #include <graphics/Color.h>
 #include <graphics/drawable/RectangleShape.h>
+#include <sound/SDL/SDLSoundManager.h>
+#include <sound/Sound.h>
+
 #include <iostream>
 #include <random>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
     : engine::State(game)
+    , m_soundManager(new engine::sound::SDLSoundManager)
 {
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
     themes::Theme theme = themes::Earth {};
@@ -25,6 +29,12 @@ GameState::GameState(engine::IGame& game)
 
 void GameState::init()
 {
+    engine::sound::SoundEffect sound("assets/sounds/jetsons-theme.wav", 100);
+    //m_soundManager->play(sound);
+
+    engine::sound::Music music("assets/sounds/bgm.wav");
+    m_soundManager->play(music);
+
     Game& game = dynamic_cast<Game&>(m_context);
 
     // Read level based on JSON file
@@ -45,7 +55,19 @@ void GameState::init()
 
 void GameState::update(std::chrono::nanoseconds timeStep)
 {
+    static int volume = 100;
+    static std::chrono::nanoseconds timeElapsed(0);
+    timeElapsed += timeStep;
     m_world->update(timeStep);
+
+    if (timeElapsed > std::chrono::seconds(2)) {
+        timeElapsed = std::chrono::nanoseconds::zero();
+        m_soundManager->setMusicVolume(volume + 10);
+        m_soundManager->setSfxVolume(volume);
+
+        //volume -= 20;
+    }
+
     m_ecsWorld.update(timeStep);
 }
 
