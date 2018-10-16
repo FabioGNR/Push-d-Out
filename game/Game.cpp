@@ -38,8 +38,8 @@ void Game::onRender()
     m_renderer->show();
 }
 
-engine::input::InputManager* Game::getInputManager()
+engine::input::InputManager& Game::getInputManager()
 {
-    return &m_eventManager->getInput();
+    return m_eventManager->getInput();
 }
 }

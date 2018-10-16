@@ -17,7 +17,13 @@ MainMenuState::MainMenuState(engine::IGame& game)
 {
     m_system = std::make_unique<engine::ui::UISystem>();
 
-    dynamic_cast<Game&>(game).getInputManager()->subscribe(this);
+    // subscribe button press
+    m_subscription = dynamic_cast<Game&>(m_context).getInputManager().subscribe([&](engine::input::Keymap keymap) {
+        if (keymap.isKeyPressed(engine::input::Keys::SPACE)) {
+            m_context.next(std::make_shared<GameState>(m_context));
+            m_subscription->close();
+        }
+    });
 }
 
 void MainMenuState::init()
@@ -81,13 +87,5 @@ void MainMenuState::render(engine::IRenderer& renderer)
 {
     auto uiRenderer = engine::ui::UIRenderer{ renderer };
     m_system->draw(uiRenderer, common::Vector2D<int>(1280, 768));
-}
-
-void MainMenuState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>>& keymap)
-{
-    // check if map contains input for 'SPACE'
-    if (keymap.find(engine::input::SPACE) != keymap.end()) {
-        m_context.next(std::make_shared<GameState>(m_context));
-    }
 }
 }

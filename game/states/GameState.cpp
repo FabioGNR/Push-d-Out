@@ -21,7 +21,7 @@ GameState::GameState(engine::IGame& game)
     themes::Theme theme = themes::Earth{};
     m_world = m_physicsManager->createWorld(common::Vector2D<int>(40, 24), theme.getGravity(), theme.getFriction());
 
-    dynamic_cast<Game&>(game).getInputManager()->subscribe(this);
+//    dynamic_cast<Game&>(game).getInputManager().subscribe();
 }
 
 void GameState::init()
@@ -43,9 +43,5 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 void GameState::render(engine::IRenderer& renderer)
 {
     m_ecsWorld.render(renderer);
-}
-
-void GameState::onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>>& /*keymap*/)
-{
 }
 }

@@ -22,6 +22,6 @@ public:
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
 
-    engine::input::InputManager* getInputManager();
+    engine::input::InputManager& getInputManager();
 };
 }

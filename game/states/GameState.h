@@ -9,7 +9,7 @@
 #include <physics/World.h>
 
 namespace game {
-class GameState : public engine::State, public engine::input::IObserver {
+class GameState : public engine::State {
 private:
     const static int UNIT_MULTIPLIER = 2;
     const static int UNIT_SIZE = 16;
@@ -24,7 +24,6 @@ public:
 
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
-    void onInputUpdate(std::map<engine::input::Keys, std::shared_ptr<engine::events::IControlEvent>> &keymap) override;
     void render(engine::IRenderer& renderer) override;
 };
 }

@@ -73,9 +73,10 @@ set(INPUT_SRC
         input/InputManager.h
         input/InputManager.cpp
         input/Keys.h
-        input/IObserver.h
         input/SDLKeys.cpp
         input/SDLKeys.h
+        input/Keymap.cpp
+        input/Keymap.h
         )
 
 set(EVENTS_SRC
@@ -89,6 +90,7 @@ set(EVENTS_SRC
         events/models/IEvent.h
         events/models/KeyEvent.cpp
         events/models/KeyEvent.h
+        events/models/Subscription.h
         )
 
 set(WINDOW_SRC

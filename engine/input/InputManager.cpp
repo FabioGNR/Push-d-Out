@@ -1,3 +1,8 @@
+#include <utility>
+
+#include <map>
+#include <utility>
+
 #include "InputManager.h"
 #include <events/models/IControlEvent.h>
 
@@ -5,26 +10,31 @@ namespace engine {
 namespace input {
     void InputManager::storeInput(std::shared_ptr<events::IControlEvent> event)
     {
-        m_keymap->insert(std::pair<Keys, std::shared_ptr<events::IControlEvent>>(event->getValue(), event));
+        m_keymap.setKey(std::move(event));
     }
 
     void InputManager::startInput()
     {
-        m_keymap->clear();
+        m_keymap.m_map.clear();
     }
 
-    void InputManager::subscribe(IObserver* observer)
+    std::shared_ptr<events::Subscription<Keymap>> InputManager::subscribe(std::function<void(Keymap)> onNotify)
     {
-        observers.push_back(observer);
+        auto subscription = std::make_shared<events::Subscription<Keymap>>(onNotify);
+        m_subscriptions.push_back(subscription);
+        return subscription;
     }
 
     void InputManager::notify()
     {
-        if (m_keymap->empty()) {
+        if (m_keymap.m_map.empty()) {
             return;
         }
-        for (auto& observer : observers) {
-            observer->onInputUpdate(*m_keymap);
+
+        for (const auto& observer : m_subscriptions) {
+            if (observer->isActive) {
+                observer->update(m_keymap);
+            }
         }
     }
 }
