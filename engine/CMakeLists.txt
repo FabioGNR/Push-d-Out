@@ -116,9 +116,9 @@ set(UI_SRC
         ui/components/LayoutPanel.cpp
         ui/components/LayoutPanel.h
         ui/components/ComponentSize.cpp
-        ui/UIRenderer.h
         ui/components/TextComponent.h
-        ui/components/TextComponent.cpp ui/components/ComponentPanel.h
+        ui/components/TextComponent.cpp
+        ui/components/ComponentPanel.h
         )
 
 # more engine stuff

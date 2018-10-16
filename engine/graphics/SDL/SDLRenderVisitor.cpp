@@ -15,20 +15,6 @@ namespace engine {
 SDLRenderVisitor::SDLRenderVisitor(const SDLRenderer& renderer)
     : m_renderer(renderer)
 {
-    static bool isTtfInitialized = false;
-    if (!isTtfInitialized) {
-        if (TTF_Init() == -1) {
-            throw std::runtime_error(TTF_GetError());
-        }
-    }
-
-    static bool isImageInitialized = false;
-    if (!isImageInitialized) {
-        const int flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
-        if (!(IMG_Init(flags) & flags)) {
-            throw std::runtime_error(IMG_GetError());
-        }
-    }
 }
 
 void SDLRenderVisitor::visit(const RectangleShape& shape)

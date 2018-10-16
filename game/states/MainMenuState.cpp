@@ -81,7 +81,6 @@ void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
 
 void MainMenuState::render(engine::IRenderer& renderer)
 {
-    auto uiRenderer = engine::ui::UIRenderer{ renderer };
-    m_system->draw(uiRenderer, common::Vector2D<int>(1280, 768));
+    m_system->draw(renderer, common::Vector2D<int>(1280, 768));
 }
 }

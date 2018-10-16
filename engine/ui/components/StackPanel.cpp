@@ -9,37 +9,37 @@ namespace ui {
 
     DrawContext StackPanel::draw(DrawContext context)
     {
-
-        DrawContext childContext{ context };
-        childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
+        DrawContext childrenContext{ context };
+        childrenContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
+        auto requiredSize = getRequiredSize(context.renderer, childrenContext.availableSize);
 
         for (const auto& component : m_components) {
-            DrawContext updatedContext = component->draw(childContext);
+            DrawContext componentContext { childrenContext };
+            // center component in cross axis
+            auto childSize = component->calculateSize(context.renderer, childrenContext.availableSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
-                childContext.pos.x = updatedContext.pos.x;
+                componentContext.pos.y = componentContext.pos.y + (requiredSize.y-childSize.y)/2;
             } else {
-                childContext.pos.y = updatedContext.pos.y;
+                componentContext.pos.x = componentContext.pos.x + (requiredSize.x-childSize.x)/2;
             }
-            childContext.pos += component->getSize().getMargin();
+            // draw component
+            DrawContext updatedContext = component->draw(componentContext);
+            // update position for next component
+            if (m_flowDirection == FlowDirection::Horizontal) {
+                childrenContext.pos.x = updatedContext.pos.x;
+            } else {
+                childrenContext.pos.y = updatedContext.pos.y;
+            }
+            childrenContext.pos += component->getSize().getMargin();
         }
         return context;
     }
 
-    common::Vector2D<int> StackPanel::calculateSize(common::Vector2D<int> availableSize) const
+    common::Vector2D<int> StackPanel::calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const
     {
-        common::Vector2D<int> requiredSize{ 0, 0 };
         common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
-        for (const auto& component : m_components) {
-            common::Vector2D<int> componentSize = component->calculateSize(availableChildSize);
-            if (m_flowDirection == FlowDirection::Horizontal) {
-                requiredSize.x += componentSize.x;
-                requiredSize.y = std::max(requiredSize.y, componentSize.y);
-            } else {
-                requiredSize.y += componentSize.y;
-                requiredSize.x = std::max(requiredSize.x, componentSize.x);
-            }
-        }
+        auto requiredSize = getRequiredSize(renderer, availableChildSize);
         return m_size.getSize(requiredSize, availableSize);
     }
 
@@ -91,6 +91,23 @@ namespace ui {
             }
         }
         return total;
+    }
+
+    common::Vector2D<int> StackPanel::getRequiredSize(const IRenderer& renderer, common::Vector2D<int> availableChildSize) const
+    {
+        common::Vector2D<int> requiredSize{ 0, 0 };
+
+        for (const auto& component : m_components) {
+            common::Vector2D<int> componentSize = component->calculateSize(renderer, availableChildSize);
+            if (m_flowDirection == FlowDirection::Horizontal) {
+                requiredSize.x += componentSize.x;
+                requiredSize.y = std::max(requiredSize.y, componentSize.y);
+            } else {
+                requiredSize.y += componentSize.y;
+                requiredSize.x = std::max(requiredSize.x, componentSize.x);
+            }
+        }
+        return requiredSize;
     }
 }
 }

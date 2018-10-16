@@ -5,7 +5,6 @@
 
 namespace engine {
 class LineShape : public IGraphicsElement {
-    // TODO: Use Vector2d's for coordinates.
     common::Vector2D<int> m_position1;
     common::Vector2D<int> m_position2;
 
