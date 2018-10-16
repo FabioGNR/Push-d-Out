@@ -67,7 +67,7 @@ set(PHYSICS_SRC
         physics/StaticBody.h
         physics/StaticBody.cpp
         physics/Body.cpp
-        )
+        physics/Collision.cpp physics/Collision.h)
 
 set(EVENTS_SRC
         events/EventManager.h
