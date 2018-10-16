@@ -75,9 +75,9 @@ set(INPUT_SRC
         input/Keys.h
         input/SDLKeys.cpp
         input/SDLKeys.h
-        input/Keymap.cpp
-        input/Keymap.h
-        )
+        input/KeyMap.cpp
+        input/KeyMap.h
+        input/KeyStates.h)
 
 set(EVENTS_SRC
         events/IEventHandler.h
@@ -85,11 +85,11 @@ set(EVENTS_SRC
         events/SDLEventHandler.h
         events/EventManager.cpp
         events/EventManager.h
-        events/models/IControlEvent.h
-        events/models/QuitEvent.h
         events/models/IEvent.h
-        events/models/KeyEvent.cpp
-        events/models/KeyEvent.h
+        events/models/IControlEvent.h
+        events/models/KeyUpEvent.h
+        events/models/KeyDownEvent.h
+        events/models/QuitEvent.h
         events/models/Subscription.h
         )
 
@@ -106,7 +106,6 @@ set(DEFINITION_SRC
 
 set(EXCEPTION_SRC
         )
-
 
 set(UI_SRC
         ui/Frame.cpp

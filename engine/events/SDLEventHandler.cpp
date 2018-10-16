@@ -1,6 +1,8 @@
 #include "SDLEventHandler.h"
-#include <events/models/KeyEvent.h>
+#include <events/models/KeyUpEvent.h>
 #include <events/models/QuitEvent.h>
+#include <events/models/KeyUpEvent.h>
+#include <events/models/KeyDownEvent.h>
 
 namespace engine {
 namespace events {
@@ -21,9 +23,9 @@ namespace events {
         case SDL_QUIT:
             return std::make_shared<QuitEvent>();
         case SDL_KEYUP:
-            return std::make_shared<KeyEvent>(input::SDLKeys::get(event.key.keysym.sym), false);
+            return std::make_shared<KeyUpEvent>(input::SDLKeys::get(event.key.keysym.sym));
         case SDL_KEYDOWN:
-            return std::make_shared<KeyEvent>(input::SDLKeys::get(event.key.keysym.sym), true);
+            return std::make_shared<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
         default:
             return nullptr;
         }

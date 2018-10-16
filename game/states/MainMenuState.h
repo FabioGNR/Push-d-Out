@@ -3,14 +3,14 @@
 #include <chrono>
 #include <engine/ui/UISystem.h>
 #include <game/State.h>
-#include <input/Keymap.h>
+#include <input/KeyMap.h>
 #include <events/models/Subscription.h>
 
 namespace game {
 class MainMenuState : public engine::State {
 private:
     std::unique_ptr<engine::ui::UISystem> m_system;
-    std::shared_ptr<engine::events::Subscription<engine::input::Keymap>> m_subscription;
+    std::shared_ptr<engine::events::Subscription<engine::input::KeyMap>> m_subscription;
 
 public:
     explicit MainMenuState(engine::IGame& game);

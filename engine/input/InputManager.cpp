@@ -1,41 +1,52 @@
 #include <utility>
 
+#include "InputManager.h"
+#include <events/models/IControlEvent.h>
+#include <events/models/KeyDownEvent.h>
+#include <events/models/KeyUpEvent.h>
 #include <map>
 #include <utility>
 
-#include "InputManager.h"
-#include <events/models/IControlEvent.h>
-
 namespace engine {
 namespace input {
-    void InputManager::storeInput(std::shared_ptr<events::IControlEvent> event)
+    void InputManager::handle(const std::shared_ptr<events::IControlEvent>& event)
     {
-        m_keymap.setKey(std::move(event));
+        if (auto down = std::dynamic_pointer_cast<events::KeyDownEvent>(event)) {
+            m_keymap.setKeyState(down->value, KeyStates::PRESSED);
+        } else if (auto up = std::dynamic_pointer_cast<events::KeyUpEvent>(event)) {
+            m_keymap.setKeyState(up->value, KeyStates::RELEASED);
+        }
     }
 
-    void InputManager::startInput()
+    std::shared_ptr<events::Subscription<KeyMap>> InputManager::subscribe(std::function<void(KeyMap)> onNotify)
     {
-        m_keymap.m_map.clear();
-    }
-
-    std::shared_ptr<events::Subscription<Keymap>> InputManager::subscribe(std::function<void(Keymap)> onNotify)
-    {
-        auto subscription = std::make_shared<events::Subscription<Keymap>>(onNotify);
+        auto subscription = std::make_shared<events::Subscription<KeyMap>>(onNotify);
         m_subscriptions.push_back(subscription);
         return subscription;
     }
 
     void InputManager::notify()
     {
-        if (m_keymap.m_map.empty()) {
-            return;
-        }
-
         for (const auto& observer : m_subscriptions) {
             if (observer->isActive) {
                 observer->update(m_keymap);
             }
         }
+    }
+
+    void InputManager::update()
+    {
+        // remove inactive subscriptions
+        auto it = m_subscriptions.begin();
+        while (it != m_subscriptions.end()) {
+            if (!(*it)->isActive) {
+                it = m_subscriptions.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        m_keymap.update();
     }
 }
 }

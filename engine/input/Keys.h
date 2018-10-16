@@ -49,7 +49,8 @@ namespace input {
         R_SUPER,
         RETURN,
         SPACE,
-        BACKSPACE
+        BACKSPACE,
+        UNKNOWN
     };
 }
 }
