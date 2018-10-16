@@ -10,6 +10,10 @@ namespace game {
 namespace systems {
     void RenderSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
+        // First clear the list of rectangles
+        this->rectangles.clear();
+
+        // Iterate through the components and draw the necessary shapes
         world.forEachEntityWith<components::PositionComponent, components::DimensionComponent>([&](engine::ecs::Entity& entity) {
             auto& positionComponent = world.getComponent<components::PositionComponent>(entity);
             auto& dimensionComponent = world.getComponent<components::DimensionComponent>(entity);
@@ -27,6 +31,7 @@ namespace systems {
 
     void RenderSystem::render(engine::IRenderer& renderer)
     {
+        // Draw the rectangles to the screen
         for (const auto& rectangle : this->rectangles) {
             renderer.draw(rectangle);
         }

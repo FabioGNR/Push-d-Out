@@ -51,8 +51,14 @@ set(THEMES_SRC
         themes/Theme.cpp
         )
 
+set(BUILDER_SRC
+        builders/IBuilder.h
+        builders/CharacterBuilder.cpp
+        builders/CharacterBuilder.h
+        )
+
 #more engine stuff
-add_executable(PushdOut ${GAME_SRC} ${COMPONENT_SRC} ${SYSTEM_SRC} ${DEFINITION_SRC} ${THEMES_SRC})
+add_executable(PushdOut ${GAME_SRC} ${COMPONENT_SRC} ${SYSTEM_SRC} ${DEFINITION_SRC} ${THEMES_SRC} ${BUILDER_SRC})
 
 target_link_libraries(PushdOut engine)
 
