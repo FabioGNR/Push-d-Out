@@ -28,7 +28,7 @@ namespace ui {
         }
     }
 
-    void Frame::draw(UIRenderer& renderer, common::Vector2D<int> screenSize) const
+    void Frame::draw(IRenderer& renderer, common::Vector2D<int> screenSize) const
     {
         if (m_rootComponent == nullptr) {
             return;

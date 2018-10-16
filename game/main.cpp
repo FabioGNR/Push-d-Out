@@ -1,8 +1,10 @@
+#include <chrono>
 
 #include "engine/events/SDLEventManager.h"
 #include "engine/window/SDLWindow.h"
 #include "game/level/levelReader/LevelReader.h"
 #include "physics/PhysicsManager.h"
+
 #include <events/EventManager.h>
 #include <events/SDLEventManager.h>
 #include <game/themes/Earth.h>
@@ -14,7 +16,9 @@
 #include <engine/graphics/IRenderer.h>
 #include <engine/graphics/SDL/SDLRenderVisitor.h>
 #include <engine/graphics/SDL/SDLRenderer.h>
+#include <engine/graphics/drawable/Font.h>
 #include <engine/graphics/drawable/RectangleShape.h>
+#include <engine/graphics/drawable/Sprite.h>
 #include <engine/physics/Body.h>
 #include <engine/physics/PhysicsManager.h>
 #include <engine/ui/UISystem.h>

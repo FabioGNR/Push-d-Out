@@ -14,7 +14,7 @@ namespace ui {
         }
         virtual DrawContext draw(DrawContext context) = 0;
         virtual void processInputEvent() {}
-        virtual common::Vector2D<int> calculateSize(common::Vector2D<int> availableSize) const = 0;
+        virtual common::Vector2D<int> calculateSize(const IRenderer &renderer, common::Vector2D<int> availableSize) const = 0;
         ComponentSize getSize() { return m_size; }
         virtual bool isNavigatable() { return false; }
 

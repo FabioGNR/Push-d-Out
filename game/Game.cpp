@@ -35,4 +35,9 @@ void Game::onRender()
     m_states.top()->render(*m_renderer);
     m_renderer->show();
 }
+
+common::Vector2D<int> Game::getScreenSize() const
+{
+    return m_window->getDimensions();
+}
 }

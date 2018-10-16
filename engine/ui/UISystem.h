@@ -1,6 +1,6 @@
 #pragma once
 #include "Frame.h"
-#include "UIRenderer.h"
+#include "graphics/IRenderer.h"
 #include <stack>
 
 namespace engine {
@@ -8,7 +8,7 @@ namespace ui {
 
     class UISystem {
     public:
-        void draw(UIRenderer& renderer, common::Vector2D<int> screenSize);
+        void draw(IRenderer& renderer, common::Vector2D<int> screenSize);
         void push(Frame frame);
         void processInputEvent();
 

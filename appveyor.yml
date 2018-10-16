@@ -12,6 +12,8 @@ build_script:
 
     .\vcpkg.exe install sdl2-image
 
+    .\vcpkg.exe install sdl2-mixer
+
     .\vcpkg.exe install box2d
 
     .\vcpkg.exe integrate install

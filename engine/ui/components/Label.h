@@ -13,7 +13,7 @@ namespace ui {
         {
         }
 
-        common::Vector2D<int> calculateSize(common::Vector2D<int> availableSize) const override;
+        common::Vector2D<int> calculateSize(const IRenderer &renderer, common::Vector2D<int> availableSize) const override;
 
         DrawContext draw(DrawContext context) override;
     };

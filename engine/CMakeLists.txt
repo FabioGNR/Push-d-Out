@@ -4,11 +4,13 @@ set(SDL2_BUILDING_LIBRARY ON)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 find_package(Box2D REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${SDL2_TTF_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+include_directories(${SDL2_MIXER_INCLUDE_DIRS})
 include_directories(${BOX2D_INCLUDE_DIR})
 
 set(ENGINE_GAME_SRC
@@ -19,6 +21,7 @@ set(ENGINE_GAME_SRC
 
 set(COMMON_SRC
         common/Vector2D.h
+        common/ResourceCache.h
         )
 
 set(ECS_SRC
@@ -54,6 +57,8 @@ set(GRAPHICS_SRC
         graphics/drawable/Sprite.cpp
         graphics/drawable/Sprite.h
         graphics/Color.h
+        graphics/Camera.h
+        graphics/Camera.cpp
         )
 
 set(PHYSICS_SRC
@@ -82,13 +87,26 @@ set(WINDOW_SRC
         window/WindowProperties.h
         )
 
+set(SOUND_SRC
+        sound/Sound.cpp
+        sound/Sound.h
+        sound/ISoundManager.h
+        sound/SDL/SDLSoundManager.cpp
+        sound/SDL/SDLSoundManager.h
+        sound/Music.cpp
+        sound/Music.h
+        sound/SoundEffect.cpp
+        sound/SoundEffect.h
+        )
+
 set(DEFINITION_SRC
         definitions/SystemPriority.h
         )
 
 set(EXCEPTION_SRC
+        exceptions/SDLMixerException.h
+        exceptions/ResourceNotFoundException.h
         )
-
 
 set(UI_SRC
         ui/Frame.cpp
@@ -114,9 +132,9 @@ set(UI_SRC
         ui/components/LayoutPanel.cpp
         ui/components/LayoutPanel.h
         ui/components/ComponentSize.cpp
-        ui/UIRenderer.h
         ui/components/TextComponent.h
-        ui/components/TextComponent.cpp ui/components/ComponentPanel.h
+        ui/components/TextComponent.cpp
+        ui/components/ComponentPanel.h
         )
 
 # more engine stuff
@@ -127,8 +145,19 @@ add_library(engine
         ${COMMON_SRC}
         ${PHYSICS_SRC}
         ${WINDOW_SRC}
+        ${SOUND_SRC}
         ${EVENTS_SRC}
         ${EXCEPTION_SRC}
+        ${DEFINITION_SRC}
         ${UI_SRC}
-        ${DEFINITION_SRC})
+        )
+
+target_link_libraries(engine
+        ${SDL2_LIBRARY}
+        ${SDL2_TTF_LIBRARIES}
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_MIXER_LIBRARIES}
+        ${BOX2D_LIBRARY}
+        )
+
 target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

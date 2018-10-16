@@ -6,6 +6,8 @@
 #include <memory>
 #include <physics/PhysicsManager.h>
 #include <physics/World.h>
+#include <sound/ISoundManager.h>
+#include <game/Game.h>
 
 namespace game {
 class GameState : public engine::State {
@@ -16,6 +18,8 @@ private:
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     engine::physics::World* m_world;
     engine::ecs::World m_ecsWorld;
+
+    std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
 
 public:
     GameState(engine::IGame& game);
