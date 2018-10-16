@@ -14,8 +14,8 @@ struct Vector2D {
     int PRECISION = 1000000;
 
     Vector2D(T x1, T y1)
-        : x{ x1 }
-        , y{ y1 }
+            : x{ x1 }
+            , y{ y1 }
     {
         static_assert(std::is_arithmetic<T>(), "Vector2D can only be created with arithmetic types");
     }
@@ -29,7 +29,7 @@ struct Vector2D {
     }
 
     friend Vector2D<T> operator+(Vector2D<T> left,
-        const Vector2D<T>& right)
+                                 const Vector2D<T>& right)
     {
         left.x += right.x;
         left.y += right.y;
@@ -51,7 +51,7 @@ struct Vector2D {
     }
 
     friend Vector2D<T> operator*(Vector2D<T> left,
-        double factor)
+                                 double factor)
     {
         left.x *= factor;
         left.y *= factor;
@@ -59,7 +59,7 @@ struct Vector2D {
     }
 
     friend Vector2D<T> operator*(Vector2D<T> left,
-        const Vector2D<T>& right)
+                                 const Vector2D<T>& right)
     {
         left.x *= right.x;
         left.y *= right.y;
@@ -119,7 +119,7 @@ struct Vector2D {
     }
 
     friend Vector2D<T> operator-(Vector2D<T> left,
-                              const Vector2D<T>& right)
+                                 const Vector2D<T>& right)
     {
         left.x -= right.x;
         left.y -= right.y;
@@ -168,8 +168,8 @@ struct Vector2D {
 
     T dotProduct(const Vector2D<T>& other) {
         return
-            this->x * other.x +
-            this->y * other.y;
+                this->x * other.x +
+                this->y * other.y;
     }
 
     T findAngle(const Vector2D<T>& other) {
@@ -189,15 +189,15 @@ struct Vector2D {
     }
 };
 
-    template <typename X, typename Y>
-    Vector2D<Y> operator/(Vector2D<X> left,
-                                 const Vector2D<Y>& right)
-    {
-        left.x /= right.x;
-        left.y /= right.y;
-        Y newX = left.x / right.x;
-        Y newY = left.y / right.y;
-        return {newX, newY};
-    }
+template <typename X, typename Y>
+Vector2D<Y> operator/(Vector2D<X> left,
+                      const Vector2D<Y>& right)
+{
+    left.x /= right.x;
+    left.y /= right.y;
+    Y newX = left.x / right.x;
+    Y newY = left.y / right.y;
+    return {newX, newY};
+}
 
 }

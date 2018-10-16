@@ -19,6 +19,7 @@ set(ENGINE_GAME_SRC
 
 set(COMMON_SRC
         common/Vector2D.h
+        common/ResourceCache.h
         )
 
 set(ECS_SRC
@@ -89,8 +90,8 @@ set(DEFINITION_SRC
         )
 
 set(EXCEPTION_SRC
+        exceptions/ResourceNotFoundException.h
         )
-
 
 set(UI_SRC
         ui/Frame.cpp
@@ -133,4 +134,5 @@ add_library(engine
         ${EXCEPTION_SRC}
         ${UI_SRC}
         ${DEFINITION_SRC})
+
 target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

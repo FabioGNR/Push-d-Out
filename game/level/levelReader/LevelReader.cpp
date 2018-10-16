@@ -44,7 +44,6 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
         tile curTile = level.tiles[i];
         common::Vector2D<double> position { (double)curTile.x, (double)curTile.y };
 
-
         auto& entity = world.createEntity();
 
         // Add a position component to tile entity
