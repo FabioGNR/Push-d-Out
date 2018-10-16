@@ -35,6 +35,8 @@ set(SYSTEM_SRC
         systems/SpriteSystem.h
         systems/RenderSystem.cpp
         systems/RenderSystem.h
+        systems/CameraSystem.cpp
+        systems/CameraSystem.h
         )
 
 set(DEFINITION_SRC

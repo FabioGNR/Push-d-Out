@@ -54,6 +54,8 @@ set(GRAPHICS_SRC
         graphics/drawable/Sprite.cpp
         graphics/drawable/Sprite.h
         graphics/Color.h
+        graphics/Camera.h
+        graphics/Camera.cpp
         )
 
 set(PHYSICS_SRC

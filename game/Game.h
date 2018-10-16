@@ -21,5 +21,6 @@ public:
     void init() override;
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
+    common::Vector2D<int> getScreenSize() const;
 };
 }

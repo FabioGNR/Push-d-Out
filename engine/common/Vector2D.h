@@ -66,6 +66,13 @@ struct Vector2D {
         return left;
     }
 
+    Vector2D<T>& operator/=(int factor)
+    {
+        x /= factor;
+        y /= factor;
+        return *this;
+    }
+
     Vector2D<T>& operator/=(double factor)
     {
         x /= factor;
@@ -80,13 +87,35 @@ struct Vector2D {
         return *this;
     }
 
-
-
     Vector2D<T>& operator-=(const Vector2D<T>& other)
     {
         x -= other.x;
         y -= other.y;
         return *this;
+    }
+
+    friend Vector2D<T> operator/(Vector2D<T> left,
+                                 int factor)
+    {
+        left.x /= factor;
+        left.y /= factor;
+        return left;
+    }
+
+    friend Vector2D<T> operator/(Vector2D<T> left,
+                                 double factor)
+    {
+        left.x /= factor;
+        left.y /= factor;
+        return left;
+    }
+
+    friend Vector2D<T> operator/(Vector2D<T> left,
+                                 const Vector2D<T>& right)
+    {
+        left.x /= right.x;
+        left.y /= right.y;
+        return left;
     }
 
     friend Vector2D<T> operator-(Vector2D<T> left,
@@ -155,7 +184,7 @@ struct Vector2D {
     }
 
     template <typename X>
-    Vector2D<X> castTo() {
+    Vector2D<X> castTo() const {
         return{static_cast<X>(this->x), static_cast<X>(this->y)};
     }
 };

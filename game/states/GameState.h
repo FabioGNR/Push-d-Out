@@ -6,6 +6,7 @@
 #include <memory>
 #include <physics/PhysicsManager.h>
 #include <physics/World.h>
+#include <game/Game.h>
 
 namespace game {
 class GameState : public engine::State {

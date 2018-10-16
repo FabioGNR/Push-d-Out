@@ -74,7 +74,7 @@ void MainMenuState::init()
 void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
 {
     auto now = std::chrono::steady_clock::now();
-    if (now - m_started >= std::chrono::seconds(10s)) {
+    if (now - m_started >= std::chrono::seconds(5s)) {
         m_context.next(std::make_shared<GameState>(m_context));
     }
 }
