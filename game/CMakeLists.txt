@@ -20,7 +20,7 @@ set(COMPONENT_SRC
         components/BodyComponent.h
         components/DimensionComponent.h
         components/SpriteComponent.h
-        )
+        components/EquipmentComponent.h components/WeaponComponent.h)
 
 set(SYSTEM_SRC
         systems/MoveSystem.cpp
@@ -35,12 +35,12 @@ set(SYSTEM_SRC
         systems/SpriteSystem.h
         systems/RenderSystem.cpp
         systems/RenderSystem.h
-        )
+        systems/WeaponSystem.cpp systems/WeaponSystem.h)
 
 set(DEFINITION_SRC
         definitions/Action.h
         definitions/Body.h
-        )
+        definitions/WeaponType.h)
 
 set(THEMES_SRC
         themes/Earth.h
