@@ -20,7 +20,11 @@ set(COMPONENT_SRC
         components/BodyComponent.h
         components/DimensionComponent.h
         components/SpriteComponent.h
-        components/EquipmentComponent.h components/WeaponComponent.h)
+        components/EquipmentComponent.h
+        components/WeaponComponent.h
+        components/InventoryComponent.h
+        components/EquipableComponent.h
+        )
 
 set(SYSTEM_SRC
         systems/MoveSystem.cpp
@@ -35,7 +39,11 @@ set(SYSTEM_SRC
         systems/SpriteSystem.h
         systems/RenderSystem.cpp
         systems/RenderSystem.h
-        systems/WeaponSystem.cpp systems/WeaponSystem.h)
+        systems/WeaponSystem.cpp
+        systems/WeaponSystem.h
+        systems/InventorySystem.cpp
+        systems/InventorySystem.h
+        )
 
 set(DEFINITION_SRC
         definitions/Action.h
