@@ -32,5 +32,8 @@ public:
     void setFontSize(int fontSize);
     void setPosition(common::Vector2D<int> position);
     void setColor(const Color& color);
+
+    bool operator==(const Font &rhs) const;
+    bool operator!=(const Font &rhs) const;
 };
 } // end namespace engine

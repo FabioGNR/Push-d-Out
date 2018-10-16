@@ -21,5 +21,11 @@ public:
     common::Vector2D<int> position() const;
     common::Vector2D<int> size() const;
     double scale() const;
+
+    bool operator==(const Sprite &rhs) const;
+
+    bool operator!=(const Sprite &rhs) const;
+
+
 };
 } // end namespace engine

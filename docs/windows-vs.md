@@ -31,6 +31,7 @@ PS> .\vcpkg integrate install
 PS> .\vcpkg install sdl2
 PS> .\vcpkg install sdl2-ttf
 PS> .\vcpkg install sdl2-image
+PS> .\vcpkg install sdl2-mixer
 PS> .\vcpkg install box2d
 ```
 

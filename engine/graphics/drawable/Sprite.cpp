@@ -36,4 +36,14 @@ double Sprite::scale() const
     return m_scale;
 }
 
+bool Sprite::operator==(const Sprite& rhs) const
+{
+    return m_spritePath == rhs.m_spritePath;
+}
+
+bool Sprite::operator!=(const Sprite& rhs) const
+{
+    return !(rhs == *this);
+}
+
 } // end namespace engine

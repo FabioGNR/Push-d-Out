@@ -42,4 +42,9 @@ engine::input::InputManager& Game::getInputManager()
 {
     return m_eventManager->getInput();
 }
+
+common::Vector2D<int> Game::getScreenSize() const
+{
+    return m_window->getDimensions();
+}
 }

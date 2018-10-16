@@ -15,6 +15,8 @@ Linux does not need a package manager, besides its own. On Ubuntu:
 
 `sudo apt-get install libsdl2-image-dev`
 
+`sudo apt-get install libsdl2-mixer-dev`
+
 `sudo apt-get install libbox2d-dev`
 
 

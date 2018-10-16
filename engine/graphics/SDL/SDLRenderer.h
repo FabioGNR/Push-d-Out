@@ -19,6 +19,7 @@ public:
     void draw(const IGraphicsElement& graphicElement) const override;
     void show() override;
     void clear() override;
-    double flipY(double y) const;
+
+    common::Vector2D<int> getFontSize(const Font &font) const override;
 };
 } // end namespace engine

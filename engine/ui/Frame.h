@@ -15,7 +15,7 @@ namespace ui {
         }
 
         void processInputEvent();
-        void draw(UIRenderer& renderer, common::Vector2D<int> screenSize) const;
+        void draw(IRenderer& renderer, common::Vector2D<int> screenSize) const;
 
     private:
         std::shared_ptr<Component> m_rootComponent;

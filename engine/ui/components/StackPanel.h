@@ -14,7 +14,7 @@ namespace ui {
         {
         }
 
-        common::Vector2D<int> calculateSize(common::Vector2D<int> availableSize) const override;
+        common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 
         common::Vector2D<double> sumRelativeSize() const;
 
@@ -28,6 +28,8 @@ namespace ui {
 
     private:
         std::vector<std::shared_ptr<Component>> m_components;
+
+        common::Vector2D<int> getRequiredSize(const IRenderer& renderer, common::Vector2D<int> availableChildSize) const;
     };
 }
 }

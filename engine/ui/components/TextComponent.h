@@ -19,7 +19,7 @@ namespace ui {
 
     protected:
         Font m_font;
-        common::Vector2D<int> calculateTextSize() const;
+        common::Vector2D<int> calculateTextSize(const IRenderer& renderer) const;
     };
 }
 }

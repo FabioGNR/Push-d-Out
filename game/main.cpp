@@ -3,6 +3,7 @@
 #include "physics/PhysicsManager.h"
 #include <engine/graphics/SDL/SDLRenderVisitor.h>
 #include <engine/graphics/drawable/RectangleShape.h>
+#include <engine/graphics/drawable/Sprite.h>
 #include <engine/physics/Body.h>
 #include <engine/ui/UISystem.h>
 #include <game/states/GameState.h>
