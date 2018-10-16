@@ -5,6 +5,7 @@
 #include <events/models/KeyUpEvent.h>
 #include <queue>
 #include <vector>
+#include <memory>
 
 namespace engine {
 namespace input {

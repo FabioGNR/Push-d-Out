@@ -2,6 +2,7 @@
 
 #include <map>
 #include <utility>
+#include <functional>
 
 namespace engine {
 namespace events {

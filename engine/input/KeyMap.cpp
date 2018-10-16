@@ -18,6 +18,7 @@ namespace input {
             case KeyStates::DOWN:
                 ++it;
                 break;
+            case KeyStates::UP:
             case KeyStates::RELEASED:
                 it = m_map.erase(it);
                 break;
