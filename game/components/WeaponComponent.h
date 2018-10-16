@@ -8,12 +8,10 @@ namespace game {
 namespace components {
     struct WeaponComponent : public engine::ecs::BaseComponent<WeaponComponent> {
         double cooldownSeconds;
-        double weight;
         definitions::WeaponType type;
 
-        WeaponComponent(double cooldownSeconds, double weight, definitions::WeaponType type)
+        WeaponComponent(double cooldownSeconds, definitions::WeaponType type)
             : cooldownSeconds(cooldownSeconds)
-            , weight(weight)
             , type(type){};
     };
 }

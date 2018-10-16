@@ -5,8 +5,9 @@
 namespace game {
     namespace components {
         struct EquipmentComponent : public engine::ecs::BaseComponent<EquipmentComponent> {
-
-            EquipmentComponent() {};
+            double weight;
+            EquipmentComponent(double weight)
+            : weight(weight){};
         };
     }
 }

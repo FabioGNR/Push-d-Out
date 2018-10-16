@@ -24,7 +24,7 @@ set(COMPONENT_SRC
         components/WeaponComponent.h
         components/InventoryComponent.h
         components/EquipableComponent.h
-        )
+        components/ProjectileComponent.h)
 
 set(SYSTEM_SRC
         systems/MoveSystem.cpp
