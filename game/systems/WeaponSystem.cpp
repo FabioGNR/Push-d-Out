@@ -38,6 +38,8 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     ecsWorld.addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
 
     projectileBody->applyForce(common::Vector2D<double>(20, 0), playerPosition);
+
+    return projectileEntity;
 }
 
 namespace game {
@@ -56,8 +58,9 @@ namespace systems {
         m_ecsWorld.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inventory = m_ecsWorld.getComponent<InventoryComponent>(entity);
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
-            if(inventory.equipped.size() > 0) {
-                auto weapon = m_ecsWorld.getComponent<components::WeaponComponent>(inventory.equipped[0]);
+            if(inventory.activeEquipment.hasValue()) {
+                engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
+                auto weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
                 auto action = definitions::Action::UseWeapon;
                 if(auto control = inputComponent.controls.find(action) != inputComponent.controls.end()) {
                     if(true /*TODO: replace with actual input handling*/) {
