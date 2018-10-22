@@ -20,7 +20,11 @@ set(COMPONENT_SRC
         components/BodyComponent.h
         components/DimensionComponent.h
         components/SpriteComponent.h
-        )
+        components/EquipmentComponent.h
+        components/WeaponComponent.h
+        components/InventoryComponent.h
+        components/EquipableComponent.h
+        components/ProjectileComponent.h)
 
 set(SYSTEM_SRC
         systems/MoveSystem.cpp
@@ -35,6 +39,10 @@ set(SYSTEM_SRC
         systems/SpriteSystem.h
         systems/RenderSystem.cpp
         systems/RenderSystem.h
+        systems/WeaponSystem.cpp
+        systems/WeaponSystem.h
+        systems/InventorySystem.cpp
+        systems/InventorySystem.h
         systems/CameraSystem.cpp
         systems/CameraSystem.h
         )
@@ -42,7 +50,7 @@ set(SYSTEM_SRC
 set(DEFINITION_SRC
         definitions/Action.h
         definitions/Body.h
-        )
+        definitions/WeaponType.h)
 
 set(THEMES_SRC
         themes/Earth.h
@@ -51,14 +59,18 @@ set(THEMES_SRC
         themes/Theme.cpp
         )
 
+set(EQUIPEMENT_SRC
+        equipment/InventorySlot.h
+        )
+
+#more engine stuff
 set(BUILDER_SRC
         builders/IBuilder.h
         builders/CharacterBuilder.cpp
         builders/CharacterBuilder.h
         )
 
-#more engine stuff
-add_executable(PushdOut ${GAME_SRC} ${COMPONENT_SRC} ${SYSTEM_SRC} ${DEFINITION_SRC} ${THEMES_SRC} ${BUILDER_SRC})
+add_executable(PushdOut ${GAME_SRC} ${COMPONENT_SRC} ${SYSTEM_SRC} ${DEFINITION_SRC} ${THEMES_SRC} ${EQUIPMENT_SRC} ${BUILDER_SRC})
 
 target_link_libraries(PushdOut engine)
 
