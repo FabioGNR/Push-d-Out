@@ -2,6 +2,7 @@
 [Bb]uild/
 cmake-build-*/
 .vs/
+.vscode/
 .ccls-cache/
 .idea/
 CMakeSettings.json
