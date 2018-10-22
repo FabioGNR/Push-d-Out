@@ -17,6 +17,7 @@ namespace graphics {
         void setPosition(common::Vector2D<double> position);
         common::Vector2D<double> getPosition() const;
         void setZoom(double zoomLevel);
+        double getZoom() const;
         void setScreenSize(common::Vector2D<int> screenSize);
         bool isPointVisible(common::Vector2D<double> position) const;
         bool isRectangleVisible(common::Vector2D<double> position, common::Vector2D<double> size) const;

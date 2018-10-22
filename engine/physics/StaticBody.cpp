@@ -14,7 +14,7 @@ namespace physics {
         b2Body* b2Body = m_world.m_b2World->CreateBody(&groundBodyDef);
 
         b2PolygonShape groundBox; // set half-height and half-width
-        groundBox.SetAsBox(static_cast<float32>(dimension.x) / 2.0f, static_cast<float32>(dimension.y) /* TODO: /2.0f */);
+        groundBox.SetAsBox(static_cast<float32>(dimension.x) / 2.0f, static_cast<float32>(dimension.y) / 2.0f);
         b2Body->CreateFixture(&groundBox, 1.0f /* density, is not used when body is static */);
 
         // set the body

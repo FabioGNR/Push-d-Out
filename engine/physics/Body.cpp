@@ -28,7 +28,9 @@ namespace physics {
 
     const common::Vector2D<double> Body::getPosition() const
     {
-        return common::Vector2D<double>(m_position.x, -(m_position.y) + m_world.getSize().y - 1);
+        // because box2d sees its position as center, shift it by half of the dimensions
+        return { m_position.x - m_dimensions.x / 2,
+            m_position.y - m_dimensions.y / 2 };
     }
 
     const common::Vector2D<double> Body::getDimensions() const
