@@ -10,7 +10,7 @@ protected:
     IGame& m_context;
 
 public:
-    State(IGame& game) : m_context{game} {};
+    explicit State(IGame& game) : m_context{game} {};
     virtual ~State() = default;
 
     virtual void init() = 0;

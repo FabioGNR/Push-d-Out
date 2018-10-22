@@ -74,10 +74,28 @@ set(PHYSICS_SRC
         physics/Body.cpp
         physics/Collision.cpp physics/Collision.h)
 
+set(INPUT_SRC
+        input/InputManager.h
+        input/InputManager.cpp
+        input/Keys.h
+        input/SDLKeys.cpp
+        input/SDLKeys.h
+        input/KeyMap.cpp
+        input/KeyMap.h
+        input/KeyStates.h)
+
 set(EVENTS_SRC
+        events/IEventHandler.h
+        events/SDLEventHandler.cpp
+        events/SDLEventHandler.h
+        events/EventManager.cpp
         events/EventManager.h
-        events/SDLEventManager.h
-        events/SDLEventManager.cpp
+        events/models/IEvent.h
+        events/models/IControlEvent.h
+        events/models/KeyUpEvent.h
+        events/models/KeyDownEvent.h
+        events/models/QuitEvent.h
+        events/models/Subscription.h
         )
 
 set(WINDOW_SRC
@@ -141,6 +159,7 @@ set(UI_SRC
 add_library(engine
         ${ENGINE_GAME_SRC}
         ${ECS_SRC}
+        ${INPUT_SRC}
         ${GRAPHICS_SRC}
         ${COMMON_SRC}
         ${PHYSICS_SRC}

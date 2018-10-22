@@ -3,15 +3,17 @@
 #include <chrono>
 #include <engine/ui/UISystem.h>
 #include <game/State.h>
+#include <input/KeyMap.h>
+#include <events/models/Subscription.h>
 
 namespace game {
 class MainMenuState : public engine::State {
 private:
     std::unique_ptr<engine::ui::UISystem> m_system;
-    std::chrono::time_point<std::chrono::steady_clock> m_started;
+    std::shared_ptr<engine::events::Subscription<engine::input::KeyMap>> m_subscription;
 
 public:
-    MainMenuState(engine::IGame& game);
+    explicit MainMenuState(engine::IGame& game);
 
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
