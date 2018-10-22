@@ -41,7 +41,7 @@ namespace systems {
         });
         if(equipableCandidate != nullptr) {
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
-            if(inventoryComponent.otherEquipment.hasItem()) {
+            if(inventoryComponent.otherEquipment.hasValue()) {
                 inventoryComponent.activeEquipment.set(equipableCandidate);
             }
             else {

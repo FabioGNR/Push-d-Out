@@ -10,7 +10,7 @@ namespace equipment {
             clear();
         }
 
-        bool hasItem() const
+        bool hasValue() const
         {
             return m_entity != nullptr;
         }
@@ -23,6 +23,10 @@ namespace equipment {
         void clear()
         {
             m_entity = nullptr;
+        }
+
+        engine::ecs::Entity& get() const {
+            return *m_entity;
         }
 
     private:

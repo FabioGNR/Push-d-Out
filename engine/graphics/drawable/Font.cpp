@@ -63,4 +63,17 @@ void Font::setColor(const Color& color)
     m_color = color;
 }
 
+bool Font::operator==(const Font& rhs) const
+{
+    return m_fontPath == rhs.m_fontPath
+        && m_text == rhs.m_text
+        && m_fontSize == rhs.m_fontSize
+        && m_color == rhs.m_color;
+}
+
+bool Font::operator!=(const Font& rhs) const
+{
+    return !(rhs == *this);
+}
+
 } // end namespace engine

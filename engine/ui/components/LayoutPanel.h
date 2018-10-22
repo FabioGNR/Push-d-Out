@@ -17,7 +17,7 @@ namespace ui {
         {
         }
 
-        common::Vector2D<int> calculateSize(common::Vector2D<int> availableSize) const override;
+        common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 
         common::Vector2D<double> sumRelativeSize() const;
 
@@ -38,7 +38,8 @@ namespace ui {
     private:
         std::set<std::shared_ptr<WrappedComponent>, sortByAnchor> m_components;
         common::Vector2D<int> getChildPosition(
-            std::shared_ptr<WrappedComponent> component,
+            const IRenderer& renderer,
+            const WrappedComponent& component,
             common::Vector2D<int> availableSize,
             common::Vector2D<int> parentSize) const;
     };

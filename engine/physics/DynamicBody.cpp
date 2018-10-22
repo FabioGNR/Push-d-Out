@@ -15,9 +15,8 @@ namespace physics {
 
         // create new body from world object
         b2Body* b2Body = m_world.m_b2World->CreateBody(&bodyDef);
-        b2PolygonShape dynamicBox; // set height and width
+        b2PolygonShape dynamicBox; // set half height and half width
         dynamicBox.SetAsBox((float32)dimension.x / 2.0f, (float32)dimension.y / 2.0f);
-
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &dynamicBox;
         fixtureDef.density = 1.0f;

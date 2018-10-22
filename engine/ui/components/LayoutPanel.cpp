@@ -15,7 +15,8 @@ namespace ui {
         DrawContext childContext{ context };
         childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
         for (const auto& component : m_components) {
-            common::Vector2D<int> childPosition = getChildPosition(component,
+            common::Vector2D<int> childPosition = getChildPosition(context.renderer,
+				*component.get(),
                 childContext.availableSize,
                 context.availableSize);
 
@@ -26,13 +27,14 @@ namespace ui {
         return compositeContext;
     }
 
-    common::Vector2D<int> LayoutPanel::calculateSize(common::Vector2D<int> availableSize) const
+    common::Vector2D<int> LayoutPanel::calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const
     {
         common::Vector2D<int> requiredSize{ 0, 0 };
         common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
-            common::Vector2D<int> componentSize = component->getComponent()->calculateSize(availableChildSize);
+            common::Vector2D<int> componentSize = component->getComponent()->calculateSize(renderer, 
+				availableChildSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
                 requiredSize.y = std::max(requiredSize.y, componentSize.y);
@@ -59,14 +61,15 @@ namespace ui {
         return common::Vector2D<double>::max(sum, minimumSize.castTo<double>());
     }
 
-    common::Vector2D<int> LayoutPanel::getChildPosition(std::shared_ptr<WrappedComponent> component,
+    common::Vector2D<int> LayoutPanel::getChildPosition(const IRenderer& renderer, 
+		const WrappedComponent& component,
         common::Vector2D<int> availableSize,
         common::Vector2D<int> parentSize) const
     {
         common::Vector2D<int> position{ 0, 0 };
-        common::Vector2D<int> calculatedSize = component->getComponent()->calculateSize(availableSize);
+        common::Vector2D<int> calculatedSize = component.getComponent()->calculateSize(renderer, availableSize);
 
-        switch (component->getAnchor()) {
+        switch (component.getAnchor()) {
         case LayoutAnchor::Start:
             break;
         case LayoutAnchor::End:

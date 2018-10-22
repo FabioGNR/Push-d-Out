@@ -7,10 +7,9 @@ namespace ui {
         m_font.setFontSize(size);
     }
 
-    common::Vector2D<int> TextComponent::calculateTextSize() const
+    common::Vector2D<int> TextComponent::calculateTextSize(const IRenderer& renderer) const
     {
-        //TODO: implement calculation
-        return {100, 30};
+        return renderer.getFontSize(m_font);
     }
 }
 }

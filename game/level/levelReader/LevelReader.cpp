@@ -44,7 +44,6 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
         tile curTile = level.tiles[i];
         common::Vector2D<double> position { (double)curTile.x, (double)curTile.y };
 
-
         auto& entity = world.createEntity();
 
         // Add a position component to tile entity
@@ -65,7 +64,7 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
 
     for (size_t i = 0; i < level.CharacterSpawns.size(); i++) {
         spawnPoint curSpawn = level.CharacterSpawns[i];
-        common::Vector2D<double> position { (double)curSpawn.x, (double)curSpawn.y };
+        common::Vector2D<double> position { curSpawn.x, curSpawn.y };
 
         auto& entity = world.createEntity();
 

@@ -8,5 +8,18 @@ struct Color {
     int g;
     int b;
     int a;
+
+    bool operator==(const Color& rhs) const
+    {
+        return r == rhs.r
+            && g == rhs.g
+            && b == rhs.b
+            && a == rhs.a;
+    }
+
+    bool operator!=(const Color& rhs) const
+    {
+        return !(rhs == *this);
+    }
 };
 }

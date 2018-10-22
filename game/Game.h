@@ -12,8 +12,8 @@ namespace game {
 class Game : public engine::IGame {
 private:
     std::unique_ptr<engine::Window> m_window;
-    std::unique_ptr<engine::EventManager> m_eventManager;
-    std::unique_ptr<engine::SDLRenderer> m_renderer;
+    std::unique_ptr<engine::IRenderer> m_renderer;
+    std::unique_ptr<engine::events::EventManager> m_eventManager;
 
 public:
     explicit Game(engine::WindowProperties& properties);
@@ -21,5 +21,8 @@ public:
     void init() override;
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
+    
+    common::Vector2D<int> getScreenSize() const;
+    engine::input::InputManager& getInputManager();
 };
 }

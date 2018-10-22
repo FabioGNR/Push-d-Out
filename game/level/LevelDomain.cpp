@@ -35,8 +35,8 @@ namespace levelDomain {
 
     void from_json(const json& j, tile& t)
     {
-        t.x = j.at("x").get<int>();
-        t.y = j.at("y").get<int>();
+        t.x = j.at("x").get<double>();
+        t.y = j.at("y").get<double>();
         t.sprite = j.at("sprite").get<std::string>();
         t.kind = static_cast<PlatformKind>(j.at("kind").get<int>());
     }
@@ -52,8 +52,8 @@ namespace levelDomain {
 
     void from_json(const json& j, spawnPoint& s)
     {
-        s.x = j.at("x").get<int>();
-        s.y = j.at("y").get<int>();
+        s.x = j.at("x").get<double>();
+        s.y = j.at("y").get<double>();
     }
 
     // JSON conversions for level
