@@ -8,13 +8,13 @@ namespace engine {
 namespace events {
     template <typename T>
     struct Subscription {
-        Subscription(std::function<void(T)> update_)
+        Subscription(std::function<void(T, events::Subscription<T>&)> update_)
             : update{ std::move(update_) }
             , isActive{ true } {};
 
         ~Subscription() = default;
 
-        std::function<void(T)> update;
+        std::function<void(T, events::Subscription<T>&)> update;
         bool isActive;
 
         void close()

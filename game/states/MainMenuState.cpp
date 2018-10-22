@@ -18,15 +18,15 @@ MainMenuState::MainMenuState(engine::IGame& game)
     m_system = std::make_unique<engine::ui::UISystem>();
 
     // subscribe button press
-    m_subscription = dynamic_cast<Game&>(m_context).getInputManager().subscribe([&](engine::input::KeyMap keymap) {
-        if (keymap.getKeyState(engine::input::Keys::SPACE) == engine::input::KeyStates::DOWN) {
-            m_context.next(std::make_shared<GameState>(m_context));
+    dynamic_cast<Game&>(m_context).getInputManager().subscribe(
+        [&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>& subscription) {
+            if (keymap.getKeyState(engine::input::Keys::SPACE) == engine::input::KeyStates::DOWN) {
+                m_context.next(std::make_shared<GameState>(m_context));
 
-            // close stream
-            m_subscription->close();
-            m_subscription = nullptr;
-        }
-    });
+                // close stream
+                subscription.close();
+            }
+        });
 }
 
 void MainMenuState::init()

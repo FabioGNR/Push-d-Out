@@ -18,7 +18,7 @@ namespace input {
         }
     }
 
-    std::shared_ptr<events::Subscription<KeyMap>> InputManager::subscribe(std::function<void(KeyMap)> onNotify)
+    std::shared_ptr<events::Subscription<KeyMap>> InputManager::subscribe(std::function<void(KeyMap, events::Subscription<KeyMap>&)> onNotify)
     {
         auto subscription = std::make_shared<events::Subscription<KeyMap>>(onNotify);
         m_subscriptions.push_back(subscription);
@@ -29,7 +29,7 @@ namespace input {
     {
         for (const auto& observer : m_subscriptions) {
             if (observer->isActive) {
-                observer->update(m_keymap);
+                observer->update(m_keymap, *observer);
             }
         }
     }
