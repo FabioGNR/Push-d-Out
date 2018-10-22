@@ -36,9 +36,12 @@ namespace input {
         }
     }
 
+    /*
+     * Returns true when result equals request, see `KeyStates.h` for more info.
+     */
     bool KeyMap::hasKeyState(Keys key, KeyStates state) const
     {
-        return ((getKeyState(key) & state) != 0);
+        return ((getKeyState(key) & state) == state);
     }
 
     KeyStates KeyMap::getKeyState(Keys key) const
