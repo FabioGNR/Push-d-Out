@@ -19,6 +19,7 @@ namespace input {
                 ++it;
                 break;
             case KeyStates::UP:
+            case KeyStates::PRESSED_AND_RELEASED:
             case KeyStates::RELEASED:
                 it = m_map.erase(it);
                 break;
@@ -28,10 +29,19 @@ namespace input {
 
     void KeyMap::setKeyState(Keys key, KeyStates state)
     {
-        m_map.insert(std::pair<Keys, KeyStates>(key, state));
+        if (getKeyState(key) == PRESSED && state == RELEASED) {
+            m_map[key] = PRESSED_AND_RELEASED;
+        } else {
+            m_map[key] = state;
+        }
     }
 
-    KeyStates KeyMap::getKeyState(Keys key)
+    bool KeyMap::hasKeyState(Keys key, KeyStates state) const
+    {
+        return ((getKeyState(key) & state) != 0);
+    }
+
+    KeyStates KeyMap::getKeyState(Keys key) const
     {
         if (m_map.find(key) == m_map.end()) {
             return KeyStates::UP;

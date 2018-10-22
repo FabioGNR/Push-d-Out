@@ -36,6 +36,8 @@ namespace input {
 
     void InputManager::update()
     {
+        m_keymap.update();
+
         // remove inactive subscriptions
         auto it = m_subscriptions.begin();
         while (it != m_subscriptions.end()) {
@@ -45,8 +47,6 @@ namespace input {
                 ++it;
             }
         }
-
-        m_keymap.update();
     }
 }
 }

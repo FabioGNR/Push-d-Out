@@ -18,7 +18,8 @@ namespace input {
         void update();
 
         void setKeyState(Keys key, KeyStates state);
-        KeyStates getKeyState(Keys key);
+        KeyStates getKeyState(Keys key) const;
+        bool hasKeyState(Keys key, KeyStates state) const;
     };
 }
 }

@@ -27,7 +27,7 @@ void IGame::run()
 
     using clock = std::chrono::steady_clock;
 
-    const std::chrono::nanoseconds TIME_PER_UPDATE(2ms);
+    const std::chrono::nanoseconds TIME_PER_UPDATE(16ms);
     std::chrono::nanoseconds lag(0ns);
     auto lastTime = clock::now();
 
