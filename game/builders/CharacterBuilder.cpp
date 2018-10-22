@@ -46,6 +46,7 @@ namespace builders {
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
         std::map<game::definitions::Action, char> controls;
+        controls[definitions::Action::UseWeapon] = 'f'; //TODO: handle this in key mapper
         components::PlayerInputComponent playerInputComponent { 1, controls };
         m_ecsWorld.addComponent<components::PlayerInputComponent>(player, playerInputComponent);
 
