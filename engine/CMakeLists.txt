@@ -96,7 +96,7 @@ set(EVENTS_SRC
         events/models/KeyDownEvent.h
         events/models/QuitEvent.h
         events/models/Subscription.h
-        )
+        events/models/ControllerEvent.h events/models/UnknownEvent.h)
 
 set(WINDOW_SRC
         window/SDLWindow.h

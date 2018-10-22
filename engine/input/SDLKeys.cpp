@@ -53,7 +53,17 @@ namespace input {
         { SDLK_RETURN2, Keys::RETURN },
         { SDLK_DELETE, Keys::BACKSPACE },
         { SDLK_BACKSPACE, Keys::BACKSPACE },
-        { SDLK_KP_ENTER, Keys::RETURN }
+        { SDLK_KP_ENTER, Keys::RETURN },
+        { SDL_CONTROLLER_BUTTON_A, Keys::CON_A },
+        { SDL_CONTROLLER_BUTTON_B, Keys::CON_B },
+        { SDL_CONTROLLER_BUTTON_X, Keys::CON_X },
+        { SDL_CONTROLLER_BUTTON_Y, Keys::CON_Y },
+        { SDL_CONTROLLER_BUTTON_DPAD_LEFT, Keys::CON_DPAD_LEFT },
+        { SDL_CONTROLLER_BUTTON_DPAD_RIGHT, Keys::CON_DPAD_RIGHT },
+        { SDL_CONTROLLER_BUTTON_DPAD_UP, Keys::CON_DPAD_UP },
+        { SDL_CONTROLLER_BUTTON_DPAD_DOWN, Keys::CON_DPAD_DOWN },
+        { SDL_CONTROLLER_BUTTON_LEFTSHOULDER, Keys::CON_LEFTSHOULDER },
+        { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER }
     };
 
     input::Keys SDLKeys::get(SDL_Keycode keycode)

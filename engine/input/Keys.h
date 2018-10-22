@@ -50,7 +50,23 @@ namespace input {
         RETURN,
         SPACE,
         BACKSPACE,
-        UNKNOWN
+        UNKNOWN,
+        CON_A,
+        CON_B,
+        CON_X,
+        CON_Y,
+        CON_BACK,
+        CON_GUIDE,
+        CON_START,
+        CON_LEFTSTICK,
+        CON_RIGHTSTICK,
+        CON_LEFTSHOULDER,
+        CON_RIGHTSHOULDER,
+        CON_DPAD_UP,
+        CON_DPAD_DOWN,
+        CON_DPAD_LEFT,
+        CON_DPAD_RIGHT,
+        CON_DPAD_MAX
     };
 }
 }
