@@ -1,12 +1,21 @@
 #include "InventorySystem.h"
+#include "game/components/EquipableComponent.h"
 #include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/definitions/Action.h"
-#include <game/components/EquipableComponent.h>
+#include <engine/input/KeyStates.h>
 
 namespace game {
 namespace systems {
     using namespace components;
+
+    InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
+        : m_world{ world }
+    {
+        inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
+            m_keyMap = keymap;
+        });
+    }
 
     void InventorySystem::update(std::chrono::nanoseconds /*timeStep*/)
     {
@@ -14,10 +23,10 @@ namespace systems {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);
             auto& inventoryComponent = m_world.getComponent<InventoryComponent>(entity);
             const auto action = definitions::Action::PickupEquippable;
-            if (auto control = inputComponent.controls.find(action) != inputComponent.controls.end()) {
+            if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                 // determine if control is pressed
-                bool isPressed = false;
-                if (isPressed) {
+                auto control = inputComponent.controls[action];
+                if (m_keyMap.getKeyState(control) == engine::input::KeyStates::PRESSED) {
                     attemptPickup(entity, inventoryComponent);
                 }
             }
@@ -33,18 +42,17 @@ namespace systems {
             const auto& equipablePosition = m_world.getComponent<PositionComponent>(entity).position;
             const auto distance = playerPosition.distance(equipablePosition);
             if (distance < PICKUP_RANGE) {
-                if(distance < equipableCandidateDistance || equipableCandidate == nullptr) {
+                if (distance < equipableCandidateDistance || equipableCandidate == nullptr) {
                     equipableCandidateDistance = distance;
                     equipableCandidate = &entity;
                 }
             }
         });
-        if(equipableCandidate != nullptr) {
+        if (equipableCandidate != nullptr) {
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
-            if(inventoryComponent.otherEquipment.hasValue()) {
+            if (inventoryComponent.otherEquipment.hasValue()) {
                 inventoryComponent.activeEquipment.set(equipableCandidate);
-            }
-            else {
+            } else {
                 inventoryComponent.otherEquipment.set(equipableCandidate);
             }
         }
