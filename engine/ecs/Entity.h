@@ -12,7 +12,7 @@ namespace ecs {
     using EntityId = uint64_t;
 
     class Entity {
-        const EntityId m_id;
+        EntityId m_id;
         std::bitset<32> m_componentSignature;
         std::bitset<32> m_tagSignature;
 
