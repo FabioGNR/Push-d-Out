@@ -25,8 +25,6 @@ GameState::GameState(engine::IGame& game)
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
     themes::Theme theme = themes::Earth {};
     m_world = m_physicsManager->createWorld(common::Vector2D<int>(40, 24), theme.getGravity(), theme.getFriction());
-
-//    dynamic_cast<Game&>(game).getInputManager().subscribe();
 }
 
 void GameState::init()
@@ -44,7 +42,7 @@ void GameState::init()
     game::levelReader::createEntities(m_ecsWorld, *m_world, level);
 
     // Build characters into the ECS and physics world
-    game::builders::CharacterBuilder builder { m_ecsWorld, *m_world };
+    game::builders::CharacterBuilder builder { m_ecsWorld, *m_world, game.getInputManager() };
     builder.build();
 
     // Set-up camera
