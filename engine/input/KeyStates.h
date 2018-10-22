@@ -5,9 +5,9 @@ namespace input {
     enum KeyStates {
         PRESSED = 1,
         PRESSED_AND_RELEASED = 5,
-        DOWN = 2,
+        DOWN = 3,
         RELEASED = 4,
-        UP = 8
+        UP = 12
     };
 }
 }
