@@ -26,7 +26,7 @@ namespace systems {
             if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                 // determine if control is pressed
                 auto control = inputComponent.controls[action];
-                if (m_keyMap.getKeyState(control) == engine::input::KeyStates::PRESSED) {
+                if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
                     attemptPickup(entity, inventoryComponent);
                 }
             }

@@ -67,7 +67,7 @@ namespace systems {
                 auto action = definitions::Action::UseWeapon;
                 if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                     auto control = inputComponent.controls[action];
-                    if (m_keyMap.getKeyState(control) == engine::input::KeyStates::DOWN) {
+                    if (m_keyMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
                         auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
                         fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
                     }
