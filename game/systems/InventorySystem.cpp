@@ -49,6 +49,7 @@ namespace systems {
             }
         });
         if (equipableCandidate != nullptr) {
+            m_world.removeComponent<PositionComponent>(*equipableCandidate);
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
             if (inventoryComponent.otherEquipment.hasValue()) {
                 inventoryComponent.activeEquipment.set(equipableCandidate);

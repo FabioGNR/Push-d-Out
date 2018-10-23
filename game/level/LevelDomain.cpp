@@ -62,7 +62,8 @@ namespace levelDomain {
         j = json{
             { "Meta", { { "name", l.name }, { "theme", static_cast<int>(l.theme) }, { "height", l.height }, { "width", l.width } } },
             { "PlatformTiles", l.tiles },
-            { "CharacterSpawns", l.CharacterSpawns }
+            { "CharacterSpawns", l.CharacterSpawns },
+            { "EquipmentSpawns", l.EquipmentSpawns }
         };
     }
 
@@ -79,6 +80,7 @@ namespace levelDomain {
         l.width = Meta.at("width").get<int>();
         l.tiles = j.at("PlatformTiles").get<std::vector<tile>>();
         l.CharacterSpawns = j.at("CharacterSpawns").get<std::vector<spawnPoint>>();
+        l.EquipmentSpawns = j.at("EquipmentSpawns").get<std::vector<spawnPoint>>();
     }
 }
 }

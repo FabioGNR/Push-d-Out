@@ -7,6 +7,7 @@
 #include <game/systems/PositionSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <iostream>
+#include <game/components/EquipableComponent.h>
 
 #include "LevelReader.h"
 #include "engine/ecs/World.h"
@@ -79,6 +80,29 @@ void levelReader::createEntities(engine::ecs::World& world, engine::physics::Wor
         // Add a character spawn component to character spawn entity
         auto characterSpawnComponent = components::CharacterSpawnComponent();
         world.addComponent<components::CharacterSpawnComponent>(entity, characterSpawnComponent);
+    }
+
+    for (size_t i = 0; i < level.EquipmentSpawns.size(); i++) {
+        spawnPoint curSpawn = level.EquipmentSpawns[i];
+        common::Vector2D<double> position { curSpawn.x, curSpawn.y };
+
+        auto& entity = world.createEntity();
+
+        // Add a position component to equipment spawn entity
+        auto posComponent = components::PositionComponent(position);
+        world.addComponent<components::PositionComponent>(entity, posComponent);
+
+        // Add a dimension component to equipment spawn entity
+        auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(1,1));
+        world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
+
+        // Add a sprite component to equipment spawn entity
+        auto spriteComponent = components::SpriteComponent(levelDomain::getSheetName(level.theme), "equipmentSpawn");
+        world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+
+        // Add a equipable component to equipment spawn entity
+        auto equipableComponent = components::EquipableComponent();
+        world.addComponent<components::EquipableComponent>(entity, equipableComponent);
     }
 }
 }

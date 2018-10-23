@@ -43,6 +43,7 @@ namespace levelDomain {
 
         std::vector<tile> tiles;
         std::vector<spawnPoint> CharacterSpawns;
+        std::vector<spawnPoint> EquipmentSpawns;
     };
 
     std::string getSheetName(Theme theme);
