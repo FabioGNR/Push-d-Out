@@ -15,6 +15,7 @@ namespace systems {
         CameraSystem(std::shared_ptr<engine::graphics::Camera> camera)
             : m_camera{ std::move(camera) }
         {
+            m_camera->setPosition(common::Vector2D<double>(16, 10));
         }
 
         void update(std::chrono::nanoseconds timeStep) override;
