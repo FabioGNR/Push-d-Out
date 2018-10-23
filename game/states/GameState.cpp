@@ -3,6 +3,7 @@
 #include "game/level/levelReader/LevelReader.h"
 #include "game/systems/CameraSystem.h"
 #include "game/systems/RenderSystem.h"
+#include "game/systems/PlayerInputSystem.h"
 #include <engine/physics/Body.h>
 #include <game/Game.h>
 #include <game/components/DimensionComponent.h>
@@ -29,9 +30,6 @@ GameState::GameState(engine::IGame& game)
 
 void GameState::init()
 {
-    engine::sound::SoundEffect sound("assets/sounds/jetsons-theme.wav", 100);
-    //m_soundManager->play(sound);
-
     engine::sound::Music music("assets/sounds/bgm.wav");
     m_soundManager->play(music);
 

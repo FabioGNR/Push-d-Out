@@ -19,6 +19,7 @@ namespace input {
         std::shared_ptr<events::Subscription<KeyMap>> subscribe(std::function<void(KeyMap, events::Subscription<KeyMap>&)> onNotify);
         void notify();
         void update();
+        const KeyMap& getKeyMap() const;
     };
 }
 }

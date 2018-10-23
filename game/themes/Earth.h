@@ -12,8 +12,7 @@ namespace themes {
 
     public:
         explicit Earth(const double friction = FRICTION, const double gravity = GRAVITY)
-            : Theme(friction,
-                  gravity)
+            : Theme(friction, gravity)
         {
         }
     };

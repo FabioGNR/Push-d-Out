@@ -28,7 +28,10 @@ namespace physics {
 
         virtual double getAngle() const;
 
-        virtual void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) = 0;
+        virtual void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) const = 0;
+        virtual const common::Vector2D<double> getLinearVelocity() const = 0;
+        virtual void applyLinearImpulse(const common::Vector2D<double>& impulse) const = 0; 
+        virtual double getMass() const = 0;
     };
 }
 }

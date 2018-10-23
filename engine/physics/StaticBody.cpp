@@ -15,7 +15,8 @@ namespace physics {
 
         b2PolygonShape groundBox; // set half-height and half-width
         groundBox.SetAsBox(static_cast<float32>(dimension.x) / 2.0f, static_cast<float32>(dimension.y) / 2.0f);
-        b2Body->CreateFixture(&groundBox, 1.0f /* density, is not used when body is static */);
+        auto fixture = b2Body->CreateFixture(&groundBox, 1.0f /* density, is not used when body is static */);
+        fixture->SetFriction(static_cast<float32>(world.getFriction().x));
 
         // set the body
         m_body = b2Body;
@@ -36,9 +37,25 @@ namespace physics {
     }
 
     void StaticBody::applyForce(const common::Vector2D<double>& /* force */,
-        const common::Vector2D<double>& /* point */)
+        const common::Vector2D<double>& /* point */) const
     {
         // don't apply forces.
+    }
+
+    const common::Vector2D<double> StaticBody::getLinearVelocity() const
+    {
+        b2Vec2 vel = m_body->GetLinearVelocity();
+        return common::Vector2D<double>(vel.x, vel.y);
+    }
+
+    void StaticBody::applyLinearImpulse(const common::Vector2D<double>& /* impulse */) const
+    {
+        // don't apply forces
+    }
+
+    double StaticBody::getMass() const
+    {
+        return m_body->GetMass();
     }
 }
 }

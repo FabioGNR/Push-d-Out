@@ -1,15 +1,15 @@
 #pragma once
 
+#include <engine/common/Vector2D.h>
 #include <engine/ecs/Component.h>
 
 namespace game {
 namespace components {
     struct MoveComponent : public engine::ecs::BaseComponent<MoveComponent> {
-        double deltaX, velocity;
+        common::Vector2D<double> delta;
 
-        MoveComponent(double deltaX, double velocity)
-            : deltaX(deltaX)
-            , velocity(velocity) {};
+        MoveComponent(common::Vector2D<double> delta)
+            : delta{ delta } {};
     };
 }
 }

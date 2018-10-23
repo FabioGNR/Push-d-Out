@@ -48,5 +48,10 @@ namespace input {
             }
         }
     }
+
+    const KeyMap& InputManager::getKeyMap() const
+    {
+        return m_keymap;
+    }
 }
 }

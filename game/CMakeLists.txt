@@ -15,7 +15,6 @@ set(GAME_SRC
 set(COMPONENT_SRC
         components/MoveComponent.h
         components/PlayerInputComponent.h
-        components/JumpComponent.h
         components/PositionComponent.h
         components/BodyComponent.h
         components/DimensionComponent.h
@@ -24,15 +23,14 @@ set(COMPONENT_SRC
         components/WeaponComponent.h
         components/InventoryComponent.h
         components/EquipableComponent.h
-        components/ProjectileComponent.h)
+        components/ProjectileComponent.h
+        )
 
 set(SYSTEM_SRC
-        systems/MoveSystem.cpp
-        systems/MoveSystem.h
+        systems/MovementSystem.cpp
+        systems/MovementSystem.h
         systems/PlayerInputSystem.cpp
         systems/PlayerInputSystem.h
-        systems/JumpSystem.cpp
-        systems/JumpSystem.h
         systems/PositionSystem.cpp
         systems/PositionSystem.h
         systems/SpriteSystem.cpp

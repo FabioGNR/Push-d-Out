@@ -25,6 +25,7 @@ namespace events {
         case SDL_KEYUP:
             return std::make_shared<KeyUpEvent>(input::SDLKeys::get(event.key.keysym.sym));
         case SDL_KEYDOWN:
+            if (event.key.repeat) return nullptr; // ignore repeat events
             return std::make_shared<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
         default:
             return nullptr;
