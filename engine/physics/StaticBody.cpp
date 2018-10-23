@@ -57,5 +57,10 @@ namespace physics {
     {
         return m_body->GetMass();
     }
+
+    void StaticBody::setLinearVelocity(common::Vector2D<double> vel) const {
+        auto velf = vel.castTo<float32>();
+        m_body->SetLinearVelocity(b2Vec2{ velf.x, velf.y });
+    }
 }
 }

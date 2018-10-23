@@ -9,6 +9,7 @@
 #include "DynamicBody.h"
 #include "StaticBody.h"
 #include "World.h"
+#include "KinematicBody.h"
 
 namespace engine {
 namespace physics {
@@ -62,6 +63,13 @@ namespace physics {
     const Body* World::createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         auto body = new DynamicBody(position, dimension, *this);
+        m_bodies.push_back(body); // save body
+        return body;
+    }
+
+    const Body* World::createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    {
+        auto body = new KinematicBody(position, dimension, *this);
         m_bodies.push_back(body); // save body
         return body;
     }

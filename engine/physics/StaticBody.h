@@ -20,6 +20,7 @@ namespace physics {
         void update() override;
         void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) const override;
         const common::Vector2D<double> getLinearVelocity() const override;
+        void setLinearVelocity(common::Vector2D<double> vel) const override;
         void applyLinearImpulse(const common::Vector2D<double>& impulse) const override;
         double getMass() const override;
     };
