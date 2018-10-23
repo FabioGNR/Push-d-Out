@@ -22,9 +22,10 @@ namespace game {
 GameState::GameState(engine::IGame& game)
     : engine::State(game)
     , m_soundManager(new engine::sound::SDLSoundManager)
+    , m_inputManager(dynamic_cast<Game&>(game).getInputManager())
 {
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
-    themes::Theme theme = themes::Earth {};
+    themes::Theme theme = themes::Earth{};
     m_world = m_physicsManager->createWorld(common::Vector2D<int>(40, 24), theme.getGravity(), theme.getFriction());
 }
 
@@ -40,7 +41,7 @@ void GameState::init()
     game::levelReader::createEntities(m_ecsWorld, *m_world, level);
 
     // Build characters into the ECS and physics world
-    game::builders::CharacterBuilder builder { m_ecsWorld, *m_world, game.getInputManager() };
+    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager() };
     builder.build();
 
     // Set-up camera
@@ -49,6 +50,8 @@ void GameState::init()
 
     // Add render system
     m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+
+    subscribeInput();
 }
 
 void GameState::update(std::chrono::nanoseconds timeStep)
@@ -72,5 +75,32 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 void GameState::render(engine::IRenderer& renderer)
 {
     m_ecsWorld.render(renderer);
+}
+
+void GameState::resume()
+{
+    subscribeInput();
+}
+
+void GameState::pause()
+{
+    m_inputSubscription->close();
+    m_inputSubscription = nullptr;
+}
+
+void GameState::close()
+{
+    if (m_inputSubscription != nullptr) {
+        m_inputSubscription->close();
+    }
+}
+
+void GameState::subscribeInput()
+{
+    m_inputSubscription = m_inputManager.subscribe([&](engine::input::KeyMap keyMap, auto&) {
+        if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
+            m_context.previous();
+        }
+    });
 }
 }

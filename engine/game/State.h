@@ -13,8 +13,12 @@ public:
     explicit State(IGame& game) : m_context{game} {};
     virtual ~State() = default;
 
-    virtual void init() = 0;
     virtual void update(std::chrono::nanoseconds timeStep) = 0;
     virtual void render(IRenderer& renderer) = 0;
+    virtual void init() {};
+    virtual void resume() {};
+    virtual void pause() {};
+    virtual void close() {};
+
 };
 }

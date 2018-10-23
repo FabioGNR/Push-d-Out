@@ -12,7 +12,7 @@ namespace systems {
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
         : m_world{ world }
     {
-        inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
+        m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
             m_keyMap = keymap;
         });
     }

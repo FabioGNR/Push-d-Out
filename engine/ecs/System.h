@@ -24,6 +24,7 @@ namespace ecs {
 
     class ISystem {
     public:
+        virtual ~ISystem() = default;
         virtual void update(std::chrono::nanoseconds timeStep) = 0;
         virtual void render(engine::IRenderer& renderer) = 0;
     };

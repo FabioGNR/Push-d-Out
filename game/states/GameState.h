@@ -4,6 +4,7 @@
 #include <game/State.h>
 #include <game/systems/RenderSystem.h>
 #include <input/InputManager.h>
+#include <input/KeyMap.h>
 #include <memory>
 #include <physics/PhysicsManager.h>
 #include <physics/World.h>
@@ -22,6 +23,9 @@ private:
 
     std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
 
+    engine::input::InputManager& m_inputManager;
+    std::shared_ptr<engine::events::Subscription<engine::input::KeyMap>> m_inputSubscription;
+
 public:
     explicit GameState(engine::IGame& game);
     ~GameState() override = default;
@@ -29,5 +33,13 @@ public:
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
     void render(engine::IRenderer& renderer) override;
+
+    void resume() override;
+
+    void pause() override;
+
+    void close() override;
+
+    void subscribeInput();
 };
 }

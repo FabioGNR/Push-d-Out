@@ -27,9 +27,13 @@ namespace input {
 
     void InputManager::notify()
     {
-        for (const auto& observer : m_subscriptions) {
-            if (observer->isActive) {
-                observer->update(m_keymap, *observer);
+        if (!m_keymap.m_map.empty()) {
+            for (const auto& weakObserver : m_subscriptions) {
+                if (auto observer = weakObserver.lock()) {
+                    if (observer->isActive) {
+                        observer->update(m_keymap, *observer);
+                    }
+                }
             }
         }
     }
@@ -41,11 +45,15 @@ namespace input {
         // remove inactive subscriptions
         auto it = m_subscriptions.begin();
         while (it != m_subscriptions.end()) {
-            if (!(*it)->isActive) {
-                it = m_subscriptions.erase(it);
-            } else {
-                ++it;
+            if (auto observer = (*it).lock()) {
+                if(observer->isActive) {
+                    ++it; // move to the next observer
+                    continue; // observer is still active so no need to remove it
+                }
             }
+            // if the observer failed to lock or is no longer active
+            // remove the subscription as it's no longer valid
+            it = m_subscriptions.erase(it);
         }
     }
 

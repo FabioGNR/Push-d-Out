@@ -53,7 +53,8 @@ namespace input {
         { SDLK_RETURN2, Keys::RETURN },
         { SDLK_DELETE, Keys::BACKSPACE },
         { SDLK_BACKSPACE, Keys::BACKSPACE },
-        { SDLK_KP_ENTER, Keys::RETURN }
+        { SDLK_KP_ENTER, Keys::RETURN },
+        { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
     input::Keys SDLKeys::get(SDL_Keycode keycode)

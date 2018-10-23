@@ -11,7 +11,7 @@ namespace engine {
 namespace input {
     class InputManager {
     private:
-        std::vector<std::shared_ptr<events::Subscription<KeyMap>>> m_subscriptions;
+        std::vector<std::weak_ptr<events::Subscription<KeyMap>>> m_subscriptions;
         KeyMap m_keymap;
 
     public:

@@ -3,6 +3,7 @@
 namespace engine {
 namespace input {
     enum Keys {
+        UNKNOWN,
         A,
         B,
         C,
@@ -50,7 +51,7 @@ namespace input {
         RETURN,
         SPACE,
         BACKSPACE,
-        UNKNOWN
+        ESCAPE,
     };
 }
 }

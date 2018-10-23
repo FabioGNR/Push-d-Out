@@ -82,7 +82,8 @@ set(INPUT_SRC
         input/SDLKeys.h
         input/KeyMap.cpp
         input/KeyMap.h
-        input/KeyStates.h)
+        input/KeyStates.h
+        )
 
 set(EVENTS_SRC
         events/IEventHandler.h
@@ -153,6 +154,7 @@ set(UI_SRC
         ui/components/TextComponent.h
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
+        ui/components/CustomAction.h
         )
 
 # more engine stuff
