@@ -9,6 +9,7 @@ namespace game {
 namespace systems {
     void MovementSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
+        std::vector<engine::ecs::Entity*> moveComponentEntities;
         m_world.forEachEntityWith<components::MoveComponent, components::BodyComponent>([&](engine::ecs::Entity& entity) {
             auto& delta = m_world.getComponent<components::MoveComponent>(entity).delta;
             auto& body = m_world.getComponent<components::BodyComponent>(entity).body;
@@ -27,8 +28,11 @@ namespace systems {
             auto impulse = common::Vector2D<double>(body->getMass() * (deltaX - velocity.x), body->getMass() * delta.y);
             body->applyLinearImpulse(impulse);
 
-            m_world.removeComponent<components::MoveComponent>(entity);
+            moveComponentEntities.push_back(&entity);
         });
+        for(auto* entity : moveComponentEntities) {
+            m_world.removeComponent<components::MoveComponent>(*entity);
+        }
     }
 
     void MovementSystem::render(engine::IRenderer& /* renderer */) {}
