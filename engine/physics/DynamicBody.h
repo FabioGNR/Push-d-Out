@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Body.h"
-#include "common/Vector2D.h"
+
+#include <engine/common/Vector2D.h>
+
 #include <memory>
 
 class b2Body;
@@ -14,7 +16,12 @@ namespace physics {
         b2Body* m_body;
 
     public:
-        DynamicBody(common::Vector2D<double> position, common::Vector2D<double>, World& world);
+        DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
+        DynamicBody(const DynamicBody& other) = delete;
+        DynamicBody& operator=(const DynamicBody& other) = delete;
+
+        DynamicBody(DynamicBody&& other) = delete;
+        DynamicBody& operator=(DynamicBody&& other) = delete;
         ~DynamicBody() override;
 
         void update() override;

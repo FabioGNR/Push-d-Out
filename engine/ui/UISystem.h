@@ -1,8 +1,10 @@
 #pragma once
 #include "Frame.h"
-#include "graphics/IRenderer.h"
-#include "input/InputManager.h"
-#include "input/KeyMap.h"
+
+#include <engine/graphics/IRenderer.h>
+#include <engine/input/InputManager.h>
+#include <engine/input/KeyMap.h>
+
 #include <stack>
 
 namespace engine {
@@ -10,7 +12,7 @@ namespace ui {
 
     class UISystem {
     public:
-        UISystem(engine::input::InputManager& inputManager);
+        explicit UISystem(engine::input::InputManager& inputManager);
         void draw(IRenderer& renderer, common::Vector2D<int> screenSize);
         void push(Frame frame);
         void processInputEvent(engine::input::KeyMap& keyMap);

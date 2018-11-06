@@ -7,7 +7,7 @@ namespace engine {
 namespace ui {
     class CustomAction : public IAction {
     public:
-        CustomAction(std::function<void()> executeFunc)
+        explicit CustomAction(std::function<void()> executeFunc)
             : m_execute{ std::move(executeFunc) }
         {
         }

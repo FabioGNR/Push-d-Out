@@ -9,8 +9,7 @@ namespace ecs {
     {
         auto entity = std::make_unique<Entity>(makeUniqueEntityId());
         auto* entityPtr = entity.get();
-        //m_entities.push_back(std::move(entity));
-        m_entities.insert({ entityPtr->id(), std::move(entity) });
+        m_entities.insert(std::make_pair(entityPtr->id(), std::move(entity)));
 
         return *entityPtr;
     }
@@ -40,6 +39,11 @@ namespace ecs {
     EntityId EntityManager::makeUniqueEntityId()
     {
         return lastEntityId++;
+    }
+
+    std::size_t EntityManager::count() const
+    {
+        return m_entities.size();
     }
 }
 } // end engine

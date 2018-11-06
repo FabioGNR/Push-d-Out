@@ -1,15 +1,16 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <events/models/IEvent.h>
-#include <input/Keys.h>
+#include <engine/events/models/IEvent.h>
+#include <engine/input/Keys.h>
 #include <map>
+
+using SDL_Keycode = int;
 
 namespace engine {
 namespace input {
     struct SDLKeys {
         static const std::map<SDL_Keycode, Keys> KEYCODES;
-        static input::Keys get(SDL_Keycode keycode);
+        static input::Keys get(SDL_Keycode& keycode);
     };
 }
 }

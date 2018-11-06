@@ -14,7 +14,7 @@ namespace physics {
         bodyDef.fixedRotation = true;
 
         // create new body from world object
-        b2Body* b2Body = m_world.m_b2World->CreateBody(&bodyDef);
+        b2Body* b2Body = m_world.createBody(bodyDef);
         b2PolygonShape dynamicBox; // set half height and half width
         dynamicBox.SetAsBox((float32)dimension.x / 2.0f, (float32)dimension.y / 2.0f);
         b2FixtureDef fixtureDef;
@@ -32,7 +32,7 @@ namespace physics {
 
     DynamicBody::~DynamicBody()
     {
-        m_world.m_b2World->DestroyBody(m_body);
+        m_world.destroyBody(m_body);
     }
 
     void DynamicBody::update()
@@ -68,7 +68,8 @@ namespace physics {
         return m_body->GetMass();
     }
 
-    void DynamicBody::setLinearVelocity(common::Vector2D<double> vel) const {
+    void DynamicBody::setLinearVelocity(common::Vector2D<double> vel) const
+    {
         auto velf = vel.castTo<float32>();
         m_body->SetLinearVelocity(b2Vec2{ velf.x, velf.y });
     }

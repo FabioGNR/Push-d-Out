@@ -46,7 +46,7 @@ namespace input {
         auto it = m_subscriptions.begin();
         while (it != m_subscriptions.end()) {
             if (auto observer = (*it).lock()) {
-                if(observer->isActive) {
+                if (observer->isActive) {
                     ++it; // move to the next observer
                     continue; // observer is still active so no need to remove it
                 }

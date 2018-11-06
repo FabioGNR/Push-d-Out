@@ -2,9 +2,9 @@
 
 #include "game/definitions/Action.h"
 #include <engine/ecs/Component.h>
+#include <engine/input/Keys.h>
 #include <iostream>
 #include <map>
-#include <engine/input/Keys.h>
 
 namespace game {
 namespace components {
@@ -14,7 +14,7 @@ namespace components {
 
         PlayerInputComponent(int controllerId, std::map<definitions::Action, engine::input::Keys> controls)
             : controllerId(controllerId)
-            , controls(controls) {};
+            , controls(std::move(controls)){};
     };
 }
 }

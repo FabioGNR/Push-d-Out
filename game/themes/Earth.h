@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Theme.h"
-#include <cstdio>
 
 namespace game {
 namespace themes {

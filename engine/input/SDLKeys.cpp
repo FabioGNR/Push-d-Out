@@ -1,4 +1,7 @@
 #include "SDLKeys.h"
+
+#include <SDL_keycode.h>
+
 #include <events/models/KeyUpEvent.h>
 
 namespace engine {
@@ -57,7 +60,7 @@ namespace input {
         { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
-    input::Keys SDLKeys::get(SDL_Keycode keycode)
+    input::Keys SDLKeys::get(SDL_Keycode& keycode)
     {
         if (SDLKeys::KEYCODES.find(keycode) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;

@@ -1,7 +1,7 @@
 #pragma once
 #include "components/Component.h"
-#include <memory>
 #include <engine/input/KeyMap.h>
+#include <memory>
 
 namespace engine {
 namespace ui {

@@ -7,22 +7,27 @@
 class b2Body;
 
 namespace engine {
-    namespace physics {
-        class World;
-        class KinematicBody : public Body {
-        private:
-            b2Body* m_body;
+namespace physics {
+    class World;
+    class KinematicBody : public Body {
+    private:
+        b2Body* m_body;
 
-        public:
-            KinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
-            ~KinematicBody() override;
+    public:
+        KinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
+        KinematicBody(const KinematicBody& other) = delete;
+        KinematicBody& operator=(const KinematicBody& other) = delete;
 
-            void update() override;
-            void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) const override;
-            const common::Vector2D<double> getLinearVelocity() const override;
-            void setLinearVelocity(common::Vector2D<double> vel) const override;
-            void applyLinearImpulse(const common::Vector2D<double>& impulse) const override;
-            double getMass() const override;
-        };
-    }
+        KinematicBody(KinematicBody&& other) = delete;
+        KinematicBody& operator=(KinematicBody&& other) = delete;
+        ~KinematicBody() override;
+
+        void update() override;
+        void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) const override;
+        const common::Vector2D<double> getLinearVelocity() const override;
+        void setLinearVelocity(common::Vector2D<double> vel) const override;
+        void applyLinearImpulse(const common::Vector2D<double>& impulse) const override;
+        double getMass() const override;
+    };
+}
 }

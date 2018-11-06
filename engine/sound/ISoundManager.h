@@ -11,7 +11,7 @@ namespace sound {
     struct Volume {
         int volume;
 
-        Volume(int volume)
+        explicit Volume(int volume)
         {
             this->volume = std::min(MAX_VOLUME, std::max(volume, MUTED_VOLUME));
         }
@@ -21,6 +21,13 @@ namespace sound {
     class Music;
     class ISoundManager {
     public:
+        ISoundManager() = default;
+        ISoundManager(const ISoundManager& other) = default;
+        ISoundManager& operator=(const ISoundManager& other) = default;
+
+        ISoundManager(ISoundManager&& other) = default;
+        ISoundManager& operator=(ISoundManager&& other) = default;
+        virtual ~ISoundManager() = default;
         virtual void play(const SoundEffect& sound) = 0;
         virtual void play(const Music& sound) = 0;
         virtual void resume() const = 0;

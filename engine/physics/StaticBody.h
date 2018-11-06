@@ -15,6 +15,12 @@ namespace physics {
 
     public:
         StaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
+        StaticBody(const StaticBody& other) = delete;
+        StaticBody& operator=(const StaticBody& other) = delete;
+
+        StaticBody(StaticBody&& other) = delete;
+        StaticBody& operator=(StaticBody&& other) = delete;
+
         ~StaticBody() override;
 
         void update() override;

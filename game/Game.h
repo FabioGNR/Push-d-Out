@@ -1,12 +1,14 @@
 #pragma once
 
-#include <events/EventManager.h>
-#include <game/IGame.h>
-#include <game/State.h>
-#include <graphics/SDL/SDLRenderer.h>
+#include <engine/common/Vector2D.h>
+#include <engine/events/EventManager.h>
+#include <engine/game/IGame.h>
+#include <engine/game/State.h>
+#include <engine/graphics/SDL/SDLRenderer.h>
+#include <engine/window/Window.h>
+
 #include <memory>
 #include <stack>
-#include <window/Window.h>
 
 namespace game {
 class Game : public engine::IGame {
@@ -21,7 +23,7 @@ public:
     void init() override;
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
-    
+
     common::Vector2D<int> getScreenSize() const;
     engine::input::InputManager& getInputManager();
 };

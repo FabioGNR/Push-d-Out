@@ -10,7 +10,6 @@ namespace engine {
 namespace ecs {
     class EntityManager {
         std::unordered_map<EntityId, std::unique_ptr<Entity>> m_entities;
-        //std::vector<std::unique_ptr<Entity>> m_entities;
         EntityId lastEntityId = 0;
 
     public:
@@ -19,6 +18,7 @@ namespace ecs {
         Entity& entity(EntityId entityId);
         void destroy(const Entity& entity);
         void destroy(EntityId entityId);
+        std::size_t count() const;
 
     private:
         EntityId makeUniqueEntityId();

@@ -1,22 +1,17 @@
 #include "GameState.h"
-#include "game/builders/CharacterBuilder.h"
-#include "game/level/levelReader/LevelReader.h"
-#include "game/systems/CameraSystem.h"
-#include "game/systems/RenderSystem.h"
-#include "game/systems/PlayerInputSystem.h"
-#include <engine/physics/Body.h>
-#include <game/Game.h>
-#include <game/components/DimensionComponent.h>
-#include <game/components/PositionComponent.h>
-#include <game/components/SpriteComponent.h>
-#include <game/themes/Earth.h>
-#include <graphics/Color.h>
-#include <graphics/drawable/RectangleShape.h>
-#include <sound/SDL/SDLSoundManager.h>
-#include <sound/Sound.h>
 
-#include <iostream>
-#include <random>
+#include <engine/game/IGame.h>
+#include <engine/graphics/Camera.h>
+#include <engine/physics/PhysicsManager.h>
+#include <engine/sound/SDL/SDLSoundManager.h>
+
+#include <game/Game.h>
+#include <game/builders/CharacterBuilder.h>
+#include <game/level/reader/LevelReader.h>
+#include <game/systems/CameraSystem.h>
+#include <game/systems/RenderSystem.h>
+#include <game/themes/Earth.h>
+#include <game/themes/Theme.h>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
@@ -34,11 +29,11 @@ void GameState::init()
     engine::sound::Music music("assets/sounds/bgm.wav");
     m_soundManager->play(music);
 
-    Game& game = dynamic_cast<Game&>(m_context);
+    auto& game = dynamic_cast<Game&>(m_context);
 
-    // Read level based on JSON file
-    auto level = game::levelReader::getLevel(game::levelReader::readJSON("assets/levels/base-level.json"));
-    game::levelReader::createEntities(m_ecsWorld, *m_world, level);
+    // Read Level based on JSON file
+    auto level = level::LevelReader::getLevel(level::LevelReader::readJSON("assets/levels/base-level.json"));
+    level::LevelReader::createEntities(m_ecsWorld, *m_world, level);
 
     // Build characters into the ECS and physics world
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager() };
@@ -63,8 +58,8 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 
     if (timeElapsed > std::chrono::seconds(2)) {
         timeElapsed = std::chrono::nanoseconds::zero();
-        m_soundManager->setMusicVolume(volume + 10);
-        m_soundManager->setSfxVolume(volume);
+        m_soundManager->setMusicVolume(engine::sound::Volume{ volume + 10 });
+        m_soundManager->setSfxVolume(engine::sound::Volume{ volume });
 
         //volume -= 20;
     }

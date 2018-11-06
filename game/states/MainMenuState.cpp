@@ -16,7 +16,7 @@ namespace game {
 MainMenuState::MainMenuState(engine::IGame& context)
     : engine::State(context)
 {
-    Game& game = dynamic_cast<Game&>(m_context);
+    auto& game = dynamic_cast<Game&>(m_context);
     m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
 }
 

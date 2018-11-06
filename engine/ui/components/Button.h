@@ -1,8 +1,10 @@
 #pragma once
+
 #include "Component.h"
 #include "IAction.h"
 #include "TextComponent.h"
-#include <graphics/drawable/Font.h>
+#include "engine/graphics/drawable/Font.h"
+
 #include <memory>
 #include <string>
 
@@ -15,6 +17,8 @@ namespace ui {
             , TextComponent(text, textSize)
         {
         }
+
+        virtual ~Button() = default;
 
         DrawContext draw(DrawContext context) override;
 

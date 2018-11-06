@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string>
+#include <engine/common/Vector2D.h>
+#include <engine/graphics/Color.h>
+#include <engine/graphics/IGraphicsElement.h>
 
-#include <common/Vector2D.h>
-#include <graphics/Color.h>
-#include <graphics/IGraphicsElement.h>
+#include <string>
 
 namespace engine {
 class Font : public IGraphicsElement {
@@ -16,7 +16,7 @@ class Font : public IGraphicsElement {
     common::Vector2D<int> m_position;
 
 public:
-    Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D<int> position);
+    Font(std::string fontPath, std::string text, int fontSize, Color color, common::Vector2D<int> position);
 
     void accept(IRenderVisitor& visitor) const override;
 
@@ -33,7 +33,7 @@ public:
     void setPosition(common::Vector2D<int> position);
     void setColor(const Color& color);
 
-    bool operator==(const Font &rhs) const;
-    bool operator!=(const Font &rhs) const;
+    bool operator==(const Font& rhs) const;
+    bool operator!=(const Font& rhs) const;
 };
 } // end namespace engine

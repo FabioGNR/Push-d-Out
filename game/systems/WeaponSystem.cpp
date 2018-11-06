@@ -1,15 +1,18 @@
 #include "WeaponSystem.h"
-#include "engine/physics/Body.h"
-#include "game/components/BodyComponent.h"
-#include "game/components/DimensionComponent.h"
-#include "game/components/InventoryComponent.h"
-#include "game/components/PlayerInputComponent.h"
-#include "game/components/PositionComponent.h"
-#include "game/components/ProjectileComponent.h"
-#include <chrono>
+
+#include <game/components/BodyComponent.h>
+#include <game/components/DimensionComponent.h>
+#include <game/components/InventoryComponent.h>
+#include <game/components/PlayerInputComponent.h>
+#include <game/components/PositionComponent.h>
+#include <game/components/ProjectileComponent.h>
 #include <game/components/WeaponComponent.h>
-#include <graphics/IRenderer.h>
-#include <physics/DynamicBody.h>
+
+#include <engine/graphics/IRenderer.h>
+#include <engine/physics/Body.h>
+#include <engine/physics/DynamicBody.h>
+
+#include <chrono>
 
 using namespace game::components;
 

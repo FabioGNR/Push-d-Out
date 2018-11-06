@@ -11,7 +11,7 @@ namespace physics {
         groundBodyDef.position.Set(static_cast<float32>(position.x), static_cast<float32>(position.y));
 
         // create the body
-        b2Body* b2Body = m_world.m_b2World->CreateBody(&groundBodyDef);
+        b2Body* b2Body = m_world.createBody(groundBodyDef);
 
         b2PolygonShape groundBox; // set half-height and half-width
         groundBox.SetAsBox(static_cast<float32>(dimension.x) / 2.0f, static_cast<float32>(dimension.y) / 2.0f);
@@ -24,7 +24,7 @@ namespace physics {
 
     StaticBody::~StaticBody()
     {
-        m_world.m_b2World->DestroyBody(m_body);
+        m_world.destroyBody(m_body);
     }
 
     void StaticBody::update()
@@ -58,7 +58,8 @@ namespace physics {
         return m_body->GetMass();
     }
 
-    void StaticBody::setLinearVelocity(common::Vector2D<double> vel) const {
+    void StaticBody::setLinearVelocity(common::Vector2D<double> vel) const
+    {
         auto velf = vel.castTo<float32>();
         m_body->SetLinearVelocity(b2Vec2{ velf.x, velf.y });
     }

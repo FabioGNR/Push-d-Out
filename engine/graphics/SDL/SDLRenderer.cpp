@@ -25,8 +25,8 @@ SDLRenderer::SDLRenderer(const SDLWindow& window)
 
     static bool isImageInitialized = false;
     if (!isImageInitialized) {
-        const int flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
-        if ((IMG_Init(flags) & flags) == 0) {
+        const auto flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
+        if (((IMG_Init(flags) & flags)) == 0) {
             throw std::runtime_error(IMG_GetError());
         }
     }
@@ -62,7 +62,7 @@ common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
     if (calculationError != 0) {
         throw std::runtime_error(TTF_GetError());
     }
-    return {calculatedWidth, calculatedHeight};
+    return { calculatedWidth, calculatedHeight };
 }
 
 } // end namespace engine

@@ -1,8 +1,10 @@
 #pragma once
 
 #include "KeyMap.h"
-#include "events/models/Subscription.h"
-#include <events/models/KeyUpEvent.h>
+
+#include <engine/events/models/KeyUpEvent.h>
+#include <engine/events/models/Subscription.h>
+
 #include <memory>
 #include <queue>
 #include <vector>

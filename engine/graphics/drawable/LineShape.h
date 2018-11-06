@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphics/IGraphicsElement.h>
 #include <common/Vector2D.h>
+#include <graphics/IGraphicsElement.h>
 
 namespace engine {
 class LineShape : public IGraphicsElement {

@@ -1,13 +1,13 @@
-#include <utility>
-
 #pragma once
 
-#include "engine/ecs/System.h"
-#include "engine/ecs/World.h"
-#include "engine/graphics/IGraphicsElement.h"
-#include "graphics/IRenderer.h"
-#include <graphics/Camera.h>
-#include <graphics/drawable/RectangleShape.h>
+#include <engine/ecs/System.h>
+#include <engine/ecs/World.h>
+#include <engine/graphics/Camera.h>
+#include <engine/graphics/IGraphicsElement.h>
+#include <engine/graphics/IRenderer.h>
+#include <engine/graphics/drawable/RectangleShape.h>
+
+#include <utility>
 
 namespace game {
 namespace systems {

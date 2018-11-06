@@ -108,7 +108,7 @@ namespace sound {
 
     int SDLSoundManager::scaleToSDLVolume(Volume volume) const
     {
-        return static_cast<int>(volume.volume * (MIX_MAX_VOLUME / 100));
+        return static_cast<int>(volume.volume * (MIX_MAX_VOLUME / 100.f));
     }
 } // end namespace sound
 } // end namespace engine
