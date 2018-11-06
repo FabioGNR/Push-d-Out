@@ -80,9 +80,9 @@ set(INPUT_SRC
         input/Keys.h
         input/SDLKeys.cpp
         input/SDLKeys.h
-        input/KeyMap.cpp
-        input/KeyMap.h
-        input/KeyStates.h)
+        input/Maps/KeyMap.cpp
+        input/Maps/KeyMap.h
+        input/KeyStates.h input/Maps/OtherMap.cpp input/Maps/OtherMap.h input/Maps/ControlMap.cpp input/Maps/ControlMap.h input/Maps/ControllerMap.cpp input/Maps/ControllerMap.h)
 
 set(EVENTS_SRC
         events/IEventHandler.h

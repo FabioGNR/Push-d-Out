@@ -1,6 +1,7 @@
 #include <utility>
 
 #include "InputManager.h"
+#include <events/models/ControllerEvent.h>
 #include <events/models/IControlEvent.h>
 #include <events/models/KeyDownEvent.h>
 #include <events/models/KeyUpEvent.h>
@@ -12,15 +13,26 @@ namespace input {
     void InputManager::handle(const std::shared_ptr<events::IControlEvent>& event)
     {
         if (auto down = std::dynamic_pointer_cast<events::KeyDownEvent>(event)) {
-            m_keymap.setKeyState(down->value, KeyStates::PRESSED);
+            controlMap.setKeyState(down->value, KeyStates::PRESSED);
         } else if (auto up = std::dynamic_pointer_cast<events::KeyUpEvent>(event)) {
-            m_keymap.setKeyState(up->value, KeyStates::RELEASED);
+            controlMap.setKeyState(up->value, KeyStates::RELEASED);
+        } else if (auto con = std::dynamic_pointer_cast<events::ControllerEvent>(event)) {
+            if (conList.find(con->ID) == conList.end()) {
+                conList.insert({ con->ID, std::make_shared<models::ControllerMap>() });
+            } else {
+                if (con->axisValue == 0) {
+                    conList[con->ID]->setValue(con->value, (con->keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
+                } else {
+                    conList[con->ID]->setValue(con->value, con->axisValue);
+                    //controlMap.setAxisValue(con->value, con->axisValue);
+                }
+            }
         }
     }
 
-    std::shared_ptr<events::Subscription<KeyMap>> InputManager::subscribe(std::function<void(KeyMap, events::Subscription<KeyMap>&)> onNotify)
+    std::shared_ptr<events::Subscription<ControlMap>> InputManager::subscribe(std::function<void(ControlMap, events::Subscription<ControlMap>&)> onNotify)
     {
-        auto subscription = std::make_shared<events::Subscription<KeyMap>>(onNotify);
+        auto subscription = std::make_shared<events::Subscription<ControlMap>>(onNotify);
         m_subscriptions.push_back(subscription);
         return subscription;
     }
@@ -29,14 +41,14 @@ namespace input {
     {
         for (const auto& observer : m_subscriptions) {
             if (observer->isActive) {
-                observer->update(m_keymap, *observer);
+                observer->update(controlMap, *observer);
             }
         }
     }
 
     void InputManager::update()
     {
-        m_keymap.update();
+        controlMap.update();
 
         // remove inactive subscriptions
         auto it = m_subscriptions.begin();

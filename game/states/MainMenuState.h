@@ -3,7 +3,7 @@
 #include <chrono>
 #include <engine/ui/UISystem.h>
 #include <game/State.h>
-#include <input/KeyMap.h>
+#include <input/Maps/KeyMap.h>
 #include <events/models/Subscription.h>
 
 namespace game {

@@ -58,15 +58,21 @@ namespace input {
         CON_BACK,
         CON_GUIDE,
         CON_START,
-        CON_LEFTSTICK,
-        CON_RIGHTSTICK,
+        CON_LEFTSTICK_X,
+        CON_RIGHTSTICK_X,
+        CON_LEFTSTICK_Y,
+        CON_RIGHTSTICK_Y,
+        CON_LEFTSTICK_Z,
+        CON_RIGHTSTICK_Z,
         CON_LEFTSHOULDER,
         CON_RIGHTSHOULDER,
         CON_DPAD_UP,
         CON_DPAD_DOWN,
         CON_DPAD_LEFT,
         CON_DPAD_RIGHT,
-        CON_DPAD_MAX
+        CON_DPAD_MAX,
+        CON_LOOK_L,
+        CON_LOOK_R
     };
 }
 }

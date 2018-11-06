@@ -19,8 +19,8 @@ MainMenuState::MainMenuState(engine::IGame& game)
 
     // subscribe button press
     dynamic_cast<Game&>(m_context).getInputManager().subscribe(
-        [&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>& subscription) {
-            if (keymap.hasKeyState(engine::input::Keys::SPACE, engine::input::PRESSED)) {
+        [&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>& subscription) {
+            if (controlMap.hasKeyState(engine::input::Keys::SPACE, engine::input::PRESSED)) {
                 m_context.next(std::make_shared<GameState>(m_context));
                 subscription.close(); // close stream
             }

@@ -12,8 +12,8 @@ namespace systems {
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
         : m_world{ world }
     {
-        inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
-            m_keyMap = keymap;
+        inputManager.subscribe([&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>&) {
+            this->controlMap = controlMap; // TODO test if "this" works like that
         });
     }
 
@@ -26,7 +26,7 @@ namespace systems {
             if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                 // determine if control is pressed
                 auto control = inputComponent.controls[action];
-                if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
+                if (controlMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
                     attemptPickup(entity, inventoryComponent);
                 }
             }

@@ -51,8 +51,8 @@ namespace systems {
         std::cout << "Before inserting in to map" << std::endl;
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
         std::cout << "After inserting in to map" << std::endl;
-        inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
-            m_keyMap = keymap;
+        inputManager.subscribe([&](engine::input::ControlMap controlMap_, engine::events::Subscription<engine::input::ControlMap>&) {
+            controlMap = controlMap_;
         });
     }
 
@@ -67,10 +67,16 @@ namespace systems {
                 auto action = definitions::Action::UseWeapon;
                 if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                     auto control = inputComponent.controls[action];
-                    if (m_keyMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                    if(controlMap.axisChanged(control)){
                         auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
                         fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
                     }
+                    /*
+                    if (controlMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                        auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
+                        fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
+                    }
+                    */
                 }
             }
         });
