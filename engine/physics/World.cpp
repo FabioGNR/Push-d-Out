@@ -52,7 +52,10 @@ namespace physics {
         m_impl->world = std::make_unique<b2World>(grav);
     }
 
-    World::~World() = default;
+    World::~World()
+    {
+        m_impl->bodies.clear();
+    };
 
     const common::Vector2D<double>& World::getGravity() const
     {
