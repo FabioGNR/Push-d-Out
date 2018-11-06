@@ -2,5 +2,9 @@
 [Bb]uild/
 cmake-build-*/
 .vs/
+.vscode/
+.ccls-cache/
 .idea/
-
+CMakeSettings.json
+.DS_STORE
+external/Box2D
