@@ -36,7 +36,7 @@ void GameState::init()
     level::LevelReader::createEntities(m_ecsWorld, *m_world, level);
 
     // Build characters into the ECS and physics world
-    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager() };
+    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager(), 4 };
     builder.build();
 
     // Set-up camera
