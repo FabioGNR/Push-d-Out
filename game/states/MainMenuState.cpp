@@ -16,7 +16,7 @@ namespace game {
 MainMenuState::MainMenuState(engine::IGame& context)
     : engine::State(context)
 {
-    m_uiSystem = std::make_unique<engine::ui::UISystem>();
+    //m_uiSystem = std::make_unique<engine::ui::UISystem>();
 /*
     // subscribe button press
     dynamic_cast<Game&>(m_context).getInputManager().subscribe(

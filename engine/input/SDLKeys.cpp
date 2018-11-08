@@ -1,7 +1,6 @@
 #include "SDLKeys.h"
 
 #include <SDL_keycode.h>
-
 #include <events/models/KeyUpEvent.h>
 #include <SDL_gamecontroller.h>
 

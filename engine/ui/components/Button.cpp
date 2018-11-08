@@ -32,7 +32,7 @@ namespace ui {
         return size;
     }
 
-    void Button::processInputEvent(engine::input::ControllerMap& keyMap)
+    void Button::processInputEvent(engine::input::maps::AnalogMap& keyMap)
     {
         //TODO: replace shouldExecute with proper mapping
         bool shouldExecute = keyMap.hasKeyState(engine::input::Keys::SPACE, engine::input::KeyStates::PRESSED);

@@ -8,7 +8,7 @@ namespace ui {
         setActive(true);
     }
 
-    void UISystem::processInputEvent(engine::input::ControllerMap& keyMap)
+    void UISystem::processInputEvent(engine::input::maps::AnalogMap& keyMap)
     {
         //TODO: key event as parameter and pass it through
         if (!m_frames.empty()) {
@@ -43,7 +43,7 @@ namespace ui {
 
     void UISystem::subscribeInput()
     {
-        m_inputSubscription = m_inputManager.subscribe([&](engine::input::ControllerMap keymap, auto&) {
+        m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keymap, auto&) {
             processInputEvent(keymap);
         });
     }

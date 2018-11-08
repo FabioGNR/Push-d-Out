@@ -92,7 +92,7 @@ void GameState::close()
 
 void GameState::subscribeInput()
 {
-    m_inputSubscription = m_inputManager.subscribe([&](engine::input::KeyMap keyMap, auto&) {
+    m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keyMap, auto&) {
         if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
             m_context.previous();
         }

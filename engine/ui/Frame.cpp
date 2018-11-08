@@ -6,7 +6,7 @@ namespace engine {
 namespace ui {
     using namespace engine::input;
 
-    void Frame::processInputEvent(ControllerMap& keyMap)
+    void Frame::processInputEvent(maps::AnalogMap& keyMap)
     {
         //TODO: use proper mapping for this instead of hardcoded W and S
         // if navigation key(s)

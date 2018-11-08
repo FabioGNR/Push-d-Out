@@ -1,10 +1,9 @@
 #include "SDLEventHandler.h"
+#include <SDL.h>
 #include <events/models/ControllerEvent.h>
 #include <events/models/KeyDownEvent.h>
 #include <events/models/KeyUpEvent.h>
 #include <events/models/QuitEvent.h>
-#include <SDL.h>
-
 
 namespace engine {
 namespace events {
@@ -45,7 +44,7 @@ namespace events {
             std::cout << "Controller button down" << std::endl;
             return std::make_shared<ControllerEvent>(input::Keys::CON_START, true, event.cdevice.which);
         case SDL_JOYAXISMOTION: {
-            input::Keys key;
+            input::AnalogKeys key;
             int axis = (int)event.jaxis.axis;
             //std::cout << (int)event.jaxis.axis << std::endl;
             if (axis < 3) {
@@ -57,23 +56,23 @@ namespace events {
             }
 
             if (event.jaxis.axis == 0) {
-                key = input::Keys::CON_LEFTSTICK_X;
+                key = input::AnalogKeys::CON_LEFTSTICK_X;
             } else if (event.jaxis.axis == 1) {
-                key = input::Keys::CON_LEFTSTICK_Y;
+                key = input::AnalogKeys::CON_LEFTSTICK_Y;
             } else if (event.jaxis.axis == 2) {
-                key = input::Keys::CON_LEFTSTICK_Z;
+                key = input::AnalogKeys::CON_LEFTSTICK_Z;
             } else if (event.jaxis.axis == 3) {
-                key = input::Keys::CON_RIGHTSTICK_X;
+                key = input::AnalogKeys::CON_RIGHTSTICK_X;
             } else if (event.jaxis.axis == 4) {
-                key = input::Keys::CON_RIGHTSTICK_Y;
+                key = input::AnalogKeys::CON_RIGHTSTICK_Y;
             } else if (event.jaxis.axis == 5) {
-                key = input::Keys::CON_RIGHTSTICK_Z;
+                key = input::AnalogKeys::CON_RIGHTSTICK_Z;
             } else if (event.jaxis.axis == 6) {
-                key = input::Keys::CON_LEFTSHOULDER;
+                key = input::AnalogKeys::CON_TRIGGER_LEFT;
             } else if (event.jaxis.axis == 7) {
-                key = input::Keys::CON_RIGHTSHOULDER;
+                key = input::AnalogKeys::CON_TRIGGER_RIGHT;
             } else {
-                key = input::Keys::UNKNOWN;
+                return nullptr;
             }
 
             //std::pair<int , int> test = std::make_pair(1, 2); TODO check this

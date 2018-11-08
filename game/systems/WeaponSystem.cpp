@@ -53,8 +53,8 @@ namespace systems {
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
         std::cout << "After inserting in to map" << std::endl;
 
-        m_inputSubscription = inputManager.subscribe([&](engine::input::ControlMap controlMap_, engine::events::Subscription<engine::input::ControlMap>&) {
-            controlMap = controlMap_;
+        m_inputSubscription = inputManager.subscribe([&](engine::input::maps::AnalogMap analogMap, engine::events::Subscription<engine::input::maps::AnalogMap>&) {
+            m_analogMap = analogMap;
         /*
         m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
             m_keyMap = keymap;*/
@@ -74,7 +74,7 @@ namespace systems {
                 if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                     auto control = inputComponent.controls[action];
 
-                    if (controlMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                    if (m_analogMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
                         if (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - weapon.lastFired).count() > weapon.cooldownSeconds * 1000) {
                             if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
                                 auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
@@ -83,7 +83,7 @@ namespace systems {
                             }
                         }
                     }
-                    */
+
                 }
             }
         });

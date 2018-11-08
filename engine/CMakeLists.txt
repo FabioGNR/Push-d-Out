@@ -89,8 +89,8 @@ set(INPUT_SRC
         input/maps/KeyMap.cpp
         input/maps/KeyMap.h
         input/KeyStates.h
-        input/maps/ControllerMap.cpp
-        input/maps/ControllerMap.h)
+        input/maps/AnalogMap.cpp
+        input/maps/AnalogMap.h input/AnalogKeys.h)
 
 set(EVENTS_SRC
         events/IEventHandler.h
@@ -162,7 +162,7 @@ set(UI_SRC
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
         ui/components/CustomAction.h
-        )
+        input/maps/InputMap.cpp input/maps/InputMap.h)
 
 # more engine stuff
 add_library(engine

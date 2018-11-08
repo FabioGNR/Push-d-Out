@@ -12,14 +12,15 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
     m_world.forEachEntityWith<components::PlayerInputComponent>([&](engine::ecs::Entity& entity) {
         auto& inputMap = m_world.getComponent<components::PlayerInputComponent>(entity).controls;
         auto delta = common::Vector2D<double>(0, 0);
+        auto& keyMap = m_keyMap.getKBM();
 
-        if (m_keyMap.hasKeyState(inputMap[definitions::Action::MoveLeft], KeyStates::DOWN)) {
+        if (keyMap.hasKeyState(inputMap[definitions::Action::MoveLeft], KeyStates::DOWN)) {
             delta.x += -7;
         }
-        if (m_keyMap.hasKeyState(inputMap[definitions::Action::MoveRight], KeyStates::DOWN)) {
+        if (keyMap.hasKeyState(inputMap[definitions::Action::MoveRight], KeyStates::DOWN)) {
             delta.x += 7;
         }
-        if (m_keyMap.hasKeyState(inputMap[definitions::Action::Jump], KeyStates::PRESSED)) {
+        if (keyMap.hasKeyState(inputMap[definitions::Action::Jump], KeyStates::PRESSED)) {
             engine::sound::SDLSoundManager soundManager;
             engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
             engine::sound::Volume volume{ 10 };

@@ -54,8 +54,8 @@ namespace builders {
         // TODO: Move these actions to some kind of configurations
         controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
-        controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
-        controls[definitions::Action::MoveRight] = engine::input::Keys::D;
+        controls[definitions::Action::MoveLeft] = engine::input::Keys::CON_LEFTSHOULDER;
+        controls[definitions::Action::MoveRight] = engine::input::Keys::CON_RIGHTSHOULDER;
         controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
 
         components::PlayerInputComponent playerInputComponent{ 1, controls };
