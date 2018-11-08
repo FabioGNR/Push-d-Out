@@ -55,7 +55,7 @@ namespace physics {
     World::~World()
     {
         m_impl->bodies.clear();
-    };
+    }
 
     const common::Vector2D<double>& World::getGravity() const
     {

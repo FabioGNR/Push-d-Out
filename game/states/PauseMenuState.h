@@ -1,13 +1,12 @@
 #pragma once
 
 #include "BaseMenuState.h"
-#include <chrono>
 
 namespace game {
-class MainMenuState : public BaseMenuState {
+class PauseMenuState : public BaseMenuState {
 
 public:
-    explicit MainMenuState(engine::IGame& context);
+    explicit PauseMenuState(engine::IGame& context);
 
 protected:
     void prependButtons(engine::ui::StackPanel& panel) override;

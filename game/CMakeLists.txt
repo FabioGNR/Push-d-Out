@@ -10,6 +10,10 @@ set(GAME_SRC
         states/GameState.h
         states/MainMenuState.cpp
         states/MainMenuState.h
+        states/PauseMenuState.cpp
+        states/PauseMenuState.h
+        states/BaseMenuState.cpp
+        states/BaseMenuState.h
         exceptions/NoPlayersFoundException.h
         exceptions/MissingCharacterSpawnException.h
         )

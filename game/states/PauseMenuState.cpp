@@ -1,4 +1,4 @@
-#include "MainMenuState.h"
+#include "PauseMenuState.h"
 #include "GameState.h"
 #include "game/Game.h"
 #include <engine/common/Vector2D.h>
@@ -13,27 +13,28 @@
 using namespace std::chrono_literals;
 
 namespace game {
-MainMenuState::MainMenuState(engine::IGame& context)
+PauseMenuState::PauseMenuState(engine::IGame& context)
     : BaseMenuState(context)
 {
 }
 
-void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
+void PauseMenuState::prependButtons(engine::ui::StackPanel& panel)
 {
-    std::unique_ptr<engine::ui::IAction> startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.next(std::make_shared<GameState>(m_context));
+    std::unique_ptr<engine::ui::IAction> resumeGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.previous();
     });
-    auto startButton = std::make_shared<engine::ui::Button>(
+
+    auto resumeButton = std::make_shared<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
-        "START");
-    startButton->setAction(std::move(startGameAction));
-    panel.addComponent(startButton);
+        "RESUME");
+    resumeButton->setAction(std::move(resumeGameAction));
+    panel.addComponent(resumeButton);
 }
 
-void MainMenuState::appendButtons(engine::ui::StackPanel& panel)
+void PauseMenuState::appendButtons(engine::ui::StackPanel& panel)
 {
     (void)panel;
     // nothing here yet

@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "PauseMenuState.h"
 
 #include <engine/game/IGame.h>
 #include <engine/graphics/Camera.h>
@@ -93,8 +94,10 @@ void GameState::close()
 void GameState::subscribeInput()
 {
     m_inputSubscription = m_inputManager.subscribe([&](engine::input::KeyMap keyMap, auto&) {
+        //TODO: add check for 'start' button on controller(s) when controller input is supported
         if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
-            m_context.previous();
+            auto pauseMenu = std::make_shared<PauseMenuState>(m_context);
+            m_context.next(pauseMenu);
         }
     });
 }
