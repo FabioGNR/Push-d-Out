@@ -41,7 +41,6 @@ namespace builders {
             auto pos = component.position;
             positions.push_back(pos);
         });
-
         // Check if there are enough spawn points for the characters
         if (positions.empty() || m_playerCount > positions.size()) {
             throw exceptions::MissingCharacterSpawnException();
@@ -57,7 +56,6 @@ namespace builders {
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
         m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
-
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
         std::map<game::definitions::Action, engine::input::Keys> controls;
@@ -92,12 +90,10 @@ namespace builders {
             // Create the sprite component for the player entity
             components::SpriteComponent spriteComponent{ "sheet", "spriteName" };
             m_ecsWorld.addComponent<game::components::SpriteComponent>(players[i], spriteComponent);
-
             //Creating force gun entity
             auto& gunEntity = m_ecsWorld.createEntity();
             components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
             m_ecsWorld.addComponent<components::WeaponComponent>(gunEntity, weaponComponent);
-
             components::InventoryComponent inventoryComponent{};
             inventoryComponent.activeEquipment.set(&gunEntity);
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);

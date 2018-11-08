@@ -42,7 +42,7 @@ void GameState::init()
 
     // Set-up camera
     auto camera = std::make_shared<engine::graphics::Camera>(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
-    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, camera);
+    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
 
     // Add render system
     m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
