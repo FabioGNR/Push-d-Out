@@ -1,17 +1,5 @@
 #include "Game.h"
-#include "game/level/levelReader/LevelReader.h"
-#include "physics/PhysicsManager.h"
-#include <engine/graphics/SDL/SDLRenderVisitor.h>
-#include <engine/graphics/drawable/RectangleShape.h>
-#include <engine/graphics/drawable/Sprite.h>
-#include <engine/physics/Body.h>
-#include <engine/ui/UISystem.h>
-#include <game/states/GameState.h>
 #include <game/states/MainMenuState.h>
-#include <game/themes/Earth.h>
-#include <game/themes/Moon.h>
-#include <sstream>
-#include <thread>
 
 int main()
 {

@@ -1,21 +1,25 @@
 #pragma once
 
+#include <functional>
 #include <map>
 #include <utility>
-#include <functional>
 
 namespace engine {
 namespace events {
     template <typename T>
     struct Subscription {
-        Subscription(std::function<void(T, events::Subscription<T>&)> update_)
-            : update{ std::move(update_) }
-            , isActive{ true } {};
-
-        ~Subscription() = default;
-
         std::function<void(T, events::Subscription<T>&)> update;
         bool isActive;
+
+        explicit Subscription(std::function<void(T, events::Subscription<T>&)> update)
+            : update{ std::move(update) }
+            , isActive{ true } {};
+        Subscription(const Subscription& other) = default;
+        Subscription& operator=(const Subscription& other) = default;
+
+        Subscription(Subscription&& other) = default;
+        Subscription& operator=(Subscription&& other) = default;
+        virtual ~Subscription() = default;
 
         void close()
         {

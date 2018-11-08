@@ -1,8 +1,8 @@
 #pragma once
 
+#include <common/Vector2D.h>
 #include <graphics/IGraphicsElement.h>
 #include <string>
-#include <common/Vector2D.h>
 
 namespace engine {
 class Sprite : public IGraphicsElement {
@@ -13,7 +13,7 @@ class Sprite : public IGraphicsElement {
     double m_scale;
 
 public:
-    Sprite(const std::string& spritePath, common::Vector2D<int> position, common::Vector2D<int> size, double scale);
+    Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> size, double scale);
 
     void accept(IRenderVisitor& visitor) const override;
     const std::string& spritePath() const;
@@ -22,10 +22,8 @@ public:
     common::Vector2D<int> size() const;
     double scale() const;
 
-    bool operator==(const Sprite &rhs) const;
+    bool operator==(const Sprite& rhs) const;
 
-    bool operator!=(const Sprite &rhs) const;
-
-
+    bool operator!=(const Sprite& rhs) const;
 };
 } // end namespace engine

@@ -1,10 +1,12 @@
+#include <utility>
+
 #include "Sprite.h"
 
 #include <graphics/IRenderVisitor.h>
 
 namespace engine {
-Sprite::Sprite(const std::string& spritePath, common::Vector2D<int> position, common::Vector2D<int> size, double scale)
-    : m_spritePath(spritePath)
+Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> size, double scale)
+    : m_spritePath(std::move(spritePath))
     , m_position(position)
     , m_size(size)
     , m_scale(scale)

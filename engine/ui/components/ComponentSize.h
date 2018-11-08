@@ -1,6 +1,8 @@
 #pragma once
+
 #include "ComponentSizeType.h"
-#include <common/Vector2D.h>
+
+#include <engine/common/Vector2D.h>
 
 namespace engine {
 namespace ui {

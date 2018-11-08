@@ -4282,7 +4282,7 @@ namespace Catch {
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
             if( !DerivedT::getSupportedVerbosities().count( m_config->verbosity() ) )
-                CATCH_ERROR( "Verbosity level not supported by this reporter" );
+                CATCH_ERROR( "Verbosity Level not supported by this reporter" );
         }
 
         ReporterPreferences getPreferences() const override {
@@ -4396,7 +4396,7 @@ namespace Catch {
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
             if( !DerivedT::getSupportedVerbosities().count( m_config->verbosity() ) )
-                CATCH_ERROR( "Verbosity level not supported by this reporter" );
+                CATCH_ERROR( "Verbosity Level not supported by this reporter" );
         }
         ~CumulativeReporterBase() override = default;
 
@@ -5565,7 +5565,7 @@ namespace Catch {
         setCompleted();
         if( m_reaction.shouldDebugBreak ) {
 
-            // If you find your debugger stopping you here then go one level up on the
+            // If you find your debugger stopping you here then go one Level up on the
             // call-stack for the code that caused it (typically a failed assertion)
 
             // (To go back to the test and change execution, jump over the throw, next)

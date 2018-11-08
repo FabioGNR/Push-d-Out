@@ -6,7 +6,7 @@
 #include "EntityManager.h"
 #include "System.h"
 #include "SystemManager.h"
-#include "definitions/SystemPriority.h"
+#include "engine/definitions/SystemPriority.h"
 
 #include <algorithm>
 #include <chrono>
@@ -23,10 +23,12 @@ namespace ecs {
 
     public:
         World() = default;
-        virtual ~World() = default;
+        World(const World& other) = delete;
+        World& operator=(const World& other) = delete;
 
         World(World&& other) = default;
         World& operator=(World&& other) = default;
+        virtual ~World() = default;
 
         Entity& createEntity();
         void update(std::chrono::nanoseconds timeStep);

@@ -8,7 +8,7 @@ namespace events {
     struct KeyDownEvent : public IControlEvent {
         input::Keys value;
 
-        KeyDownEvent(input::Keys value_)
+        explicit KeyDownEvent(input::Keys value_)
             : value{ value_ } {};
     };
 }

@@ -1,15 +1,18 @@
 #include "WeaponSystem.h"
-#include "engine/physics/Body.h"
-#include "game/components/BodyComponent.h"
-#include "game/components/DimensionComponent.h"
-#include "game/components/InventoryComponent.h"
-#include "game/components/PlayerInputComponent.h"
-#include "game/components/PositionComponent.h"
-#include "game/components/ProjectileComponent.h"
-#include <chrono>
+
+#include <game/components/BodyComponent.h>
+#include <game/components/DimensionComponent.h>
+#include <game/components/InventoryComponent.h>
+#include <game/components/PlayerInputComponent.h>
+#include <game/components/PositionComponent.h>
+#include <game/components/ProjectileComponent.h>
 #include <game/components/WeaponComponent.h>
-#include <graphics/IRenderer.h>
-#include <physics/DynamicBody.h>
+
+#include <engine/graphics/IRenderer.h>
+#include <engine/physics/Body.h>
+#include <engine/physics/DynamicBody.h>
+
+#include <chrono>
 
 using namespace game::components;
 
@@ -18,9 +21,10 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     engine::physics::World& physicsWorld,
     engine::ecs::World& ecsWorld)
 {
+    common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>(1, 1);
     auto& projectileEntity = ecsWorld.createEntity();
     common::Vector2D<double> dimensionVector(0.5, 0.5);
-    engine::physics::DynamicBody* projectileBody = new engine::physics::DynamicBody(playerPosition, dimensionVector, physicsWorld);
+    const engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector);
 
     auto posComponent = PositionComponent(playerPosition);
     ecsWorld.addComponent<PositionComponent>(projectileEntity, posComponent);
@@ -33,10 +37,8 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
 
     auto projectileComponent = ProjectileComponent();
     ecsWorld.addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
-
-    projectileBody->applyForce(common::Vector2D<double>(20, 0), playerPosition);
-
-    std::cout << "Firing force gun!" << std::endl;
+    projectileBody->setLinearVelocity(common::Vector2D<double>(20, 0));
+    ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>(-600, 0), playerPosition);
 
     return projectileEntity;
 }
@@ -48,9 +50,7 @@ namespace systems {
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
     {
-        std::cout << "Before inserting in to map" << std::endl;
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
-        std::cout << "After inserting in to map" << std::endl;
         m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
             m_keyMap = keymap;
         });
@@ -58,6 +58,7 @@ namespace systems {
 
     void game::systems::WeaponSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
+        using clock = std::chrono::steady_clock;
         m_ecsWorld.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inventory = m_ecsWorld.getComponent<InventoryComponent>(entity);
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
@@ -68,8 +69,13 @@ namespace systems {
                 if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
                     auto control = inputComponent.controls[action];
                     if (m_keyMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
-                        auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
-                        fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
+                        if (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - weapon.lastFired).count() > weapon.cooldownSeconds * 1000) {
+                            if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
+                                auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
+                                fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
+                                weapon.lastFired = clock::now();
+                            }
+                        }
                     }
                 }
             }

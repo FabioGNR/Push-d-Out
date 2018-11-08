@@ -2,22 +2,25 @@ image:
   - Visual Studio 2017
 clone_folder: c:\projects\source
 cache: c:\tools\vcpkg\installed\
+
+install:
+- ps: >-
+      cd 'c:\tools\vcpkg'
+
+      .\vcpkg.exe install sdl2
+
+      .\vcpkg.exe install sdl2-ttf
+
+      .\vcpkg.exe install sdl2-image
+
+      .\vcpkg.exe install sdl2-mixer
+
+      .\vcpkg.exe install box2d
+
+      .\vcpkg.exe integrate install
+
 build_script:
 - ps: >-
-    cd 'c:\tools\vcpkg'
-
-    .\vcpkg.exe install sdl2
-
-    .\vcpkg.exe install sdl2-ttf
-
-    .\vcpkg.exe install sdl2-image
-
-    .\vcpkg.exe install sdl2-mixer
-
-    .\vcpkg.exe install box2d
-
-    .\vcpkg.exe integrate install
-    
     cd 'c:\projects\source'
 
     mkdir build
@@ -28,4 +31,6 @@ build_script:
 
     cmake --build .
 
+test_script:
+- ps: >-
     ..\bin\tests.exe

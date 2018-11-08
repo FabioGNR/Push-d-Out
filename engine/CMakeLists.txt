@@ -7,6 +7,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(Box2D REQUIRED)
 
+include_directories(.)
 include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${SDL2_TTF_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
@@ -22,6 +23,8 @@ set(ENGINE_GAME_SRC
 set(COMMON_SRC
         common/Vector2D.h
         common/ResourceCache.h
+        common/RNG.h
+        common/RNG.cpp
         )
 
 set(ECS_SRC
@@ -72,7 +75,10 @@ set(PHYSICS_SRC
         physics/StaticBody.h
         physics/StaticBody.cpp
         physics/Body.cpp
-        physics/Collision.cpp physics/Collision.h)
+        physics/Collision.cpp
+        physics/Collision.h
+        physics/KinematicBody.cpp
+        physics/KinematicBody.h)
 
 set(INPUT_SRC
         input/InputManager.h

@@ -7,7 +7,7 @@
 using json = nlohmann::json;
 
 namespace game {
-namespace levelDomain {
+namespace level {
     enum class Theme {
         Earth = 0,
         Moon = 1,
@@ -21,43 +21,40 @@ namespace levelDomain {
         UnderPassable = 1
     };
 
-    struct tile {
-        double x;
-        double y;
-        std::string sprite;
-        PlatformKind kind;
+    struct Tile {
+        double x{};
+        double y{};
+        std::string sprite{};
+        PlatformKind kind{};
     };
 
-    struct spawnPoint {
+    struct SpawnPoint {
         double x;
         double y;
     };
 
-    struct level {
+    struct Level {
         std::string name;
         Theme theme;
 
-        // Size of the level in Tiles
+        // Size of the Level in Tiles
         int height;
         int width;
 
-        std::vector<tile> tiles;
-        std::vector<spawnPoint> CharacterSpawns;
-        std::vector<spawnPoint> EquipmentSpawns;
+        std::vector<Tile> tiles;
+        std::vector<SpawnPoint> CharacterSpawns;
+        std::vector<SpawnPoint> EquipmentSpawns;
     };
 
     std::string getSheetName(Theme theme);
 
-    void to_json(json& j, const tile& t);
+    void to_json(json& j, const Tile& t);
+    void from_json(const json& j, Tile& t);
 
-    void from_json(const json& j, tile& t);
+    void to_json(json& j, const SpawnPoint& s);
+    void from_json(const json& j, SpawnPoint& s);
 
-    void to_json(json& j, const spawnPoint& t);
-
-    void from_json(const json& j, spawnPoint& t);
-
-    void to_json(json& j, const level& t);
-
-    void from_json(const json& j, level& t);
+    void to_json(json& j, const Level& l);
+    void from_json(const json& j, Level& l);
 }
 }

@@ -8,7 +8,7 @@ namespace components {
     struct MoveComponent : public engine::ecs::BaseComponent<MoveComponent> {
         common::Vector2D<double> delta;
 
-        MoveComponent(common::Vector2D<double> delta)
+        explicit MoveComponent(common::Vector2D<double> delta)
             : delta{ delta } {};
     };
 }

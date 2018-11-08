@@ -1,19 +1,20 @@
 #include "CharacterBuilder.h"
-#include "game/components/BodyComponent.h"
-#include "game/components/DimensionComponent.h"
-#include "game/components/PlayerInputComponent.h"
-#include "game/components/PositionComponent.h"
-#include "game/components/SpriteComponent.h"
-#include "game/definitions/Action.h"
-#include "game/definitions/Body.h"
-#include "game/systems/PlayerInputSystem.h"
-#include "game/systems/PositionSystem.h"
-#include "game/systems/SpriteSystem.h"
+
 #include <engine/definitions/SystemPriority.h>
+
+#include <game/components/BodyComponent.h>
+#include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
+#include <game/components/PlayerInputComponent.h>
+#include <game/components/PositionComponent.h>
+#include <game/components/SpriteComponent.h>
 #include <game/components/WeaponComponent.h>
+#include <game/definitions/Action.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/MovementSystem.h>
+#include <game/systems/PlayerInputSystem.h>
+#include <game/systems/PositionSystem.h>
+#include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 
 namespace game {

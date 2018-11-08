@@ -21,6 +21,8 @@ namespace physics {
     {
     }
 
+    Body::~Body() = default;
+
     double Body::getAngle() const
     {
         return m_angle;

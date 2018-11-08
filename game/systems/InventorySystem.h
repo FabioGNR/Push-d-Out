@@ -1,9 +1,9 @@
 #pragma once
 
-#include "game/components/InventoryComponent.h"
-#include <ecs/World.h>
 #include <engine/ecs/System.h>
+#include <engine/ecs/World.h>
 #include <engine/input/InputManager.h>
+#include <game/components/InventoryComponent.h>
 
 namespace game {
 namespace systems {

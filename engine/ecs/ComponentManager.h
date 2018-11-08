@@ -14,6 +14,11 @@ namespace ecs {
     class IComponentManager {
     public:
         IComponentManager();
+        IComponentManager(const IComponentManager& other) = default;
+        IComponentManager& operator=(const IComponentManager& other) = default;
+
+        IComponentManager(IComponentManager&& other) = default;
+        IComponentManager& operator=(IComponentManager&& other) = default;
         virtual ~IComponentManager();
         virtual void remove(EntityId entity) = 0;
         virtual void remove(Entity& entity) = 0;
@@ -35,7 +40,7 @@ namespace ecs {
             auto* componentPtr = component.get();
 
             // TODO: Check if component insertion was valid
-            m_components.insert({ entity.id(), std::move(component) });
+            m_components.insert(std::make_pair(entity.id(), std::move(component)));
 
             entity.registerComponent<Component>();
             return *componentPtr;
@@ -53,7 +58,7 @@ namespace ecs {
 
         Component& get(const EntityId entityId) const
         {
-            return *reinterpret_cast<Component*>(m_components.at(entityId).get());
+            return *static_cast<Component*>(m_components.at(entityId).get());
         }
 
         Component& get(const Entity& entity) const
@@ -78,8 +83,8 @@ namespace ecs {
             static_assert(std::is_base_of<IComponent, Component>::value,
                 "Component must be inherited from BaseComponent");
 
-            m_managers.insert({ Component::familyId(),
-                std::make_unique<BaseComponentManager<Component>>() });
+            m_managers.insert(std::make_pair(Component::familyId(),
+                std::make_unique<BaseComponentManager<Component>>()));
         }
 
         template <typename Component>
@@ -97,17 +102,17 @@ namespace ecs {
             }
 
             auto& manager = m_managers.at(familyId);
-            return *reinterpret_cast<BaseComponentManager<Component>*>(manager.get());
+            return *static_cast<BaseComponentManager<Component>*>(manager.get());
         }
 
         template <typename Component>
-        Component& get(const EntityId entityId) const
+        Component& get(const EntityId entityId)
         {
             return getManager<Component>().get(entityId);
         }
 
         template <typename Component>
-        Component& get(const Entity& entity) const
+        Component& get(const Entity& entity)
         {
             return getManager<Component>().get(entity);
         }

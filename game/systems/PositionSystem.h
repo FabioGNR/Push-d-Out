@@ -9,7 +9,7 @@ namespace systems {
         engine::ecs::World& m_world;
 
     public:
-        PositionSystem(engine::ecs::World& world)
+        explicit PositionSystem(engine::ecs::World& world)
             : m_world{ world } {};
 
         void update(std::chrono::nanoseconds timeStep) override;

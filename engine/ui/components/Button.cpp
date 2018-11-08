@@ -7,9 +7,10 @@ namespace ui {
 
     DrawContext Button::draw(DrawContext context)
     {
-        Color btnColor;
-        btnColor.r = btnColor.g = btnColor.b = 255;
-        btnColor.a = 130;
+        Color btnColor{
+            255, 255, 255, 130
+        };
+
         if (context.focusedComponent.get() == this) {
             btnColor.r = 0;
         }

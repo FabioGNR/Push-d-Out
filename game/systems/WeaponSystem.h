@@ -1,13 +1,14 @@
 #pragma once
 
-#include "engine/ecs/Entity.h"
-#include "engine/ecs/System.h"
-#include "engine/physics/World.h"
-#include "game/definitions/Action.h"
-#include "game/definitions/WeaponType.h"
-#include <ecs/World.h>
+#include <game/definitions/Action.h>
+#include <game/definitions/WeaponType.h>
+
+#include <engine/ecs/Entity.h>
+#include <engine/ecs/System.h>
+#include <engine/ecs/World.h>
 #include <engine/input/InputManager.h>
 #include <engine/input/KeyMap.h>
+#include <engine/physics/World.h>
 
 namespace game {
 namespace systems {

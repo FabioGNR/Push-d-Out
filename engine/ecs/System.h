@@ -1,6 +1,7 @@
 #pragma once
 
-#include "graphics/IRenderer.h"
+#include "engine/graphics/IRenderer.h"
+
 #include <chrono>
 #include <cstdint>
 
@@ -24,7 +25,14 @@ namespace ecs {
 
     class ISystem {
     public:
+        ISystem() = default;
+        ISystem(const ISystem& other) = default;
+        ISystem& operator=(const ISystem& other) = default;
+
+        ISystem(ISystem&& other) = default;
+        ISystem& operator=(ISystem&& other) = default;
         virtual ~ISystem() = default;
+
         virtual void update(std::chrono::nanoseconds timeStep) = 0;
         virtual void render(engine::IRenderer& renderer) = 0;
     };

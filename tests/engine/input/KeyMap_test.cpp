@@ -1,5 +1,7 @@
 #include <Catch/catch2.hpp>
-#include "engine/input/KeyMap.h"
+
+#include <engine/input/KeyMap.h>
+
 using namespace engine::input;
 
 TEST_CASE("KeyMap::setKeyState correctly sets PRESSED_AND_RELEASED state") {

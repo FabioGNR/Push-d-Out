@@ -1,8 +1,9 @@
 #include "PlayerInputSystem.h"
+
+#include <engine/sound/Music.h>
+#include <engine/sound/SDL/SDLSoundManager.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
-#include <sound/Music.h>
-#include <sound/SDL/SDLSoundManager.h>
 
 using namespace engine::input;
 
@@ -21,7 +22,7 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         if (m_keyMap.hasKeyState(inputMap[definitions::Action::Jump], KeyStates::PRESSED)) {
             engine::sound::SDLSoundManager soundManager;
             engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
-            engine::sound::Volume volume { 10 };
+            engine::sound::Volume volume{ 10 };
             soundManager.setSfxVolume(volume);
             soundManager.play(sound);
 

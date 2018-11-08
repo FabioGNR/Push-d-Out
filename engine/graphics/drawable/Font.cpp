@@ -1,12 +1,16 @@
+#include <utility>
+
+#include <utility>
+
 #include "Font.h"
 
 #include <graphics/IRenderVisitor.h>
 
 namespace engine {
 
-Font::Font(const std::string& fontPath, const std::string& text, int fontSize, const Color& color, common::Vector2D<int> position)
-    : m_fontPath(fontPath)
-    , m_text(text)
+Font::Font(std::string fontPath, std::string text, int fontSize, Color color, common::Vector2D<int> position)
+    : m_fontPath(std::move(fontPath))
+    , m_text(std::move(text))
     , m_fontSize(fontSize)
     , m_color(color)
     , m_position(position)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-#include <graphics/drawable/Font.h>
+#include <engine/graphics/drawable/Font.h>
 
 namespace engine {
 namespace ui {
@@ -9,7 +9,7 @@ namespace ui {
     public:
         explicit TextComponent(const std::string& text, int textSize = 14)
             : m_font{
-                "assets/fonts/Pixeled.ttf", text, textSize, Color(), common::Vector2D<int>(0,0)
+                "assets/fonts/Pixeled.ttf", text, textSize, Color(), common::Vector2D<int>(0, 0)
             }
         {
         }

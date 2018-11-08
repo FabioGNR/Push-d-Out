@@ -8,8 +8,8 @@ namespace components {
     struct DimensionComponent : public engine::ecs::BaseComponent<DimensionComponent> {
         common::Vector2D<double> dimension;
 
-        DimensionComponent(common::Vector2D<double> vector)
-            : dimension(vector) {};
+        explicit DimensionComponent(common::Vector2D<double> vector)
+            : dimension(vector){};
     };
 }
 }

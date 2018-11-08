@@ -1,10 +1,11 @@
 #pragma once
 
-#include <chrono>
+#include <engine/events/models/Subscription.h>
+#include <engine/game/State.h>
+#include <engine/input/KeyMap.h>
 #include <engine/ui/UISystem.h>
-#include <game/State.h>
-#include <input/KeyMap.h>
-#include <events/models/Subscription.h>
+
+#include <chrono>
 
 namespace game {
 class MainMenuState : public engine::State {
@@ -12,7 +13,7 @@ private:
     std::unique_ptr<engine::ui::UISystem> m_uiSystem;
 
 public:
-    explicit MainMenuState(engine::IGame& game);
+    explicit MainMenuState(engine::IGame& context);
 
     void init() override;
     void resume() override;
