@@ -3,8 +3,7 @@
 #include <engine/events/models/Subscription.h>
 #include <engine/game/State.h>
 #include <engine/ui/UISystem.h>
-#include <game/State.h>
-#include <input/maps/KeyMap.h>
+#include <engine/input/maps/KeyMap.h>
 
 #include <chrono>
 

@@ -1,5 +1,7 @@
 #include "InputManager.h"
-
+#include <engine/events/models/ControllerEvent.h>
+#include <engine/events/models/KeyDownEvent.h>
+#include <engine/events/models/KeyUpEvent.h>
 
 namespace engine {
 namespace input {
@@ -39,13 +41,13 @@ namespace input {
                 observer->update(controlMap, *observer);
                 */
         //if (!m_keymap.m_map.empty()) {
-            for (const auto& weakObserver : m_subscriptions) {
-                if (auto observer = weakObserver.lock()) {
-                    if (observer->isActive) {
-                        observer->update(controlMap, *observer);
-                    }
+        for (const auto& weakObserver : m_subscriptions) {
+            if (auto observer = weakObserver.lock()) {
+                if (observer->isActive) {
+                    observer->update(controlMap, *observer);
                 }
             }
+        }
         //}
     }
 
@@ -67,7 +69,7 @@ namespace input {
             it = m_subscriptions.erase(it);
         }
     }
-/*
+    /*
     const KeyMap& InputManager::getKeyMap() const
     {
         return m_keymap;

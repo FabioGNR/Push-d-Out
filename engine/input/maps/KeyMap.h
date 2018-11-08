@@ -1,9 +1,8 @@
 #pragma once
 
-#include "events/models/IControlEvent.h"
-#include "input/KeyStates.h"
-#include "input/Keys.h"
 #include <engine/events/models/IControlEvent.h>
+#include <engine/input/KeyStates.h>
+#include <engine/input/Keys.h>
 #include <map>
 
 namespace engine {

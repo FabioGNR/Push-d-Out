@@ -1,14 +1,9 @@
 #pragma once
 
 #include "maps/ControllerMap.h"
-#include "events/models/Subscription.h"
-#include <events/models/ControllerEvent.h>
-#include <events/models/KeyDownEvent.h>
-#include <events/models/KeyUpEvent.h>
-#include <input/maps/ControllerMap.h>
 #include <memory>
-//#include <queue>
 #include <vector>
+#include <engine/events/models/Subscription.h>
 
 namespace engine {
 namespace input {
