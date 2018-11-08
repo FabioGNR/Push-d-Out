@@ -21,6 +21,7 @@ namespace input {
             int getValue(Keys key);
 
             bool HasState(Keys key, KeyStates state);
+
             bool hasChanged(Keys key);
         };
     }

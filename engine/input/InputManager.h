@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Maps/ControllerMap.h"
+#include "maps/ControllerMap.h"
 #include "events/models/Subscription.h"
-#include "input/Maps/KeyMap.h"
+#include <events/models/ControllerEvent.h>
+#include <events/models/KeyDownEvent.h>
 #include <events/models/KeyUpEvent.h>
-#include <input/Maps/ControlMap.h>
-#include <input/Maps/OtherMap.h>
-#include <map>
+//#include "input/maps/KeyMap.h"
+#include <input/maps/ControlMap.h>
+//#include <map>
 #include <memory>
-#include <queue>
+//#include <queue>
 #include <vector>
 
 namespace engine {

@@ -28,7 +28,7 @@ namespace input {
         }
 
         bool ControllerMap::hasChanged(engine::input::Keys key) {
-            return (key == 0 ? false : true);
+            return (test[key] == 0 ? false : true);
         }
     };
 }

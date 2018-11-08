@@ -51,6 +51,7 @@ namespace systems {
         std::cout << "Before inserting in to map" << std::endl;
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
         std::cout << "After inserting in to map" << std::endl;
+
         inputManager.subscribe([&](engine::input::ControlMap controlMap_, engine::events::Subscription<engine::input::ControlMap>&) {
             controlMap = controlMap_;
         });

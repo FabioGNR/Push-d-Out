@@ -1,12 +1,5 @@
-#include <utility>
-
 #include "InputManager.h"
-#include <events/models/ControllerEvent.h>
-#include <events/models/IControlEvent.h>
-#include <events/models/KeyDownEvent.h>
-#include <events/models/KeyUpEvent.h>
-#include <map>
-#include <utility>
+
 
 namespace engine {
 namespace input {

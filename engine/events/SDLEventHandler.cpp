@@ -70,12 +70,12 @@ namespace events {
             } else if (event.jaxis.axis == 7) {
                 key = input::Keys::CON_RIGHTSHOULDER;
             } else {
-                key = input::Keys::CON_START;
+                key = input::Keys::UNKNOWN;
             }
 
             //std::pair<int , int> test = std::make_pair(1, 2); TODO check this
             std::cout << "Controller joy axis motion" << std::endl;
-            return std::make_shared<ControllerEvent>(key, event.jaxis.value, conCount);
+            return std::make_shared<ControllerEvent>(key, event.jaxis.value, event.cdevice.which);
         }
         default:
             return nullptr;
