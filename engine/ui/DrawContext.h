@@ -1,9 +1,10 @@
-#include <utility>
-
 #pragma once
-#include "common/Vector2D.h"
-#include "graphics/IRenderer.h"
+
+#include "engine/common/Vector2D.h"
+#include "engine/graphics/IRenderer.h"
+
 #include <memory>
+#include <utility>
 
 namespace engine {
 namespace ui {

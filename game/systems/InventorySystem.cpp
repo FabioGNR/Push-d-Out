@@ -12,8 +12,12 @@ namespace systems {
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
         : m_world{ world }
     {
-        inputManager.subscribe([&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>&) {
+        m_inputSubscription = inputManager.subscribe([&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>&) {
             this->controlMap = controlMap; // TODO test if "this" works like that
+            /*
+        m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
+            m_keyMap = keymap;*/
+
         });
     }
 
@@ -49,6 +53,7 @@ namespace systems {
             }
         });
         if (equipableCandidate != nullptr) {
+            m_world.removeComponent<PositionComponent>(*equipableCandidate);
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
             if (inventoryComponent.otherEquipment.hasValue()) {
                 inventoryComponent.activeEquipment.set(equipableCandidate);

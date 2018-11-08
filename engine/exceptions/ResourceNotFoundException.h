@@ -4,16 +4,15 @@
 #include <string>
 
 struct ResourceNotFoundException : public std::exception {
-    std::string file;
+    std::string message;
 
-    ResourceNotFoundException(std::string file)
-        : file(std::move(file))
+    explicit ResourceNotFoundException(const std::string& file)
+        : message("Could not find resource '" + file + "'.")
     {
     }
 
     const char* what() const noexcept override
     {
-        const std::string message = "Could not find resource '" + file + "'.";
         return message.c_str();
     }
 };

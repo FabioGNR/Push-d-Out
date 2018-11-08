@@ -1,12 +1,12 @@
 #pragma once
 
-#include "System.h"
-#include "definitions/SystemPriority.h"
-
 #include <chrono>
 #include <map>
 #include <memory>
 #include <unordered_map>
+
+#include "System.h"
+#include "engine/definitions/SystemPriority.h"
 
 namespace engine {
 namespace ecs {
@@ -34,7 +34,7 @@ namespace ecs {
         }
 
         void update(std::chrono::nanoseconds timeStep);
-        void render(engine::IRenderer& timeStep);
+        void render(engine::IRenderer& renderer);
     };
 }
 }

@@ -1,18 +1,20 @@
 #include "CharacterBuilder.h"
-#include "game/components/BodyComponent.h"
-#include "game/components/DimensionComponent.h"
-#include "game/components/PlayerInputComponent.h"
-#include "game/components/PositionComponent.h"
-#include "game/components/SpriteComponent.h"
-#include "game/definitions/Action.h"
-#include "game/definitions/Body.h"
-#include "game/systems/PlayerInputSystem.h"
-#include "game/systems/PositionSystem.h"
-#include "game/systems/SpriteSystem.h"
+
 #include <engine/definitions/SystemPriority.h>
+
+#include <game/components/BodyComponent.h>
+#include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
+#include <game/components/PlayerInputComponent.h>
+#include <game/components/PositionComponent.h>
+#include <game/components/SpriteComponent.h>
 #include <game/components/WeaponComponent.h>
+#include <game/definitions/Action.h>
 #include <game/systems/InventorySystem.h>
+#include <game/systems/MovementSystem.h>
+#include <game/systems/PlayerInputSystem.h>
+#include <game/systems/PositionSystem.h>
+#include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 
 namespace game {
@@ -27,7 +29,8 @@ namespace builders {
         common::Vector2D<double> dimension{ 1, 2 };
 
         // Add the necessary systems into the ECS world before adding components
-        m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium);
+        m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+        m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
         m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
@@ -48,8 +51,13 @@ namespace builders {
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
         std::map<game::definitions::Action, engine::input::Keys> controls;
-        controls[definitions::Action::UseWeapon] = engine::input::Keys::CON_LEFTSHOULDER; //TODO: handle this in key mapper
-        controls[definitions::Action::PickupEquippable] = engine::input::Keys::E; //TODO: handle this in key mapper
+        // TODO: Move these actions to some kind of configurations
+        controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
+        controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
+        controls[definitions::Action::MoveRight] = engine::input::Keys::D;
+        controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
+
         components::PlayerInputComponent playerInputComponent{ 1, controls };
         m_ecsWorld.addComponent<components::PlayerInputComponent>(player, playerInputComponent);
 

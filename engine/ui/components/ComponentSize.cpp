@@ -16,7 +16,6 @@ namespace ui {
             requiredSize.x = std::max(requiredSize.x, static_cast<int>(availableSize.x * m_relativeRatio.x));
             break;
         case ComponentSizeType::Fit:
-        default:
             break;
         }
         switch (m_typeY) {
@@ -27,7 +26,6 @@ namespace ui {
             requiredSize.y = std::max(requiredSize.y, static_cast<int>(availableSize.y * m_relativeRatio.y));
             break;
         case ComponentSizeType::Fit:
-        default:
             break;
         }
         return requiredSize;

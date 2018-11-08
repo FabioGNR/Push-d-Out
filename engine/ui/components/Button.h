@@ -1,8 +1,10 @@
 #pragma once
+
 #include "Component.h"
 #include "IAction.h"
 #include "TextComponent.h"
-#include <graphics/drawable/Font.h>
+#include "engine/graphics/drawable/Font.h"
+
 #include <memory>
 #include <string>
 
@@ -16,6 +18,8 @@ namespace ui {
         {
         }
 
+        virtual ~Button() = default;
+
         DrawContext draw(DrawContext context) override;
 
         void setAction(std::unique_ptr<IAction> action)
@@ -23,7 +27,7 @@ namespace ui {
             m_action = std::move(action);
         }
 
-        void processInputEvent() override;
+        void processInputEvent(engine::input::ControllerMap& keyMap) override;
 
         common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 

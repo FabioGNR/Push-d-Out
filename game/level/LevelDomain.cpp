@@ -1,10 +1,12 @@
 #include "LevelDomain.h"
-#include "external/JSON/json.hpp"
+
+#include <engine/exceptions/ResourceNotFoundException.h>
+#include <external/JSON/json.hpp>
 
 using json = nlohmann::json;
 
 namespace game {
-namespace levelDomain {
+namespace level {
 
     std::string getSheetName(Theme theme)
     {
@@ -18,12 +20,12 @@ namespace levelDomain {
         case Theme::City:
             return "cityThemeSpriteSheet.png";
         default:
-            throw "Unknown theme";
+            throw ResourceNotFoundException("stylesheet");
         }
     }
 
     // JSON conversions for tile
-    void to_json(json& j, const tile& t)
+    void to_json(json& j, const Tile& t)
     {
         j = json{
             { "x", t.x },
@@ -33,7 +35,7 @@ namespace levelDomain {
         };
     }
 
-    void from_json(const json& j, tile& t)
+    void from_json(const json& j, Tile& t)
     {
         t.x = j.at("x").get<double>();
         t.y = j.at("y").get<double>();
@@ -42,7 +44,7 @@ namespace levelDomain {
     }
 
     // JSON conversions for spawnPoint
-    void to_json(json& j, const spawnPoint& s)
+    void to_json(json& j, const SpawnPoint& s)
     {
         j = json{
             { "x", s.x },
@@ -50,35 +52,37 @@ namespace levelDomain {
         };
     }
 
-    void from_json(const json& j, spawnPoint& s)
+    void from_json(const json& j, SpawnPoint& s)
     {
         s.x = j.at("x").get<double>();
         s.y = j.at("y").get<double>();
     }
 
-    // JSON conversions for level
-    void to_json(json& j, const level& l)
+    // JSON conversions for Level
+    void to_json(json& j, const Level& l)
     {
         j = json{
             { "Meta", { { "name", l.name }, { "theme", static_cast<int>(l.theme) }, { "height", l.height }, { "width", l.width } } },
             { "PlatformTiles", l.tiles },
-            { "CharacterSpawns", l.CharacterSpawns }
+            { "CharacterSpawns", l.CharacterSpawns },
+            { "EquipmentSpawns", l.EquipmentSpawns }
         };
     }
 
-    void from_json(const json& j, level& l)
+    void from_json(const json& j, Level& l)
     {
         json Meta = j.at("Meta").get<json>();
         l.name = Meta.at("name").get<std::string>();
-        int themeInt = Meta.at("theme").get<int>();
+        auto themeInt = Meta.at("theme").get<int>();
         if (themeInt > 3) {
             themeInt = 0;
         }
         l.theme = static_cast<Theme>(themeInt);
         l.height = Meta.at("height").get<int>();
         l.width = Meta.at("width").get<int>();
-        l.tiles = j.at("PlatformTiles").get<std::vector<tile>>();
-        l.CharacterSpawns = j.at("CharacterSpawns").get<std::vector<spawnPoint>>();
+        l.tiles = j.at("PlatformTiles").get<std::vector<Tile>>();
+        l.CharacterSpawns = j.at("CharacterSpawns").get<std::vector<SpawnPoint>>();
+        l.EquipmentSpawns = j.at("EquipmentSpawns").get<std::vector<SpawnPoint>>();
     }
 }
 }

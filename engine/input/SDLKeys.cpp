@@ -1,5 +1,9 @@
 #include "SDLKeys.h"
+
+#include <SDL_keycode.h>
+
 #include <events/models/KeyUpEvent.h>
+#include <SDL_gamecontroller.h>
 
 namespace engine {
 namespace input {
@@ -63,10 +67,11 @@ namespace input {
         { SDL_CONTROLLER_BUTTON_DPAD_UP, Keys::CON_DPAD_UP },
         { SDL_CONTROLLER_BUTTON_DPAD_DOWN, Keys::CON_DPAD_DOWN },
         { SDL_CONTROLLER_BUTTON_LEFTSHOULDER, Keys::CON_LEFTSHOULDER },
-        { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER }
+        { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER },
+        { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
-    input::Keys SDLKeys::get(SDL_Keycode keycode)
+    input::Keys SDLKeys::get(SDL_Keycode& keycode)
     {
         if (SDLKeys::KEYCODES.find(keycode) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;

@@ -6,7 +6,7 @@ namespace engine {
 namespace sound {
     class Music : public Sound {
     public:
-        Music(std::string soundPath);
+        explicit Music(std::string soundPath);
     };
 }
 }

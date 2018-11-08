@@ -1,5 +1,6 @@
 #pragma once
 #include "components/Component.h"
+#include <engine/input/maps/ControllerMap.h>
 #include <memory>
 
 namespace engine {
@@ -14,7 +15,7 @@ namespace ui {
             m_focusedComponent = getNavigatableAt(m_activeComponent);
         }
 
-        void processInputEvent();
+        void processInputEvent(engine::input::ControllerMap& keyMap);
         void draw(IRenderer& renderer, common::Vector2D<int> screenSize) const;
 
     private:

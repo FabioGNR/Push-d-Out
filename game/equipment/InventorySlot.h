@@ -4,6 +4,8 @@
 namespace game {
 namespace equipment {
     class InventorySlot {
+        engine::ecs::Entity* m_entity{};
+
     public:
         InventorySlot()
         {
@@ -25,12 +27,10 @@ namespace equipment {
             m_entity = nullptr;
         }
 
-        engine::ecs::Entity& get() const {
+        engine::ecs::Entity& get() const
+        {
             return *m_entity;
         }
-
-    private:
-        engine::ecs::Entity* m_entity;
     };
 }
 }

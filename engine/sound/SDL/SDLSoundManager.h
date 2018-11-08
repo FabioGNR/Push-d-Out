@@ -1,14 +1,13 @@
 #pragma once
 
-#include <sound/ISoundManager.h>
-#include <sound/Music.h>
-#include <sound/Sound.h>
-#include <sound/SoundEffect.h>
+#include "engine/sound/ISoundManager.h"
+#include "engine/sound/Music.h"
+#include "engine/sound/Sound.h"
+#include "engine/sound/SoundEffect.h"
 
 #include <map>
 #include <memory>
 #include <string>
-
 
 namespace engine {
 namespace sound {
@@ -16,7 +15,14 @@ namespace sound {
 
     public:
         SDLSoundManager();
-        virtual ~SDLSoundManager();
+
+        SDLSoundManager(const SDLSoundManager& other) = default;
+        SDLSoundManager& operator=(const SDLSoundManager& other) = default;
+
+        SDLSoundManager(SDLSoundManager&& other) = default;
+        SDLSoundManager& operator=(SDLSoundManager&& other) = default;
+
+        ~SDLSoundManager() override;
 
         void play(const SoundEffect& sound) override;
         void play(const Music& sound) override;
@@ -27,7 +33,6 @@ namespace sound {
 
     private:
         int scaleToSDLVolume(Volume volume) const;
-
     };
 } // end namespace sound
 } // end namespace engine

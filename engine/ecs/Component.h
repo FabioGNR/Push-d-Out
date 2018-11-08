@@ -25,6 +25,11 @@ namespace ecs {
 
     struct IComponent {
         IComponent();
+        IComponent(const IComponent& other) = default;
+        IComponent& operator=(const IComponent& other) = default;
+
+        IComponent(IComponent&& other) = default;
+        IComponent& operator=(IComponent&& other) = default;
         virtual ~IComponent();
     };
 

@@ -3,6 +3,7 @@
 namespace engine {
 namespace input {
     enum Keys {
+        UNKNOWN,
         A,
         B,
         C,
@@ -50,7 +51,6 @@ namespace input {
         RETURN,
         SPACE,
         BACKSPACE,
-        UNKNOWN,
         CON_A,
         CON_B,
         CON_X,
@@ -72,7 +72,8 @@ namespace input {
         CON_DPAD_RIGHT,
         CON_DPAD_MAX,
         CON_LOOK_L,
-        CON_LOOK_R
+        CON_LOOK_R,
+        ESCAPE,
     };
 }
 }

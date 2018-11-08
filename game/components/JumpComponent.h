@@ -9,7 +9,7 @@ namespace components {
 
         JumpComponent(double deltaY, double velocity)
             : deltaY(deltaY)
-            , velocity(velocity) {};
+            , velocity(velocity){};
     };
 }
 }

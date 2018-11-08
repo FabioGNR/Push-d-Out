@@ -2,16 +2,30 @@
 #include "State.h"
 
 namespace engine {
+
+using namespace std::chrono_literals;
+
 void IGame::previous()
 {
+    if (!m_states.empty()) {
+        auto& currentState = m_states.top();
+        currentState->close();
+    }
     m_states.pop();
     if (m_states.empty()) {
         stop();
+    } else {
+        auto newState = m_states.top();
+        newState->resume();
     }
 }
 
-void IGame::next(std::shared_ptr<engine::State> state)
+void IGame::next(const std::shared_ptr<engine::State>& state)
 {
+    if (!m_states.empty()) {
+        auto currentState = m_states.top();
+        currentState->pause();
+    }
     m_states.push(state);
     state->init();
 }

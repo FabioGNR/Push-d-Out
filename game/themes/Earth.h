@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Theme.h"
-#include <cstdio>
 
 namespace game {
 namespace themes {
@@ -12,8 +11,7 @@ namespace themes {
 
     public:
         explicit Earth(const double friction = FRICTION, const double gravity = GRAVITY)
-            : Theme(friction,
-                  gravity)
+            : Theme(friction, gravity)
         {
         }
     };

@@ -7,6 +7,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(Box2D REQUIRED)
 
+include_directories(.)
 include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${SDL2_TTF_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
@@ -22,6 +23,8 @@ set(ENGINE_GAME_SRC
 set(COMMON_SRC
         common/Vector2D.h
         common/ResourceCache.h
+        common/RNG.h
+        common/RNG.cpp
         )
 
 set(ECS_SRC
@@ -72,7 +75,10 @@ set(PHYSICS_SRC
         physics/StaticBody.h
         physics/StaticBody.cpp
         physics/Body.cpp
-        physics/Collision.cpp physics/Collision.h)
+        physics/Collision.cpp
+        physics/Collision.h
+        physics/KinematicBody.cpp
+        physics/KinematicBody.h)
 
 set(INPUT_SRC
         input/InputManager.h
@@ -82,7 +88,9 @@ set(INPUT_SRC
         input/SDLKeys.h
         input/maps/KeyMap.cpp
         input/maps/KeyMap.h
-        input/KeyStates.h input/maps/OtherMap.cpp input/maps/OtherMap.h input/maps/ControlMap.cpp input/maps/ControlMap.h input/maps/ControllerMap.cpp input/maps/ControllerMap.h)
+        input/KeyStates.h
+        input/maps/ControllerMap.cpp
+        input/maps/ControllerMap.h)
 
 set(EVENTS_SRC
         events/IEventHandler.h
@@ -153,6 +161,7 @@ set(UI_SRC
         ui/components/TextComponent.h
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
+        ui/components/CustomAction.h
         )
 
 # more engine stuff

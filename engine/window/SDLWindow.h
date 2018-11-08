@@ -8,6 +8,11 @@ namespace engine {
 class SDLWindow : public Window {
 public:
     explicit SDLWindow(WindowProperties properties);
+    SDLWindow(const SDLWindow& other) = delete;
+    SDLWindow& operator=(const SDLWindow& other) = delete;
+
+    SDLWindow(SDLWindow&& other) = default;
+    SDLWindow& operator=(SDLWindow&& other) = default;
     ~SDLWindow() override;
 
 private:

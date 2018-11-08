@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphics/IRenderer.h>
-#include <window/SDLWindow.h>
+#include "engine/graphics/IRenderer.h"
+#include "engine/window/SDLWindow.h"
 
 #include <memory>
 
@@ -16,10 +16,18 @@ class SDLRenderer : public IRenderer {
 public:
     explicit SDLRenderer(const SDLWindow& window);
 
+    SDLRenderer(const SDLRenderer& other) = delete;
+    SDLRenderer& operator=(const SDLRenderer& other) = delete;
+
+    SDLRenderer(SDLRenderer&& other) = delete;
+    SDLRenderer& operator=(SDLRenderer&& other) = delete;
+
+    ~SDLRenderer() override = default;
+
     void draw(const IGraphicsElement& graphicElement) const override;
     void show() override;
     void clear() override;
 
-    common::Vector2D<int> getFontSize(const Font &font) const override;
+    common::Vector2D<int> getFontSize(const Font& font) const override;
 };
 } // end namespace engine

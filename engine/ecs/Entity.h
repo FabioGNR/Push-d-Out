@@ -14,7 +14,6 @@ namespace ecs {
     class Entity {
         EntityId m_id;
         std::bitset<32> m_componentSignature;
-        std::bitset<32> m_tagSignature;
 
     public:
         explicit Entity(EntityId id);

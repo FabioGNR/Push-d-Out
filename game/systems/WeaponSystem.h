@@ -1,13 +1,14 @@
 #pragma once
 
-#include "engine/ecs/System.h"
-#include "engine/ecs/Entity.h"
-#include "engine/physics/World.h"
-#include <ecs/World.h>
-#include "game/definitions/WeaponType.h"
-#include "game/definitions/Action.h"
+#include <game/definitions/Action.h>
+#include <game/definitions/WeaponType.h>
+
+#include <engine/ecs/Entity.h>
+#include <engine/ecs/System.h>
+#include <engine/ecs/World.h>
 #include <engine/input/InputManager.h>
-#include <input/Maps/KeyMap.h>
+#include <input/maps/KeyMap.h>
+#include <engine/physics/World.h>
 
 namespace game {
 namespace systems {
@@ -16,6 +17,8 @@ namespace systems {
         engine::physics::World& m_physicsWorld;
         engine::input::ControlMap controlMap;
         std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&)>> fireFunctionMap;
+        std::shared_ptr<engine::events::Subscription<engine::input::ControlMap>> m_inputSubscription;
+
     public:
         WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager);
 

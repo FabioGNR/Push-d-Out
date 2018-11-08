@@ -1,14 +1,16 @@
 #include "Button.h"
 #include <graphics/drawable/RectangleShape.h>
+#include <input/maps/KeyMap.h>
 
 namespace engine {
 namespace ui {
 
     DrawContext Button::draw(DrawContext context)
     {
-        Color btnColor;
-        btnColor.r = btnColor.g = btnColor.b = 255;
-        btnColor.a = 130;
+        Color btnColor{
+            255, 255, 255, 130
+        };
+
         if (context.focusedComponent.get() == this) {
             btnColor.r = 0;
         }
@@ -30,9 +32,11 @@ namespace ui {
         return size;
     }
 
-    void Button::processInputEvent()
+    void Button::processInputEvent(engine::input::ControllerMap& keyMap)
     {
-        if (m_action != nullptr) {
+        //TODO: replace shouldExecute with proper mapping
+        bool shouldExecute = keyMap.hasKeyState(engine::input::Keys::SPACE, engine::input::KeyStates::PRESSED);
+        if (shouldExecute && m_action != nullptr) {
             m_action->execute();
         }
     }

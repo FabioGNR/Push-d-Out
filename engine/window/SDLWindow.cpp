@@ -21,7 +21,7 @@ SDLWindow::SDLWindow(WindowProperties properties)
                 getPosition(m_properties.y),
                 m_properties.width,
                 m_properties.height,
-                getFlags()),
+                static_cast<Uint32>(getFlags())),
             SDL_DestroyWindow);
 }
 

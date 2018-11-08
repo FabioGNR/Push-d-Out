@@ -1,5 +1,4 @@
 #include "EventManager.h"
-#include <events/models/ControllerEvent.h>
 #include <events/models/KeyUpEvent.h>
 #include <events/models/QuitEvent.h>
 #include <input/InputManager.h>

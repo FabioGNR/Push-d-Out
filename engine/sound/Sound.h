@@ -8,7 +8,7 @@ namespace sound {
         std::string m_soundPath;
 
     public:
-        Sound(std::string soundPath);
+        explicit Sound(std::string soundPath);
 
         const std::string& soundPath() const;
         void setSoundPath(std::string soundPath);

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <physics/World.h>
+#include "engine/physics/World.h"
+
 #include <vector>
 
 class b2Body;
@@ -8,15 +9,18 @@ class b2Body;
 namespace engine {
 namespace physics {
     class PhysicsManager {
-    private:
-        World* m_world;
-
     public:
         PhysicsManager();
-        ~PhysicsManager();
 
-        World* createWorld(common::Vector2D<int> size, double gravity, double friction);
-        int getUnitSize() const;
+        PhysicsManager(const PhysicsManager& other) = default;
+        PhysicsManager& operator=(const PhysicsManager& other) = default;
+
+        PhysicsManager(PhysicsManager&& other) = default;
+        PhysicsManager& operator=(PhysicsManager&& other) = default;
+
+        virtual ~PhysicsManager();
+
+        std::unique_ptr<World> createWorld(common::Vector2D<int> size, double gravity, double friction);
     };
 }
 }

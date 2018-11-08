@@ -14,13 +14,13 @@ namespace ui {
         auto requiredSize = getRequiredSize(context.renderer, childrenContext.availableSize);
 
         for (const auto& component : m_components) {
-            DrawContext componentContext { childrenContext };
+            DrawContext componentContext{ childrenContext };
             // center component in cross axis
             auto childSize = component->calculateSize(context.renderer, childrenContext.availableSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
-                componentContext.pos.y = componentContext.pos.y + (requiredSize.y-childSize.y)/2;
+                componentContext.pos.y = componentContext.pos.y + (requiredSize.y - childSize.y) / 2;
             } else {
-                componentContext.pos.x = componentContext.pos.x + (requiredSize.x-childSize.x)/2;
+                componentContext.pos.x = componentContext.pos.x + (requiredSize.x - childSize.x) / 2;
             }
             // draw component
             DrawContext updatedContext = component->draw(componentContext);

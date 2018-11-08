@@ -16,7 +16,7 @@ namespace ui {
         childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
         for (const auto& component : m_components) {
             common::Vector2D<int> childPosition = getChildPosition(context.renderer,
-				*component.get(),
+                *component.get(),
                 childContext.availableSize,
                 context.availableSize);
 
@@ -33,8 +33,8 @@ namespace ui {
         common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
-            common::Vector2D<int> componentSize = component->getComponent()->calculateSize(renderer, 
-				availableChildSize);
+            common::Vector2D<int> componentSize = component->getComponent()->calculateSize(renderer,
+                availableChildSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
                 requiredSize.y = std::max(requiredSize.y, componentSize.y);
@@ -61,8 +61,8 @@ namespace ui {
         return common::Vector2D<double>::max(sum, minimumSize.castTo<double>());
     }
 
-    common::Vector2D<int> LayoutPanel::getChildPosition(const IRenderer& renderer, 
-		const WrappedComponent& component,
+    common::Vector2D<int> LayoutPanel::getChildPosition(const IRenderer& renderer,
+        const WrappedComponent& component,
         common::Vector2D<int> availableSize,
         common::Vector2D<int> parentSize) const
     {

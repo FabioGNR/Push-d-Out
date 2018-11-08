@@ -5,10 +5,8 @@
 
 namespace engine {
 namespace physics {
-    PhysicsManager::PhysicsManager()
-        : m_world{ nullptr }
-    {
-    }
+    PhysicsManager::PhysicsManager() = default;
+    PhysicsManager::~PhysicsManager() = default;
 
     /**
      * @param size in units
@@ -16,18 +14,9 @@ namespace physics {
      * @param friction
      * @return pointer to World object
      */
-    World* PhysicsManager::createWorld(common::Vector2D<int> size, double gravity, double friction)
+    std::unique_ptr<World> PhysicsManager::createWorld(common::Vector2D<int> size, double gravity, double friction)
     {
-        auto world = new World(size, gravity, friction);
-
-        delete m_world; // delete last world
-        m_world = world;
-        return world;
-    }
-
-    PhysicsManager::~PhysicsManager()
-    {
-        delete m_world;
+        return std::make_unique<World>(size, gravity, friction);
     }
 }
 }

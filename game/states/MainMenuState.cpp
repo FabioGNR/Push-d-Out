@@ -5,6 +5,7 @@
 #include <engine/game/IGame.h>
 #include <engine/game/State.h>
 #include <engine/ui/components/Button.h>
+#include <engine/ui/components/CustomAction.h>
 #include <engine/ui/components/Label.h>
 #include <engine/ui/components/LayoutPanel.h>
 #include <engine/ui/components/StackPanel.h>
@@ -12,11 +13,11 @@
 using namespace std::chrono_literals;
 
 namespace game {
-MainMenuState::MainMenuState(engine::IGame& game)
-    : engine::State(game)
+MainMenuState::MainMenuState(engine::IGame& context)
+    : engine::State(context)
 {
-    m_system = std::make_unique<engine::ui::UISystem>();
-
+    m_uiSystem = std::make_unique<engine::ui::UISystem>();
+/*
     // subscribe button press
     dynamic_cast<Game&>(m_context).getInputManager().subscribe(
         [&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>& subscription) {
@@ -24,7 +25,9 @@ MainMenuState::MainMenuState(engine::IGame& game)
                 m_context.next(std::make_shared<GameState>(m_context));
                 subscription.close(); // close stream
             }
-        });
+        });*/
+    auto& game = dynamic_cast<Game&>(m_context);
+    m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
 }
 
 void MainMenuState::init()
@@ -55,12 +58,18 @@ void MainMenuState::init()
             common::Vector2D<double>(1, 1)),
         "PUSH'D OUT!");
     buttonStack->addComponent(nameLabel);
+    std::unique_ptr<engine::ui::IAction> startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.next(std::make_shared<GameState>(m_context));
+    });
+
     auto startButton = std::make_shared<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "START");
+    startButton->setAction(std::move(startGameAction));
+
     buttonStack->addComponent(startButton);
     auto optionsButton = std::make_shared<engine::ui::Button>(
         engine::ui::ComponentSize(
@@ -69,15 +78,21 @@ void MainMenuState::init()
             common::Vector2D<double>(1, 1)),
         "OPTIONS");
     buttonStack->addComponent(optionsButton);
+
+    std::unique_ptr<engine::ui::IAction> quitAction = std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.stop();
+    });
+
     auto quitButton = std::make_shared<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "QUIT");
+    quitButton->setAction(std::move(quitAction));
     buttonStack->addComponent(quitButton);
     auto frame = engine::ui::Frame(rootLayout);
-    m_system->push(frame);
+    m_uiSystem->push(frame);
 }
 
 void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
@@ -86,6 +101,21 @@ void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)
 
 void MainMenuState::render(engine::IRenderer& renderer)
 {
-    m_system->draw(renderer, common::Vector2D<int>(1280, 768));
+    m_uiSystem->draw(renderer, common::Vector2D<int>(1280, 768));
+}
+
+void MainMenuState::resume()
+{
+    m_uiSystem->setActive(true);
+}
+
+void MainMenuState::pause()
+{
+    m_uiSystem->setActive(false);
+}
+
+void MainMenuState::close()
+{
+    m_uiSystem->setActive(false);
 }
 }
