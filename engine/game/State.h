@@ -5,20 +5,14 @@
 #include <chrono>
 
 namespace engine {
-class IGame;
 class State {
-protected:
-    IGame& m_context;
-
 public:
-    explicit State(IGame& game)
-        : m_context{ game } {};
+    State() = default;
+    State(const State& other) = default;
+    State& operator=(const State& other) = default;
 
-    State(const State& other) = delete;
-    State& operator=(const State& other) = delete;
-
-    State(State&& other) = delete;
-    State& operator=(State&& other) = delete;
+    State(State&& other) = default;
+    State& operator=(State&& other) = default;
     virtual ~State() = default;
 
     virtual void update(std::chrono::nanoseconds timeStep) = 0;

@@ -1,9 +1,12 @@
 #include "MainMenuState.h"
 #include "GameState.h"
 #include "game/Game.h"
+#include "game/themes/Earth.h"
+
 #include <engine/common/Vector2D.h>
 #include <engine/game/IGame.h>
 #include <engine/game/State.h>
+#include <engine/sound/SDL/SDLSoundManager.h>
 #include <engine/ui/components/Button.h>
 #include <engine/ui/components/CustomAction.h>
 #include <engine/ui/components/Label.h>
@@ -13,15 +16,15 @@
 using namespace std::chrono_literals;
 
 namespace game {
-MainMenuState::MainMenuState(engine::IGame& context)
-    : engine::State(context)
+MainMenuState::MainMenuState(Game& context)
+    : m_context(context)
 {
-    auto& game = dynamic_cast<Game&>(m_context);
-    m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
+    m_uiSystem = std::make_unique<engine::ui::UISystem>(m_context.getInputManager());
 }
 
 void MainMenuState::init()
 {
+    // Create root layout
     auto rootLayout = std::make_shared<engine::ui::LayoutPanel>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit, engine::ui::ComponentSizeType::Stretch,
@@ -41,6 +44,8 @@ void MainMenuState::init()
             common::Vector2D<double>(1, 1)),
         engine::ui::FlowDirection::Vertical);
     centerLayout->addComponent(buttonStack, engine::ui::LayoutAnchor::Center);
+
+    // Add Game label
     auto nameLabel = std::make_shared<engine::ui::Label>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
@@ -48,19 +53,10 @@ void MainMenuState::init()
             common::Vector2D<double>(1, 1)),
         "PUSH'D OUT!");
     buttonStack->addComponent(nameLabel);
-    std::unique_ptr<engine::ui::IAction> startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.next(std::make_shared<GameState>(m_context));
-    });
 
-    auto startButton = std::make_shared<engine::ui::Button>(
-        engine::ui::ComponentSize(
-            engine::ui::ComponentSizeType::Fit,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
-        "START");
-    startButton->setAction(std::move(startGameAction));
-
+    auto startButton = makeStartGameButton();
     buttonStack->addComponent(startButton);
+
     auto optionsButton = std::make_shared<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
@@ -69,7 +65,15 @@ void MainMenuState::init()
         "OPTIONS");
     buttonStack->addComponent(optionsButton);
 
-    std::unique_ptr<engine::ui::IAction> quitAction = std::make_unique<engine::ui::CustomAction>([&]() {
+    auto quitButton = makeQuitButton();
+    buttonStack->addComponent(quitButton);
+
+    auto frame = engine::ui::Frame(rootLayout);
+    m_uiSystem->push(frame);
+}
+std::shared_ptr<engine::ui::Button> MainMenuState::makeQuitButton() const
+{
+    auto quitAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_context.stop();
     });
 
@@ -79,10 +83,44 @@ void MainMenuState::init()
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "QUIT");
-    quitButton->setAction(std::move(quitAction));
-    buttonStack->addComponent(quitButton);
-    auto frame = engine::ui::Frame(rootLayout);
-    m_uiSystem->push(frame);
+    quitButton->setAction(move(quitAction));
+
+    return quitButton;
+}
+std::shared_ptr<engine::ui::Button> MainMenuState::makeStartGameButton() const
+{
+    // Make the new game
+    // TODO: Game is made with hard-coded options. Make sure we get our options from somewhere else
+
+    /*
+    // Set up input delegate
+    gameState->onInput([&](engine::input::KeyMap keyMap, auto&) {
+        if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
+            m_context.previous();
+        }
+    });
+     */
+
+    // make the start button
+    auto startButton = std::make_shared<engine::ui::Button>(
+        engine::ui::ComponentSize(
+            engine::ui::ComponentSizeType::Fit,
+            engine::ui::ComponentSizeType::Fit,
+            common::Vector2D<double>(1, 1)),
+        "START");
+
+    // Set up button action
+    auto startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
+      auto gameState = std::make_shared<GameState>(
+          m_context.getScreenSize(),
+          themes::Earth{},
+          std::make_unique<engine::sound::SDLSoundManager>(),
+          m_context.getInputManager());
+        m_context.next(gameState);
+    });
+    startButton->setAction(move(startGameAction));
+
+    return startButton;
 }
 
 void MainMenuState::update(std::chrono::nanoseconds /* timeStep */)

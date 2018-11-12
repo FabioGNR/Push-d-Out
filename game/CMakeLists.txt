@@ -10,7 +10,7 @@ set(GAME_SRC
         states/GameState.h
         states/MainMenuState.cpp
         states/MainMenuState.h
-        )
+        states/LevelEditorState.cpp states/LevelEditorState.h)
 
 set(COMPONENT_SRC
         components/MoveComponent.h

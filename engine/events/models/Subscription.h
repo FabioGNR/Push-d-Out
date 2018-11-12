@@ -25,6 +25,11 @@ namespace events {
         {
             isActive = false;
         }
+
+        void open()
+        {
+            isActive = true;
+        }
     };
 }
 }
