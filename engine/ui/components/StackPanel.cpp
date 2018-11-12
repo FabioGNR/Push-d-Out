@@ -2,9 +2,13 @@
 
 namespace engine {
 namespace ui {
-    void StackPanel::addComponent(const std::shared_ptr<Component>& component)
+    void StackPanel::addComponent(std::shared_ptr<Component> component)
     {
         m_components.push_back(component);
+    }
+    void StackPanel::addComponentFront(std::shared_ptr<Component> component)
+    {
+        m_components.push_front(component);
     }
 
     DrawContext StackPanel::draw(DrawContext context)

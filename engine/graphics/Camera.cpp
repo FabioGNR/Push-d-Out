@@ -1,4 +1,5 @@
 #include "Camera.h"
+
 namespace engine {
 namespace graphics {
     common::Vector2D<int> Camera::translatePosition(common::Vector2D<double> position) const
@@ -6,10 +7,10 @@ namespace graphics {
         // this method will return screen coordinates for a given world coordinate
         const auto viewStart = getViewStart();
         const auto relative = position - viewStart;
-        auto screenPosition = (relative * getActualUnitSize()).castTo<int>();
+        auto viewport = (relative * getActualUnitSize()).castTo<int>();
         // flip Y because screen 0,0 is top left while game 0,0 is bottom left
-        screenPosition.y = m_screenSize.y - screenPosition.y;
-        return screenPosition;
+        viewport.y = m_viewport.y - viewport.y;
+        return viewport;
     }
 
     common::Vector2D<int> Camera::scaleSize(common::Vector2D<double> size) const
@@ -32,9 +33,9 @@ namespace graphics {
         return m_unitSize * m_zoomLevel;
     }
 
-    void Camera::setScreenSize(common::Vector2D<int> screenSize)
+    void Camera::setViewport(common::Vector2D<int> viewport)
     {
-        m_screenSize = screenSize;
+        m_viewport = viewport;
     }
 
     common::Vector2D<double> Camera::getViewStart() const
@@ -45,7 +46,7 @@ namespace graphics {
 
     common::Vector2D<double> Camera::getVisibleRegionSize() const
     {
-        return m_screenSize.castTo<double>() / getActualUnitSize();
+        return m_viewport.castTo<double>() / getActualUnitSize();
     }
 
     bool Camera::isPointVisible(common::Vector2D<double> position) const
@@ -76,6 +77,15 @@ namespace graphics {
     double Camera::getZoom() const
     {
         return m_zoomLevel;
+    }
+
+    double Camera::getFittedZoom(common::Vector2D<double> visibleDimensions) const
+    {
+        double idealPixelWidth = m_viewport.x / visibleDimensions.x;
+        double idealHorizontalZoom = idealPixelWidth / m_unitSize;
+        double idealPixelHeight = m_viewport.y / visibleDimensions.y;
+        double idealVerticalZoom = idealPixelHeight / m_unitSize;
+        return std::min(idealHorizontalZoom, idealVerticalZoom);
     }
 }
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/themes/Theme.h"
+
 #include <engine/common/Vector2D.h>
 #include <engine/ecs/World.h>
 #include <engine/events/models/Subscription.h>
@@ -10,8 +12,6 @@
 #include <engine/physics/PhysicsManager.h>
 #include <engine/physics/World.h>
 #include <engine/sound/ISoundManager.h>
-
-#include "game/themes/Theme.h"
 
 #include <memory>
 
@@ -53,6 +53,7 @@ public:
     void init() override;
     void update(std::chrono::nanoseconds timeStep) override;
     void render(engine::IRenderer& renderer) override;
+
     void resume() override;
     void pause() override;
     void close() override;

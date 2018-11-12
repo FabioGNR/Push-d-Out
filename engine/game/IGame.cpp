@@ -1,10 +1,10 @@
 #include "IGame.h"
 #include "State.h"
 
-namespace engine {
 
 using namespace std::chrono_literals;
 
+namespace engine {
 void IGame::previous()
 {
     if (!m_states.empty()) {
@@ -61,4 +61,4 @@ void IGame::run()
         onRender();
     }
 }
-}
+} // end namespace engine

@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "PauseMenuState.h"
 
 #include <engine/game/IGame.h>
 #include <engine/graphics/Camera.h>
@@ -39,6 +40,7 @@ void GameState::init()
     makeCharacters();
 
     auto camera = makeCamera(m_screenSize);
+    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
     // Add render system
     m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
 
@@ -66,14 +68,16 @@ void GameState::resume()
 
 void GameState::pause()
 {
-    m_inputSubscription->close();
-    m_inputSubscription = nullptr;
+    if (m_inputSubscription != nullptr) {
+        m_inputSubscription->close();
+    }
 }
 
 void GameState::close()
 {
     if (m_inputSubscription != nullptr) {
         m_inputSubscription->close();
+        m_inputSubscription = nullptr;
     }
 }
 
@@ -87,11 +91,13 @@ void GameState::makeCharacters()
     builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
 }
+
 void GameState::makeLevel()
 {
     const auto level = level::LevelReader::getLevel(level::LevelReader::readJSON("assets/levels/base-level.json"));
     level::LevelReader::createEntities(m_ecsWorld, *m_world, level);
 }
+
 void GameState::onInput(std::function<void(engine::input::KeyMap,
         engine::events::Subscription<engine::input::KeyMap>&)>
         delegate)
