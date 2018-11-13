@@ -3,7 +3,7 @@
 
 int main()
 {
-    engine::WindowProperties windowProperties{};
+    engine::WindowProperties windowProperties {};
     windowProperties.title = "Push'd Out!";
     windowProperties.maximized = false;
     windowProperties.centered = true;

@@ -2,8 +2,8 @@
 
 #include "IEventHandler.h"
 #include "engine/input/AnalogKeys.h"
-#include <engine/input/SDLKeys.h>
 #include "engine/input/SDL_Axis.h"
+#include <engine/input/SDLKeys.h>
 #include <vector>
 
 union SDL_Event;

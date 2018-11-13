@@ -20,9 +20,8 @@ namespace events {
 
         ControllerEvent(int ID, input::AnalogKeys analogKey, int axisValue)
             : m_ID(ID)
-            ,m_analogKey(analogKey)
-            , m_axisValue(axisValue)
-            {};
+            , m_analogKey(analogKey)
+            , m_axisValue(axisValue) {};
     };
 }
 }

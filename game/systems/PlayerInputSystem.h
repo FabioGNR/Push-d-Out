@@ -14,8 +14,8 @@ namespace systems {
 
     public:
         PlayerInputSystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
-            : m_world{ world }
-            , m_keyMap{ inputManager.getMap() } {};
+            : m_world { world }
+            , m_keyMap { inputManager.getMap() } {};
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;

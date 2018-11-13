@@ -1,9 +1,9 @@
 #pragma once
 
+#include <SDL2/SDL_gamecontroller.h>
 #include <engine/events/models/IEvent.h>
 #include <engine/input/Keys.h>
 #include <map>
-#include <SDL2/SDL_gamecontroller.h>
 
 using SDL_Keycode = int;
 

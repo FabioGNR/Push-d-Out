@@ -1,8 +1,8 @@
 #pragma once
 
 #include "KeyMap.h"
-#include <map>
 #include <engine/input/AnalogKeys.h>
+#include <map>
 
 namespace engine {
 namespace input {
@@ -10,7 +10,7 @@ namespace input {
         class AnalogMap {
         private:
             std::map<AnalogKeys, int> analogMap;
-            KeyMap keyMap{};
+            KeyMap keyMap {};
 
         public:
             void update();

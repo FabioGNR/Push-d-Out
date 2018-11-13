@@ -10,7 +10,7 @@ namespace input {
     class InputManager {
     private:
         std::vector<std::weak_ptr<events::Subscription<maps::AnalogMap>>> m_subscriptions;
-        maps::InputMap m_inputMap{};
+        maps::InputMap m_inputMap {};
 
         //maps::InputMap m_inputMap;
         //std::map<int, std::shared_ptr<AnalogMap>> conList;

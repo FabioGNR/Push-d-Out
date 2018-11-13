@@ -1,8 +1,8 @@
 #include "SDLKeys.h"
 
+#include <SDL_gamecontroller.h>
 #include <SDL_keycode.h>
 #include <events/models/KeyUpEvent.h>
-#include <SDL_gamecontroller.h>
 
 namespace engine {
 namespace input {
@@ -78,8 +78,9 @@ namespace input {
         return SDLKeys::KEYCODES.at(keycode);
     }
 
-    input::Keys SDLKeys::get(SDL_GameControllerButton button){
-        if(SDLKeys::KEYCODES.find(button) == SDLKeys::KEYCODES.end()){
+    input::Keys SDLKeys::get(SDL_GameControllerButton button)
+    {
+        if (SDLKeys::KEYCODES.find(button) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;
         }
         return SDLKeys::KEYCODES.at(button);
