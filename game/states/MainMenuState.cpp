@@ -4,6 +4,7 @@
 #include <engine/common/Vector2D.h>
 #include <engine/game/IGame.h>
 #include <engine/game/State.h>
+#include <engine/sound/SDL/SDLSoundManager.h>
 #include <engine/ui/components/Button.h>
 #include <engine/ui/components/CustomAction.h>
 #include <engine/ui/components/Label.h>
@@ -15,6 +16,7 @@ using namespace std::chrono_literals;
 namespace game {
 MainMenuState::MainMenuState(engine::IGame& context)
     : BaseMenuState(context)
+    , m_soundManager(new engine::sound::SDLSoundManager)
 {
 }
 
@@ -37,5 +39,30 @@ void MainMenuState::appendButtons(engine::ui::StackPanel& panel)
 {
     (void)panel;
     // nothing here yet
+}
+
+void MainMenuState::init()
+{
+    engine::sound::Music music("assets/sounds/menu.wav");
+    m_soundManager->play(music);
+    BaseMenuState::init();
+}
+
+void MainMenuState::resume()
+{
+    m_soundManager->resume();
+    BaseMenuState::resume();
+}
+
+void MainMenuState::pause()
+{
+    m_soundManager->pause();
+    BaseMenuState::pause();
+}
+
+void MainMenuState::close()
+{
+    m_soundManager->pause();
+    BaseMenuState::close();
 }
 }

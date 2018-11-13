@@ -2,28 +2,12 @@
 
 #include <engine/exceptions/ResourceNotFoundException.h>
 #include <external/JSON/json.hpp>
+#include <game/level/reader/ThemeReader.h>
 
 using json = nlohmann::json;
 
 namespace game {
 namespace level {
-
-    std::string getSheetName(Theme theme)
-    {
-        switch (theme) {
-        case Theme::Earth:
-            return "earthThemeSpriteSheet.png";
-        case Theme::Moon:
-            return "moonThemeSpriteSheet.png";
-        case Theme::Temple:
-            return "templeThemeSpriteSheet.png";
-        case Theme::City:
-            return "cityThemeSpriteSheet.png";
-        default:
-            throw ResourceNotFoundException("stylesheet");
-        }
-    }
-
     // JSON conversions for tile
     void to_json(json& j, const Tile& t)
     {
@@ -62,7 +46,7 @@ namespace level {
     void to_json(json& j, const Level& l)
     {
         j = json{
-            { "Meta", { { "name", l.name }, { "theme", static_cast<int>(l.theme) }, { "height", l.height }, { "width", l.width } } },
+            { "Meta", { { "name", l.name }, { "theme", l.theme.name }, { "height", l.height }, { "width", l.width } } },
             { "PlatformTiles", l.tiles },
             { "CharacterSpawns", l.CharacterSpawns },
             { "EquipmentSpawns", l.EquipmentSpawns }
@@ -73,16 +57,17 @@ namespace level {
     {
         json Meta = j.at("Meta").get<json>();
         l.name = Meta.at("name").get<std::string>();
-        auto themeInt = Meta.at("theme").get<int>();
-        if (themeInt > 3) {
-            themeInt = 0;
-        }
-        l.theme = static_cast<Theme>(themeInt);
         l.height = Meta.at("height").get<int>();
         l.width = Meta.at("width").get<int>();
         l.tiles = j.at("PlatformTiles").get<std::vector<Tile>>();
         l.CharacterSpawns = j.at("CharacterSpawns").get<std::vector<SpawnPoint>>();
         l.EquipmentSpawns = j.at("EquipmentSpawns").get<std::vector<SpawnPoint>>();
+
+        auto themeName = Meta.at("theme").get<std::string>();
+
+        ThemeReader tr{};
+        auto json = tr.parse("assets/themes/" + themeName + ".json");
+        l.theme = tr.build(json);
     }
 }
 }

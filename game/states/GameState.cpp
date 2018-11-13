@@ -8,11 +8,10 @@
 
 #include <game/Game.h>
 #include <game/builders/CharacterBuilder.h>
+#include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
 #include <game/systems/CameraSystem.h>
 #include <game/systems/RenderSystem.h>
-#include <game/themes/Earth.h>
-#include <game/themes/Theme.h>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
@@ -21,20 +20,23 @@ GameState::GameState(engine::IGame& game)
     , m_inputManager(dynamic_cast<Game&>(game).getInputManager())
 {
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
-    themes::Theme theme = themes::Earth{};
-    m_world = m_physicsManager->createWorld(common::Vector2D<int>(40, 24), theme.getGravity(), theme.getFriction());
 }
 
 void GameState::init()
 {
-    engine::sound::Music music("assets/sounds/bgm.wav");
-    m_soundManager->play(music);
-
     auto& game = dynamic_cast<Game&>(m_context);
 
     // Read Level based on JSON file
-    auto level = level::LevelReader::getLevel(level::LevelReader::readJSON("assets/levels/base-level.json"));
+    level::LevelReader lr{};
+    auto level = lr.build(lr.parse("assets/levels/base-level.json"));
+
+    // Create level from theme
+    m_world = m_physicsManager->createWorld(common::Vector2D<int>(level.width, level.height), level.theme.gravity, level.theme.friction);
     level::LevelReader::createEntities(m_ecsWorld, *m_world, level);
+
+    // Play track
+    engine::sound::Music music("assets/sounds/" + level.theme.trackName);
+    m_soundManager->play(music);
 
     // Build characters into the ECS and physics world
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager(), 4 };
@@ -89,6 +91,7 @@ void GameState::close()
     if (m_inputSubscription != nullptr) {
         m_inputSubscription->close();
     }
+    m_soundManager->pause();
 }
 
 void GameState::subscribeInput()

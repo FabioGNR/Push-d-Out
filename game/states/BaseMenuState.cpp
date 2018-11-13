@@ -52,7 +52,7 @@ void BaseMenuState::init()
         m_context.previous();
     });
 
-    prependButtons(*buttonStack.get());
+    prependButtons(*buttonStack);
 
     auto optionsButton = std::make_shared<engine::ui::Button>(
         engine::ui::ComponentSize(
@@ -74,7 +74,7 @@ void BaseMenuState::init()
         "QUIT");
     quitButton->setAction(std::move(quitAction));
 
-    appendButtons(*buttonStack.get());
+    appendButtons(*buttonStack);
 
     buttonStack->addComponent(quitButton);
     auto frame = engine::ui::Frame(rootLayout);

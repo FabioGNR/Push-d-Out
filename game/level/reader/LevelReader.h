@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Reader.h"
 #include "external/JSON/json.hpp"
 #include "game/level/LevelDomain.h"
 #include <engine/ecs/World.h>
@@ -10,10 +11,10 @@ namespace game {
 namespace level {
     using json = nlohmann::json;
 
-    class LevelReader {
+    class LevelReader : public Reader<Level> {
     public:
-        static json readJSON(const std::string& fileName);
-        static Level getLevel(const json& j);
+        Level build(const json& j) override;
+
         static void createEntities(engine::ecs::World& world, engine::physics::World& physics, Level level);
     };
 }
