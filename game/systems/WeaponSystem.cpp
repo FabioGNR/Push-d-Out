@@ -48,14 +48,15 @@ namespace systems {
     WeaponSystem::WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager)
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
+        , m_keyMap(inputManager.getMap())
     {
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
         std::cout << "After inserting in to map" << std::endl;
-
+        /*
         m_inputSubscription = inputManager.subscribe([&](engine::input::maps::AnalogMap analogMap, engine::events::Subscription<engine::input::maps::AnalogMap>&) {
             m_analogMap = analogMap;
         },
-            1);
+            1);*/
     }
 
     void game::systems::WeaponSystem::update(std::chrono::nanoseconds /* timeStep */)
@@ -66,16 +67,17 @@ namespace systems {
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
             if (inventory.activeEquipment.hasValue()) {
                 engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
+                auto& analogMap = m_keyMap.getMap(inputComponent.controllerId);
                 auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
                 auto action = definitions::Action::UseWeapon;
                 auto control = inputComponent.getKey(action);
                 auto analogControl = inputComponent.getAnalog(action);
 
-                if (m_analogMap.getValue(analogControl) > 1) {
+                if (analogMap.getValue(analogControl) > 1) {
                     shoot(entity, weapon);
                 }
 
-                if (m_analogMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                if (analogMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
                     shoot(entity, weapon);
                 }
             }

@@ -81,7 +81,7 @@ namespace sound {
             chunk = find->second.get();
         }
 
-        Mix_PlayMusic(chunk, 0);
+        Mix_PlayMusic(chunk, -1);
     }
 
     void SDLSoundManager::resume() const

@@ -1,9 +1,10 @@
 #include "RNG.h"
+#include <ctime>
 
 struct Impl {
     std::mt19937 rng;
     Impl()
-        : rng(std::random_device{}())
+        : rng(static_cast<unsigned int>(time(nullptr)))
     {
     }
 };
@@ -16,4 +17,4 @@ int RNG::generate(const int min, const int max)
     std::uniform_int_distribution<int> distribution(min, max);
     return distribution(impl.rng);
 }
-}
+} // namespace common

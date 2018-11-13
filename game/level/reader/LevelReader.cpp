@@ -15,18 +15,7 @@
 
 namespace game {
 namespace level {
-    json LevelReader::readJSON(const std::string& fileName)
-    {
-        std::ifstream i(fileName);
-        if (!i.good()) {
-            throw ResourceNotFoundException(fileName);
-        }
-        json j;
-        i >> j;
-        return j;
-    }
-
-    Level LevelReader::getLevel(const json& j)
+    Level LevelReader::build(const json& j)
     {
         Level level = j;
         return level;
@@ -58,7 +47,7 @@ namespace level {
             world.addComponent<components::BodyComponent>(entity, bodyComponent);
 
             // Add a sprite component to tile entity
-            auto spriteComponent = components::SpriteComponent(getSheetName(level.theme), curTile.sprite);
+            auto spriteComponent = components::SpriteComponent(level.theme.sprites, curTile.sprite);
             world.addComponent<components::SpriteComponent>(entity, spriteComponent);
 
             auto dimensionComponent = components::DimensionComponent(dimension);
@@ -76,7 +65,7 @@ namespace level {
             world.addComponent<components::PositionComponent>(entity, posComponent);
 
             // Add a sprite component to character spawn entity
-            auto spriteComponent = components::SpriteComponent(getSheetName(level.theme), "characterSpawn");
+            auto spriteComponent = components::SpriteComponent(level.theme.sprites, "characterSpawn");
             world.addComponent<components::SpriteComponent>(entity, spriteComponent);
 
             // Add a character spawn component to character spawn entity
@@ -95,7 +84,7 @@ namespace level {
             auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(1, 1));
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
             // Add a sprite component to equipment spawn entity
-            auto spriteComponent = components::SpriteComponent(getSheetName(level.theme), "equipmentSpawn");
+            auto spriteComponent = components::SpriteComponent(level.theme.sprites, "equipmentSpawn");
             world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             // Add a equipable component to equipment spawn entity
             auto equipableComponent = components::EquipableComponent();

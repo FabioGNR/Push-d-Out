@@ -14,7 +14,7 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         //auto& controlMap = m_world.getComponent<components::PlayerInputComponent>(entity).controls;
         //auto& analogControlMap = m_world.getComponent<components::PlayerInputComponent>(entity).analogControls;
         auto delta = common::Vector2D<double>(0, 0);
-        auto& analogMap = m_keyMap.getMap(1); // id of controller
+        auto& analogMap = m_keyMap.getMap(PIC.controllerId); // id of controller
 
         if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > 1) {
             move(delta, false);
