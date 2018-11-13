@@ -162,7 +162,7 @@ set(UI_SRC
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
         ui/components/CustomAction.h
-        input/maps/InputMap.cpp input/maps/InputMap.h)
+        input/maps/InputMap.cpp input/maps/InputMap.h input/SDL_Axis.h input/SDL_Axis.cpp)
 
 # more engine stuff
 add_library(engine

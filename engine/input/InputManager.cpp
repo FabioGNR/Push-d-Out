@@ -8,9 +8,8 @@ namespace input {
     void InputManager::handle(const std::shared_ptr<events::IControlEvent>& event)
     {
         if (auto con = std::dynamic_pointer_cast<events::ControllerEvent>(event)) {
-
-            auto conMap = m_inputMap.getMap(con->m_ID);
-            if (con->m_axisValue == 0) {
+            auto& conMap = m_inputMap.getMap(con->m_ID);
+            if (con->m_axisValue == -1) {
                 conMap.setValue(con->m_key, (con->m_keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
             } else {
                 conMap.setValue(con->m_analogKey, con->m_axisValue);

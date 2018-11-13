@@ -77,5 +77,12 @@ namespace input {
         }
         return SDLKeys::KEYCODES.at(keycode);
     }
+
+    input::Keys SDLKeys::get(SDL_GameControllerButton button){
+        if(SDLKeys::KEYCODES.find(button) == SDLKeys::KEYCODES.end()){
+            return Keys::UNKNOWN;
+        }
+        return SDLKeys::KEYCODES.at(button);
+    }
 }
 }

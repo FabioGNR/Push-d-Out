@@ -19,6 +19,8 @@ namespace systems {
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;
+        void move(common::Vector2D<double>& delta, bool invert);
+        void jump(common::Vector2D<double>& delta);
     };
 }
 }

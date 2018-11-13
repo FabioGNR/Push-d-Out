@@ -51,14 +51,18 @@ namespace builders {
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
         std::map<game::definitions::Action, engine::input::Keys> controls;
+        std::map<game::definitions::Action , engine::input::AnalogKeys> analogControls;
         // TODO: Move these actions to some kind of configurations
-        controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys ::CON_TRIGGER_RIGHT;
+        //controls[definitions::Action::UseWeapon] = engine::input::Keys ::CON_B;
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
-        controls[definitions::Action::MoveLeft] = engine::input::Keys::CON_LEFTSHOULDER;
-        controls[definitions::Action::MoveRight] = engine::input::Keys::CON_RIGHTSHOULDER;
-        controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
+        //controls[definitions::Action::MoveLeft] = engine::input::Keys::Z;
+        //controls[definitions::Action::MoveRight] = engine::input::Keys::D;
+        analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
+        analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
+        controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
 
-        components::PlayerInputComponent playerInputComponent{ 1, controls };
+        components::PlayerInputComponent playerInputComponent{ 1, controls, analogControls };
         m_ecsWorld.addComponent<components::PlayerInputComponent>(player, playerInputComponent);
 
         // Create the sprite component for the player entity

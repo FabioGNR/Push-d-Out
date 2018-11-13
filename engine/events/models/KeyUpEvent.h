@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IControlEvent.h"
-#include <engine/input/Keys.h>
+#include <input/Keys.h>
 
 namespace engine {
 namespace events {

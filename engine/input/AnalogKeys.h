@@ -3,6 +3,7 @@
 namespace engine {
 namespace input {
     enum AnalogKeys {
+        CON_UNKNOWN,
         CON_LEFTSTICK_X,
         CON_RIGHTSTICK_X,
         CON_LEFTSTICK_Y,
@@ -11,7 +12,6 @@ namespace input {
         CON_RIGHTSTICK_Z,
         CON_TRIGGER_LEFT,
         CON_TRIGGER_RIGHT
-
     };
 }
 }

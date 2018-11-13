@@ -8,15 +8,18 @@
 #include <engine/ecs/World.h>
 #include <engine/input/InputManager.h>
 #include <engine/physics/World.h>
+#include <game/components/WeaponComponent.h>
 
 namespace game {
 namespace systems {
     class WeaponSystem : public engine::ecs::BaseSystem<WeaponSystem> {
+    private:
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
         engine::input::maps::AnalogMap m_analogMap;
         std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&)>> fireFunctionMap;
         std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
+        void shoot(engine::ecs::Entity& entity, components::WeaponComponent& weapon);
 
     public:
         WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager);

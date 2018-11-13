@@ -5,6 +5,11 @@ namespace input {
     namespace maps {
         void AnalogMap::update()
         {
+            /*
+            auto it = analogMap.begin();
+            while(it!= analogMap.end()){
+                it = analogMap.erase(it++);
+            }*/
             keyMap.update();
         }
 
@@ -25,17 +30,15 @@ namespace input {
 
         int AnalogMap::getValue(engine::input::AnalogKeys key)
         {
-            return analogMap[key];
+            if (analogMap.find(key) == analogMap.end()) {
+                return 0;
+            }
+            return analogMap.at(key);
         }
 
         bool AnalogMap::hasKeyState(engine::input::Keys key, KeyStates state)
         {
             return keyMap.hasKeyState(key, state);
-        }
-
-        bool AnalogMap::hasChanged(engine::input::AnalogKeys key)
-        {
-            return (analogMap[key] == 0 ? false : true);
         }
     }
 }

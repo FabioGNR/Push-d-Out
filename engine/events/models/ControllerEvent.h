@@ -7,21 +7,22 @@
 namespace engine {
 namespace events {
     struct ControllerEvent : public IControlEvent {
-        input::AnalogKeys m_analogKey;
-        input::Keys m_key;
-        int m_axisValue;
         int m_ID;
+        input::Keys m_key;
+        input::AnalogKeys m_analogKey;
+        int m_axisValue = -1;
         bool m_keyDown;
 
-        ControllerEvent(input::Keys key, bool keyDown, int ID)
-            : m_key { key }
-            , m_ID(ID)
+        ControllerEvent(int ID, input::Keys key, bool keyDown)
+            : m_ID(ID)
+            , m_key { key }
             , m_keyDown { keyDown } {};
 
-        ControllerEvent(input::AnalogKeys analogKey, int axisValue, int ID)
-            : m_analogKey(analogKey)
+        ControllerEvent(int ID, input::AnalogKeys analogKey, int axisValue)
+            : m_ID(ID)
+            ,m_analogKey(analogKey)
             , m_axisValue(axisValue)
-            , m_ID(ID) {};
+            {};
     };
 }
 }

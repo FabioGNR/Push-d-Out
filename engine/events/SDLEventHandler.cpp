@@ -30,23 +30,51 @@ namespace events {
                 return nullptr; // ignore repeat events
             }
             return std::make_shared<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
-            /*
-        case SDL_CONTROLLERDEVICEADDED:
+        case SDL_CONTROLLERDEVICEADDED: {
             SDL_GameControllerOpen(conCount++);
-            return std::make_shared<ControllerEvent>(input::Keys::CON_GUIDE, conCount);
+            return nullptr;
+        }
         case SDL_CONTROLLERBUTTONDOWN:
-            return std::make_shared<ControllerEvent>(input::SDLKeys::get(event.cbutton.button), conCount);*/
+            return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), true);
+        case SDL_CONTROLLERBUTTONUP:
+            return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), false);
+        case SDL_CONTROLLERAXISMOTION: {
+            input::AnalogKeys key = input::SDL_Axis::get((SDL_GameControllerAxis)event.caxis.axis);
+            /*
+            if (event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
+                key = input::AnalogKeys::CON_LEFTSTICK_X;
+            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
+                key = input::AnalogKeys::CON_LEFTSTICK_Y;
+            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX) {
+                key = input::AnalogKeys::CON_RIGHTSTICK_X;
+            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY) {
+                key = input::AnalogKeys::CON_RIGHTSTICK_Y;
+            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT) {
+                key = input::AnalogKeys::CON_TRIGGER_LEFT;
+            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
+                key = input::AnalogKeys::CON_TRIGGER_RIGHT;
+            } else {
+                return nullptr;
+            }*/
+            int value = 0;
+            if (event.caxis.value > 15000 || event.caxis.value < -15000) {
+                value = event.caxis.value;
+            }
+
+            return std::make_shared<ControllerEvent>(event.cdevice.which, key, value);
+        }
+            /*
         case SDL_JOYDEVICEADDED:
-            std::cout << "Controller added: " << event.cdevice.which << std::endl;
-            SDL_JoystickOpen(conCount++);
-            return std::make_shared<ControllerEvent>(input::Keys::CON_START, false, event.cdevice.which);
+            std::cout << "Joystick added: " << event.cdevice.which << std::endl;
+            //SDL_JoystickOpen(conCount++);
+            return nullptr;
         case SDL_JOYBUTTONDOWN:
             std::cout << "Controller button down" << std::endl;
             return std::make_shared<ControllerEvent>(input::Keys::CON_START, true, event.cdevice.which);
         case SDL_JOYAXISMOTION: {
             input::AnalogKeys key;
             int axis = (int)event.jaxis.axis;
-            //std::cout << (int)event.jaxis.axis << std::endl;
+            std::cout << (int)event.jaxis.axis << std::endl;
             if (axis < 3) {
                 std::cout << "L" << std::endl;
             } else if (axis > 5) {
@@ -76,9 +104,9 @@ namespace events {
             }
 
             //std::pair<int , int> test = std::make_pair(1, 2); TODO check this
-            std::cout << "Controller joy axis motion" << std::endl;
+            //std::cout << "Controller joy axis motion" << std::endl;
             return std::make_shared<ControllerEvent>(key, event.jaxis.value, event.cdevice.which);
-        }
+        }*/
         default:
             return nullptr;
         }

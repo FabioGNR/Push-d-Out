@@ -16,7 +16,6 @@ namespace input {
             void update();
 
             void setValue(AnalogKeys key, int value);
-
             void setValue(Keys key, KeyStates state);
 
             KeyStates getKeystate(Keys key);
@@ -24,8 +23,6 @@ namespace input {
             int getValue(AnalogKeys key);
 
             bool hasKeyState(Keys key, KeyStates state);
-
-            bool hasChanged(AnalogKeys key);
         };
     }
 }

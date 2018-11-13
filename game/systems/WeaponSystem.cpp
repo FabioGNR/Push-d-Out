@@ -6,7 +6,6 @@
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/ProjectileComponent.h>
-#include <game/components/WeaponComponent.h>
 
 #include <engine/graphics/IRenderer.h>
 #include <engine/physics/Body.h>
@@ -55,15 +54,13 @@ namespace systems {
 
         m_inputSubscription = inputManager.subscribe([&](engine::input::maps::AnalogMap analogMap, engine::events::Subscription<engine::input::maps::AnalogMap>&) {
             m_analogMap = analogMap;
-        /*
-        m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
-            m_keyMap = keymap;*/
-        });
+        },
+            1);
     }
 
     void game::systems::WeaponSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
-        using clock = std::chrono::steady_clock;
+
         m_ecsWorld.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inventory = m_ecsWorld.getComponent<InventoryComponent>(entity);
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
@@ -71,22 +68,30 @@ namespace systems {
                 engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
                 auto action = definitions::Action::UseWeapon;
-                if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
-                    auto control = inputComponent.controls[action];
+                auto control = inputComponent.getKey(action);
+                auto analogControl = inputComponent.getAnalog(action);
 
-                    if (m_analogMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
-                        if (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - weapon.lastFired).count() > weapon.cooldownSeconds * 1000) {
-                            if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
-                                auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
-                                fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
-                                weapon.lastFired = clock::now();
-                            }
-                        }
-                    }
+                if (m_analogMap.getValue(analogControl) > 1) {
+                    shoot(entity, weapon);
+                }
 
+                if (m_analogMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                    shoot(entity, weapon);
                 }
             }
         });
+    }
+
+    void game::systems::WeaponSystem::shoot(engine::ecs::Entity& entity, game::components::WeaponComponent& weapon)
+    {
+        using clock = std::chrono::steady_clock;
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - weapon.lastFired).count() > weapon.cooldownSeconds * 1000) {
+            if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
+                auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
+                fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
+                weapon.lastFired = clock::now();
+            }
+        }
     }
 
     void game::systems::WeaponSystem::render(engine::IRenderer& /* renderer */) {}
