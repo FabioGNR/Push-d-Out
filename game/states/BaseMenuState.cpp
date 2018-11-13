@@ -22,51 +22,49 @@ BaseMenuState::BaseMenuState(engine::IGame& context)
 
 void BaseMenuState::init()
 {
-    auto rootLayout = std::make_shared<engine::ui::LayoutPanel>(
+    auto rootLayout = std::make_unique<engine::ui::LayoutPanel>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit, engine::ui::ComponentSizeType::Stretch,
             common::Vector2D<double>(1, 1)),
         engine::ui::FlowDirection::Horizontal);
-    auto centerLayout = std::make_shared<engine::ui::LayoutPanel>(
+    auto centerLayout = std::make_unique<engine::ui::LayoutPanel>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         engine::ui::FlowDirection::Vertical);
-    rootLayout->addComponent(centerLayout, engine::ui::LayoutAnchor::Center);
-    auto buttonStack = std::make_shared<engine::ui::StackPanel>(
+    auto buttonStack = std::make_unique<engine::ui::StackPanel>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         engine::ui::FlowDirection::Vertical);
-    centerLayout->addComponent(buttonStack, engine::ui::LayoutAnchor::Center);
-    auto nameLabel = std::make_shared<engine::ui::Label>(
+    auto nameLabel = std::make_unique<engine::ui::Label>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "PUSH'D OUT!");
-    buttonStack->addComponent(nameLabel);
+    buttonStack->addComponent(std::move(nameLabel));
     std::unique_ptr<engine::ui::IAction> resumeGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_context.previous();
     });
 
     prependButtons(*buttonStack);
 
-    auto optionsButton = std::make_shared<engine::ui::Button>(
+    auto optionsButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "OPTIONS");
-    buttonStack->addComponent(optionsButton);
+    buttonStack->addComponent(std::move(optionsButton));
 
     std::unique_ptr<engine::ui::IAction> quitAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_context.stop();
     });
 
-    auto quitButton = std::make_shared<engine::ui::Button>(
+    auto quitButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
@@ -76,9 +74,11 @@ void BaseMenuState::init()
 
     appendButtons(*buttonStack);
 
-    buttonStack->addComponent(quitButton);
-    auto frame = engine::ui::Frame(rootLayout);
-    m_uiSystem->push(frame);
+    buttonStack->addComponent(std::move(quitButton));
+    centerLayout->addComponent(std::move(buttonStack), engine::ui::LayoutAnchor::Center);
+    rootLayout->addComponent(std::move(centerLayout), engine::ui::LayoutAnchor::Center);
+    auto frame = engine::ui::Frame(std::move(rootLayout));
+    m_uiSystem->push(std::move(frame));
 }
 
 void BaseMenuState::update(std::chrono::nanoseconds /* timeStep */)

@@ -11,17 +11,17 @@ namespace ui {
     class Component;
 
     struct DrawContext {
-        explicit DrawContext(common::Vector2D<int> _size, IRenderer& renderer, std::shared_ptr<Component> focused)
+        explicit DrawContext(common::Vector2D<int> _size, IRenderer& renderer, Component* focused)
             : pos{ 0, 0 }
             , availableSize{ _size }
             , renderer{ renderer }
-            , focusedComponent{ std::move(focused) }
+            , focusedComponent{ focused }
         {
         }
         common::Vector2D<int> pos;
         common::Vector2D<int> availableSize;
         IRenderer& renderer;
-        std::shared_ptr<Component> focusedComponent;
+        Component* focusedComponent;
     };
 }
 }

@@ -25,14 +25,14 @@ void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
     std::unique_ptr<engine::ui::IAction> startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_context.next(std::make_shared<GameState>(m_context));
     });
-    auto startButton = std::make_shared<engine::ui::Button>(
+    auto startButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "START");
     startButton->setAction(std::move(startGameAction));
-    panel.addComponent(startButton);
+    panel.addComponent(std::move(startButton));
 }
 
 void MainMenuState::appendButtons(engine::ui::StackPanel& panel)

@@ -24,14 +24,14 @@ void PauseMenuState::prependButtons(engine::ui::StackPanel& panel)
         m_context.previous();
     });
 
-    auto resumeButton = std::make_shared<engine::ui::Button>(
+    auto resumeButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "RESUME");
     resumeButton->setAction(std::move(resumeGameAction));
-    panel.addComponent(resumeButton);
+    panel.addComponent(std::move(resumeButton));
 }
 
 void PauseMenuState::appendButtons(engine::ui::StackPanel& panel)
