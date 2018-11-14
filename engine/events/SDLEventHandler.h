@@ -5,6 +5,7 @@
 #include "engine/input/SDL_Axis.h"
 #include <engine/input/SDLKeys.h>
 #include <vector>
+#include <map>
 
 union SDL_Event;
 
@@ -12,11 +13,14 @@ namespace engine {
 namespace events {
     class SDLEventHandler : public IEventHandler {
     private:
-        int conCount = 0;
+        const int deadZone = 15000;
+        std::map<int, bool> cCon;
         std::shared_ptr<IEvent> mapEvent(SDL_Event& event);
 
     public:
         std::vector<std::shared_ptr<IEvent>> getEvents() override;
+        bool openCon(int id) override;
+        int getcCon() override;
     };
 }
 }

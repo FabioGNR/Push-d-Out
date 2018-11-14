@@ -31,7 +31,9 @@ namespace events {
             }
             return std::make_shared<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
         case SDL_CONTROLLERDEVICEADDED: {
-            SDL_GameControllerOpen(conCount++);
+            cCon.insert({ event.cbutton.which, false });
+            std::cout << "C-CON" << std::endl;
+            //SDL_GameControllerOpen(event.cbutton.which);
             return nullptr;
         }
         case SDL_CONTROLLERBUTTONDOWN:
@@ -40,76 +42,31 @@ namespace events {
             return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), false);
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::SDL_Axis::get((SDL_GameControllerAxis)event.caxis.axis);
-            /*
-            if (event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
-                key = input::AnalogKeys::CON_LEFTSTICK_X;
-            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
-                key = input::AnalogKeys::CON_LEFTSTICK_Y;
-            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX) {
-                key = input::AnalogKeys::CON_RIGHTSTICK_X;
-            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY) {
-                key = input::AnalogKeys::CON_RIGHTSTICK_Y;
-            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT) {
-                key = input::AnalogKeys::CON_TRIGGER_LEFT;
-            } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
-                key = input::AnalogKeys::CON_TRIGGER_RIGHT;
-            } else {
-                return nullptr;
-            }*/
             int value = 0;
-            if (event.caxis.value > 15000 || event.caxis.value < -15000) {
+            if (event.caxis.value > deadZone || event.caxis.value < -deadZone) {
                 value = event.caxis.value;
             }
 
             return std::make_shared<ControllerEvent>(event.cdevice.which, key, value);
         }
-            /*
-        case SDL_JOYDEVICEADDED:
-            std::cout << "Joystick added: " << event.cdevice.which << std::endl;
-            //SDL_JoystickOpen(conCount++);
-            return nullptr;
-        case SDL_JOYBUTTONDOWN:
-            std::cout << "Controller button down" << std::endl;
-            return std::make_shared<ControllerEvent>(input::Keys::CON_START, true, event.cdevice.which);
-        case SDL_JOYAXISMOTION: {
-            input::AnalogKeys key;
-            int axis = (int)event.jaxis.axis;
-            std::cout << (int)event.jaxis.axis << std::endl;
-            if (axis < 3) {
-                std::cout << "L" << std::endl;
-            } else if (axis > 5) {
-                std::cout << "B" << std::endl;
-            } else {
-                std::cout << "R" << std::endl;
-            }
-
-            if (event.jaxis.axis == 0) {
-                key = input::AnalogKeys::CON_LEFTSTICK_X;
-            } else if (event.jaxis.axis == 1) {
-                key = input::AnalogKeys::CON_LEFTSTICK_Y;
-            } else if (event.jaxis.axis == 2) {
-                key = input::AnalogKeys::CON_LEFTSTICK_Z;
-            } else if (event.jaxis.axis == 3) {
-                key = input::AnalogKeys::CON_RIGHTSTICK_X;
-            } else if (event.jaxis.axis == 4) {
-                key = input::AnalogKeys::CON_RIGHTSTICK_Y;
-            } else if (event.jaxis.axis == 5) {
-                key = input::AnalogKeys::CON_RIGHTSTICK_Z;
-            } else if (event.jaxis.axis == 6) {
-                key = input::AnalogKeys::CON_TRIGGER_LEFT;
-            } else if (event.jaxis.axis == 7) {
-                key = input::AnalogKeys::CON_TRIGGER_RIGHT;
-            } else {
-                return nullptr;
-            }
-
-            //std::pair<int , int> test = std::make_pair(1, 2); TODO check this
-            //std::cout << "Controller joy axis motion" << std::endl;
-            return std::make_shared<ControllerEvent>(key, event.jaxis.value, event.cdevice.which);
-        }*/
         default:
             return nullptr;
         }
+    }
+
+    bool SDLEventHandler::openCon(int id)
+    {
+        if (cCon.find(id) == cCon.end() || id < 0) {
+            return false;
+        } else {
+            SDL_GameControllerOpen(id);
+            cCon[id] = true;
+        }
+    }
+
+    int SDLEventHandler::getcCon()
+    {
+        return cCon.size();
     }
 }
 }

@@ -22,23 +22,6 @@ namespace input {
                 KMB_Map.setValue(up->value, KeyStates::RELEASED);
             }
         }
-        /*
-        if (auto down = std::dynamic_pointer_cast<events::KeyDownEvent>(event)) {
-            controlMap.setValue(down->value, KeyStates::PRESSED);
-        } else if (auto up = std::dynamic_pointer_cast<events::KeyUpEvent>(event)) {
-            controlMap.setValue(up->value, KeyStates::RELEASED);
-        } else if (auto con = std::dynamic_pointer_cast<events::ControllerEvent>(event)) {
-            if (conList.find(con->ID) == conList.end()) {
-                conList.insert({ con->ID, std::make_shared<ControllerMap>() });
-            } else {
-                if (con->axisValue == 0) {
-                    conList[con->ID]->setValue(con->value, (con->keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
-                } else {
-                    conList[con->ID]->setValue(con->value, con->axisValue);
-                    //controlMap.setAxisValue(con->value, con->axisValue);
-                }
-            }
-        }*/
     }
 
     std::shared_ptr<events::Subscription<maps::AnalogMap>> InputManager::subscribe(
@@ -89,6 +72,16 @@ namespace input {
     maps::InputMap& InputManager::getMap()
     {
         return m_inputMap;
+    }
+
+    int InputManager::conAmount()
+    {
+        return m_handler->getcCon();
+    }
+
+    bool InputManager::openCon(int id)
+    {
+        return m_handler->openCon(id);
     }
 }
 }

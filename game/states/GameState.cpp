@@ -39,7 +39,7 @@ void GameState::init()
     m_soundManager->play(music);
 
     // Build characters into the ECS and physics world
-    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager(), 4 };
+    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager() };
     builder.build();
 
     // Set-up camera
