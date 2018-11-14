@@ -30,6 +30,11 @@ namespace ui {
         m_frames.push(std::move(frame));
     }
 
+    void UISystem::pop()
+    {
+        m_frames.pop();
+    }
+
     void UISystem::setActive(bool active)
     {
         m_active = !m_active;
@@ -46,11 +51,6 @@ namespace ui {
         m_inputSubscription = m_inputManager.subscribe([&](engine::input::KeyMap keymap, auto&) {
             processInputEvent(keymap);
         });
-    }
-
-    void UISystem::pop()
-    {
-        m_frames.pop();
     }
 }
 }

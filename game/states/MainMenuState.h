@@ -16,6 +16,8 @@ protected:
     void prependButtons(engine::ui::StackPanel& panel) override;
     void appendButtons(engine::ui::StackPanel& panel) override;
 
+    void openCreditsFrame();
+
 public:
     void resume() override;
     void pause() override;
