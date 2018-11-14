@@ -61,6 +61,7 @@ namespace events {
         } else {
             SDL_GameControllerOpen(id);
             cCon[id] = true;
+            return true;
         }
     }
 

@@ -65,6 +65,8 @@ namespace input {
         CON_DPAD_MAX,
         CON_LEFTSHOULDER,
         CON_RIGHTSHOULDER,
+        CON_LEFTSTICK,
+        CON_RIGHTSTICK,
         ESCAPE,
     };
 }

@@ -68,7 +68,8 @@ namespace builders {
         analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
-        controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSHOULDER;
+        controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSTICK;
+        controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
 
         KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
