@@ -14,18 +14,18 @@ namespace equipment {
     void buildReverseGravity(engine::ecs::Entity& entity,
         engine::ecs::World& ecsWorld)
     {
-        ItemComponent itemComponent{ definitions::ItemType::ReverseGravity };
+        ItemComponent itemComponent { definitions::ItemType::ReverseGravity };
         ecsWorld.addComponent<ItemComponent>(entity, itemComponent);
-        SpriteComponent spriteComponent{ "assets/items.png", "reverse-gravity" };
+        SpriteComponent spriteComponent { "assets/items.png", "reverse-gravity" };
         ecsWorld.addComponent<SpriteComponent>(entity, spriteComponent);
     }
 
     void buildForceGun(engine::ecs::Entity& entity,
         engine::ecs::World& ecsWorld)
     {
-        WeaponComponent weaponComponent{ 1, definitions::WeaponType::ForceGun };
+        WeaponComponent weaponComponent { 1, definitions::WeaponType::ForceGun };
         ecsWorld.addComponent<WeaponComponent>(entity, weaponComponent);
-        SpriteComponent spriteComponent{ "assets/weapons.png", "force-gun" };
+        SpriteComponent spriteComponent { "assets/weapons.png", "force-gun" };
         ecsWorld.addComponent<SpriteComponent>(entity, spriteComponent);
     }
 
@@ -39,21 +39,21 @@ namespace equipment {
         // add equipment specific components
         m_factories[chosenType](entity, m_world);
         // add common components
-        PositionComponent positionComponent{ position };
+        PositionComponent positionComponent { position };
         m_world.addComponent<PositionComponent>(entity, positionComponent);
-        DimensionComponent dimensionComponent{ common::Vector2D<double>(0.5, 0.5) };
+        DimensionComponent dimensionComponent { common::Vector2D<double>(0.5, 0.5) };
         m_world.addComponent<DimensionComponent>(entity, dimensionComponent);
         return entity;
     }
 
     EquipmentFactory::EquipmentFactory(engine::ecs::World& world)
-        : m_world{ world }
+        : m_world { world }
     {
         // initialize the factory types
         // items
         m_itemFactoryMap[definitions::ItemType::ReverseGravity] = buildReverseGravity;
         // weapons
-        //m_weaponFactoryMap[definitions::WeaponType::ForceGun] = buildForceGun;
+        m_weaponFactoryMap[definitions::WeaponType::ForceGun] = buildForceGun;
         // build vector of factories using the maps
         for (const auto& factoryPair : m_itemFactoryMap) {
             m_factories.push_back(factoryPair.second);

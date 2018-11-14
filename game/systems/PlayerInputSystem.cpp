@@ -11,10 +11,8 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
 {
     m_world.forEachEntityWith<components::PlayerInputComponent>([&](engine::ecs::Entity& entity) {
         auto& PIC = m_world.getComponent<components::PlayerInputComponent>(entity);
-        //auto& controlMap = m_world.getComponent<components::PlayerInputComponent>(entity).controls;
-        //auto& analogControlMap = m_world.getComponent<components::PlayerInputComponent>(entity).analogControls;
         auto delta = common::Vector2D<double>(0, 0);
-        auto& analogMap = m_keyMap.getMap(PIC.controllerId); // id of controller
+        auto& analogMap = m_inputMap.getMap(PIC.controllerId); // id of controller
 
         if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > 1) {
             move(delta, false);
@@ -30,7 +28,6 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         }
         if (analogMap.hasKeyState(PIC.getKey(definitions::Action::Jump), KeyStates::PRESSED)) {
             jump(delta);
-
         }
 
         if (delta != common::Vector2D<double>(0, 0)) {
@@ -48,19 +45,11 @@ void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
 {
 
     engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
-    engine::sound::Volume volume{ 10 };
+    engine::sound::Volume volume { 10 };
     m_soundManager->setSfxVolume(volume);
     m_soundManager->play(sound);
 
     delta.y += 7;
-/*
-    engine::sound::SDLSoundManager soundManager;
-    engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
-    engine::sound::Volume volume { 10 };
-    soundManager.setSfxVolume(volume);
-    soundManager.play(sound);
-
-    delta.y += 7;*/
 }
 
 void game::systems::PlayerInputSystem::render(engine::IRenderer& /* renderer */) {}

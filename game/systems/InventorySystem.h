@@ -12,7 +12,6 @@ namespace systems {
         const double PICKUP_RANGE = 3;
         engine::ecs::World& m_world;
         engine::input::maps::InputMap& m_inputMap;
-        //std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
 
         void attemptPickup(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent);
 

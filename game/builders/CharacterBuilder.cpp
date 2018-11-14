@@ -58,11 +58,13 @@ namespace builders {
         m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
-        std::map<game::definitions::Action , engine::input::Keys> KBM_Controls;
+        std::map<game::definitions::Action, engine::input::Keys> KBM_Controls;
         std::map<game::definitions::Action, engine::input::Keys> controls;
         std::map<game::definitions::Action, engine::input::AnalogKeys> analogControls;
+
         // TODO: Move these actions to some kind of configurations
         analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys ::CON_TRIGGER_RIGHT;
         analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
@@ -76,7 +78,7 @@ namespace builders {
         KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
         KBM_Controls[definitions::Action::MoveRight] = engine::input::Keys::D;
         KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
-        KBM_Controls[definitions::Action::UseItem] =  engine::input::Keys::G;
+        KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
         for (int i = 0; i < m_playerCount; ++i) {
             // Create a position vector based on a random index
@@ -96,15 +98,13 @@ namespace builders {
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
             // Open the required controller
-            if(m_inputManager.openCon(i)){
+            if (m_inputManager.openCon(i)) {
                 components::PlayerInputComponent playerInputComponent { i, controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
-            }else{ // DEBUG
+            } else { // DEBUG
                 components::PlayerInputComponent playerInputComponent { -1, KBM_Controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             }
-
-
 
             // Create the sprite component for the player entity
             components::SpriteComponent spriteComponent { "sheet", "spriteName" };

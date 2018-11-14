@@ -11,8 +11,10 @@ namespace systems {
     using namespace components;
 
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
-        : m_world{ world }
-        , m_inputMap {inputManager.getMap()} {}
+        : m_world { world }
+        , m_inputMap { inputManager.getMap() }
+    {
+    }
 
     void InventorySystem::update(std::chrono::nanoseconds /*timeStep*/)
     {
@@ -24,7 +26,7 @@ namespace systems {
             auto action = definitions::Action::PickupEquippable;
             auto control = inputComponent.getKey(action);
 
-            if(analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)){
+            if (analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
                 attemptPickup(entity, inventoryComponent);
             }
         });

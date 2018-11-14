@@ -8,9 +8,9 @@ namespace ui {
     class Frame {
     public:
         explicit Frame(std::unique_ptr<Component> rootComponent)
-            : m_rootComponent{ std::move(rootComponent) }
-            , m_focusedComponent{}
-            , m_activeComponent{ 0 }
+            : m_rootComponent { std::move(rootComponent) }
+            , m_focusedComponent {}
+            , m_activeComponent { 0 }
         {
             m_focusedComponent = getNavigatableAt(m_activeComponent);
         }

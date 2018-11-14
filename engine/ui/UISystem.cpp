@@ -48,7 +48,7 @@ namespace ui {
 
     void UISystem::subscribeInput()
     {
-        
+
         m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keymap, auto&) {
             processInputEvent(keymap);
         });
