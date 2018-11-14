@@ -10,9 +10,11 @@
 namespace game {
 namespace components {
     struct PlayerInputComponent : public engine::ecs::BaseComponent<PlayerInputComponent> {
-        int controllerId;
+    //private:
+    int controllerId;
         std::map<definitions::Action, engine::input::Keys> controls;
         std::map<definitions::Action, engine::input::AnalogKeys> analogControls;
+    //public:
 
         PlayerInputComponent(int controllerId, std::map<definitions::Action, engine::input::Keys> controls, std::map<definitions::Action, engine::input::AnalogKeys> analogControls)
             : controllerId(controllerId)

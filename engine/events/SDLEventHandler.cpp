@@ -32,7 +32,7 @@ namespace events {
             return std::make_shared<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
         case SDL_CONTROLLERDEVICEADDED: {
             cCon.insert({ event.cbutton.which, false });
-            std::cout << "C-CON" << std::endl;
+            std::cout << "C-CON: " << event.cbutton.which << std::endl;
             //SDL_GameControllerOpen(event.cbutton.which);
             return nullptr;
         }
@@ -61,6 +61,7 @@ namespace events {
         } else {
             SDL_GameControllerOpen(id);
             cCon[id] = true;
+            std::cout << "C-OPN: " << id << std::endl;
             return true;
         }
     }

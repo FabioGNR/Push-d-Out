@@ -12,28 +12,20 @@ namespace systems {
 
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
         : m_world{ world }
-    {
-        m_inputSubscription = inputManager.subscribe([&](engine::input::maps::AnalogMap analogMap, engine::events::Subscription<engine::input::maps::AnalogMap>&) {
-            m_analogMap = analogMap;
-            /*
-        m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
-            m_keyMap = keymap;*/
-
-        });
-    }
+        , m_inputMap {inputManager.getMap()} {}
 
     void InventorySystem::update(std::chrono::nanoseconds /*timeStep*/)
     {
         m_world.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);
             auto& inventoryComponent = m_world.getComponent<InventoryComponent>(entity);
-            const auto action = definitions::Action::PickupEquippable;
-            if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
-                // determine if control is pressed
-                auto control = inputComponent.controls[action];
-                if (m_analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
-                    attemptPickup(entity, inventoryComponent);
-                }
+
+            auto& analogMap = m_inputMap.getMap(inputComponent.controllerId);
+            auto action = definitions::Action::PickupEquippable;
+            auto control = inputComponent.getKey(action);
+
+            if(analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)){
+                attemptPickup(entity, inventoryComponent);
             }
         });
     }

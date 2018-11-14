@@ -16,7 +16,7 @@ namespace systems {
     private:
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
-        engine::input::maps::InputMap& m_keyMap;
+        engine::input::maps::InputMap& m_inputMap;
         //engine::input::maps::AnalogMap m_analogMap;
         std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&)>> fireFunctionMap;
         //std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;

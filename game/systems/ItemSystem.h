@@ -13,9 +13,9 @@ namespace systems {
     class ItemSystem : public engine::ecs::BaseSystem<ItemSystem> {
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
-        engine::input::maps::AnalogMap m_keyMap;
+        engine::input::maps::InputMap& m_inputMap;
         std::map<definitions::ItemType, std::function<void(engine::ecs::Entity&, engine::physics::World&, engine::ecs::World&)>> activateFunctionMap;
-        std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
+        //std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
 
     public:
         ItemSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager);

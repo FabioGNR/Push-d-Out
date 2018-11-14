@@ -32,11 +32,9 @@ namespace systems {
     ItemSystem::ItemSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager)
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
+        , m_inputMap(inputManager.getMap())
     {
         activateFunctionMap[definitions::ItemType::ReverseGravity] = activateReverseGravity;
-        m_inputSubscription = inputManager.subscribe([&](engine::input::maps::AnalogMap keymap, engine::events::Subscription<engine::input::maps::AnalogMap>&) {
-            m_keyMap = keymap;
-        });
     }
 
     void ItemSystem::update(std::chrono::nanoseconds timeStep)
@@ -50,15 +48,16 @@ namespace systems {
                 engine::ecs::Entity& itemEntity = inventory.item.get();
                 if (itemEntity.hasComponent<components::ItemComponent>()) {
                     auto& item = m_ecsWorld.getComponent<components::ItemComponent>(itemEntity);
+
+                    auto& analogMap = m_inputMap.getMap(inputComponent.controllerId);
                     const auto action = definitions::Action::UseItem;
-                    if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
-                        auto control = inputComponent.controls[action];
-                        if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
-                            if (activateFunctionMap.find(item.type) != activateFunctionMap.end()) {
-                                activateFunctionMap[item.type](itemEntity, m_physicsWorld, m_ecsWorld);
-                            }
-                            inventory.item.clear();
+                    const auto control = inputComponent.getKey(action);
+
+                    if(analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)){
+                        if (activateFunctionMap.find(item.type) != activateFunctionMap.end()) {
+                            activateFunctionMap[item.type](itemEntity, m_physicsWorld, m_ecsWorld);
                         }
+                        inventory.item.clear();
                     }
                 }
             }
