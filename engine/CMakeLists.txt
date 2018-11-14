@@ -78,7 +78,8 @@ set(PHYSICS_SRC
         physics/Collision.cpp
         physics/Collision.h
         physics/KinematicBody.cpp
-        physics/KinematicBody.h)
+        physics/KinematicBody.h
+        )
 
 set(INPUT_SRC
         input/InputManager.h

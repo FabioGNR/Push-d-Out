@@ -12,6 +12,7 @@
 #include <game/level/reader/LevelReader.h>
 #include <game/systems/CameraSystem.h>
 #include <game/systems/RenderSystem.h>
+#include <game/systems/items/ReverseGravitySystem.h>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
@@ -48,6 +49,8 @@ void GameState::init()
 
     // Add render system
     m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+
+    m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
 
     subscribeInput();
 }
@@ -99,8 +102,8 @@ void GameState::subscribeInput()
     m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keyMap, auto&) {
         //TODO: add check for 'start' button on controller(s) when controller input is supported
         if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
-            auto pauseMenu = std::make_shared<PauseMenuState>(m_context);
-            m_context.next(pauseMenu);
+            auto pauseMenu = std::make_unique<PauseMenuState>(m_context);
+            m_context.next(std::move(pauseMenu));
         }
     });
 }

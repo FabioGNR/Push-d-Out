@@ -15,19 +15,20 @@ void IGame::previous()
     if (m_states.empty()) {
         stop();
     } else {
-        auto newState = m_states.top();
+        auto& newState = m_states.top();
         newState->resume();
     }
 }
 
-void IGame::next(const std::shared_ptr<engine::State>& state)
+void IGame::next(std::unique_ptr<engine::State> state)
 {
     if (!m_states.empty()) {
-        auto currentState = m_states.top();
+        auto& currentState = m_states.top();
         currentState->pause();
     }
-    m_states.push(state);
-    state->init();
+    auto* addedState = state.get();
+    m_states.push(std::move(state));
+    addedState->init();
 }
 
 void IGame::stop()

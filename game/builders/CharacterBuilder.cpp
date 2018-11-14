@@ -14,6 +14,7 @@
 #include <game/exceptions/MissingCharacterSpawnException.h>
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
+#include <game/systems/ItemSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
@@ -55,11 +56,11 @@ namespace builders {
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
         m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
+        m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
         std::map<game::definitions::Action , engine::input::Keys> KBM_Controls;
-
         std::map<game::definitions::Action, engine::input::Keys> controls;
         std::map<game::definitions::Action, engine::input::AnalogKeys> analogControls;
         // TODO: Move these actions to some kind of configurations

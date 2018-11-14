@@ -26,6 +26,9 @@ set(COMPONENT_SRC
         components/InventoryComponent.h
         components/EquipableComponent.h
         components/ProjectileComponent.h
+        components/EquipmentSpawnerComponent.h
+        components/ItemComponent.h
+        components/items/ReverseGravityComponent.h
         )
 
 set(SYSTEM_SRC
@@ -45,11 +48,18 @@ set(SYSTEM_SRC
         systems/InventorySystem.h
         systems/CameraSystem.cpp
         systems/CameraSystem.h
+        systems/EquipmentSpawnSystem.cpp
+        systems/EquipmentSpawnSystem.h
+        systems/ItemSystem.cpp
+        systems/ItemSystem.h
+        systems/items/ReverseGravitySystem.cpp
+        systems/items/ReverseGravitySystem.h
         )
 
 set(DEFINITION_SRC
         definitions/Action.h
         definitions/WeaponType.h
+        definitions/ItemType.h
         )
 
 set(LEVEL_SRC
@@ -64,8 +74,10 @@ set(LEVEL_SRC
         level/reader/Reader.cpp
         level/Theme.cpp)
 
-set(EQUIPEMENT_SRC
+set(EQUIPMENT_SRC
         equipment/InventorySlot.h
+        equipment/EquipmentFactory.cpp
+        equipment/EquipmentFactory.h
         )
 
 #more engine stuff
@@ -88,6 +100,7 @@ add_executable(PushdOut
         ${DEFINITION_SRC}
         ${LEVEL_SRC}
         ${BUILDER_SRC}
+        ${EQUIPMENT_SRC}
         )
 target_link_libraries(PushdOut engine)
 

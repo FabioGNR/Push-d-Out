@@ -12,7 +12,7 @@ private:
     bool m_isRunning = false;
 
 protected:
-    std::stack<std::shared_ptr<State>> m_states;
+    std::stack<std::unique_ptr<State>> m_states;
 
 public:
     IGame() = default;
@@ -28,7 +28,7 @@ public:
     virtual void onRender() = 0;
 
     virtual void previous();
-    virtual void next(const std::shared_ptr<engine::State>& state);
+    virtual void next(std::unique_ptr<engine::State> state);
     virtual void stop();
     virtual void run();
 };

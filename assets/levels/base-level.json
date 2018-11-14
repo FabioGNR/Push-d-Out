@@ -1,7 +1,7 @@
 {
   "Meta": {
     "name": "Base level",
-    "theme": "Moon",
+    "theme": "Earth",
     "height": 24,
     "width": 40
   },
@@ -183,7 +183,7 @@
   ],
   "EquipmentSpawns": [
     {
-      "x": 26,
+      "x": 26.1,
       "y": 14
     }
   ],

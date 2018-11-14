@@ -30,6 +30,7 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         }
         if (analogMap.hasKeyState(PIC.getKey(definitions::Action::Jump), KeyStates::PRESSED)) {
             jump(delta);
+
         }
 
         if (delta != common::Vector2D<double>(0, 0)) {
@@ -45,13 +46,21 @@ void game::systems::PlayerInputSystem::move(common::Vector2D<double>& delta, boo
 }
 void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
 {
+
+    engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
+    engine::sound::Volume volume{ 10 };
+    m_soundManager->setSfxVolume(volume);
+    m_soundManager->play(sound);
+
+    delta.y += 7;
+/*
     engine::sound::SDLSoundManager soundManager;
     engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
     engine::sound::Volume volume { 10 };
     soundManager.setSfxVolume(volume);
     soundManager.play(sound);
 
-    delta.y += 7;
+    delta.y += 7;*/
 }
 
 void game::systems::PlayerInputSystem::render(engine::IRenderer& /* renderer */) {}

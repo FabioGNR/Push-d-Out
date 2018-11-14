@@ -44,7 +44,7 @@ namespace systems {
         // determine zoom based on distance
         const auto maxDistance = upperBound - lowerBound;
         const auto visibleDistance = maxDistance + common::Vector2D<double>(20, 20);
-        double idealZoom = std::min(2.0, m_camera->getFittedZoom(visibleDistance));
+        double idealZoom = std::min(0.6, m_camera->getFittedZoom(visibleDistance));
         cameraPosition.y = std::max(cameraPosition.y, (visibleDistance.y / 2) - 1);
         m_camera->setZoom(idealZoom);
         m_camera->setPosition(cameraPosition);
