@@ -23,7 +23,7 @@ MainMenuState::MainMenuState(engine::IGame& context)
 void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
 {
     std::unique_ptr<engine::ui::IAction> startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.next(std::make_shared<GameState>(m_context));
+        m_context.next(std::make_unique<GameState>(m_context));
     });
     auto startButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(

@@ -11,9 +11,9 @@ int main()
     windowProperties.height = 768;
 
     auto game = std::make_unique<game::Game>(windowProperties);
-    auto menuState = std::make_shared<game::MainMenuState>(*game);
+    auto menuState = std::make_unique<game::MainMenuState>(*game);
 
-    game->next(menuState);
+    game->next(std::move(menuState));
     game->init();
     game->run();
 
