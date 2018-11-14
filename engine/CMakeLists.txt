@@ -161,7 +161,8 @@ set(UI_SRC
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
         ui/components/CustomAction.h
-        )
+        ui/components/Image.cpp
+        ui/components/Image.h)
 
 # more engine stuff
 add_library(engine

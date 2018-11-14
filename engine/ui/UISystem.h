@@ -15,6 +15,7 @@ namespace ui {
         explicit UISystem(engine::input::InputManager& inputManager);
         void draw(IRenderer& renderer, common::Vector2D<int> screenSize);
         void push(Frame frame);
+        void pop();
         void processInputEvent(engine::input::KeyMap& keyMap);
         void setActive(bool active);
 

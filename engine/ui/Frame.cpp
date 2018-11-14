@@ -27,7 +27,7 @@ namespace ui {
                 }
             }
             m_focusedComponent = getNavigatableAt(m_activeComponent);
-        } else {
+        } else if (m_focusedComponent != nullptr) {
             m_focusedComponent->processInputEvent(keyMap);
         }
     }

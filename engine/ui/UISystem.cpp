@@ -47,5 +47,10 @@ namespace ui {
             processInputEvent(keymap);
         });
     }
+
+    void UISystem::pop()
+    {
+        m_frames.pop();
+    }
 }
 }

@@ -2,6 +2,7 @@
 
 #include "engine/common/Vector2D.h"
 #include "engine/graphics/drawable/Font.h"
+#include <engine/graphics/drawable/Sprite.h>
 
 namespace engine {
 class IGraphicsElement;
@@ -21,5 +22,6 @@ public:
     virtual void show() = 0;
     virtual void clear() = 0;
     virtual common::Vector2D<int> getFontSize(const Font& font) const = 0;
+    virtual common::Vector2D<int> getSpriteSize(const Sprite& sprite) const = 0;
 };
 } // end namespace engine
