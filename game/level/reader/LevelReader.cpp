@@ -1,15 +1,14 @@
 #include "LevelReader.h"
-
 #include "game/components/BodyComponent.h"
 #include "game/components/CharacterSpawnComponent.h"
 #include "game/components/DimensionComponent.h"
-#include "game/components/EquipableComponent.h"
+#include "game/components/EquipmentSpawnerComponent.h"
 #include "game/components/LevelMetaComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/components/SpriteComponent.h"
+#include "game/systems/EquipmentSpawnSystem.h"
 #include "game/systems/PositionSystem.h"
 #include "game/systems/SpriteSystem.h"
-
 #include <engine/exceptions/ResourceNotFoundException.h>
 #include <fstream>
 
@@ -73,6 +72,8 @@ namespace level {
             world.addComponent<components::CharacterSpawnComponent>(entity, characterSpawnComponent);
         }
 
+        world.addSystem<systems::EquipmentSpawnSystem>(engine::definitions::SystemPriority::Medium, world);
+
         for (size_t i = 0; i < level.EquipmentSpawns.size(); i++) {
             SpawnPoint curSpawn = level.EquipmentSpawns[i];
             common::Vector2D<double> position{ curSpawn.x, curSpawn.y };
@@ -81,14 +82,14 @@ namespace level {
             auto posComponent = components::PositionComponent(position);
             world.addComponent<components::PositionComponent>(entity, posComponent);
             // Add a dimension component to equipment spawn entity
-            auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(1, 1));
+            auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(0.8, 0.2));
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
             // Add a sprite component to equipment spawn entity
             auto spriteComponent = components::SpriteComponent(level.theme.sprites, "equipmentSpawn");
             world.addComponent<components::SpriteComponent>(entity, spriteComponent);
-            // Add a equipable component to equipment spawn entity
-            auto equipableComponent = components::EquipableComponent();
-            world.addComponent<components::EquipableComponent>(entity, equipableComponent);
+            // Add an equipment spawner component to equipment spawn entity
+            auto spawnerComponent = components::EquipmentSpawnerComponent(10);
+            world.addComponent<components::EquipmentSpawnerComponent>(entity, spawnerComponent);
         }
     }
 }

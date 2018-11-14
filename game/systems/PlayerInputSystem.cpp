@@ -20,11 +20,10 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
             delta.x += 7;
         }
         if (m_keyMap.hasKeyState(inputMap[definitions::Action::Jump], KeyStates::PRESSED)) {
-            engine::sound::SDLSoundManager soundManager;
             engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
             engine::sound::Volume volume{ 10 };
-            soundManager.setSfxVolume(volume);
-            soundManager.play(sound);
+            m_soundManager->setSfxVolume(volume);
+            m_soundManager->play(sound);
 
             delta.y += 7;
         }

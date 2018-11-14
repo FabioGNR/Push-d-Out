@@ -14,6 +14,7 @@
 #include <game/exceptions/MissingCharacterSpawnException.h>
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
+#include <game/systems/ItemSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
@@ -55,6 +56,7 @@ namespace builders {
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
         m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
+        m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
@@ -62,6 +64,7 @@ namespace builders {
 
         // TODO: Move these actions to some kind of configurations
         controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        controls[definitions::Action::UseItem] = engine::input::Keys::G;
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
         controls[definitions::Action::MoveRight] = engine::input::Keys::D;

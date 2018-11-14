@@ -10,7 +10,8 @@ namespace physics {
         b2BodyDef bodyDef;
         // You must set the body type to b2_dynamicBody if you want the body to move in response to forces
         bodyDef.type = b2_dynamicBody;
-        bodyDef.position.Set((float32)position.x, (float32)position.y);
+        position += dimension / 2; // adjust for centered origin in box2d
+        bodyDef.position.Set(static_cast<float32>(position.x), static_cast<float32>(position.y));
         bodyDef.fixedRotation = true;
 
         // create new body from world object

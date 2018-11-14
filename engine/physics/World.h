@@ -37,9 +37,10 @@ namespace physics {
         virtual ~World();
 
         void update(std::chrono::nanoseconds deltaTime);
-        const common::Vector2D<double>& getGravity() const;
+        common::Vector2D<double> getGravity() const;
         const common::Vector2D<double>& getFriction() const;
         const common::Vector2D<int>& getSize() const;
+        void setGravity(common::Vector2D<double> gravity);
 
         b2Body* createBody(const b2BodyDef& def) const;
         void destroyBody(b2Body* body);

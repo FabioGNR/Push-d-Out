@@ -12,6 +12,7 @@
 #include <game/level/reader/LevelReader.h>
 #include <game/systems/CameraSystem.h>
 #include <game/systems/RenderSystem.h>
+#include <game/systems/items/ReverseGravitySystem.h>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
@@ -48,6 +49,8 @@ void GameState::init()
 
     // Add render system
     m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+
+    m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
 
     subscribeInput();
 }

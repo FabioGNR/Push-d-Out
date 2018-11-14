@@ -12,7 +12,8 @@ namespace components {
     struct WeaponComponent : public engine::ecs::BaseComponent<WeaponComponent> {
         double cooldownSeconds;
         definitions::WeaponType type;
-        std::chrono::time_point<std::chrono::steady_clock> lastFired{};
+        std::chrono::nanoseconds timeSinceLastFired{ 0 };
+        bool wasFired = false;
 
         WeaponComponent(double cooldownSeconds, definitions::WeaponType type)
             : cooldownSeconds(cooldownSeconds)

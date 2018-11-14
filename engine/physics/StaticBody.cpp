@@ -8,6 +8,7 @@ namespace physics {
         : Body(position, dimension, world)
     {
         b2BodyDef groundBodyDef; // set position
+        position += dimension / 2; // adjust for centered origin in box2d
         groundBodyDef.position.Set(static_cast<float32>(position.x), static_cast<float32>(position.y));
 
         // create the body
