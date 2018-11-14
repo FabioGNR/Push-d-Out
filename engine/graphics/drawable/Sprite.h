@@ -1,7 +1,7 @@
 #pragma once
 
-#include <common/Vector2D.h>
-#include <graphics/IGraphicsElement.h>
+#include <engine/common/Vector2D.h>
+#include <engine/graphics/IGraphicsElement.h>
 #include <string>
 
 namespace engine {
@@ -20,6 +20,10 @@ public:
 
     common::Vector2D<int> position() const;
     common::Vector2D<int> size() const;
+
+    void setPosition(common::Vector2D<int> position);
+    void setSize(common::Vector2D<int> size);
+
     double scale() const;
 
     bool operator==(const Sprite& rhs) const;

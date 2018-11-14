@@ -8,7 +8,7 @@
 
 namespace game {
 class BaseMenuState : public engine::State {
-private:
+protected:
     std::unique_ptr<engine::ui::UISystem> m_uiSystem;
 
 public:

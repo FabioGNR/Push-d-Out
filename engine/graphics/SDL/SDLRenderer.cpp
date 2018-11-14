@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <common/ResourceCache.h>
 #include <memory>
 
 namespace engine {
@@ -50,19 +51,62 @@ void SDLRenderer::clear()
 
 common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
 {
-    const auto ttfFont = std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)>(
-        TTF_OpenFont(font.fontPath().c_str(), font.fontSize()),
-        TTF_CloseFont);
+    if (!fontCache.hasResource(font.fontPath())) {
+        const auto ttfFont = std::shared_ptr<TTF_Font>(
+            TTF_OpenFont(font.fontPath().c_str(), font.fontSize()),
+            TTF_CloseFont);
 
-    if (ttfFont == nullptr) {
-        throw std::runtime_error(TTF_GetError());
+        if (ttfFont == nullptr) {
+            throw std::runtime_error(TTF_GetError());
+        }
+
+        fontCache.addResource(font.fontPath(), ttfFont);
+
+        int calculatedWidth = 0, calculatedHeight = 0;
+        int calculationError = TTF_SizeText(ttfFont.get(), font.text().c_str(), &calculatedWidth, &calculatedHeight);
+        if (calculationError != 0) {
+            throw std::runtime_error(TTF_GetError());
+        }
+        return { calculatedWidth, calculatedHeight };
+    } else {
+        auto ttfFont = fontCache.getResource(font.fontPath()).get();
+
+        int calculatedWidth = 0, calculatedHeight = 0;
+        int calculationError = TTF_SizeText(ttfFont, font.text().c_str(), &calculatedWidth, &calculatedHeight);
+        if (calculationError != 0) {
+            throw std::runtime_error(TTF_GetError());
+        }
+        return { calculatedWidth, calculatedHeight };
     }
-    int calculatedWidth = 0, calculatedHeight = 0;
-    int calculationError = TTF_SizeText(ttfFont.get(), font.text().c_str(), &calculatedWidth, &calculatedHeight);
-    if (calculationError != 0) {
-        throw std::runtime_error(TTF_GetError());
+}
+
+common::Vector2D<int> SDLRenderer::getSpriteSize(const Sprite& sprite) const
+{
+    if (!spriteCache.hasResource(sprite)) {
+        const auto surfaceImage = std::shared_ptr<SDL_Surface>(
+            IMG_Load(sprite.spritePath().c_str()),
+            SDL_FreeSurface);
+
+        if (surfaceImage == nullptr) {
+            throw std::runtime_error(IMG_GetError());
+        }
+
+        const auto textureImage = std::shared_ptr<SDL_Texture>(
+            SDL_CreateTextureFromSurface(m_renderer.get(), surfaceImage.get()),
+            SDL_DestroyTexture);
+
+        if (textureImage == nullptr) {
+            throw std::runtime_error(IMG_GetError());
+        }
+
+        auto surface = surfaceImage.get();
+        spriteCache.addResource(sprite, std::make_pair(surfaceImage, textureImage));
+        return { (int)(surface->w * sprite.scale()), (int)(surface->h * sprite.scale()) };
+    } else {
+        auto& surfaceTexturePair = spriteCache.getResource(sprite);
+        auto surface = surfaceTexturePair.first.get();
+        return { (int)(surface->w * sprite.scale()), (int)(surface->h * sprite.scale()) };
     }
-    return { calculatedWidth, calculatedHeight };
 }
 
 } // end namespace engine

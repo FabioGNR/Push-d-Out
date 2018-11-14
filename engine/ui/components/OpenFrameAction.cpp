@@ -4,7 +4,7 @@ namespace engine {
 namespace ui {
     void OpenFrameAction::execute()
     {
-        m_system.push(m_targetFrame);
+        m_system.push(std::move(m_targetFrame));
     }
 }
 }

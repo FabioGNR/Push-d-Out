@@ -37,15 +37,13 @@ Use *brew* to install CMake.
 `brew install cmake`
 
 ## Package manager
-You have to use *vcpkg* for both SDL2, and Box2D.
+You have to use *vcpkg* for Box2D.
 
 Inside your vcpkg folder run:
-
-`./vcpkg install sdl2`
-
-`./vcpkg install sdl2-ttf`
-
 `./vcpkg install box2d`
+
+In the external folder you'll find the SDL framework files (SDL2-Frameworks-macOS.zip) needed in order to run the application.
+Go to the `/Library/Frameworks/` folder and place the files there.
 
 ## Building
 Once you have everything installed, open the project folder and run the following commands in the terminal:

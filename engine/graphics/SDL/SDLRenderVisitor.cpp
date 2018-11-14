@@ -13,14 +13,6 @@
 #include <memory>
 
 namespace engine {
-using SurfaceTexturePair = std::pair<
-    std::shared_ptr<SDL_Surface>,
-    std::shared_ptr<SDL_Texture>>;
-
-static common::ResourceCache<std::string, std::shared_ptr<TTF_Font>> fontCache;
-static common::ResourceCache<Font, SurfaceTexturePair> textCache;
-static common::ResourceCache<Sprite, SurfaceTexturePair> spriteCache;
-
 SDLRenderVisitor::SDLRenderVisitor(const SDLRenderer& renderer)
     : m_renderer(renderer)
 {

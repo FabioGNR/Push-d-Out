@@ -48,4 +48,14 @@ bool Sprite::operator!=(const Sprite& rhs) const
     return !(rhs == *this);
 }
 
+void Sprite::setPosition(common::Vector2D<int> position)
+{
+    m_position = position;
+}
+
+void Sprite::setSize(common::Vector2D<int> size)
+{
+    m_size = size;
+}
+
 } // end namespace engine

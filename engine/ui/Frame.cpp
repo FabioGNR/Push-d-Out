@@ -27,7 +27,7 @@ namespace ui {
                 }
             }
             m_focusedComponent = getNavigatableAt(m_activeComponent);
-        } else {
+        } else if (m_focusedComponent != nullptr) {
             m_focusedComponent->processInputEvent(keyMap);
         }
     }
@@ -50,7 +50,7 @@ namespace ui {
         return 1;
     }
 
-    std::shared_ptr<Component> Frame::getNavigatableAt(size_t index) const
+    Component* Frame::getNavigatableAt(size_t index) const
     {
         auto* rootPanel = dynamic_cast<ComponentPanel*>(m_rootComponent.get());
         if (rootPanel != nullptr) {
@@ -58,7 +58,7 @@ namespace ui {
             return newFocusedComponent;
         }
 
-        return m_rootComponent;
+        return m_rootComponent.get();
     }
 }
 }

@@ -11,7 +11,7 @@ namespace ui {
             255, 255, 255, 130
         };
 
-        if (context.focusedComponent.get() == this) {
+        if (context.focusedComponent == this) {
             btnColor.r = 0;
         }
         common::Vector2D<int> calculatedSize = calculateSize(context.renderer, context.availableSize);

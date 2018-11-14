@@ -19,8 +19,10 @@ namespace input {
             : m_handler { handler } {};
 
         void handle(const std::shared_ptr<events::IControlEvent>& event);
+
         std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify, int id);
         std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify);
+
         void notify();
         void update();
         maps::InputMap& getMap();

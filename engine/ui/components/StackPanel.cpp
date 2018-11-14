@@ -2,9 +2,9 @@
 
 namespace engine {
 namespace ui {
-    void StackPanel::addComponent(const std::shared_ptr<Component>& component)
+    void StackPanel::addComponent(std::unique_ptr<Component> component)
     {
-        m_components.push_back(component);
+        m_components.push_back(std::move(component));
     }
 
     DrawContext StackPanel::draw(DrawContext context)
@@ -58,7 +58,7 @@ namespace ui {
         return common::Vector2D<double>::max(sum, minimumSize.castTo<double>());
     }
 
-    std::shared_ptr<Component> StackPanel::getNavigatableAt(size_t index) const
+    Component* StackPanel::getNavigatableAt(size_t index) const
     {
         size_t currentTotal = 0;
         for (const auto& component : m_components) {
@@ -72,7 +72,7 @@ namespace ui {
             } else if (component->isNavigatable()) {
                 currentTotal++;
                 if (currentTotal > index) {
-                    return component;
+                    return component.get();
                 }
             }
         }
