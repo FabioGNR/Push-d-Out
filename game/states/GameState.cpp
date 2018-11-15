@@ -57,18 +57,7 @@ void GameState::init()
 
 void GameState::update(std::chrono::nanoseconds timeStep)
 {
-    static int volume = 100;
-    static std::chrono::nanoseconds timeElapsed(0);
-    timeElapsed += timeStep;
     m_world->update(timeStep);
-
-    if (timeElapsed > std::chrono::seconds(2)) {
-        timeElapsed = std::chrono::nanoseconds::zero();
-        m_soundManager->setMusicVolume(engine::sound::Volume{ volume + 10 });
-        m_soundManager->setSfxVolume(engine::sound::Volume{ volume });
-
-        //volume -= 20;
-    }
 
     m_ecsWorld.update(timeStep);
 }
