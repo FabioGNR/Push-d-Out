@@ -3,6 +3,7 @@
 #include <events/models/ControllerEvent.h>
 #include <events/models/KeyDownEvent.h>
 #include <events/models/KeyUpEvent.h>
+#include <events/models/MouseEvent.h>
 #include <events/models/QuitEvent.h>
 
 namespace engine {
@@ -21,6 +22,24 @@ namespace events {
     std::shared_ptr<IEvent> SDLEventHandler::mapEvent(SDL_Event& event)
     {
         switch (event.type) {
+        case SDL_MOUSEMOTION:
+            return std::make_shared<MouseEvent>(event.motion.x, event.motion.y);
+        case SDL_MOUSEBUTTONDOWN:
+            return std::make_shared<MouseEvent>(input::SDLKeys::get(event.button.button), true);
+        case SDL_CONTROLLERAXISMOTION: {
+            input::AnalogKeys key = input::SDL_Axis::get((SDL_GameControllerAxis)event.caxis.axis);
+            int value = event.caxis.value > deadZone || event.caxis.value < -deadZone ? event.caxis.value : 0;
+            /*if (event.caxis.value > deadZone || event.caxis.value < -deadZone) {
+                    value = event.caxis.value;
+                }*/
+
+            return std::make_shared<ControllerEvent>(event.cdevice.which, key, value);
+        }
+        case SDL_CONTROLLERBUTTONDOWN:
+            return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), true);
+        case SDL_CONTROLLERBUTTONUP:
+            return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), false);
+
         case SDL_QUIT:
             return std::make_shared<QuitEvent>();
         case SDL_KEYUP:
@@ -33,21 +52,7 @@ namespace events {
         case SDL_CONTROLLERDEVICEADDED: {
             cCon.insert({ event.cbutton.which, false });
             std::cout << "C-CON: " << event.cbutton.which << std::endl;
-            //SDL_GameControllerOpen(event.cbutton.which);
             return nullptr;
-        }
-        case SDL_CONTROLLERBUTTONDOWN:
-            return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), true);
-        case SDL_CONTROLLERBUTTONUP:
-            return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), false);
-        case SDL_CONTROLLERAXISMOTION: {
-            input::AnalogKeys key = input::SDL_Axis::get((SDL_GameControllerAxis)event.caxis.axis);
-            int value = 0;
-            if (event.caxis.value > deadZone || event.caxis.value < -deadZone) {
-                value = event.caxis.value;
-            }
-
-            return std::make_shared<ControllerEvent>(event.cdevice.which, key, value);
         }
         default:
             return nullptr;

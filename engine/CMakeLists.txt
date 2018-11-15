@@ -168,7 +168,8 @@ set(UI_SRC
         input/SDL_Axis.h
         input/SDL_Axis.cpp
         ui/components/Image.cpp
-        ui/components/Image.h)
+        ui/components/Image.h
+        events/models/MouseEvent.h)
 
 # more engine stuff
 add_library(engine

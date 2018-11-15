@@ -13,6 +13,7 @@ namespace input {
         static const std::map<SDL_Keycode, Keys> KEYCODES;
         static input::Keys get(SDL_Keycode& keycode);
         static input::Keys get(SDL_GameControllerButton button);
+        static input::Keys get(Uint8 test);
     };
 }
 }

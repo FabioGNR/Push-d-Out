@@ -11,7 +11,9 @@ namespace input {
         CON_LEFTSTICK_Z,
         CON_RIGHTSTICK_Z,
         CON_TRIGGER_LEFT,
-        CON_TRIGGER_RIGHT
+        CON_TRIGGER_RIGHT,
+        MOUSE_X,
+        MOUSE_Y
     };
 }
 }

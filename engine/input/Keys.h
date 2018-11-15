@@ -67,6 +67,9 @@ namespace input {
         CON_RIGHTSHOULDER,
         CON_LEFTSTICK,
         CON_RIGHTSTICK,
+        MOUSE_BUTTON_LEFT,
+        MOUSE_BUTTON_MIDDLE,
+        MOUSE_BUTTON_RIGHT,
         ESCAPE,
     };
 }

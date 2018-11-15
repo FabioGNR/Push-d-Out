@@ -2,6 +2,7 @@
 #include <engine/events/models/ControllerEvent.h>
 #include <engine/events/models/KeyDownEvent.h>
 #include <engine/events/models/KeyUpEvent.h>
+#include <events/models/MouseEvent.h>
 
 namespace engine {
 namespace input {
@@ -9,10 +10,18 @@ namespace input {
     {
         if (auto con = std::dynamic_pointer_cast<events::ControllerEvent>(event)) {
             auto& conMap = m_inputMap.getMap(con->m_ID);
-            if (con->m_axisValue == -1) {
-                conMap.setValue(con->m_key, (con->m_keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
-            } else {
+            if (con->m_isAnalog) {
                 conMap.setValue(con->m_analogKey, con->m_axisValue);
+            } else {
+                conMap.setValue(con->m_key, (con->m_keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
+            }
+        } else if (auto mouse = std::dynamic_pointer_cast<events::MouseEvent>(event)) {
+            auto& KBM_Map = m_inputMap.getKBM();
+            if (mouse->m_isAnalog) {
+                KBM_Map.setValue(AnalogKeys::MOUSE_X, mouse->m_x);
+                KBM_Map.setValue(AnalogKeys::MOUSE_Y, mouse->m_y);
+            } else {
+                KBM_Map.setValue(mouse->m_key, (mouse->m_isPressed ? KeyStates::PRESSED : KeyStates::RELEASED));
             }
         } else {
             auto& KMB_Map = m_inputMap.getKBM();

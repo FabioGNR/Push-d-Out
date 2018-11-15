@@ -2,6 +2,7 @@
 
 #include <SDL_gamecontroller.h>
 #include <SDL_keycode.h>
+#include <SDL_mouse.h>
 #include <events/models/KeyUpEvent.h>
 
 namespace engine {
@@ -69,6 +70,7 @@ namespace input {
         { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER },
         { SDL_CONTROLLER_BUTTON_LEFTSTICK, Keys::CON_LEFTSTICK },
         { SDL_CONTROLLER_BUTTON_RIGHTSTICK, Keys::CON_RIGHTSTICK },
+        { SDL_BUTTON_LEFT, Keys::MOUSE_BUTTON_LEFT },
         { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
@@ -86,6 +88,13 @@ namespace input {
             return Keys::UNKNOWN;
         }
         return SDLKeys::KEYCODES.at(button);
+    }
+
+    input::Keys  SDLKeys::get(Uint8 test){
+        if(SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()){
+            return Keys::UNKNOWN;
+        }
+        return SDLKeys::KEYCODES.at(test);
     }
 }
 }
