@@ -23,6 +23,5 @@ namespace input {
             bool hasKeyState(Keys key, KeyStates state) const;
         };
     }
-
 }
 }

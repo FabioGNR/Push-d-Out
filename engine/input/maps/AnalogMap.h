@@ -10,7 +10,7 @@ namespace input {
         class AnalogMap {
         private:
             std::map<AnalogKeys, int> analogMap;
-            KeyMap keyMap {};
+            KeyMap keyMap{};
 
         public:
             void update();

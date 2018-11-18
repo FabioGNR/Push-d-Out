@@ -9,7 +9,7 @@ namespace input {
     namespace maps {
         class InputMap {
         private:
-            AnalogMap m_KBM {};
+            AnalogMap m_KBM{};
             std::map<int, AnalogMap> m_conList;
 
         public:
