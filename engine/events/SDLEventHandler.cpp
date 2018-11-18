@@ -61,7 +61,7 @@ namespace events {
 
     bool SDLEventHandler::openCon(int id)
     {
-        if (cCon.find(id) == cCon.end() || id < 0) {
+        if (id < 0 || cCon.find(id) == cCon.end()) {
             return false;
         } else {
             SDL_GameControllerOpen(id);
@@ -71,7 +71,7 @@ namespace events {
         }
     }
 
-    int SDLEventHandler::getcCon()
+    size_t SDLEventHandler::getcCon()
     {
         return cCon.size();
     }

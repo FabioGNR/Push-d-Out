@@ -11,7 +11,7 @@ namespace builders {
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
         engine::input::InputManager& m_inputManager;
-        int m_playerCount;
+        size_t m_playerCount;
 
     public:
         CharacterBuilder(engine::ecs::World& world, engine::physics::World& physics, engine::input::InputManager& inputManager)

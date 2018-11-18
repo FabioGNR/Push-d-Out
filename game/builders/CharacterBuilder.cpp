@@ -27,7 +27,7 @@ namespace builders {
     {
         // Create the necessary player entities
         std::vector<std::reference_wrapper<engine::ecs::Entity>> players{};
-        for (int i = 0; i < m_playerCount; ++i) {
+        for (size_t i = 0; i < m_playerCount; ++i) {
             players.emplace_back(m_ecsWorld.createEntity());
         }
 
@@ -80,7 +80,7 @@ namespace builders {
         KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
         KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
-        for (int i = 0; i < m_playerCount; ++i) {
+        for (size_t i = 0; i < m_playerCount; ++i) {
             // Create a position vector based on a random index
             int randomValue = common::RNG::generate(1, static_cast<int>(positions.size()));
             common::Vector2D<double> position = positions[randomValue - 1];
@@ -99,7 +99,7 @@ namespace builders {
 
             // Open the required controller
             if (m_inputManager.openCon(i)) {
-                components::PlayerInputComponent playerInputComponent{ i, controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else { // DEBUG
                 components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };

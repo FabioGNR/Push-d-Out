@@ -17,7 +17,7 @@ namespace events {
         virtual ~IEventHandler() = default;
         virtual std::vector<std::shared_ptr<IEvent>> getEvents() = 0;
         virtual bool openCon(int id) = 0;
-        virtual int getcCon() = 0;
+        virtual size_t getcCon() = 0;
     };
 }
 }

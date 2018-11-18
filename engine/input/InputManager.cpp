@@ -83,7 +83,7 @@ namespace input {
         return m_inputMap;
     }
 
-    int InputManager::conAmount()
+    size_t InputManager::conAmount()
     {
         return m_handler->getcCon();
     }

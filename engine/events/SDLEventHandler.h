@@ -20,7 +20,7 @@ namespace events {
     public:
         std::vector<std::shared_ptr<IEvent>> getEvents() override;
         bool openCon(int id) override;
-        int getcCon() override;
+        size_t getcCon() override;
     };
 }
 }

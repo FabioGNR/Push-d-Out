@@ -26,7 +26,7 @@ namespace input {
         void notify();
         void update();
         maps::InputMap& getMap();
-        int conAmount();
+        size_t conAmount();
         bool openCon(int id);
     };
 }
