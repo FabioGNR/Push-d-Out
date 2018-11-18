@@ -14,8 +14,8 @@ namespace events {
 
     public:
         explicit EventManager(std::unique_ptr<IEventHandler> mapper)
-            : m_handler { std::move(mapper) }
-            , m_inputManager {m_handler} {};
+            : m_handler{ std::move(mapper) }
+            , m_inputManager{ m_handler } {};
 
         bool getEvents();
         input::InputManager& getInput();

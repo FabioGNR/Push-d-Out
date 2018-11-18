@@ -26,7 +26,7 @@ namespace builders {
     void CharacterBuilder::build() const
     {
         // Create the necessary player entities
-        std::vector<std::reference_wrapper<engine::ecs::Entity>> players {};
+        std::vector<std::reference_wrapper<engine::ecs::Entity>> players{};
         for (int i = 0; i < m_playerCount; ++i) {
             players.emplace_back(m_ecsWorld.createEntity());
         }
@@ -36,7 +36,7 @@ namespace builders {
         }
 
         // Search for all the CharacterSpawnComponents and push the position in the vector
-        std::vector<common::Vector2D<double>> positions {};
+        std::vector<common::Vector2D<double>> positions{};
         m_ecsWorld.forEachEntityWith<components::CharacterSpawnComponent>([&](engine::ecs::Entity& entity) {
             auto component = m_ecsWorld.getComponent<components::PositionComponent>(entity);
             auto pos = component.position;
@@ -48,7 +48,7 @@ namespace builders {
         }
 
         // Set the dimension of all the players
-        common::Vector2D<double> dimension { 1, 2 };
+        common::Vector2D<double> dimension{ 1, 2 };
 
         // Add the necessary systems into the ECS world before adding components
         m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
@@ -86,34 +86,34 @@ namespace builders {
             common::Vector2D<double> position = positions[randomValue - 1];
 
             // Create a dynamic body for the Physics World
-            components::BodyComponent bodyComponent { m_physicsWorld.createDynamicBody(position, dimension) };
+            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension) };
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], bodyComponent);
 
             // Create the dimension component for player entity
-            components::DimensionComponent dimensionComponent { dimension };
+            components::DimensionComponent dimensionComponent{ dimension };
             m_ecsWorld.addComponent<components::DimensionComponent>(players[i], dimensionComponent);
 
             // Create the position component for player entity
-            components::PositionComponent positionComponent { position };
+            components::PositionComponent positionComponent{ position };
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
             // Open the required controller
             if (m_inputManager.openCon(i)) {
-                components::PlayerInputComponent playerInputComponent { i, controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ i, controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else { // DEBUG
-                components::PlayerInputComponent playerInputComponent { -1, KBM_Controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             }
 
             // Create the sprite component for the player entity
-            components::SpriteComponent spriteComponent { "sheet", "spriteName" };
+            components::SpriteComponent spriteComponent{ "sheet", "spriteName" };
             m_ecsWorld.addComponent<game::components::SpriteComponent>(players[i], spriteComponent);
             //Creating force gun entity
             auto& gunEntity = m_ecsWorld.createEntity();
             components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
             m_ecsWorld.addComponent<components::WeaponComponent>(gunEntity, weaponComponent);
-            components::InventoryComponent inventoryComponent {};
+            components::InventoryComponent inventoryComponent{};
             inventoryComponent.activeEquipment.set(&gunEntity);
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
 

@@ -17,8 +17,8 @@ namespace systems {
 
     public:
         PlayerInputSystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
-            : m_world { world }
-            , m_inputMap { inputManager.getMap() }
+            : m_world{ world }
+            , m_inputMap{ inputManager.getMap() }
         {
             m_soundManager = std::make_unique<engine::sound::SDLSoundManager>();
         };

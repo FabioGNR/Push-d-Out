@@ -90,8 +90,9 @@ namespace input {
         return SDLKeys::KEYCODES.at(button);
     }
 
-    input::Keys  SDLKeys::get(Uint8 test){
-        if(SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()){
+    input::Keys SDLKeys::get(Uint8 test)
+    {
+        if (SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;
         }
         return SDLKeys::KEYCODES.at(test);

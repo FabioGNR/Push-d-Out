@@ -20,7 +20,7 @@ namespace components {
         PlayerInputComponent(int controllerId, std::map<definitions::Action, engine::input::Keys> controls, std::map<definitions::Action, engine::input::AnalogKeys> analogControls)
             : controls(std::move(controls))
             , analogControls(std::move(analogControls))
-            , controllerId(controllerId) {};
+            , controllerId(controllerId){};
 
         engine::input::AnalogKeys getAnalog(definitions::Action action)
         {

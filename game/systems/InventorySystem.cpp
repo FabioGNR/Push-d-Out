@@ -11,8 +11,8 @@ namespace systems {
     using namespace components;
 
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
-        : m_world { world }
-        , m_inputMap { inputManager.getMap() }
+        : m_world{ world }
+        , m_inputMap{ inputManager.getMap() }
     {
     }
 

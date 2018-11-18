@@ -37,7 +37,7 @@ namespace ui {
         if (m_rootComponent == nullptr) {
             return;
         }
-        DrawContext context { screenSize, renderer, m_focusedComponent };
+        DrawContext context{ screenSize, renderer, m_focusedComponent };
         m_rootComponent->draw(context);
     }
 

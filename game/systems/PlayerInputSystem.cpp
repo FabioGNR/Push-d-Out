@@ -45,7 +45,7 @@ void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
 {
 
     engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
-    engine::sound::Volume volume { 10 };
+    engine::sound::Volume volume{ 10 };
     m_soundManager->setSfxVolume(volume);
     m_soundManager->play(sound);
 

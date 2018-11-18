@@ -7,7 +7,7 @@ namespace engine {
 
 SDLWindow::SDLWindow(WindowProperties properties)
     : Window(std::move(properties))
-    , m_window { nullptr, nullptr }
+    , m_window{ nullptr, nullptr }
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
 

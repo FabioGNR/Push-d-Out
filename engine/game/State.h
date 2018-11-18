@@ -12,7 +12,7 @@ protected:
 
 public:
     explicit State(IGame& game)
-        : m_context { game } {};
+        : m_context{ game } {};
 
     State(const State& other) = delete;
     State& operator=(const State& other) = delete;
@@ -23,9 +23,9 @@ public:
 
     virtual void update(std::chrono::nanoseconds timeStep) = 0;
     virtual void render(IRenderer& renderer) = 0;
-    virtual void init() {};
-    virtual void resume() {};
-    virtual void pause() {};
-    virtual void close() {};
+    virtual void init(){};
+    virtual void resume(){};
+    virtual void pause(){};
+    virtual void close(){};
 };
 }

@@ -19,7 +19,7 @@ MainMenuState::MainMenuState(engine::IGame& context)
     , m_soundManager(new engine::sound::SDLSoundManager)
 {
     //m_uiSystem = std::make_unique<engine::ui::UISystem>();
-/*
+    /*
     // subscribe button press
     dynamic_cast<Game&>(m_context).getInputManager().subscribe(
         [&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>& subscription) {

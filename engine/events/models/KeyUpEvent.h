@@ -9,7 +9,7 @@ namespace events {
         input::Keys value;
 
         explicit KeyUpEvent(input::Keys value_)
-            : value { value_ } {};
+            : value{ value_ } {};
     };
 }
 }

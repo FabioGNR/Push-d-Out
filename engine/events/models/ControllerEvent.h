@@ -16,8 +16,8 @@ namespace events {
 
         ControllerEvent(int ID, input::Keys key, bool keyDown)
             : m_ID(ID)
-            , m_key { key }
-            , m_keyDown { keyDown } {};
+            , m_key{ key }
+            , m_keyDown{ keyDown } {};
 
         ControllerEvent(int ID, input::AnalogKeys analogKey, int axisValue)
             : m_ID(ID)

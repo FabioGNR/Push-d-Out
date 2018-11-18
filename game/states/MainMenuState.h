@@ -1,12 +1,12 @@
 #pragma once
 
-#include <engine/events/models/Subscription.h>
-#include <engine/game/State.h>
-#include <engine/ui/UISystem.h>
-#include <engine/input/maps/KeyMap.h>
 #include "BaseMenuState.h"
 #include <chrono>
+#include <engine/events/models/Subscription.h>
+#include <engine/game/State.h>
+#include <engine/input/maps/KeyMap.h>
 #include <engine/sound/ISoundManager.h>
+#include <engine/ui/UISystem.h>
 
 namespace game {
 class MainMenuState : public BaseMenuState {

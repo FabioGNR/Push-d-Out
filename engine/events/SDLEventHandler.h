@@ -4,8 +4,8 @@
 #include "engine/input/AnalogKeys.h"
 #include "engine/input/SDL_Axis.h"
 #include <engine/input/SDLKeys.h>
-#include <vector>
 #include <map>
+#include <vector>
 
 union SDL_Event;
 
