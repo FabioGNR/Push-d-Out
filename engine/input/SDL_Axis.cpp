@@ -3,6 +3,8 @@
 
 namespace engine {
 namespace input {
+    // because SDL_GameControllerAxis is an enum, it cannot be forward declared
+    // to work around this the enum values are converted to uint8_t
     const std::map<uint8_t, AnalogKeys> SDL_Axis::axises = {
         { static_cast<uint8_t>(SDL_CONTROLLER_AXIS_LEFTX), input::AnalogKeys::CON_LEFTSTICK_X },
         { static_cast<uint8_t>(SDL_CONTROLLER_AXIS_LEFTY), input::AnalogKeys::CON_LEFTSTICK_Y },
