@@ -27,7 +27,7 @@ namespace events {
         case SDL_MOUSEBUTTONDOWN:
             return std::make_shared<MouseEvent>(input::SDLKeys::get(event.button.button), true);
         case SDL_CONTROLLERAXISMOTION: {
-            input::AnalogKeys key = input::SDL_Axis::get((SDL_GameControllerAxis)event.caxis.axis);
+            input::AnalogKeys key = input::SDL_Axis::get(event.caxis.axis);
             int value = event.caxis.value > deadZone || event.caxis.value < -deadZone ? event.caxis.value : 0;
             /*if (event.caxis.value > deadZone || event.caxis.value < -deadZone) {
                     value = event.caxis.value;
