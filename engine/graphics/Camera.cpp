@@ -15,7 +15,10 @@ namespace graphics {
 
     common::Vector2D<int> Camera::scaleSize(common::Vector2D<double> size) const
     {
-        return (size * getActualUnitSize()).castTo<int>();
+        auto result = (size * getActualUnitSize());
+        result.x = std::ceil(result.x);
+        result.y = std::ceil(result.y);
+        return result.castTo<int>();
     }
 
     void Camera::setPosition(common::Vector2D<double> position)
