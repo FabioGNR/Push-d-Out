@@ -119,9 +119,8 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
 {
     auto* renderer = m_renderer.m_renderer.get();
 
-    SDL_Surface* surface = nullptr;
     SDL_Texture* texture = nullptr;
-
+    SDL_Surface* surface = nullptr;
     if (!spriteCache.hasResource(sprite)) {
         const auto surfaceImage = std::shared_ptr<SDL_Surface>(
             IMG_Load(sprite.spritePath().c_str()),
@@ -139,13 +138,13 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
             throw std::runtime_error(IMG_GetError());
         }
 
-        surface = surfaceImage.get();
         texture = textureImage.get();
+        surface = surfaceImage.get();
         spriteCache.addResource(sprite, std::make_pair(surfaceImage, textureImage));
     } else {
         const auto& surfaceTexturePair = spriteCache.getResource(sprite);
-        surface = surfaceTexturePair.first.get();
         texture = surfaceTexturePair.second.get();
+        surface = surfaceTexturePair.first.get();
     }
 
     // TODO: Do something with sprite width/height
