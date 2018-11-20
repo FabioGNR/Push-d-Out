@@ -7,9 +7,9 @@
 namespace engine {
 Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition, common::Vector2D<double> scale)
     : m_spritePath(std::move(spritePath))
+    , m_sourcePosition{sourcePosition}
     , m_position(position)
     , m_sourceSize(sourceSize)
-    , m_sourcePosition{sourcePosition}
     , m_scale(scale)
 {
 }

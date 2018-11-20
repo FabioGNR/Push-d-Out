@@ -119,7 +119,6 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
 {
     auto* renderer = m_renderer.m_renderer.get();
 
-    SDL_Surface* surface = nullptr;
     SDL_Texture* texture = nullptr;
 
     if (!spriteCache.hasResource(sprite)) {
@@ -139,12 +138,10 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
             throw std::runtime_error(IMG_GetError());
         }
 
-        surface = surfaceImage.get();
         texture = textureImage.get();
         spriteCache.addResource(sprite, std::make_pair(surfaceImage, textureImage));
     } else {
         const auto& surfaceTexturePair = spriteCache.getResource(sprite);
-        surface = surfaceTexturePair.first.get();
         texture = surfaceTexturePair.second.get();
     }
 

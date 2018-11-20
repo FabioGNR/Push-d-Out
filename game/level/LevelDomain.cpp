@@ -8,10 +8,6 @@ using json = nlohmann::json;
 
 namespace game {
 namespace level {
-    std::string getJSONFile(Theme theme)
-    {
-       return "datafile.json";
-    }
     // JSON conversions for tile
     void to_json(json& j, const Tile& t)
     {

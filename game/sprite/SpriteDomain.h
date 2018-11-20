@@ -27,8 +27,8 @@ namespace sprite {
         }
         std::string spriteSheet;
         common::Vector2D<int> position;
-        common::Vector2D<int> offset;
         common::Vector2D<int> size;
+        common::Vector2D<int> offset;
     };
 
     struct AnimationList {
