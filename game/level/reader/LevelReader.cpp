@@ -1,4 +1,5 @@
 #include "LevelReader.h"
+#include "game/builders/SpriteBuilder.h"
 #include "game/components/BodyComponent.h"
 #include "game/components/CharacterSpawnComponent.h"
 #include "game/components/DimensionComponent.h"
@@ -9,7 +10,6 @@
 #include "game/systems/EquipmentSpawnSystem.h"
 #include "game/systems/PositionSystem.h"
 #include "game/systems/SpriteSystem.h"
-#include "game/builders/SpriteBuilder.h"
 #include <engine/exceptions/ResourceNotFoundException.h>
 #include <fstream>
 #include <game/components/EquipableComponent.h>
@@ -26,8 +26,8 @@ namespace level {
     {
         common::Vector2D<double> dimension{ 1, 1 };
 
-        std::string basePath{"assets/sprites/themes/"};
-        std::string levelSheet{level.theme.sprites};
+        std::string basePath{ "assets/sprites/themes/" };
+        std::string levelSheet{ level.theme.sprites };
 
         auto& entityMeta = world.createEntity();
         auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
@@ -37,15 +37,15 @@ namespace level {
         world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
         // Get a map with tile animations
-        builders::SpriteBuilder tileSpriteBuilder{basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json"};
+        builders::SpriteBuilder tileSpriteBuilder{ basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json" };
         auto tileSpriteComponentMap = tileSpriteBuilder.build();
 
         // Get a map with character spawn animations
-        builders::SpriteBuilder charSpawnSpriteBuilder{basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json"};
+        builders::SpriteBuilder charSpawnSpriteBuilder{ basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json" };
         auto charSpawnSpriteComponentMap = charSpawnSpriteBuilder.build();
 
         // Get a map with equipment spawn animations
-        builders::SpriteBuilder eqSpawnSpriteBuilder{basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json"};
+        builders::SpriteBuilder eqSpawnSpriteBuilder{ basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json" };
         auto eqSpawnSpriteComponentMap = eqSpawnSpriteBuilder.build();
 
         for (size_t i = 0; i < level.tiles.size(); i++) {
@@ -64,7 +64,7 @@ namespace level {
 
             // Add a sprite component to tile entity
             auto spriteComponentPair = tileSpriteComponentMap.find(curTile.sprite);
-            if(spriteComponentPair != tileSpriteComponentMap.end()) {
+            if (spriteComponentPair != tileSpriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
@@ -85,7 +85,7 @@ namespace level {
 
             // Add a sprite component to character spawn entity
             auto spriteComponentPair = charSpawnSpriteComponentMap.find("single");
-            if(spriteComponentPair != charSpawnSpriteComponentMap.end()) {
+            if (spriteComponentPair != charSpawnSpriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
@@ -110,7 +110,7 @@ namespace level {
 
             // Add a sprite component to equipment spawn entity
             auto spriteComponentPair = eqSpawnSpriteComponentMap.find("single");
-            if(spriteComponentPair != eqSpawnSpriteComponentMap.end()) {
+            if (spriteComponentPair != eqSpawnSpriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }

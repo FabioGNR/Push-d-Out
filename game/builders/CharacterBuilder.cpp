@@ -89,10 +89,10 @@ namespace builders {
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
             // Create the sprite component for the player entity
-            builders::SpriteBuilder spriteBuilder{assetsFolder + "playergreen.png", assetsFolder + "datafile.json"};
+            builders::SpriteBuilder spriteBuilder{ assetsFolder + "playergreen.png", assetsFolder + "datafile.json" };
             auto spriteComponentMap = spriteBuilder.build();
             auto spriteComponentPair = spriteComponentMap.find("Idle");
-            if(spriteComponentPair != spriteComponentMap.end()) {
+            if (spriteComponentPair != spriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }

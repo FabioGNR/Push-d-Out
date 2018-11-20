@@ -5,9 +5,9 @@
 #include <engine/common/Vector2D.h>
 #include <engine/ecs/Entity.h>
 #include <engine/ecs/World.h>
+#include <game/components/SpriteComponent.h>
 #include <map>
 #include <vector>
-#include <game/components/SpriteComponent.h>
 
 namespace game {
 namespace equipment {

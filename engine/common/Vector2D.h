@@ -24,10 +24,9 @@ struct Vector2D {
     }
 
     Vector2D()
-    : x{0  }
-    , y{0}
+        : x{ 0 }
+        , y{ 0 }
     {
-
     }
 
     // basic arithmetic functions

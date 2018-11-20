@@ -19,7 +19,7 @@ namespace equipment {
         ItemComponent itemComponent{ definitions::ItemType::ReverseGravity };
         ecsWorld.addComponent<ItemComponent>(entity, itemComponent);
         auto spriteComponentPair = spriteComponentMap.find("ReverseGravity");
-        if(spriteComponentPair != spriteComponentMap.end()) {
+        if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
@@ -27,12 +27,12 @@ namespace equipment {
 
     void buildForceGun(engine::ecs::Entity& entity,
         engine::ecs::World& ecsWorld,
-                       std::map<std::string, components::SpriteComponent> spriteComponentMap)
+        std::map<std::string, components::SpriteComponent> spriteComponentMap)
     {
         WeaponComponent weaponComponent{ 1, definitions::WeaponType::ForceGun };
         ecsWorld.addComponent<WeaponComponent>(entity, weaponComponent);
         auto spriteComponentPair = spriteComponentMap.find("ReverseGravity");
-        if(spriteComponentPair != spriteComponentMap.end()) {
+        if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
@@ -72,7 +72,7 @@ namespace equipment {
         }
 
         //Build sprite component map
-        builders::SpriteBuilder eqSpriteBuilder{"assets/sprites/equipment/equipment.png", "assets/sprites/equipment/datafile.json"};
+        builders::SpriteBuilder eqSpriteBuilder{ "assets/sprites/equipment/equipment.png", "assets/sprites/equipment/datafile.json" };
         m_spriteComponentMap = eqSpriteBuilder.build();
     }
 }

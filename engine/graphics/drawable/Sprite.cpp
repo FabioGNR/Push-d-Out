@@ -40,7 +40,7 @@ common::Vector2D<int> Sprite::sourceSize() const
 
 bool Sprite::operator==(const Sprite& rhs) const
 {
-    return (m_spritePath == rhs.m_spritePath && m_position == rhs.position() && m_sourceSize == rhs.sourceSize());
+    return m_spritePath == rhs.m_spritePath;
 }
 
 bool Sprite::operator!=(const Sprite& rhs) const

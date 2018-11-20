@@ -19,10 +19,10 @@ namespace sprite {
 
     struct SpriteResource {
         SpriteResource(std::string spriteSheet, common::Vector2D<int> position, common::Vector2D<int> size, common::Vector2D<int> offset)
-            : spriteSheet { std::move(spriteSheet) }
-            , position { position }
+            : spriteSheet{ std::move(spriteSheet) }
+            , position{ position }
             , size{ size }
-            , offset { offset }
+            , offset{ offset }
         {
         }
         std::string spriteSheet;
