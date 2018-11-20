@@ -6,6 +6,7 @@
 #include <engine/graphics/IGraphicsElement.h>
 #include <engine/graphics/IRenderer.h>
 #include <engine/graphics/drawable/RectangleShape.h>
+#include <engine/graphics/drawable/Sprite.h>
 
 #include <utility>
 
@@ -16,6 +17,7 @@ namespace systems {
         engine::ecs::World& world;
         std::shared_ptr<engine::graphics::Camera> m_camera;
         std::vector<engine::RectangleShape> rectangles;
+        std::vector<engine::Sprite> sprites;
 
     public:
         RenderSystem(engine::ecs::World& world, std::shared_ptr<engine::graphics::Camera> camera)

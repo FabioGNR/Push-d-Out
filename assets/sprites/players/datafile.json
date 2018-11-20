@@ -1,92 +1,107 @@
 {
-    "Idle": {
-        "frameCount": 13,
-        "frameSize": {
-            "x": 19,
-            "y": 21
+    "Animations": [
+        {
+            "name": "Idle",
+            "frameCount": 13,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 19,
+                "y": 21
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": -5,
+                "y": 0
+            }
         },
-        "topLeft": {
-            "x": 0,
-            "y": 0
+        {  
+            "name": "Walking",
+            "frameCount": 8,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 18,
+                "y": 22
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 21
+            },
+            "offset": {
+                "x": -5,
+                "y": 0
+            }
         },
-        "offset": {
-            "x": -5,
-            "y": 0
+        {
+            "name": "Attacking",
+            "frameCount": 10,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 18,
+                "y": 23
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 43
+            },
+            "offset": {
+                "x": -5,
+                "y": 0
+            }
+        },
+        {
+            "name": "Excited",
+            "frameCount": 8,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 25,
+                "y": 22
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 68
+            },
+            "offset": {
+                "x": -9,
+                "y": 0
+            }
+        },
+        {
+            "name": "Thrown",
+            "frameCount": 8,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 25,
+                "y": 22
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 89
+            },
+            "offset": {
+                "x": -9,
+                "y": 0
+            }
+        }, 
+        {
+            "name": "Ducking",
+            "frameCount": 3,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 20,
+                "y": 20
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 111
+            },
+            "offset": {
+                "x": -7,
+                "y": 0
+            }
         }
-    },
-    "Walking": {
-        "frameCount": 8,
-        "frameSize": {
-            "x": 18,
-            "y": 22
-        },
-        "topLeft": {
-            "x": 0,
-            "y": 21
-        },
-        "offset": {
-            "x": -5,
-            "y": 0
-        }
-    },
-    "Attacking": {
-        "frameCount": 10,
-        "frameSize": {
-            "x": 18,
-            "y": 23
-        },
-        "topLeft": {
-            "x": 0,
-            "y": 43
-        },
-        "offset": {
-            "x": -5,
-            "y": 0
-        }
-    },
-    "Excited": {
-        "frameCount": 8,
-        "frameSize": {
-            "x": 25,
-            "y": 22
-        },
-        "topLeft": {
-            "x": 0,
-            "y": 68
-        },
-        "offset": {
-            "x": -9,
-            "y": 0
-        }
-    },
-    "Thrown": {
-        "frameCount": 8,
-        "frameSize": {
-            "x": 25,
-            "y": 22
-        },
-        "topLeft": {
-            "x": 0,
-            "y": 89
-        },
-        "offset": {
-            "x": -9,
-            "y": 0
-        }
-    },
-    "Ducking": {
-        "frameCount": 3,
-        "frameSize": {
-            "x": 20,
-            "y": 20
-        },
-        "topLeft": {
-            "x": 0,
-            "y": 111
-        },
-        "offset": {
-            "x": -7,
-            "y": 0
-        }
-    }
+    ]
+    
 }

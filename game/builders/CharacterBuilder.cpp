@@ -1,4 +1,5 @@
 #include "CharacterBuilder.h"
+#include "SpriteBuilder.h"
 
 #include <engine/definitions/SystemPriority.h>
 
@@ -63,8 +64,14 @@ namespace builders {
         m_ecsWorld.addComponent<components::PlayerInputComponent>(player, playerInputComponent);
 
         // Create the sprite component for the player entity
-        components::SpriteComponent spriteComponent{ "sheet", "spriteName" };
-        m_ecsWorld.addComponent<game::components::SpriteComponent>(player, spriteComponent);
+        builders::SpriteBuilder spriteBuilder{assetsFolder + "playergreen.png", assetsFolder + "datafile.json"};
+        auto spriteComponentMap = spriteBuilder.build();
+        auto spriteComponentPair = spriteComponentMap.find("Idle");
+        if(spriteComponentPair != spriteComponentMap.end()) {
+            auto spriteComponent = spriteComponentPair->second;
+            m_ecsWorld.addComponent<components::SpriteComponent>(player, spriteComponent);
+        }
+
 
         //Creating forcegun entity
         auto& gunEntity = m_ecsWorld.createEntity();

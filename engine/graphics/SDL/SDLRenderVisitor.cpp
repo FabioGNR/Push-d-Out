@@ -160,11 +160,18 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
     SDL_Rect positionRect = {
         sprite.position().x,
         sprite.position().y,
-        (int)(surface->w * sprite.scale()),
-        (int)(surface->h * sprite.scale())
+        static_cast<int>(sprite.scale().x),
+        static_cast<int>(sprite.scale().y)
     };
 
-    SDL_RenderCopy(renderer, texture, nullptr, &positionRect);
+    SDL_Rect sourceRect = {
+            sprite.sourcePosition().x,
+            sprite.sourcePosition().y,
+            sprite.sourceSize().x,
+            sprite.sourceSize().y
+    };
+
+    SDL_RenderCopy(renderer, texture, &sourceRect, &positionRect);
 }
 
 void SDLRenderVisitor::visit(const IGraphicsElement& element)

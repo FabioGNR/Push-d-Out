@@ -10,7 +10,7 @@ set(GAME_SRC
         states/GameState.h
         states/MainMenuState.cpp
         states/MainMenuState.h
-        )
+        sprite/reader/SpriteReader.cpp sprite/reader/SpriteReader.h)
 
 set(COMPONENT_SRC
         components/MoveComponent.h
@@ -66,7 +66,7 @@ set(BUILDER_SRC
         builders/IBuilder.h
         builders/CharacterBuilder.cpp
         builders/CharacterBuilder.h
-        )
+        sprite/SpriteDomain.cpp sprite/SpriteDomain.h builders/SpriteBuilder.cpp builders/SpriteBuilder.h)
 
 target_include_directories(
         engine PUBLIC

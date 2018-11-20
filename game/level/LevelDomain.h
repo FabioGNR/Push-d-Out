@@ -47,6 +47,7 @@ namespace level {
     };
 
     std::string getSheetName(Theme theme);
+    std::string getJSONFile(Theme theme);
 
     void to_json(json& j, const Tile& t);
     void from_json(const json& j, Tile& t);

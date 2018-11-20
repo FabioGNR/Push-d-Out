@@ -9,6 +9,7 @@
 #include "game/components/SpriteComponent.h"
 #include "game/systems/PositionSystem.h"
 #include "game/systems/SpriteSystem.h"
+#include "game/builders/SpriteBuilder.h"
 
 #include <engine/exceptions/ResourceNotFoundException.h>
 #include <fstream>
@@ -36,12 +37,27 @@ namespace level {
     {
         common::Vector2D<double> dimension{ 1, 1 };
 
+        std::string basePath{"assets/sprites/themes/"};
+        std::string levelSheet{getSheetName(level.theme)};
+
         auto& entityMeta = world.createEntity();
         auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
         world.addComponent<components::LevelMetaComponent>(entityMeta, levelMetaComponent);
 
         world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, world);
         world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
+
+        // Get a map with tile animations
+        builders::SpriteBuilder tileSpriteBuilder{basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json"};
+        auto tileSpriteComponentMap = tileSpriteBuilder.build();
+
+        // Get a map with character spawn animations
+        builders::SpriteBuilder charSpawnSpriteBuilder{basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json"};
+        auto charSpawnSpriteComponentMap = charSpawnSpriteBuilder.build();
+
+        // Get a map with equipment spawn animations
+        builders::SpriteBuilder eqSpawnSpriteBuilder{basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json"};
+        auto eqSpawnSpriteComponentMap = eqSpawnSpriteBuilder.build();
 
         for (size_t i = 0; i < level.tiles.size(); i++) {
             Tile curTile = level.tiles[i];
@@ -58,8 +74,12 @@ namespace level {
             world.addComponent<components::BodyComponent>(entity, bodyComponent);
 
             // Add a sprite component to tile entity
-            auto spriteComponent = components::SpriteComponent(getSheetName(level.theme), curTile.sprite);
-            world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            auto spriteComponentPair = tileSpriteComponentMap.find(curTile.sprite);
+            if(spriteComponentPair != tileSpriteComponentMap.end()) {
+                auto spriteComponent = spriteComponentPair->second;
+                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            }
+
 
             auto dimensionComponent = components::DimensionComponent(dimension);
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
@@ -76,8 +96,12 @@ namespace level {
             world.addComponent<components::PositionComponent>(entity, posComponent);
 
             // Add a sprite component to character spawn entity
-            auto spriteComponent = components::SpriteComponent(getSheetName(level.theme), "characterSpawn");
-            world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            auto spriteComponentPair = charSpawnSpriteComponentMap.find("single");
+            if(spriteComponentPair != charSpawnSpriteComponentMap.end()) {
+                auto spriteComponent = spriteComponentPair->second;
+                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            }
+
 
             // Add a character spawn component to character spawn entity
             auto characterSpawnComponent = components::CharacterSpawnComponent();
@@ -94,9 +118,14 @@ namespace level {
             // Add a dimension component to equipment spawn entity
             auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(1, 1));
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
+
             // Add a sprite component to equipment spawn entity
-            auto spriteComponent = components::SpriteComponent(getSheetName(level.theme), "equipmentSpawn");
-            world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            auto spriteComponentPair = eqSpawnSpriteComponentMap.find("single");
+            if(spriteComponentPair != eqSpawnSpriteComponentMap.end()) {
+                auto spriteComponent = spriteComponentPair->second;
+                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            }
+
             // Add a equipable component to equipment spawn entity
             auto equipableComponent = components::EquipableComponent();
             world.addComponent<components::EquipableComponent>(entity, equipableComponent);

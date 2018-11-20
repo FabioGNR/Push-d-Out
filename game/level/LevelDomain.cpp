@@ -12,16 +12,21 @@ namespace level {
     {
         switch (theme) {
         case Theme::Earth:
-            return "earthThemeSpriteSheet.png";
+            return "Earth";
         case Theme::Moon:
-            return "moonThemeSpriteSheet.png";
+            return "Moon";
         case Theme::Temple:
-            return "templeThemeSpriteSheet.png";
+            return "Temple";
         case Theme::City:
-            return "cityThemeSpriteSheet.png";
+            return "City";
         default:
             throw ResourceNotFoundException("stylesheet");
         }
+    }
+
+    std::string getJSONFile(Theme theme)
+    {
+       return "datafile.json";
     }
 
     // JSON conversions for tile
