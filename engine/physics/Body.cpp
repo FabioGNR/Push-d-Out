@@ -35,6 +35,11 @@ namespace physics {
             m_position.y - m_dimensions.y / 2 };
     }
 
+    void Body::setPosition(const common::Vector2D<double> position)
+    {
+        m_position = position;
+    }
+
     const common::Vector2D<double> Body::getDimensions() const
     {
         return m_dimensions;

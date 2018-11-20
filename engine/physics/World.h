@@ -50,9 +50,9 @@ namespace physics {
         b2Body* createBody(const b2BodyDef& def) const;
         void destroyBody(b2Body* body);
 
-        const Body* createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
-        const Body* createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
-        const Body* createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
+        Body* createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
+        Body* createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
+        Body* createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
         const std::vector<std::unique_ptr<Body>>& getBodies() const;
     };
 }

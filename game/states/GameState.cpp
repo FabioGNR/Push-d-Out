@@ -11,7 +11,15 @@
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
 #include <game/systems/CameraSystem.h>
+#include <game/systems/InventorySystem.h>
+#include <game/systems/ItemSystem.h>
+#include <game/systems/LifeSystem.h>
+#include <game/systems/MovementSystem.h>
+#include <game/systems/PlayerInputSystem.h>
+#include <game/systems/PositionSystem.h>
 #include <game/systems/RenderSystem.h>
+#include <game/systems/SpriteSystem.h>
+#include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
 
 namespace game {
@@ -39,13 +47,22 @@ void GameState::init()
     engine::sound::Music music("assets/sounds/" + level.theme.trackName);
     m_soundManager->play(music);
 
-    // Build characters into the ECS and physics world
-    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, game.getInputManager(), 4 };
-    builder.build();
-
     // Set-up camera
     auto camera = std::make_shared<engine::graphics::Camera>(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
     m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+
+    // Build characters into the ECS and physics world
+    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+    m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
+    m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
+    m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
+    m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
+    m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
+    m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+    m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *camera);
+
+    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager, 4 };
+    builder.build();
 
     // Add render system
     m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);

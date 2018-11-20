@@ -45,6 +45,13 @@ namespace physics {
         m_angle = m_body->GetAngle();
     }
 
+    void DynamicBody::setPosition(common::Vector2D<double> d)
+    {
+        Body::setPosition(d);
+        this->setLinearVelocity({ 0, 0 }); // Reset the forces
+        m_body->SetTransform(b2Vec2{ static_cast<float32>(d.x), static_cast<float32>(d.y) }, m_body->GetAngle());
+    }
+
     void DynamicBody::applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) const
     {
         b2Vec2 b2Force((float32)force.x, (float32)force.y);

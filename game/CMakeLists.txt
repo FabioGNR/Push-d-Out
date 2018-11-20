@@ -31,6 +31,7 @@ set(COMPONENT_SRC
         components/EquipmentSpawnerComponent.h
         components/ItemComponent.h
         components/items/ReverseGravityComponent.h
+        components/LifeComponent.h
         )
 
 set(SYSTEM_SRC
@@ -56,7 +57,8 @@ set(SYSTEM_SRC
         systems/ItemSystem.h
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
-        )
+        systems/LifeSystem.cpp
+        systems/LifeSystem.h)
 
 set(DEFINITION_SRC
         definitions/Action.h
@@ -88,6 +90,8 @@ set(BUILDER_SRC
         builders/IBuilder.h
         builders/CharacterBuilder.cpp
         builders/CharacterBuilder.h
+        builders/CharacterSpawnGenerator.h
+        builders/CharacterSpawnGenerator.cpp
         sprite/SpriteDomain.cpp
         sprite/SpriteDomain.h
         builders/SpriteBuilder.cpp

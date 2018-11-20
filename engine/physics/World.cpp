@@ -75,7 +75,7 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    const Body* World::createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    Body* World::createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         m_impl->bodies.push_back(
             std::make_unique<StaticBody>(position, dimension, *this));
@@ -89,14 +89,14 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    const Body* World::createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    Body* World::createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         m_impl->bodies.push_back(
             std::make_unique<DynamicBody>(position, dimension, *this));
         return m_impl->bodies.back().get();
     }
 
-    const Body* World::createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    Body* World::createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         m_impl->bodies.push_back(
             std::make_unique<KinematicBody>(position, dimension, *this));
