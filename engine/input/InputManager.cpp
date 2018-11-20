@@ -83,12 +83,12 @@ namespace input {
         return m_inputMap;
     }
 
-    size_t InputManager::conAmount()
+    size_t InputManager::connectedControllerAmount()
     {
         return m_handler->getConnectedControllers();
     }
 
-    bool InputManager::openCon(int id)
+    bool InputManager::openController(int id)
     {
         return m_handler->openController(id);
     }

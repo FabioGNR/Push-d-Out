@@ -98,7 +98,7 @@ namespace builders {
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
             // Open the required controller
-            if (m_inputManager.openCon(i)) {
+            if (m_inputManager.openController(i)) {
                 components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else { // DEBUG

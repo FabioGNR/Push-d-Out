@@ -18,12 +18,7 @@ namespace input {
         explicit InputManager(std::shared_ptr<events::IEventHandler>& handler)
             : m_handler{ handler } {};
 
-
-        //void handle(const events::IControlEvent& event);
-        //void handle(const events::IControlEvent event);
-        //void handle(const events::IEvent& event);
         void handle(const std::unique_ptr<events::IEvent>& event_ptr);
-        //void handle(const std::unique_ptr<events::IControlEvent>& event);
 
         std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify, int id);
         std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify);
@@ -31,8 +26,8 @@ namespace input {
         void notify();
         void update();
         maps::InputMap& getMap();
-        size_t conAmount();
-        bool openCon(int id);
+        size_t connectedControllerAmount();
+        bool openController(int id);
     };
 }
 }

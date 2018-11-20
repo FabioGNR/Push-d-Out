@@ -18,10 +18,19 @@ namespace builders {
             : m_ecsWorld(world)
             , m_physicsWorld(physics)
             , m_inputManager(inputManager)
-            , m_playerCount(inputManager.conAmount())
+            , m_playerCount(inputManager.connectedControllerAmount())
         {
-            //DEBUG - comment the line below to NOT have the keyboard active during game time
-            m_playerCount++;
+
+            if (m_playerCount == 0) {
+                m_playerCount++; // for the keyboard
+            }
+            //DEBUG - comment the lines below to
+            // NOT have the keyboard active during game time
+            // IF you have a controller connected
+            /*
+            else {
+                m_playerCount++;
+            }*/
         }
         void build() const override;
     };
