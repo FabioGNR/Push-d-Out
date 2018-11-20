@@ -21,13 +21,17 @@ namespace systems {
         m_world.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);
             auto& inventoryComponent = m_world.getComponent<InventoryComponent>(entity);
-
             auto& analogMap = m_inputMap.getMap(inputComponent.controllerId);
-            auto action = definitions::Action::PickupEquippable;
-            auto control = inputComponent.getKey(action);
+            const auto pickupAction = definitions::Action::PickupEquippable;
+            const auto pickupControl = inputComponent.getKey(pickupAction);
 
-            if (analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
+            if (analogMap.hasKeyState(pickupControl, engine::input::KeyStates::PRESSED)) {
                 attemptPickup(entity, inventoryComponent);
+            }
+            const auto switchAction = definitions::Action::SwitchWeapon;
+            const auto switchControl = inputComponent.getKey(switchAction);
+            if (analogMap.hasKeyState(switchControl, engine::input::KeyStates::PRESSED)) {
+                attemptSwitch(inventoryComponent);
             }
         });
     }
@@ -36,6 +40,7 @@ namespace systems {
     {
         double equipableCandidateDistance = -1;
         engine::ecs::Entity* equipableCandidate = nullptr;
+        // find the closest equipable entity near the player
         m_world.forEachEntityWith<EquipableComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             const auto& playerPosition = m_world.getComponent<PositionComponent>(player).position;
             const auto& equipablePosition = m_world.getComponent<PositionComponent>(entity).position;
@@ -76,6 +81,18 @@ namespace systems {
     void InventorySystem::render(engine::IRenderer& /*renderer*/)
     {
         // no rendering
+    }
+
+    void InventorySystem::attemptSwitch(components::InventoryComponent& inventoryComponent)
+    {
+        if (inventoryComponent.otherEquipment.hasValue()) {
+            auto& otherEquipment = inventoryComponent.otherEquipment.get();
+            if (inventoryComponent.activeEquipment.hasValue()) {
+                auto& activeEquipment = inventoryComponent.activeEquipment.get();
+                inventoryComponent.otherEquipment.set(&activeEquipment);
+            }
+            inventoryComponent.activeEquipment.set(&otherEquipment);
+        }
     }
 }
 }

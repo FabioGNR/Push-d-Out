@@ -66,14 +66,16 @@ namespace builders {
         std::map<game::definitions::Action, engine::input::AnalogKeys> analogControls;
 
         // TODO: Move these actions to some kind of configurations
-        analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys ::CON_TRIGGER_RIGHT;
+        analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys::CON_TRIGGER_RIGHT;
         analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
         controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSTICK;
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
+        controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
 
         KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
         KBM_Controls[definitions::Action::MoveRight] = engine::input::Keys::D;

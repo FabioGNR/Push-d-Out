@@ -14,6 +14,7 @@ namespace systems {
         engine::input::maps::InputMap& m_inputMap;
 
         void attemptPickup(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent);
+        void attemptSwitch(components::InventoryComponent& inventoryComponent);
 
     public:
         InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager);
