@@ -28,6 +28,7 @@ namespace physics {
 
         virtual void update() = 0;
 
+        virtual void setPosition(common::Vector2D<double>);
         virtual const common::Vector2D<double> getPosition() const;
         virtual const common::Vector2D<double> getDimensions() const;
         virtual const common::Vector2D<double> getCenterPoint() const;

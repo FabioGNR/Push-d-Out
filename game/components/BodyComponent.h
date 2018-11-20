@@ -6,9 +6,9 @@
 namespace game {
 namespace components {
     struct BodyComponent : public engine::ecs::BaseComponent<BodyComponent> {
-        const engine::physics::Body* body;
+        engine::physics::Body* body;
 
-        explicit BodyComponent(const engine::physics::Body* body)
+        explicit BodyComponent(engine::physics::Body* body)
             : body(body){};
     };
 }
