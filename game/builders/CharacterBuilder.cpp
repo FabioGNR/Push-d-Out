@@ -65,6 +65,7 @@ namespace builders {
 
         // TODO: Move these actions to some kind of configurations
         controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         controls[definitions::Action::UseItem] = engine::input::Keys::G;
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         controls[definitions::Action::MoveLeft] = engine::input::Keys::A;

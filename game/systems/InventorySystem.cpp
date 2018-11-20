@@ -23,12 +23,19 @@ namespace systems {
         m_world.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);
             auto& inventoryComponent = m_world.getComponent<InventoryComponent>(entity);
-            const auto action = definitions::Action::PickupEquippable;
-            if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
+            const auto pickupAction = definitions::Action::PickupEquippable;
+            if (inputComponent.controls.find(pickupAction) != inputComponent.controls.end()) {
                 // determine if control is pressed
-                auto control = inputComponent.controls[action];
+                const auto control = inputComponent.controls[pickupAction];
                 if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
                     attemptPickup(entity, inventoryComponent);
+                }
+            }
+            const auto switchAction = definitions::Action::SwitchWeapon;
+            if (inputComponent.controls.find(switchAction) != inputComponent.controls.end()) {
+                const auto control = inputComponent.controls[switchAction];
+                if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
+                    attemptSwitch(inventoryComponent);
                 }
             }
         });
@@ -38,6 +45,7 @@ namespace systems {
     {
         double equipableCandidateDistance = -1;
         engine::ecs::Entity* equipableCandidate = nullptr;
+        // find the closest equipable entity near the player
         m_world.forEachEntityWith<EquipableComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             const auto& playerPosition = m_world.getComponent<PositionComponent>(player).position;
             const auto& equipablePosition = m_world.getComponent<PositionComponent>(entity).position;
@@ -78,6 +86,18 @@ namespace systems {
     void InventorySystem::render(engine::IRenderer& /*renderer*/)
     {
         // no rendering
+    }
+
+    void InventorySystem::attemptSwitch(components::InventoryComponent& inventoryComponent)
+    {
+        if (inventoryComponent.otherEquipment.hasValue()) {
+            auto& otherEquipment = inventoryComponent.otherEquipment.get();
+            if (inventoryComponent.activeEquipment.hasValue()) {
+                auto& activeEquipment = inventoryComponent.activeEquipment.get();
+                inventoryComponent.otherEquipment.set(&activeEquipment);
+            }
+            inventoryComponent.activeEquipment.set(&otherEquipment);
+        }
     }
 }
 }
