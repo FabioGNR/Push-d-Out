@@ -8,3 +8,4 @@ cmake-build-*/
 CMakeSettings.json
 .DS_STORE
 external/Box2D
+vcpkg/

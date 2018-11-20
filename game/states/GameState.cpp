@@ -94,6 +94,18 @@ void GameState::subscribeInput()
             auto pauseMenu = std::make_unique<PauseMenuState>(m_context);
             m_context.next(std::move(pauseMenu));
         }
+
+        if (keyMap.hasKeyState(engine::input::Keys::F2, engine::input::KeyStates::PRESSED)) {
+            m_world->setUpdateScale(m_world->updateScale() - .1);
+        }
+
+        if (keyMap.hasKeyState(engine::input::Keys::F3, engine::input::KeyStates::PRESSED)) {
+            m_world->resetUpdateScale();
+        }
+
+        if (keyMap.hasKeyState(engine::input::Keys::F4, engine::input::KeyStates::PRESSED)) {
+            m_world->setUpdateScale(m_world->updateScale() + .1);
+        }
     });
 }
 }
