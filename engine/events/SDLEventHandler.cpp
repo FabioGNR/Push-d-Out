@@ -39,7 +39,6 @@ namespace events {
             return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), true);
         case SDL_CONTROLLERBUTTONUP:
             return std::make_shared<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), false);
-
         case SDL_QUIT:
             return std::make_shared<QuitEvent>();
         case SDL_KEYUP:
@@ -54,6 +53,13 @@ namespace events {
             std::cout << "C-CON: " << event.cbutton.which << std::endl;
             return nullptr;
         }
+        /*
+        case SDL_JOYBUTTONDOWN:
+            return std::make_shared<ControllerEvent>(event.jdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), true);
+        case SDL_JOYDEVICEADDED:
+            cCon.insert({event.jdevice.which, true});
+            SDL_JoystickOpen(0);
+            return nullptr;*/
         default:
             return nullptr;
         }

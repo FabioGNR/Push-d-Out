@@ -1,5 +1,4 @@
 #include "SDLKeys.h"
-
 #include <SDL_gamecontroller.h>
 #include <SDL_keycode.h>
 #include <SDL_mouse.h>
@@ -74,6 +73,13 @@ namespace input {
         { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
+    input::Keys SDLKeys::get(int test){
+        if (SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()) {
+            return Keys::UNKNOWN;
+        }
+        return SDLKeys::KEYCODES.at(test);
+    }
+/* please keep intact ivm if the  above one breaks
     input::Keys SDLKeys::get(SDL_Keycode& keycode)
     {
         if (SDLKeys::KEYCODES.find(keycode) == SDLKeys::KEYCODES.end()) {
@@ -96,6 +102,6 @@ namespace input {
             return Keys::UNKNOWN;
         }
         return SDLKeys::KEYCODES.at(test);
-    }
+    }*/
 }
 }
