@@ -2,10 +2,12 @@
 
 #include <engine/common/RNG.h>
 #include <engine/definitions/SystemPriority.h>
+#include <game/builders/CharacterSpawnGenerator.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
+#include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -15,6 +17,7 @@
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
+#include <game/systems/LifeSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
@@ -35,13 +38,8 @@ namespace builders {
             throw exceptions::NoPlayersFoundException();
         }
 
-        // Search for all the CharacterSpawnComponents and push the position in the vector
-        std::vector<common::Vector2D<double>> positions{};
-        m_ecsWorld.forEachEntityWith<components::CharacterSpawnComponent>([&](engine::ecs::Entity& entity) {
-            auto component = m_ecsWorld.getComponent<components::PositionComponent>(entity);
-            auto pos = component.position;
-            positions.push_back(pos);
-        });
+        auto positions = CharacterSpawnGenerator::collect(m_ecsWorld);
+
         // Check if there are enough spawn points for the characters
         if (positions.empty() || m_playerCount > positions.size()) {
             throw exceptions::MissingCharacterSpawnException();
@@ -50,14 +48,6 @@ namespace builders {
         // Set the dimension of all the players
         common::Vector2D<double> dimension{ 1, 2 };
 
-        // Add the necessary systems into the ECS world before adding components
-        m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
-        m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
-        m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
-        m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
-        m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
-        m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
-        m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
         std::map<game::definitions::Action, engine::input::Keys> controls;
@@ -91,9 +81,14 @@ namespace builders {
             components::PlayerInputComponent playerInputComponent{ static_cast<int>(i + 1), controls };
             m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
 
+            // Create the life component for player entity
+            components::LifeComponent lifeComponent{ 3 };
+            m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
+
             // Create the sprite component for the player entity
             components::SpriteComponent spriteComponent{ "sheet", "spriteName" };
             m_ecsWorld.addComponent<game::components::SpriteComponent>(players[i], spriteComponent);
+
             //Creating force gun entity
             auto& gunEntity = m_ecsWorld.createEntity();
             components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
