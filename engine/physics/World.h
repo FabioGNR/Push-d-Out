@@ -18,6 +18,7 @@ namespace physics {
     private:
         constexpr static int m_velocityIterations = 6;
         constexpr static int m_positionIterations = 2;
+        double m_updateScale = 1;
 
         // Use PIMPL-idiom to hide implementation details
         // this is needed because unique_ptr needs to know the full implementation of b2World
@@ -37,6 +38,10 @@ namespace physics {
         virtual ~World();
 
         void update(std::chrono::nanoseconds deltaTime);
+        void setUpdateScale(double scale);
+        void resetUpdateScale();
+        double updateScale();
+
         common::Vector2D<double> getGravity() const;
         const common::Vector2D<double>& getFriction() const;
         const common::Vector2D<int>& getSize() const;
