@@ -101,11 +101,11 @@ common::Vector2D<int> SDLRenderer::getSpriteSize(const Sprite& sprite) const
 
         auto surface = surfaceImage.get();
         spriteCache.addResource(sprite, std::make_pair(surfaceImage, textureImage));
-        return { (int)(surface->w * sprite.scale().x), (int)(surface->h * sprite.scale().y) };
+        return { surface->w, surface->h };
     } else {
         auto& surfaceTexturePair = spriteCache.getResource(sprite);
         auto surface = surfaceTexturePair.first.get();
-        return { (int)(surface->w * sprite.scale().x), (int)(surface->h * sprite.scale().y) };
+        return { surface->w, surface->h };
     }
 }
 

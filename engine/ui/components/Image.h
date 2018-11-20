@@ -13,7 +13,7 @@ namespace ui {
     public:
         Image(ComponentSize size, std::string spritePath)
             : Component(size)
-            , m_sprite(spritePath, { 0, 0 }, { 1, 1 }, { 0, 0}, { 1, 1})
+            , m_sprite(spritePath, { 0, 0 }, { 0, 0 }, { 0, 0 })
         {
         }
         virtual ~Image() = default;

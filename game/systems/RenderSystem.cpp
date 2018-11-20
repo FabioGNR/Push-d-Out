@@ -28,14 +28,15 @@ namespace systems {
 
                 position.y = position.y - size.y;
                 auto& spriteResource = spriteComponent.sprites[spriteComponent.index];
-                auto scale = m_camera->scaleSize(dimensionComponent.dimension).castTo<double>();
-                engine::Sprite sprite { spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position, scale };
+                auto desiredSize = m_camera->scaleSize(dimensionComponent.dimension);
+                engine::Sprite sprite{ spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position };
+                sprite.setSize(desiredSize);
                 spriteComponent.frameTimeElapsed += timeStep;
-                auto elapsedSeconds { std::chrono::duration_cast<std::chrono::milliseconds>(spriteComponent.frameTimeElapsed).count() / 1000.0 };
+                auto elapsedSeconds{ std::chrono::duration_cast<std::chrono::milliseconds>(spriteComponent.frameTimeElapsed).count() / 1000.0 };
                 if (elapsedSeconds >= spriteComponent.frameTime) {
                     spriteComponent.index++;
                     spriteComponent.index = spriteComponent.index % spriteComponent.frameCount;
-                    spriteComponent.frameTimeElapsed = std::chrono::nanoseconds { 0 };
+                    spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
                 }
                 this->sprites.push_back(sprite);
             }

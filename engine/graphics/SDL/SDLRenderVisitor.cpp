@@ -152,15 +152,20 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
     SDL_Rect positionRect = {
         sprite.position().x,
         sprite.position().y,
-        static_cast<int>(sprite.scale().x),
-        static_cast<int>(sprite.scale().y)
+        sprite.size().x,
+        sprite.size().y
     };
 
+    common::Vector2D<int> actualSourceSize{ sprite.sourceSize() };
+    if (actualSourceSize.x == 0 && actualSourceSize.y == 0) {
+        actualSourceSize = common::Vector2D<int>(surface->w, surface->h);
+    }
+
     SDL_Rect sourceRect = {
-            sprite.sourcePosition().x,
-            sprite.sourcePosition().y,
-            sprite.sourceSize().x,
-            sprite.sourceSize().y
+        sprite.sourcePosition().x,
+        sprite.sourcePosition().y,
+        actualSourceSize.x,
+        actualSourceSize.y
     };
 
     SDL_RenderCopy(renderer, texture, &sourceRect, &positionRect);

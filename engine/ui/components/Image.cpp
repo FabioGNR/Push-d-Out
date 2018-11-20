@@ -8,7 +8,6 @@ namespace ui {
         common::Vector2D<int> calculatedSize = calculateSize(context.renderer, context.availableSize);
         m_sprite.setSize(calculatedSize);
         m_sprite.setPosition(context.pos);
-
         context.renderer.draw(m_sprite);
         context.pos += calculatedSize;
 
