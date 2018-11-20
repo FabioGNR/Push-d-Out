@@ -17,7 +17,7 @@ namespace input {
     input::AnalogKeys SDL_Axis::get(uint8_t axis)
     {
         if (SDL_Axis::axises.find(axis) == SDL_Axis::axises.end()) {
-            return CON_UNKNOWN;
+            return AnalogKeys::CON_UNKNOWN;
         }
         return SDL_Axis::axises.at(axis);
     }

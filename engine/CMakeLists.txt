@@ -91,7 +91,8 @@ set(INPUT_SRC
         input/maps/KeyMap.h
         input/KeyStates.h
         input/maps/AnalogMap.cpp
-        input/maps/AnalogMap.h input/AnalogKeys.h)
+        input/maps/AnalogMap.h
+        input/AnalogKeys.h)
 
 set(EVENTS_SRC
         events/IEventHandler.h

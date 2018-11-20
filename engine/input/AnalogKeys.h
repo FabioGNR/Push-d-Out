@@ -2,7 +2,7 @@
 
 namespace engine {
 namespace input {
-    enum AnalogKeys {
+    enum class AnalogKeys {
         CON_UNKNOWN,
         CON_LEFTSTICK_X,
         CON_RIGHTSTICK_X,

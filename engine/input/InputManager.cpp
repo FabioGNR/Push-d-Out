@@ -6,16 +6,16 @@
 
 namespace engine {
 namespace input {
-    void InputManager::handle(const std::shared_ptr<events::IControlEvent>& event)
+    void InputManager::handle(const std::unique_ptr<events::IEvent>& event_ptr)
     {
-        if (auto con = std::dynamic_pointer_cast<events::ControllerEvent>(event)) {
+        if (auto con = dynamic_cast<events::ControllerEvent*>(event_ptr.get())) {
             auto& conMap = m_inputMap.getMap(con->m_ID);
             if (con->m_isAnalog) {
                 conMap.setValue(con->m_analogKey, con->m_axisValue);
             } else {
                 conMap.setValue(con->m_key, (con->m_keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
             }
-        } else if (auto mouse = std::dynamic_pointer_cast<events::MouseEvent>(event)) {
+        } else if (auto mouse = dynamic_cast<events::MouseEvent*>(event_ptr.get())) {
             auto& KBM_Map = m_inputMap.getKBM();
             if (mouse->m_isAnalog) {
                 KBM_Map.setValue(AnalogKeys::MOUSE_X, mouse->m_x);
@@ -25,9 +25,9 @@ namespace input {
             }
         } else {
             auto& KMB_Map = m_inputMap.getKBM();
-            if (auto down = std::dynamic_pointer_cast<events::KeyDownEvent>(event)) {
+            if (auto down = dynamic_cast<events::KeyDownEvent*>(event_ptr.get())) {
                 KMB_Map.setValue(down->value, KeyStates::PRESSED);
-            } else if (auto up = std::dynamic_pointer_cast<events::KeyUpEvent>(event)) {
+            } else if (auto up = dynamic_cast<events::KeyUpEvent*>(event_ptr.get())) {
                 KMB_Map.setValue(up->value, KeyStates::RELEASED);
             }
         }
@@ -85,12 +85,12 @@ namespace input {
 
     size_t InputManager::conAmount()
     {
-        return m_handler->getcCon();
+        return m_handler->getConnectedControllers();
     }
 
     bool InputManager::openCon(int id)
     {
-        return m_handler->openCon(id);
+        return m_handler->openController(id);
     }
 }
 }

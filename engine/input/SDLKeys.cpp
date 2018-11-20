@@ -73,36 +73,12 @@ namespace input {
         { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
-    input::Keys SDLKeys::get(int test)
+    input::Keys SDLKeys::get(int SDL_Key)
     {
-        if (SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()) {
+        if (SDLKeys::KEYCODES.find(SDL_Key) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;
         }
-        return SDLKeys::KEYCODES.at(test);
+        return SDLKeys::KEYCODES.at(SDL_Key);
     }
-    /* please keep intact ivm if the  above one breaks
-    input::Keys SDLKeys::get(SDL_Keycode& keycode)
-    {
-        if (SDLKeys::KEYCODES.find(keycode) == SDLKeys::KEYCODES.end()) {
-            return Keys::UNKNOWN;
-        }
-        return SDLKeys::KEYCODES.at(keycode);
-    }
-
-    input::Keys SDLKeys::get(SDL_GameControllerButton button)
-    {
-        if (SDLKeys::KEYCODES.find(button) == SDLKeys::KEYCODES.end()) {
-            return Keys::UNKNOWN;
-        }
-        return SDLKeys::KEYCODES.at(button);
-    }
-
-    input::Keys SDLKeys::get(Uint8 test)
-    {
-        if (SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()) {
-            return Keys::UNKNOWN;
-        }
-        return SDLKeys::KEYCODES.at(test);
-    }*/
 }
 }

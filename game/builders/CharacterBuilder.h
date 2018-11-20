@@ -21,7 +21,7 @@ namespace builders {
             , m_playerCount(inputManager.conAmount())
         {
             //DEBUG - comment the line below to NOT have the keyboard active during game time
-            //m_playerCount++;
+            m_playerCount++;
         }
         void build() const override;
     };

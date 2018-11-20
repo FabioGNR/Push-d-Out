@@ -5,11 +5,6 @@ namespace input {
     namespace maps {
         void AnalogMap::update()
         {
-            /*
-            auto it = analogMap.begin();
-            while(it!= analogMap.end()){
-                it = analogMap.erase(it++);
-            }*/
             keyMap.update();
         }
 

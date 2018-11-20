@@ -18,18 +18,6 @@ MainMenuState::MainMenuState(engine::IGame& context)
     : BaseMenuState(context)
     , m_soundManager(new engine::sound::SDLSoundManager)
 {
-    //m_uiSystem = std::make_unique<engine::ui::UISystem>();
-    /*
-    // subscribe button press
-    dynamic_cast<Game&>(m_context).getInputManager().subscribe(
-        [&](engine::input::ControlMap controlMap, engine::events::Subscription<engine::input::ControlMap>& subscription) {
-            if (controlMap.hasKeyState(engine::input::Keys::SPACE, engine::input::PRESSED)) {
-                m_context.next(std::make_shared<GameState>(m_context));
-                subscription.close(); // close stream
-            }
-        });*/
-    //auto& game = dynamic_cast<Game&>(m_context);
-    //m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
 }
 
 void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
