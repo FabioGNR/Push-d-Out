@@ -56,24 +56,36 @@ namespace systems {
         });
     }
 
-    void game::systems::WeaponSystem::update(std::chrono::nanoseconds /* timeStep */)
+    void WeaponSystem::update(std::chrono::nanoseconds timeStep)
     {
-        using clock = std::chrono::steady_clock;
+        // increment all the timeSinceLastFired for weapons
+        using milliseconds = std::chrono::milliseconds;
+        m_ecsWorld.forEachEntityWith<WeaponComponent>([&](engine::ecs::Entity& entity) {
+            auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(entity);
+            if (weapon.wasFired) {
+                weapon.timeSinceLastFired += timeStep;
+            }
+        });
+        // check if players want to fire a weapon
         m_ecsWorld.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inventory = m_ecsWorld.getComponent<InventoryComponent>(entity);
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
             if (inventory.activeEquipment.hasValue()) {
-                engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
-                auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
-                auto action = definitions::Action::UseWeapon;
-                if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
-                    auto control = inputComponent.controls[action];
-                    if (m_keyMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
-                        if (std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - weapon.lastFired).count() > weapon.cooldownSeconds * 1000) {
-                            if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
-                                auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
-                                fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
-                                weapon.lastFired = clock::now();
+                engine::ecs::Entity& weaponEntity = inventory.activeEquipment.get();
+                if (weaponEntity.hasComponent<components::WeaponComponent>()) {
+                    auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
+                    auto action = definitions::Action::UseWeapon;
+                    if (inputComponent.controls.find(action) != inputComponent.controls.end()) {
+                        auto control = inputComponent.controls[action];
+                        if (m_keyMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                            double secondsSinceFired = std::chrono::duration_cast<milliseconds>(weapon.timeSinceLastFired).count() / 1000.0;
+                            if (!weapon.wasFired || secondsSinceFired > weapon.cooldownSeconds) {
+                                if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
+                                    auto& position = m_ecsWorld.getComponent<PositionComponent>(entity);
+                                    fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld);
+                                    weapon.timeSinceLastFired = std::chrono::nanoseconds(0);
+                                    weapon.wasFired = true;
+                                }
                             }
                         }
                     }
@@ -82,6 +94,6 @@ namespace systems {
         });
     }
 
-    void game::systems::WeaponSystem::render(engine::IRenderer& /* renderer */) {}
+    void WeaponSystem::render(engine::IRenderer& /* renderer */) {}
 }
 }

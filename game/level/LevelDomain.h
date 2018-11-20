@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Theme.h"
 #include "external/JSON/json.hpp"
 #include <string>
 #include <vector>
@@ -8,14 +9,6 @@ using json = nlohmann::json;
 
 namespace game {
 namespace level {
-    enum class Theme {
-        Earth = 0,
-        Moon = 1,
-        Temple = 2,
-        City = 3
-
-    };
-
     enum class PlatformKind {
         Solid = 0,
         UnderPassable = 1

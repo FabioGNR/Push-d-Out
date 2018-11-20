@@ -1,26 +1,27 @@
 #pragma once
 
-#include <engine/events/models/Subscription.h>
-#include <engine/game/State.h>
-#include <engine/input/KeyMap.h>
-#include <engine/ui/UISystem.h>
-
+#include "BaseMenuState.h"
 #include <chrono>
+#include <engine/sound/ISoundManager.h>
 
 namespace game {
-class MainMenuState : public engine::State {
+class MainMenuState : public BaseMenuState {
 private:
-    std::unique_ptr<engine::ui::UISystem> m_uiSystem;
+    std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
 
 public:
     explicit MainMenuState(engine::IGame& context);
 
-    void init() override;
+protected:
+    void prependButtons(engine::ui::StackPanel& panel) override;
+    void appendButtons(engine::ui::StackPanel& panel) override;
+
+    void openCreditsFrame();
+
+public:
     void resume() override;
     void pause() override;
-    void update(std::chrono::nanoseconds timeStep) override;
-    void render(engine::IRenderer& renderer) override;
-
     void close() override;
+    void init() override;
 };
 }

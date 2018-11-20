@@ -1,33 +1,22 @@
 #include "LevelReader.h"
-
 #include "game/components/BodyComponent.h"
 #include "game/components/CharacterSpawnComponent.h"
 #include "game/components/DimensionComponent.h"
-#include "game/components/EquipableComponent.h"
+#include "game/components/EquipmentSpawnerComponent.h"
 #include "game/components/LevelMetaComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/components/SpriteComponent.h"
+#include "game/systems/EquipmentSpawnSystem.h"
 #include "game/systems/PositionSystem.h"
 #include "game/systems/SpriteSystem.h"
 #include "game/builders/SpriteBuilder.h"
-
 #include <engine/exceptions/ResourceNotFoundException.h>
 #include <fstream>
+#include <game/components/EquipableComponent.h>
 
 namespace game {
 namespace level {
-    json LevelReader::readJSON(const std::string& fileName)
-    {
-        std::ifstream i(fileName);
-        if (!i.good()) {
-            throw ResourceNotFoundException(fileName);
-        }
-        json j;
-        i >> j;
-        return j;
-    }
-
-    Level LevelReader::getLevel(const json& j)
+    Level LevelReader::build(const json& j)
     {
         Level level = j;
         return level;
@@ -38,7 +27,7 @@ namespace level {
         common::Vector2D<double> dimension{ 1, 1 };
 
         std::string basePath{"assets/sprites/themes/"};
-        std::string levelSheet{getSheetName(level.theme)};
+        std::string levelSheet{level.theme.sprites};
 
         auto& entityMeta = world.createEntity();
         auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
@@ -80,7 +69,6 @@ namespace level {
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 
-
             auto dimensionComponent = components::DimensionComponent(dimension);
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
         }
@@ -102,11 +90,12 @@ namespace level {
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 
-
             // Add a character spawn component to character spawn entity
             auto characterSpawnComponent = components::CharacterSpawnComponent();
             world.addComponent<components::CharacterSpawnComponent>(entity, characterSpawnComponent);
         }
+
+        world.addSystem<systems::EquipmentSpawnSystem>(engine::definitions::SystemPriority::Medium, world);
 
         for (size_t i = 0; i < level.EquipmentSpawns.size(); i++) {
             SpawnPoint curSpawn = level.EquipmentSpawns[i];
@@ -116,7 +105,7 @@ namespace level {
             auto posComponent = components::PositionComponent(position);
             world.addComponent<components::PositionComponent>(entity, posComponent);
             // Add a dimension component to equipment spawn entity
-            auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(1, 1));
+            auto dimensionComponent = components::DimensionComponent(common::Vector2D<double>(0.8, 0.2));
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
 
             // Add a sprite component to equipment spawn entity
@@ -126,9 +115,9 @@ namespace level {
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 
-            // Add a equipable component to equipment spawn entity
-            auto equipableComponent = components::EquipableComponent();
-            world.addComponent<components::EquipableComponent>(entity, equipableComponent);
+            // Add an equipment spawner component to equipment spawn entity
+            auto spawnerComponent = components::EquipmentSpawnerComponent(10);
+            world.addComponent<components::EquipmentSpawnerComponent>(entity, spawnerComponent);
         }
     }
 }

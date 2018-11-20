@@ -22,14 +22,14 @@ namespace ui {
 
         DrawContext draw(DrawContext context) override;
 
-        void addComponent(const std::shared_ptr<Component>& component);
+        void addComponent(std::unique_ptr<Component> component);
 
         size_t countNavigatableChildren() const override;
 
-        std::shared_ptr<Component> getNavigatableAt(size_t index) const override;
+        Component* getNavigatableAt(size_t index) const override;
 
     private:
-        std::vector<std::shared_ptr<Component>> m_components;
+        std::vector<std::unique_ptr<Component>> m_components;
 
         common::Vector2D<int> getRequiredSize(const IRenderer& renderer, common::Vector2D<int> availableChildSize) const;
     };

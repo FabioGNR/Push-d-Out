@@ -16,6 +16,7 @@ namespace ui {
             : m_size{ size }
         {
         }
+        virtual ~Component() = default;
         virtual DrawContext draw(DrawContext context) = 0;
 
         virtual void processInputEvent(engine::input::KeyMap& /*unused*/) {}

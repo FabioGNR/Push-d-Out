@@ -3,10 +3,10 @@
 
 namespace engine {
 namespace ui {
-    void LayoutPanel::addComponent(const std::shared_ptr<Component>& component, LayoutAnchor anchor)
+    void LayoutPanel::addComponent(std::unique_ptr<Component> component, LayoutAnchor anchor)
     {
-        std::shared_ptr<WrappedComponent> wrappedComponent = std::make_shared<WrappedComponent>(component, anchor);
-        m_components.insert(wrappedComponent);
+        WrappedComponent wrappedComponent{ std::move(component), anchor };
+        m_components.insert(std::move(wrappedComponent));
     }
 
     DrawContext LayoutPanel::draw(DrawContext context)
@@ -16,12 +16,12 @@ namespace ui {
         childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
         for (const auto& component : m_components) {
             common::Vector2D<int> childPosition = getChildPosition(context.renderer,
-                *component.get(),
+                component,
                 childContext.availableSize,
                 context.availableSize);
 
             childContext.pos = childPosition + context.pos;
-            DrawContext updatedContext = component->draw(childContext);
+            DrawContext updatedContext = component.draw(childContext);
             compositeContext.pos = common::Vector2D<int>::max(compositeContext.pos, updatedContext.pos);
         }
         return compositeContext;
@@ -33,7 +33,7 @@ namespace ui {
         common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
 
         for (const auto& component : m_components) {
-            common::Vector2D<int> componentSize = component->getComponent()->calculateSize(renderer,
+            common::Vector2D<int> componentSize = component.getComponent().calculateSize(renderer,
                 availableChildSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
@@ -51,7 +51,7 @@ namespace ui {
         common::Vector2D<int> minimumSize{ 1, 1 };
         common::Vector2D<double> sum{ 1, 1 };
         for (const auto& component : m_components) {
-            sum += component->getComponent()->getSize().getRelativeRatio();
+            sum += component.getComponent().getSize().getRelativeRatio();
         }
         if (m_flowDirection == FlowDirection::Vertical) {
             sum.x = 1;
@@ -67,7 +67,7 @@ namespace ui {
         common::Vector2D<int> parentSize) const
     {
         common::Vector2D<int> position{ 0, 0 };
-        common::Vector2D<int> calculatedSize = component.getComponent()->calculateSize(renderer, availableSize);
+        common::Vector2D<int> calculatedSize = component.getComponent().calculateSize(renderer, availableSize);
 
         switch (component.getAnchor()) {
         case LayoutAnchor::Start:
@@ -90,21 +90,21 @@ namespace ui {
         return position;
     }
 
-    std::shared_ptr<Component> LayoutPanel::getNavigatableAt(size_t index) const
+    Component* LayoutPanel::getNavigatableAt(size_t index) const
     {
         size_t currentTotal = 0;
         for (const auto& wrapper : m_components) {
-            auto* panel = dynamic_cast<ComponentPanel*>(wrapper->getComponent().get());
+            auto* panel = dynamic_cast<ComponentPanel*>(&(wrapper.getComponent()));
             if (panel != nullptr) {
                 size_t childTotal = panel->countNavigatableChildren();
                 if (currentTotal + childTotal > index) {
                     return panel->getNavigatableAt(index - currentTotal);
                 }
                 currentTotal += childTotal;
-            } else if (wrapper->getComponent()->isNavigatable()) {
+            } else if (wrapper.getComponent().isNavigatable()) {
                 currentTotal++;
                 if (currentTotal > index) {
-                    return wrapper->getComponent();
+                    return &(wrapper.getComponent());
                 }
             }
         }
@@ -115,10 +115,10 @@ namespace ui {
     {
         size_t total = 0;
         for (const auto& wrapper : m_components) {
-            auto* panel = dynamic_cast<ComponentPanel*>(wrapper->getComponent().get());
+            auto* panel = dynamic_cast<ComponentPanel*>(&(wrapper.getComponent()));
             if (panel != nullptr) {
                 total += panel->countNavigatableChildren();
-            } else if (wrapper->getComponent()->isNavigatable()) {
+            } else if (wrapper.getComponent().isNavigatable()) {
                 total++;
             }
         }

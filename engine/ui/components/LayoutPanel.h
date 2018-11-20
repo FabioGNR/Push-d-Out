@@ -25,20 +25,20 @@ namespace ui {
 
         DrawContext draw(DrawContext context) override;
 
-        void addComponent(const std::shared_ptr<Component>& component, LayoutAnchor anchor);
+        void addComponent(std::unique_ptr<Component> component, LayoutAnchor anchor);
 
         size_t countNavigatableChildren() const override;
 
-        std::shared_ptr<Component> getNavigatableAt(size_t index) const override;
+        Component* getNavigatableAt(size_t index) const override;
         struct sortByAnchor {
-            bool operator()(const std::shared_ptr<WrappedComponent>& a, const std::shared_ptr<WrappedComponent>& b) const
+            bool operator()(const WrappedComponent& a, const WrappedComponent& b) const
             {
-                return a->getAnchor() < b->getAnchor();
+                return a.getAnchor() < b.getAnchor();
             }
         };
 
     private:
-        std::set<std::shared_ptr<WrappedComponent>, sortByAnchor> m_components;
+        std::set<WrappedComponent, sortByAnchor> m_components;
         common::Vector2D<int> getChildPosition(
             const IRenderer& renderer,
             const WrappedComponent& component,

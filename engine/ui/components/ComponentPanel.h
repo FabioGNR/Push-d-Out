@@ -12,7 +12,7 @@ namespace ui {
         {
         }
         virtual size_t countNavigatableChildren() const = 0;
-        virtual std::shared_ptr<Component> getNavigatableAt(size_t index) const = 0;
+        virtual Component* getNavigatableAt(size_t index) const = 0;
 
     protected:
         FlowDirection m_flowDirection;

@@ -78,7 +78,8 @@ set(PHYSICS_SRC
         physics/Collision.cpp
         physics/Collision.h
         physics/KinematicBody.cpp
-        physics/KinematicBody.h)
+        physics/KinematicBody.h
+        )
 
 set(INPUT_SRC
         input/InputManager.h
@@ -161,7 +162,8 @@ set(UI_SRC
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
         ui/components/CustomAction.h
-        )
+        ui/components/Image.cpp
+        ui/components/Image.h)
 
 # more engine stuff
 add_library(engine

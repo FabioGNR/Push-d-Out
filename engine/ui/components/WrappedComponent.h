@@ -12,18 +12,35 @@ namespace engine {
 namespace ui {
     class WrappedComponent {
     public:
-        WrappedComponent(std::shared_ptr<Component> component, LayoutAnchor anchor)
+        WrappedComponent(std::unique_ptr<Component> component, LayoutAnchor anchor)
             : m_anchor{ anchor }
             , m_component{ std::move(component) }
         {
         }
         DrawContext draw(DrawContext context) const { return m_component->draw(std::move(context)); };
-        std::shared_ptr<Component> getComponent() const { return m_component; }
+        Component& getComponent() const { return *m_component; }
         LayoutAnchor getAnchor() const { return m_anchor; }
+
+        WrappedComponent(const WrappedComponent& other) = delete;
+        WrappedComponent(WrappedComponent&& other)
+        {
+            this->m_component = std::move(other.m_component);
+            this->m_anchor = other.m_anchor;
+        }
+
+        WrappedComponent& operator=(const WrappedComponent& other) = delete;
+        WrappedComponent& operator=(WrappedComponent&& other)
+        {
+            if (this != &other) {
+                this->m_component = std::move(other.m_component);
+                this->m_anchor = other.m_anchor;
+            }
+            return *this;
+        }
 
     private:
         LayoutAnchor m_anchor;
-        std::shared_ptr<Component> m_component;
+        std::unique_ptr<Component> m_component;
     };
 }
 }

@@ -1,5 +1,6 @@
 #include "InventorySystem.h"
 #include "game/components/EquipableComponent.h"
+#include "game/components/ItemComponent.h"
 #include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/definitions/Action.h"
@@ -49,9 +50,24 @@ namespace systems {
             }
         });
         if (equipableCandidate != nullptr) {
+            // make sure the spawner knows the item was picked up
+            auto& equipableComponent = m_world.getComponent<EquipableComponent>(*equipableCandidate);
+            equipableComponent.spawner.hasEquipment = false;
+            // prevent the equipment from being picked up again and place it in the inventory
             m_world.removeComponent<PositionComponent>(*equipableCandidate);
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
-            if (inventoryComponent.otherEquipment.hasValue()) {
+            bool isItem = equipableCandidate->hasComponent<ItemComponent>();
+            if (isItem) {
+                if (inventoryComponent.item.hasValue()) {
+                    m_world.destroyEntity(inventoryComponent.item.get());
+                    inventoryComponent.item.clear();
+                }
+                inventoryComponent.item.set(equipableCandidate);
+            } else if (inventoryComponent.otherEquipment.hasValue()) {
+                if (inventoryComponent.activeEquipment.hasValue()) {
+                    m_world.destroyEntity(inventoryComponent.activeEquipment.get());
+                    inventoryComponent.activeEquipment.clear();
+                }
                 inventoryComponent.activeEquipment.set(equipableCandidate);
             } else {
                 inventoryComponent.otherEquipment.set(equipableCandidate);

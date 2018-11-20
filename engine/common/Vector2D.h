@@ -45,6 +45,20 @@ struct Vector2D {
         return left;
     }
 
+    Vector2D<T>& operator+=(T increment)
+    {
+        x += increment;
+        y += increment;
+        return *this;
+    }
+
+    friend Vector2D<T> operator+(Vector2D<T> left, T increment)
+    {
+        left.x += increment;
+        left.y += increment;
+        return left;
+    }
+
     Vector2D<T>& operator*=(double factor)
     {
         x *= factor;

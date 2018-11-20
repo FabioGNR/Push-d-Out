@@ -55,11 +55,12 @@ namespace physics {
     World::~World()
     {
         m_impl->bodies.clear();
-    };
+    }
 
-    const common::Vector2D<double>& World::getGravity() const
+    common::Vector2D<double> World::getGravity() const
     {
-        return m_impl->gravity;
+        const b2Vec2 grav = m_impl->world->GetGravity();
+        return common::Vector2D<double>(static_cast<double>(grav.x), static_cast<double>(grav.y));
     }
 
     const common::Vector2D<double>& World::getFriction() const
@@ -130,6 +131,13 @@ namespace physics {
     void World::destroyBody(b2Body* body)
     {
         m_impl->world->DestroyBody(body);
+    }
+
+    void World::setGravity(common::Vector2D<double> gravity)
+    {
+        auto convertedGravity = gravity.castTo<float32>();
+        const b2Vec2 b2Gravity{ convertedGravity.x, convertedGravity.y };
+        m_impl->world->SetGravity(b2Gravity);
     }
 }
 }
