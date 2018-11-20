@@ -57,6 +57,19 @@ namespace input {
         { SDLK_DELETE, Keys::BACKSPACE },
         { SDLK_BACKSPACE, Keys::BACKSPACE },
         { SDLK_KP_ENTER, Keys::RETURN },
+        { SDLK_ESCAPE, Keys::ESCAPE },
+        { SDLK_F1, Keys::F1 },
+        { SDLK_F2, Keys::F2 },
+        { SDLK_F3, Keys::F3 },
+        { SDLK_F4, Keys::F4 },
+        { SDLK_F5, Keys::F5 },
+        { SDLK_F6, Keys::F6 },
+        { SDLK_F7, Keys::F7 },
+        { SDLK_F8, Keys::F8 },
+        { SDLK_F9, Keys::F9 },
+        { SDLK_F10, Keys::F10 },
+        { SDLK_F11, Keys::F11 },
+        { SDLK_F12, Keys::F12 },
         { SDL_CONTROLLER_BUTTON_A, Keys::CON_A },
         { SDL_CONTROLLER_BUTTON_B, Keys::CON_B },
         { SDL_CONTROLLER_BUTTON_X, Keys::CON_X },
@@ -69,8 +82,7 @@ namespace input {
         { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER },
         { SDL_CONTROLLER_BUTTON_LEFTSTICK, Keys::CON_LEFTSTICK },
         { SDL_CONTROLLER_BUTTON_RIGHTSTICK, Keys::CON_RIGHTSTICK },
-        { SDL_BUTTON_LEFT, Keys::MOUSE_BUTTON_LEFT },
-        { SDLK_ESCAPE, Keys::ESCAPE }
+        { SDL_BUTTON_LEFT, Keys::MOUSE_BUTTON_LEFT }
     };
 
     input::Keys SDLKeys::get(int SDL_Key)
