@@ -15,6 +15,7 @@ namespace systems {
         std::shared_ptr<engine::events::Subscription<engine::input::KeyMap>> m_inputSubscription;
 
         void attemptPickup(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent);
+        void attemptSwitch(components::InventoryComponent& inventoryComponent);
 
     public:
         InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager);
