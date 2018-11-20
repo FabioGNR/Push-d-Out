@@ -73,13 +73,14 @@ namespace input {
         { SDLK_ESCAPE, Keys::ESCAPE }
     };
 
-    input::Keys SDLKeys::get(int test){
+    input::Keys SDLKeys::get(int test)
+    {
         if (SDLKeys::KEYCODES.find(test) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;
         }
         return SDLKeys::KEYCODES.at(test);
     }
-/* please keep intact ivm if the  above one breaks
+    /* please keep intact ivm if the  above one breaks
     input::Keys SDLKeys::get(SDL_Keycode& keycode)
     {
         if (SDLKeys::KEYCODES.find(keycode) == SDLKeys::KEYCODES.end()) {
