@@ -71,6 +71,12 @@ namespace builders {
         controls[definitions::Action::MoveRight] = engine::input::Keys::D;
         controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
 
+        std::vector<std::map<std::string, components::SpriteComponent>> playerAnimations;
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playergreen.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playerblue.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playerred.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playeryellow.png", assetsFolder + "datafile.json" }.build());
+
         for (size_t i = 0; i < m_playerCount; ++i) {
             // Create a position vector based on a random index
             int randomValue = common::RNG::generate(1, static_cast<int>(positions.size()));
@@ -89,10 +95,8 @@ namespace builders {
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
             // Create the sprite component for the player entity
-            builders::SpriteBuilder spriteBuilder{ assetsFolder + "playergreen.png", assetsFolder + "datafile.json" };
-            auto spriteComponentMap = spriteBuilder.build();
-            auto spriteComponentPair = spriteComponentMap.find("Idle");
-            if (spriteComponentPair != spriteComponentMap.end()) {
+            auto spriteComponentPair = playerAnimations[i].find("Idle");
+            if (spriteComponentPair != playerAnimations[i].end()) {
                 auto spriteComponent = spriteComponentPair->second;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }

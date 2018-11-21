@@ -147,7 +147,6 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
         surface = surfaceTexturePair.first.get();
     }
 
-    // TODO: Do something with sprite width/height
     SDL_Rect positionRect = {
         sprite.position().x,
         sprite.position().y,
