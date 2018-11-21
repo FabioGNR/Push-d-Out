@@ -21,6 +21,7 @@
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
+#include <game/systems/BackgroundSystem.h>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
@@ -50,6 +51,7 @@ void GameState::init()
     // Set-up camera
     auto camera = std::make_shared<engine::graphics::Camera>(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
     m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+    m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
 
     // Build characters into the ECS and physics world
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);

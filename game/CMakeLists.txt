@@ -58,7 +58,7 @@ set(SYSTEM_SRC
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
         systems/LifeSystem.cpp
-        systems/LifeSystem.h)
+        systems/LifeSystem.h systems/BackgroundSystem.cpp systems/BackgroundSystem.h)
 
 set(DEFINITION_SRC
         definitions/Action.h
