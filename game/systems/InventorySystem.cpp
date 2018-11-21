@@ -18,7 +18,7 @@ namespace systems {
         });
     }
 
-    void InventorySystem::update(std::chrono::nanoseconds /*timeStep*/)
+    void InventorySystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         m_world.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);

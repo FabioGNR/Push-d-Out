@@ -110,7 +110,7 @@ namespace physics {
 
     void World::update(std::chrono::nanoseconds deltaTime)
     {
-        auto step = (deltaTime.count() / 1.0e9f) * m_updateScale;
+        auto step = (deltaTime.count() / 1.0e9f);
 
         // convert to seconds
         m_impl->world->Step(step, m_velocityIterations, m_positionIterations);
@@ -140,21 +140,6 @@ namespace physics {
         auto convertedGravity = gravity.castTo<float32>();
         const b2Vec2 b2Gravity{ convertedGravity.x, convertedGravity.y };
         m_impl->world->SetGravity(b2Gravity);
-    }
-
-    void World::setUpdateScale(double scale)
-    {
-        m_updateScale = scale;
-    }
-
-    void World::resetUpdateScale()
-    {
-        m_updateScale = 1;
-    }
-
-    double World::updateScale()
-    {
-        return m_updateScale;
     }
 }
 }
