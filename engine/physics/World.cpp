@@ -75,7 +75,7 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    const Body* World::createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    Body* World::createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         m_impl->bodies.push_back(
             std::make_unique<StaticBody>(position, dimension, *this));
@@ -89,14 +89,14 @@ namespace physics {
          * @param height  height
          * @param width   width
          */
-    const Body* World::createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    Body* World::createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         m_impl->bodies.push_back(
             std::make_unique<DynamicBody>(position, dimension, *this));
         return m_impl->bodies.back().get();
     }
 
-    const Body* World::createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
+    Body* World::createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension)
     {
         m_impl->bodies.push_back(
             std::make_unique<KinematicBody>(position, dimension, *this));
@@ -110,8 +110,10 @@ namespace physics {
 
     void World::update(std::chrono::nanoseconds deltaTime)
     {
+        auto step = (deltaTime.count() / 1.0e9f) * m_updateScale;
+
         // convert to seconds
-        m_impl->world->Step(deltaTime.count() / 1.0e9f, m_velocityIterations, m_positionIterations);
+        m_impl->world->Step(step, m_velocityIterations, m_positionIterations);
 
         for (auto& body : m_impl->bodies) {
             body->update();
@@ -138,6 +140,21 @@ namespace physics {
         auto convertedGravity = gravity.castTo<float32>();
         const b2Vec2 b2Gravity{ convertedGravity.x, convertedGravity.y };
         m_impl->world->SetGravity(b2Gravity);
+    }
+
+    void World::setUpdateScale(double scale)
+    {
+        m_updateScale = scale;
+    }
+
+    void World::resetUpdateScale()
+    {
+        m_updateScale = 1;
+    }
+
+    double World::updateScale()
+    {
+        return m_updateScale;
     }
 }
 }

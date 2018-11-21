@@ -48,8 +48,7 @@ namespace level {
         builders::SpriteBuilder eqSpawnSpriteBuilder{ basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json" };
         auto eqSpawnSpriteComponentMap = eqSpawnSpriteBuilder.build();
 
-        for (size_t i = 0; i < level.tiles.size(); i++) {
-            Tile curTile = level.tiles[i];
+        for (const auto& curTile : level.tiles) {
             common::Vector2D<double> position{ curTile.x, curTile.y };
 
             auto& entity = world.createEntity();
@@ -72,9 +71,7 @@ namespace level {
             auto dimensionComponent = components::DimensionComponent(dimension);
             world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
         }
-
-        for (size_t i = 0; i < level.CharacterSpawns.size(); i++) {
-            SpawnPoint curSpawn = level.CharacterSpawns[i];
+        for (const auto& curSpawn : level.CharacterSpawns) {
             common::Vector2D<double> position{ curSpawn.x, curSpawn.y };
 
             auto& entity = world.createEntity();
@@ -96,9 +93,7 @@ namespace level {
         }
 
         world.addSystem<systems::EquipmentSpawnSystem>(engine::definitions::SystemPriority::Medium, world);
-
-        for (size_t i = 0; i < level.EquipmentSpawns.size(); i++) {
-            SpawnPoint curSpawn = level.EquipmentSpawns[i];
+        for (const auto& curSpawn : level.EquipmentSpawns) {
             common::Vector2D<double> position{ curSpawn.x, curSpawn.y };
             auto& entity = world.createEntity();
             // Add a position component to equipment spawn entity

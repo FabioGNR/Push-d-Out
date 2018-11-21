@@ -31,6 +31,7 @@ set(COMPONENT_SRC
         components/EquipmentSpawnerComponent.h
         components/ItemComponent.h
         components/items/ReverseGravityComponent.h
+        components/LifeComponent.h
         )
 
 set(SYSTEM_SRC
@@ -56,7 +57,8 @@ set(SYSTEM_SRC
         systems/ItemSystem.h
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
-        )
+        systems/LifeSystem.cpp
+        systems/LifeSystem.h)
 
 set(DEFINITION_SRC
         definitions/Action.h
@@ -74,7 +76,8 @@ set(LEVEL_SRC
         level/reader/ThemeReader.h
         level/reader/Reader.h
         level/reader/Reader.cpp
-        level/Theme.cpp)
+        level/Theme.cpp
+        )
 
 set(EQUIPMENT_SRC
         equipment/InventorySlot.h
@@ -87,7 +90,13 @@ set(BUILDER_SRC
         builders/IBuilder.h
         builders/CharacterBuilder.cpp
         builders/CharacterBuilder.h
-        sprite/SpriteDomain.cpp sprite/SpriteDomain.h builders/SpriteBuilder.cpp builders/SpriteBuilder.h)
+        builders/CharacterSpawnGenerator.h
+        builders/CharacterSpawnGenerator.cpp
+        sprite/SpriteDomain.cpp
+        sprite/SpriteDomain.h
+        builders/SpriteBuilder.cpp
+        builders/SpriteBuilder.h
+        )
 
 target_include_directories(
         engine PUBLIC
