@@ -10,10 +10,12 @@ namespace events {
     struct Subscription {
         std::function<void(T, events::Subscription<T>&)> update;
         bool isActive;
+        int subbedTo;
 
-        explicit Subscription(std::function<void(T, events::Subscription<T>&)> update)
+        Subscription(std::function<void(T, events::Subscription<T>&)> update, int id)
             : update{ std::move(update) }
-            , isActive{ true } {};
+            , isActive{ true }
+            , subbedTo{ id } {};
         Subscription(const Subscription& other) = default;
         Subscription& operator=(const Subscription& other) = default;
 

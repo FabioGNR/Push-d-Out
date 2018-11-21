@@ -63,7 +63,7 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *camera);
 
-    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager, 4 };
+    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
 
     // Add animation system
@@ -105,7 +105,7 @@ void GameState::close()
 
 void GameState::subscribeInput()
 {
-    m_inputSubscription = m_inputManager.subscribe([&](engine::input::KeyMap keyMap, auto&) {
+    m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keyMap, auto&) {
         //TODO: add check for 'start' button on controller(s) when controller input is supported
         if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
             auto pauseMenu = std::make_unique<PauseMenuState>(m_context);

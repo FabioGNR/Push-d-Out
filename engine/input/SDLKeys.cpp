@@ -1,7 +1,7 @@
 #include "SDLKeys.h"
-
+#include <SDL_gamecontroller.h>
 #include <SDL_keycode.h>
-
+#include <SDL_mouse.h>
 #include <events/models/KeyUpEvent.h>
 
 namespace engine {
@@ -70,14 +70,27 @@ namespace input {
         { SDLK_F10, Keys::F10 },
         { SDLK_F11, Keys::F11 },
         { SDLK_F12, Keys::F12 },
+        { SDL_CONTROLLER_BUTTON_A, Keys::CON_A },
+        { SDL_CONTROLLER_BUTTON_B, Keys::CON_B },
+        { SDL_CONTROLLER_BUTTON_X, Keys::CON_X },
+        { SDL_CONTROLLER_BUTTON_Y, Keys::CON_Y },
+        { SDL_CONTROLLER_BUTTON_DPAD_LEFT, Keys::CON_DPAD_LEFT },
+        { SDL_CONTROLLER_BUTTON_DPAD_RIGHT, Keys::CON_DPAD_RIGHT },
+        { SDL_CONTROLLER_BUTTON_DPAD_UP, Keys::CON_DPAD_UP },
+        { SDL_CONTROLLER_BUTTON_DPAD_DOWN, Keys::CON_DPAD_DOWN },
+        { SDL_CONTROLLER_BUTTON_LEFTSHOULDER, Keys::CON_LEFTSHOULDER },
+        { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER },
+        { SDL_CONTROLLER_BUTTON_LEFTSTICK, Keys::CON_LEFTSTICK },
+        { SDL_CONTROLLER_BUTTON_RIGHTSTICK, Keys::CON_RIGHTSTICK },
+        { SDL_BUTTON_LEFT, Keys::MOUSE_BUTTON_LEFT }
     };
 
-    input::Keys SDLKeys::get(SDL_Keycode& keycode)
+    input::Keys SDLKeys::get(int SDL_Key)
     {
-        if (SDLKeys::KEYCODES.find(keycode) == SDLKeys::KEYCODES.end()) {
+        if (SDLKeys::KEYCODES.find(SDL_Key) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;
         }
-        return SDLKeys::KEYCODES.at(keycode);
+        return SDLKeys::KEYCODES.at(SDL_Key);
     }
 }
 }

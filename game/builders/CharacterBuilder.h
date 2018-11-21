@@ -15,12 +15,15 @@ namespace builders {
         size_t m_playerCount;
 
     public:
-        CharacterBuilder(engine::ecs::World& world, engine::physics::World& physics, engine::input::InputManager& inputManager, size_t playerCount = 1)
+        CharacterBuilder(engine::ecs::World& world, engine::physics::World& physics, engine::input::InputManager& inputManager)
             : m_ecsWorld(world)
             , m_physicsWorld(physics)
             , m_inputManager(inputManager)
-            , m_playerCount(playerCount)
+            , m_playerCount(inputManager.connectedControllerAmount())
         {
+            if (m_playerCount < 4) {
+                m_playerCount++; // for the keyboard
+            }
         }
         void build() const override;
     };

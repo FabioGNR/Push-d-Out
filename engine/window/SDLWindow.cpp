@@ -9,7 +9,7 @@ SDLWindow::SDLWindow(WindowProperties properties)
     : Window(std::move(properties))
     , m_window{ nullptr, nullptr }
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
 
     // creates a SDL_Window in a unique_ptr, specifying a custom delete function
     // namely the SDL_DestroyWindow function

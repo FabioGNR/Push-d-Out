@@ -87,10 +87,12 @@ set(INPUT_SRC
         input/Keys.h
         input/SDLKeys.cpp
         input/SDLKeys.h
-        input/KeyMap.cpp
-        input/KeyMap.h
+        input/maps/KeyMap.cpp
+        input/maps/KeyMap.h
         input/KeyStates.h
-        )
+        input/maps/AnalogMap.cpp
+        input/maps/AnalogMap.h
+        input/AnalogKeys.h)
 
 set(EVENTS_SRC
         events/IEventHandler.h
@@ -104,7 +106,7 @@ set(EVENTS_SRC
         events/models/KeyDownEvent.h
         events/models/QuitEvent.h
         events/models/Subscription.h
-        )
+        events/models/ControllerEvent.h)
 
 set(WINDOW_SRC
         window/SDLWindow.h
@@ -162,8 +164,13 @@ set(UI_SRC
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
         ui/components/CustomAction.h
+        input/maps/InputMap.cpp
+        input/maps/InputMap.h
+        input/SDL_Axis.h
+        input/SDL_Axis.cpp
         ui/components/Image.cpp
-        ui/components/Image.h)
+        ui/components/Image.h
+        events/models/MouseEvent.h)
 
 # more engine stuff
 add_library(engine

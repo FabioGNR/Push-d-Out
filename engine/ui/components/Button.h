@@ -27,7 +27,7 @@ namespace ui {
             m_action = std::move(action);
         }
 
-        void processInputEvent(engine::input::KeyMap& keyMap) override;
+        void processInputEvent(engine::input::maps::AnalogMap& keyMap) override;
 
         common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 

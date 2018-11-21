@@ -12,10 +12,8 @@ namespace systems {
 
     InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
         : m_world{ world }
+        , m_inputMap{ inputManager.getMap() }
     {
-        m_inputSubscription = inputManager.subscribe([&](engine::input::KeyMap keymap, engine::events::Subscription<engine::input::KeyMap>&) {
-            m_keyMap = keymap;
-        });
     }
 
     void InventorySystem::update(std::chrono::nanoseconds /* timeStep */)
@@ -23,20 +21,17 @@ namespace systems {
         m_world.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);
             auto& inventoryComponent = m_world.getComponent<InventoryComponent>(entity);
+            auto& analogMap = m_inputMap.getMap(inputComponent.controllerId);
             const auto pickupAction = definitions::Action::PickupEquippable;
-            if (inputComponent.controls.find(pickupAction) != inputComponent.controls.end()) {
-                // determine if control is pressed
-                const auto control = inputComponent.controls[pickupAction];
-                if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
-                    attemptPickup(entity, inventoryComponent);
-                }
+            const auto pickupControl = inputComponent.getKey(pickupAction);
+
+            if (analogMap.hasKeyState(pickupControl, engine::input::KeyStates::PRESSED)) {
+                attemptPickup(entity, inventoryComponent);
             }
             const auto switchAction = definitions::Action::SwitchWeapon;
-            if (inputComponent.controls.find(switchAction) != inputComponent.controls.end()) {
-                const auto control = inputComponent.controls[switchAction];
-                if (m_keyMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
-                    attemptSwitch(inventoryComponent);
-                }
+            const auto switchControl = inputComponent.getKey(switchAction);
+            if (analogMap.hasKeyState(switchControl, engine::input::KeyStates::PRESSED)) {
+                attemptSwitch(inventoryComponent);
             }
         });
     }
