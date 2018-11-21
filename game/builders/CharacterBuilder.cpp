@@ -1,4 +1,5 @@
 #include "CharacterBuilder.h"
+#include "SpriteBuilder.h"
 
 #include <engine/common/RNG.h>
 #include <engine/definitions/SystemPriority.h>
@@ -82,6 +83,12 @@ namespace builders {
         KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
         KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
+        std::vector<std::map<std::string, components::SpriteComponent>> playerAnimations;
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playergreen.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playerblue.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playerred.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playeryellow.png", assetsFolder + "datafile.json" }.build());
+
         for (size_t i = 0; i < m_playerCount; ++i) {
             // Make character jumpable
             m_ecsWorld.addComponent<components::JumpComponent>(players[i], common::Vector2D{ 0.0, 0.0 });
@@ -102,6 +109,13 @@ namespace builders {
             components::PositionComponent positionComponent{ position };
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
+            // Create the sprite component for the player entity
+            auto spriteComponentPair = playerAnimations[i].find("Idle");
+            if (spriteComponentPair != playerAnimations[i].end()) {
+                auto spriteComponent = spriteComponentPair->second;
+                m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
+            }
+          
             // Open the required controller
             if (m_inputManager.openController(i)) {
                 components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };
@@ -114,10 +128,6 @@ namespace builders {
             // Create the life component for player entity
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
-
-            // Create the sprite component for the player entity
-            components::SpriteComponent spriteComponent{ "sheet", "spriteName" };
-            m_ecsWorld.addComponent<game::components::SpriteComponent>(players[i], spriteComponent);
 
             //Creating force gun entity
             auto& gunEntity = m_ecsWorld.createEntity();

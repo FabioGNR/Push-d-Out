@@ -6,6 +6,8 @@ set(GAME_SRC
         states/GameState.h
         states/MainMenuState.cpp
         states/MainMenuState.h
+        sprite/reader/SpriteReader.cpp
+        sprite/reader/SpriteReader.h
         states/PauseMenuState.cpp
         states/PauseMenuState.h
         states/BaseMenuState.cpp
@@ -44,8 +46,8 @@ set(SYSTEM_SRC
         systems/PositionSystem.h
         systems/SpriteSystem.cpp
         systems/SpriteSystem.h
-        systems/RenderSystem.cpp
-        systems/RenderSystem.h
+        systems/AnimationSystem.cpp
+        systems/AnimationSystem.h
         systems/WeaponSystem.cpp
         systems/WeaponSystem.h
         systems/InventorySystem.cpp
@@ -59,7 +61,9 @@ set(SYSTEM_SRC
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
         systems/LifeSystem.cpp
-        systems/LifeSystem.h
+        systems/LifeSystem.h 
+        systems/BackgroundSystem.cpp 
+        systems/BackgroundSystem.h
         systems/JumpSystem.cpp 
         systems/JumpSystem.h
         )
@@ -94,8 +98,12 @@ set(BUILDER_SRC
         builders/IBuilder.h
         builders/CharacterBuilder.cpp
         builders/CharacterBuilder.h
-        builders/CharacterSpawnGenerator.cpp
         builders/CharacterSpawnGenerator.h
+        builders/CharacterSpawnGenerator.cpp
+        sprite/SpriteDomain.cpp
+        sprite/SpriteDomain.h
+        builders/SpriteBuilder.cpp
+        builders/SpriteBuilder.h
         )
 
 target_include_directories(

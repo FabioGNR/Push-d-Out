@@ -6,27 +6,36 @@
 #include "game/components/SpriteComponent.h"
 #include "game/components/WeaponComponent.h"
 #include <engine/common/RNG.h>
+#include <game/builders/SpriteBuilder.h>
 
 namespace game {
 namespace equipment {
     using namespace components;
 
     void buildReverseGravity(engine::ecs::Entity& entity,
-        engine::ecs::World& ecsWorld)
+        engine::ecs::World& ecsWorld,
+        std::map<std::string, components::SpriteComponent> spriteComponentMap)
     {
         ItemComponent itemComponent{ definitions::ItemType::ReverseGravity };
         ecsWorld.addComponent<ItemComponent>(entity, itemComponent);
-        SpriteComponent spriteComponent{ "assets/items.png", "reverse-gravity" };
-        ecsWorld.addComponent<SpriteComponent>(entity, spriteComponent);
+        auto spriteComponentPair = spriteComponentMap.find("ReverseGravity");
+        if (spriteComponentPair != spriteComponentMap.end()) {
+            auto spriteComponent = spriteComponentPair->second;
+            ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
+        }
     }
 
     void buildForceGun(engine::ecs::Entity& entity,
-        engine::ecs::World& ecsWorld)
+        engine::ecs::World& ecsWorld,
+        std::map<std::string, components::SpriteComponent> spriteComponentMap)
     {
         WeaponComponent weaponComponent{ 1, definitions::WeaponType::ForceGun };
         ecsWorld.addComponent<WeaponComponent>(entity, weaponComponent);
-        SpriteComponent spriteComponent{ "assets/weapons.png", "force-gun" };
-        ecsWorld.addComponent<SpriteComponent>(entity, spriteComponent);
+        auto spriteComponentPair = spriteComponentMap.find("ReverseGravity");
+        if (spriteComponentPair != spriteComponentMap.end()) {
+            auto spriteComponent = spriteComponentPair->second;
+            ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
+        }
     }
 
     engine::ecs::Entity& EquipmentFactory::createRandomEquipment(common::Vector2D<double> position) const
@@ -37,7 +46,7 @@ namespace equipment {
         engine::ecs::Entity& entity
             = m_world.createEntity();
         // add equipment specific components
-        m_factories[chosenType](entity, m_world);
+        m_factories[chosenType](entity, m_world, m_spriteComponentMap);
         // add common components
         PositionComponent positionComponent{ position };
         m_world.addComponent<PositionComponent>(entity, positionComponent);
@@ -61,6 +70,10 @@ namespace equipment {
         for (const auto& factoryPair : m_weaponFactoryMap) {
             m_factories.push_back(factoryPair.second);
         }
+
+        //Build sprite component map
+        builders::SpriteBuilder eqSpriteBuilder{ "assets/sprites/equipment/equipment.png", "assets/sprites/equipment/datafile.json" };
+        m_spriteComponentMap = eqSpriteBuilder.build();
     }
 }
 }

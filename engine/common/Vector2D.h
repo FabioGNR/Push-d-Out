@@ -23,6 +23,12 @@ struct Vector2D {
         static_assert(std::is_arithmetic<T>(), "Vector2D can only be created with arithmetic types");
     }
 
+    Vector2D()
+        : x{ 0 }
+        , y{ 0 }
+    {
+    }
+
     // basic arithmetic functions
     Vector2D<T>& operator+=(const Vector2D<T>& other)
     {

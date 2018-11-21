@@ -5,11 +5,11 @@
 #include <graphics/IRenderVisitor.h>
 
 namespace engine {
-Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> size, double scale)
+Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition)
     : m_spritePath(std::move(spritePath))
+    , m_sourcePosition{ sourcePosition }
     , m_position(position)
-    , m_size(size)
-    , m_scale(scale)
+    , m_sourceSize(sourceSize)
 {
 }
 
@@ -28,14 +28,14 @@ common::Vector2D<int> Sprite::position() const
     return m_position;
 }
 
-common::Vector2D<int> Sprite::size() const
+common::Vector2D<int> Sprite::sourcePosition() const
 {
-    return m_size;
+    return m_sourcePosition;
 }
 
-double Sprite::scale() const
+common::Vector2D<int> Sprite::sourceSize() const
 {
-    return m_scale;
+    return m_sourceSize;
 }
 
 bool Sprite::operator==(const Sprite& rhs) const
@@ -56,6 +56,11 @@ void Sprite::setPosition(common::Vector2D<int> position)
 void Sprite::setSize(common::Vector2D<int> size)
 {
     m_size = size;
+}
+
+common::Vector2D<int> Sprite::size() const
+{
+    return m_size;
 }
 
 } // end namespace engine

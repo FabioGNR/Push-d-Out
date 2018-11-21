@@ -1,0 +1,21 @@
+{
+    "Animations": [
+        {
+            "name": "ReverseGravity",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    ]
+}

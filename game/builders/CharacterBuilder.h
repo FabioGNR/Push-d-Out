@@ -11,6 +11,7 @@ namespace builders {
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
         engine::input::InputManager& m_inputManager;
+        std::string assetsFolder = "assets/sprites/players/";
         size_t m_playerCount;
 
     public:

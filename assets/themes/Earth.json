@@ -2,5 +2,6 @@
 	"name": "Earth",
 	"gravity": -9.81,
 	"friction": 3.0,
-	"track": "02.wav"
+	"track": "02.wav",
+	"sprites": "earth"
 }

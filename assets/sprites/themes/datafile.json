@@ -1,0 +1,276 @@
+{
+    "Animations": [
+        {
+            "name": "leftUpperCorner",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "middleUpper",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 18,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rightUpperCorner",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 36,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "leftMiddle",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 18
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "middleMiddle",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 18,
+                "y": 18
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rightMiddle",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 36,
+                "y": 18
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "leftLowerCorner",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 36
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "middleLower",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 18,
+                "y": 36
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rightLowerCorner",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 36,
+                "y": 36
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "leftSingleDepth",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 54,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "middleSingleDepth",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 72,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rightSingleDepth",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 90,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "upperSingleWidth",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 54,
+                "y": 18
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "middleSingleWidth",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 54,
+                "y": 36
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "lowerSingleWidth",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 54,
+                "y": 54
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "single",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 72,
+                "y": 18
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    ]
+}

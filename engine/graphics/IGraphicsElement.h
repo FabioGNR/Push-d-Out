@@ -5,7 +5,7 @@ class IRenderVisitor;
 
 class IGraphicsElement {
 public:
-    virtual void accept(IRenderVisitor& visitor) const = 0;
     virtual ~IGraphicsElement() = default;
+    virtual void accept(IRenderVisitor& visitor) const = 0;
 };
 } // end namespace engine

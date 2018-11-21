@@ -30,7 +30,7 @@ namespace ui {
     common::Vector2D<int> LayoutPanel::calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const
     {
         common::Vector2D<int> requiredSize{ 0, 0 };
-        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
+        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize().castTo<int>()).castTo<int>();
 
         for (const auto& component : m_components) {
             common::Vector2D<int> componentSize = component.getComponent().calculateSize(renderer,

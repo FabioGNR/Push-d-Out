@@ -10,6 +10,8 @@
 #include <game/builders/CharacterBuilder.h>
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
+#include <game/systems/AnimationSystem.h>
+#include <game/systems/BackgroundSystem.h>
 #include <game/systems/CameraSystem.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
@@ -18,7 +20,6 @@
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
-#include <game/systems/RenderSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
@@ -51,6 +52,7 @@ void GameState::init()
     // Set-up camera
     auto camera = std::make_shared<engine::graphics::Camera>(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
     m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+    m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
 
     // Build characters into the ECS and physics world
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
@@ -66,8 +68,8 @@ void GameState::init()
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
 
-    // Add render system
-    m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+    // Add animation system
+    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
 
     subscribeInput();
