@@ -115,8 +115,6 @@ namespace builders {
                 auto spriteComponent = spriteComponentPair->second;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
-            components::PlayerInputComponent playerInputComponent{ static_cast<int>(i + 1), controls };
-            m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
           
             // Open the required controller
             if (m_inputManager.openController(i)) {
