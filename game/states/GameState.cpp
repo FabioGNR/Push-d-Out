@@ -37,7 +37,7 @@ void GameState::init()
     auto& game = dynamic_cast<Game&>(m_context);
 
     // Read Level based on JSON file
-    level::LevelReader lr {};
+    level::LevelReader lr{};
     auto level = lr.build(lr.parse("assets/levels/base-level.json"));
 
     // Create level from theme
@@ -63,7 +63,7 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *camera);
 
-    game::builders::CharacterBuilder builder { m_ecsWorld, *m_world, m_inputManager, 4 };
+    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager, 4 };
     builder.build();
 
     // Add render system

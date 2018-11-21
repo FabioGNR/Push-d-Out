@@ -8,8 +8,8 @@ namespace systems {
     class BackgroundSystem : public engine::ecs::BaseSystem<BackgroundSystem> {
     public:
         explicit BackgroundSystem(engine::ecs::World& ecsWorld, common::Vector2D<int> screenSize)
-            : m_ecsWorld { ecsWorld }
-            , m_screenSize { screenSize }
+            : m_ecsWorld{ ecsWorld }
+            , m_screenSize{ screenSize }
         {
         }
 
