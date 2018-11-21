@@ -1,6 +1,6 @@
 #pragma once
 #include "components/Component.h"
-#include <engine/input/KeyMap.h>
+#include <engine/input/maps/AnalogMap.h>
 #include <memory>
 
 namespace engine {
@@ -34,7 +34,7 @@ namespace ui {
             return *this;
         }
 
-        void processInputEvent(engine::input::KeyMap& keyMap);
+        void processInputEvent(engine::input::maps::AnalogMap& keyMap);
         void draw(IRenderer& renderer, common::Vector2D<int> screenSize) const;
 
     private:

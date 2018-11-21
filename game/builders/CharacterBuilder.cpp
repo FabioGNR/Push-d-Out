@@ -48,18 +48,37 @@ namespace builders {
         // Set the dimension of all the players
         common::Vector2D<double> dimension{ 1, 2 };
 
+        // Add the necessary systems into the ECS world before adding components
+        m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+        m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
+        m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
+        m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
+        m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
+        m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
+        m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+
         // Create the player input scheme for the player entity
         // TODO : Build the key mapper for player controls
+        std::map<game::definitions::Action, engine::input::Keys> KBM_Controls;
         std::map<game::definitions::Action, engine::input::Keys> controls;
+        std::map<game::definitions::Action, engine::input::AnalogKeys> analogControls;
 
         // TODO: Move these actions to some kind of configurations
-        controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
-        controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
-        controls[definitions::Action::UseItem] = engine::input::Keys::G;
-        controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
-        controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
-        controls[definitions::Action::MoveRight] = engine::input::Keys::D;
-        controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
+        analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys::CON_TRIGGER_RIGHT;
+        analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
+        analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
+        controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
+        controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSTICK;
+        controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
+        controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
+
+        KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
+        KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
+        KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
+        KBM_Controls[definitions::Action::MoveRight] = engine::input::Keys::D;
+        KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
+        KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
         for (size_t i = 0; i < m_playerCount; ++i) {
             // Create a position vector based on a random index
@@ -78,8 +97,14 @@ namespace builders {
             components::PositionComponent positionComponent{ position };
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
-            components::PlayerInputComponent playerInputComponent{ static_cast<int>(i + 1), controls };
-            m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
+            // Open the required controller
+            if (m_inputManager.openController(i)) {
+                components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };
+                m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
+            } else { // DEBUG
+                components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
+                m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
+            }
 
             // Create the life component for player entity
             components::LifeComponent lifeComponent{ 3 };

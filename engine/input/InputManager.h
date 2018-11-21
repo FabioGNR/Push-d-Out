@@ -1,27 +1,33 @@
 #pragma once
 
-#include "KeyMap.h"
-
-#include <engine/events/models/KeyUpEvent.h>
+#include "engine/events/IEventHandler.h"
+#include "engine/input/maps/InputMap.h"
 #include <engine/events/models/Subscription.h>
-
 #include <memory>
-#include <queue>
 #include <vector>
 
 namespace engine {
 namespace input {
     class InputManager {
     private:
-        std::vector<std::weak_ptr<events::Subscription<KeyMap>>> m_subscriptions;
-        KeyMap m_keymap;
+        std::vector<std::weak_ptr<events::Subscription<maps::AnalogMap>>> m_subscriptions;
+        maps::InputMap m_inputMap{};
+        events::IEventHandler* m_handler;
 
     public:
-        void handle(const std::shared_ptr<events::IControlEvent>& event);
-        std::shared_ptr<events::Subscription<KeyMap>> subscribe(std::function<void(KeyMap, events::Subscription<KeyMap>&)> onNotify);
+        explicit InputManager(events::IEventHandler* handler)
+            : m_handler{ handler } {};
+
+        void handle(const std::unique_ptr<events::IEvent>& event_ptr);
+
+        std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify, int id);
+        std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify);
+
         void notify();
         void update();
-        const KeyMap& getKeyMap() const;
+        maps::InputMap& getMap();
+        size_t connectedControllerAmount();
+        bool openController(int id);
     };
 }
 }

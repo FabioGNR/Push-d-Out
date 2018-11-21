@@ -1,6 +1,6 @@
 #include "Button.h"
 #include <graphics/drawable/RectangleShape.h>
-#include <input/KeyMap.h>
+#include <input/maps/KeyMap.h>
 
 namespace engine {
 namespace ui {
@@ -32,7 +32,7 @@ namespace ui {
         return size;
     }
 
-    void Button::processInputEvent(engine::input::KeyMap& keyMap)
+    void Button::processInputEvent(engine::input::maps::AnalogMap& keyMap)
     {
         //TODO: replace shouldExecute with proper mapping
         bool shouldExecute = keyMap.hasKeyState(engine::input::Keys::SPACE, engine::input::KeyStates::PRESSED);
