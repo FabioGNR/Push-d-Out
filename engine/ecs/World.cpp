@@ -8,6 +8,11 @@ namespace ecs {
         return m_entityManager.create();
     }
 
+    Entity& World::getEntity(EntityId id)
+    {
+        return m_entityManager.entity(id);
+    }
+
     void World::destroyEntity(Entity& entity)
     {
         for (auto& manager : m_componentManager.getAll()) {

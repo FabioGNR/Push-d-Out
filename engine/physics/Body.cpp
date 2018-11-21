@@ -49,5 +49,15 @@ namespace physics {
     {
         return common::Vector2D<double>((m_dimensions.x) / 2.0, (m_dimensions.y) / 2.0);
     }
+
+    void Body::setEntityId(ecs::EntityId id)
+    {
+        m_body->SetUserData((void*)id);
+    }
+
+    ecs::EntityId Body::getEntityId()
+    {
+        return (ecs::EntityId)m_body->GetUserData();
+    }
 }
 }

@@ -79,6 +79,8 @@ set(PHYSICS_SRC
         physics/Collision.h
         physics/KinematicBody.cpp
         physics/KinematicBody.h
+        physics/ContactListener.h
+        physics/Contact.h
         )
 
 set(INPUT_SRC

@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Body.h"
+#include "ContactListener.h"
 
 #include <engine/common/Vector2D.h>
+#include <engine/ecs/Entity.h>
 
 #include <chrono>
 #include <memory>
@@ -25,6 +27,8 @@ namespace physics {
         class WorldImpl;
         std::unique_ptr<WorldImpl> m_impl;
 
+        std::vector<std::unique_ptr<ContactListener>> m_contactListeners;
+
     public:
         World(common::Vector2D<int> size, double gravity, double friction);
 
@@ -46,9 +50,11 @@ namespace physics {
         b2Body* createBody(const b2BodyDef& def) const;
         void destroyBody(b2Body* body);
 
-        Body* createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
-        Body* createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
-        Body* createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension);
+        void addContactListener(std::unique_ptr<ContactListener> contactListener);
+
+        Body* createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
+        Body* createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
+        Body* createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
         const std::vector<std::unique_ptr<Body>>& getBodies() const;
     };
 }

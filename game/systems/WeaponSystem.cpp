@@ -23,7 +23,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>(1, 1);
     auto& projectileEntity = ecsWorld.createEntity();
     common::Vector2D<double> dimensionVector(0.5, 0.5);
-    engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector);
+    engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector, projectileEntity.id());
 
     auto posComponent = PositionComponent(playerPosition);
     ecsWorld.addComponent<PositionComponent>(projectileEntity, posComponent);

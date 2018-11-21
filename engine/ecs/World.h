@@ -31,6 +31,7 @@ namespace ecs {
         virtual ~World() = default;
 
         Entity& createEntity();
+        Entity& getEntity(EntityId id);
         void update(std::chrono::nanoseconds timeStep);
         void render(engine::IRenderer& renderer);
 

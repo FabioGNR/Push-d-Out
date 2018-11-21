@@ -1,15 +1,17 @@
 #pragma once
 
+#include <engine/common/Vector2D.h>
 #include <engine/ecs/Component.h>
 
 namespace game {
 namespace components {
     struct JumpComponent : public engine::ecs::BaseComponent<JumpComponent> {
-        double deltaY, velocity;
+        common::Vector2D<double> delta;
+        bool mayJump;
 
-        JumpComponent(double deltaY, double velocity)
-            : deltaY(deltaY)
-            , velocity(velocity){};
+        explicit JumpComponent(common::Vector2D<double> delta)
+            : delta{ delta }
+            , mayJump{ true } {};
     };
 }
 }

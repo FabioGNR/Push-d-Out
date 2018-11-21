@@ -7,6 +7,7 @@
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
+#include <game/components/JumpComponent.h>
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
@@ -17,6 +18,7 @@
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
+#include <game/systems/JumpSystem.h>
 #include <game/systems/LifeSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
@@ -81,12 +83,15 @@ namespace builders {
         KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
         for (size_t i = 0; i < m_playerCount; ++i) {
+            // Make character jumpable
+            m_ecsWorld.addComponent<components::JumpComponent>(players[i], common::Vector2D{ 0.0, 0.0 });
+
             // Create a position vector based on a random index
             int randomValue = common::RNG::generate(1, static_cast<int>(positions.size()));
             common::Vector2D<double> position = positions[randomValue - 1];
 
             // Create a dynamic body for the Physics World
-            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension) };
+            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id()) };
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], bodyComponent);
 
             // Create the dimension component for player entity
