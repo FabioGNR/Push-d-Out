@@ -55,11 +55,27 @@ void IGame::run()
         // update game logic as lag permits
         while (lag >= TIME_PER_UPDATE) {
             lag -= TIME_PER_UPDATE;
-            onUpdate(TIME_PER_UPDATE);
+            auto updateDuration = std::chrono::duration<double, std::nano>(TIME_PER_UPDATE.count() * m_speed);
+            onUpdate(std::chrono::duration_cast<std::chrono::nanoseconds>(updateDuration));
         }
 
         // how far we are into the frame
         onRender();
     }
+}
+
+void IGame::setSpeed(double speed)
+{
+    m_speed = speed;
+}
+
+void IGame::resetSpeed()
+{
+    m_speed = 1;
+}
+
+double IGame::speed() const
+{
+    return m_speed;
 }
 }
