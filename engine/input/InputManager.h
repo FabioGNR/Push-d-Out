@@ -12,10 +12,10 @@ namespace input {
     private:
         std::vector<std::weak_ptr<events::Subscription<maps::AnalogMap>>> m_subscriptions;
         maps::InputMap m_inputMap{};
-        std::shared_ptr<events::IEventHandler> m_handler;
+        events::IEventHandler* m_handler;
 
     public:
-        explicit InputManager(std::shared_ptr<events::IEventHandler>& handler)
+        explicit InputManager(events::IEventHandler* handler)
             : m_handler{ handler } {};
 
         void handle(const std::unique_ptr<events::IEvent>& event_ptr);

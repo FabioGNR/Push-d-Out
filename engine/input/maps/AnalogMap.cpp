@@ -15,6 +15,9 @@ namespace input {
 
         void AnalogMap::setValue(engine::input::AnalogKeys key, int value)
         {
+            if (key == AnalogKeys::CON_UNKNOWN) {
+                return;
+            }
             analogMap[key] = value;
         }
 

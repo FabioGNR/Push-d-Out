@@ -30,6 +30,10 @@ namespace input {
 
         void KeyMap::setKeyState(Keys key, KeyStates state)
         {
+            if (key == Keys::UNKNOWN) {
+                return;
+            }
+
             if (getKeyState(key) == PRESSED && state == RELEASED) {
                 m_map[key] = PRESSED_AND_RELEASED;
             } else {

@@ -20,17 +20,9 @@ namespace builders {
             , m_inputManager(inputManager)
             , m_playerCount(inputManager.connectedControllerAmount())
         {
-
-            if (m_playerCount == 0) {
+            if (m_playerCount < 4) {
                 m_playerCount++; // for the keyboard
             }
-            //DEBUG - comment the lines below to
-            // NOT have the keyboard active during game time
-            // IF you have a controller connected
-            /*
-            else {
-                m_playerCount++;
-            }*/
         }
         void build() const override;
     };

@@ -15,7 +15,7 @@ namespace components {
         std::map<definitions::Action, engine::input::AnalogKeys> analogControls;
 
     public:
-        int controllerId;
+        const int controllerId;
 
         PlayerInputComponent(int controllerId, std::map<definitions::Action, engine::input::Keys> controls, std::map<definitions::Action, engine::input::AnalogKeys> analogControls)
             : controls(std::move(controls))
