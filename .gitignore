@@ -7,5 +7,3 @@ cmake-build-*/
 .idea/
 CMakeSettings.json
 .DS_STORE
-external/Box2D
-vcpkg/

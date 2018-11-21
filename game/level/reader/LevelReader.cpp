@@ -58,7 +58,7 @@ namespace level {
             world.addComponent<components::PositionComponent>(entity, posComponent);
 
             // Add a body component to tile entity
-            auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, dimension));
+            auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, dimension, entity.id()));
             world.addComponent<components::BodyComponent>(entity, bodyComponent);
 
             // Add a sprite component to tile entity

@@ -10,9 +10,6 @@ namespace engine {
 namespace physics {
     class World;
     class KinematicBody : public Body {
-    private:
-        b2Body* m_body;
-
     public:
         KinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
         KinematicBody(const KinematicBody& other) = delete;

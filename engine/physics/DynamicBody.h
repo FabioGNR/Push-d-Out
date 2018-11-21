@@ -12,9 +12,6 @@ namespace engine {
 namespace physics {
     class World;
     class DynamicBody : public Body {
-    private:
-        b2Body* m_body;
-
     public:
         DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
         DynamicBody(const DynamicBody& other) = delete;

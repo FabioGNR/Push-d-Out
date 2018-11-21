@@ -14,10 +14,13 @@ set(GAME_SRC
         states/BaseMenuState.h
         exceptions/NoPlayersFoundException.h
         exceptions/MissingCharacterSpawnException.h
+        listeners/JumpContactListener.cpp
+        listeners/JumpContactListener.h
         )
 
 set(COMPONENT_SRC
         components/MoveComponent.h
+        components/JumpComponent.h
         components/PlayerInputComponent.h
         components/PositionComponent.h
         components/BodyComponent.h
@@ -58,7 +61,12 @@ set(SYSTEM_SRC
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
         systems/LifeSystem.cpp
-        systems/LifeSystem.h systems/BackgroundSystem.cpp systems/BackgroundSystem.h)
+        systems/LifeSystem.h 
+        systems/BackgroundSystem.cpp 
+        systems/BackgroundSystem.h
+        systems/JumpSystem.cpp 
+        systems/JumpSystem.h
+        )
 
 set(DEFINITION_SRC
         definitions/Action.h

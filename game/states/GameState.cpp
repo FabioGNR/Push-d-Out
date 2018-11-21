@@ -15,6 +15,7 @@
 #include <game/systems/CameraSystem.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
+#include <game/systems/JumpSystem.h>
 #include <game/systems/LifeSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
@@ -56,6 +57,7 @@ void GameState::init()
     // Build characters into the ECS and physics world
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
+    m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
     m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
