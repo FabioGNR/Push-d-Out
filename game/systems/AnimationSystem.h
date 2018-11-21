@@ -12,7 +12,7 @@
 
 namespace game {
 namespace systems {
-    class RenderSystem : public engine::ecs::BaseSystem<RenderSystem> {
+    class AnimationSystem : public engine::ecs::BaseSystem<AnimationSystem> {
     private:
         engine::ecs::World& world;
         std::shared_ptr<engine::graphics::Camera> m_camera;
@@ -20,7 +20,7 @@ namespace systems {
         std::vector<engine::Sprite> sprites;
 
     public:
-        RenderSystem(engine::ecs::World& world, std::shared_ptr<engine::graphics::Camera> camera)
+        AnimationSystem(engine::ecs::World& world, std::shared_ptr<engine::graphics::Camera> camera)
             : world(world)
             , m_camera{ std::move(camera) }
         {

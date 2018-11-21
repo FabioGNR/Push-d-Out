@@ -43,8 +43,8 @@ set(SYSTEM_SRC
         systems/PositionSystem.h
         systems/SpriteSystem.cpp
         systems/SpriteSystem.h
-        systems/RenderSystem.cpp
-        systems/RenderSystem.h
+        systems/AnimationSystem.cpp
+        systems/AnimationSystem.h
         systems/WeaponSystem.cpp
         systems/WeaponSystem.h
         systems/InventorySystem.cpp

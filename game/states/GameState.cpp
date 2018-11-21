@@ -10,6 +10,8 @@
 #include <game/builders/CharacterBuilder.h>
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
+#include <game/systems/AnimationSystem.h>
+#include <game/systems/BackgroundSystem.h>
 #include <game/systems/CameraSystem.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
@@ -17,11 +19,9 @@
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
-#include <game/systems/RenderSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
-#include <game/systems/BackgroundSystem.h>
 
 namespace game {
 GameState::GameState(engine::IGame& game)
@@ -37,7 +37,7 @@ void GameState::init()
     auto& game = dynamic_cast<Game&>(m_context);
 
     // Read Level based on JSON file
-    level::LevelReader lr{};
+    level::LevelReader lr {};
     auto level = lr.build(lr.parse("assets/levels/base-level.json"));
 
     // Create level from theme
@@ -63,11 +63,11 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *camera);
 
-    game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager, 4 };
+    game::builders::CharacterBuilder builder { m_ecsWorld, *m_world, m_inputManager, 4 };
     builder.build();
 
     // Add render system
-    m_ecsWorld.addSystem<systems::RenderSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
 
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
 

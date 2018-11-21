@@ -1,4 +1,4 @@
-#include "RenderSystem.h"
+#include "AnimationSystem.h"
 #include "PlayerInputSystem.h"
 #include "game/components/DimensionComponent.h"
 #include "game/components/PositionComponent.h"
@@ -12,7 +12,7 @@
 namespace game {
 namespace systems {
     using namespace components;
-    void RenderSystem::update(std::chrono::nanoseconds timeStep)
+    void AnimationSystem::update(std::chrono::nanoseconds timeStep)
     {
         // First clear the list of rectangles
         this->rectangles.clear();
@@ -43,7 +43,7 @@ namespace systems {
         });
     }
 
-    void RenderSystem::render(engine::IRenderer& renderer)
+    void AnimationSystem::render(engine::IRenderer& renderer)
     {
         // Draw the rectangles to the screen
         for (const auto& rectangle : this->rectangles) {
