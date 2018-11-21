@@ -27,7 +27,6 @@ namespace input {
         void update();
         maps::InputMap& getMap();
         size_t connectedControllerAmount();
-        bool openController(int id);
     };
 }
 }

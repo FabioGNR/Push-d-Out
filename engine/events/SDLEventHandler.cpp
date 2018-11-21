@@ -45,7 +45,8 @@ namespace events {
             }
             return std::make_unique<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
         case SDL_CONTROLLERDEVICEADDED: {
-            cCon.insert({ event.cbutton.which, false });
+            SDL_GameControllerOpen(event.cdevice.which);
+            controllerCount++;
             return nullptr;
         }
         default:
@@ -53,20 +54,10 @@ namespace events {
         }
     }
 
-    bool SDLEventHandler::openController(int id)
-    {
-        if (id < 0 || cCon.find(id) == cCon.end()) {
-            return false;
-        } else {
-            SDL_GameControllerOpen(id);
-            cCon[id] = true;
-            return true;
-        }
-    }
 
     size_t SDLEventHandler::getConnectedControllers()
     {
-        return cCon.size();
+        return controllerCount;
     }
 }
 }

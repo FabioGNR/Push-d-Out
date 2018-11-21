@@ -87,10 +87,5 @@ namespace input {
     {
         return m_handler->getConnectedControllers();
     }
-
-    bool InputManager::openController(int id)
-    {
-        return m_handler->openController(id);
-    }
 }
 }

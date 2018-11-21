@@ -21,7 +21,8 @@ namespace builders {
             , m_playerCount(inputManager.connectedControllerAmount())
         {
             if (m_playerCount < 4) {
-                m_playerCount++; // for the keyboard
+                // for the keyboard
+                m_playerCount++;
             }
         }
         void build() const override;
