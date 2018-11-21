@@ -66,9 +66,8 @@ void GameState::init()
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager, 4 };
     builder.build();
 
-    // Add render system
+    // Add animation system
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
-
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
 
     subscribeInput();
@@ -77,7 +76,6 @@ void GameState::init()
 void GameState::update(std::chrono::nanoseconds timeStep)
 {
     m_world->update(timeStep);
-
     m_ecsWorld.update(timeStep);
 }
 
@@ -115,15 +113,15 @@ void GameState::subscribeInput()
         }
 
         if (keyMap.hasKeyState(engine::input::Keys::F2, engine::input::KeyStates::PRESSED)) {
-            m_world->setUpdateScale(m_world->updateScale() - .1);
+            m_context.setSpeed(m_context.speed() - .1);
         }
 
         if (keyMap.hasKeyState(engine::input::Keys::F3, engine::input::KeyStates::PRESSED)) {
-            m_world->resetUpdateScale();
+            m_context.resetSpeed();
         }
 
         if (keyMap.hasKeyState(engine::input::Keys::F4, engine::input::KeyStates::PRESSED)) {
-            m_world->setUpdateScale(m_world->updateScale() + .1);
+            m_context.setSpeed(m_context.speed() + .1);
         }
     });
 }

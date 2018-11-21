@@ -8,7 +8,7 @@
 namespace game {
 namespace systems {
     using namespace game::components;
-    void CameraSystem::update(std::chrono::nanoseconds /*timeStep*/)
+    void CameraSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         bool lowerBoundSet = false, upperBoundSet = false;
         common::Vector2D<double> lowerBound = common::Vector2D<double>(0, 0);
