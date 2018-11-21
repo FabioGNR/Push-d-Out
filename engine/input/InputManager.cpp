@@ -1,38 +1,60 @@
-#include <utility>
-
 #include "InputManager.h"
-#include <events/models/IControlEvent.h>
-#include <events/models/KeyDownEvent.h>
-#include <events/models/KeyUpEvent.h>
-#include <map>
-#include <utility>
+#include <engine/events/models/ControllerEvent.h>
+#include <engine/events/models/KeyDownEvent.h>
+#include <engine/events/models/KeyUpEvent.h>
+#include <events/models/MouseEvent.h>
 
 namespace engine {
 namespace input {
-    void InputManager::handle(const std::shared_ptr<events::IControlEvent>& event)
+    void InputManager::handle(const std::unique_ptr<events::IEvent>& event_ptr)
     {
-        if (auto down = std::dynamic_pointer_cast<events::KeyDownEvent>(event)) {
-            m_keymap.setKeyState(down->value, KeyStates::PRESSED);
-        } else if (auto up = std::dynamic_pointer_cast<events::KeyUpEvent>(event)) {
-            m_keymap.setKeyState(up->value, KeyStates::RELEASED);
+        if (auto con = dynamic_cast<events::ControllerEvent*>(event_ptr.get())) {
+            auto& conMap = m_inputMap.getMap(con->m_ID);
+            if (con->m_isAnalog) {
+                conMap.setValue(con->m_analogKey, con->m_axisValue);
+            } else {
+                conMap.setValue(con->m_key, (con->m_keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
+            }
+        } else if (auto mouse = dynamic_cast<events::MouseEvent*>(event_ptr.get())) {
+            auto& KBM_Map = m_inputMap.getKBM();
+            if (mouse->m_isAnalog) {
+                KBM_Map.setValue(AnalogKeys::MOUSE_X, mouse->m_x);
+                KBM_Map.setValue(AnalogKeys::MOUSE_Y, mouse->m_y);
+            } else {
+                KBM_Map.setValue(mouse->m_key, (mouse->m_isPressed ? KeyStates::PRESSED : KeyStates::RELEASED));
+            }
+        } else {
+            auto& KMB_Map = m_inputMap.getKBM();
+            if (auto down = dynamic_cast<events::KeyDownEvent*>(event_ptr.get())) {
+                KMB_Map.setValue(down->value, KeyStates::PRESSED);
+            } else if (auto up = dynamic_cast<events::KeyUpEvent*>(event_ptr.get())) {
+                KMB_Map.setValue(up->value, KeyStates::RELEASED);
+            }
         }
     }
 
-    std::shared_ptr<events::Subscription<KeyMap>> InputManager::subscribe(std::function<void(KeyMap, events::Subscription<KeyMap>&)> onNotify)
+    std::shared_ptr<events::Subscription<maps::AnalogMap>> InputManager::subscribe(
+        std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify, int id)
     {
-        auto subscription = std::make_shared<events::Subscription<KeyMap>>(onNotify);
+        auto subscription = std::make_shared<events::Subscription<maps::AnalogMap>>(onNotify, id);
+        m_subscriptions.push_back(subscription);
+        return subscription;
+    }
+
+    std::shared_ptr<events::Subscription<maps::AnalogMap>> InputManager::subscribe(
+        std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify)
+    {
+        auto subscription = std::make_shared<events::Subscription<maps::AnalogMap>>(onNotify, -1);
         m_subscriptions.push_back(subscription);
         return subscription;
     }
 
     void InputManager::notify()
     {
-        if (!m_keymap.m_map.empty()) {
-            for (const auto& weakObserver : m_subscriptions) {
-                if (auto observer = weakObserver.lock()) {
-                    if (observer->isActive) {
-                        observer->update(m_keymap, *observer);
-                    }
+        for (const auto& weakObserver : m_subscriptions) {
+            if (auto observer = weakObserver.lock()) {
+                if (observer->isActive) {
+                    observer->update(m_inputMap.getMap(observer->subbedTo), *observer);
                 }
             }
         }
@@ -40,7 +62,7 @@ namespace input {
 
     void InputManager::update()
     {
-        m_keymap.update();
+        m_inputMap.update();
 
         // remove inactive subscriptions
         auto it = m_subscriptions.begin();
@@ -56,10 +78,19 @@ namespace input {
             it = m_subscriptions.erase(it);
         }
     }
-
-    const KeyMap& InputManager::getKeyMap() const
+    maps::InputMap& InputManager::getMap()
     {
-        return m_keymap;
+        return m_inputMap;
+    }
+
+    size_t InputManager::connectedControllerAmount()
+    {
+        return m_handler->getConnectedControllers();
+    }
+
+    bool InputManager::openController(int id)
+    {
+        return m_handler->openController(id);
     }
 }
 }

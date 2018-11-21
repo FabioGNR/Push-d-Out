@@ -1,12 +1,12 @@
 #include "Frame.h"
-#include <input/KeyMap.h>
+#include <input/maps/KeyMap.h>
 #include <ui/components/ComponentPanel.h>
 
 namespace engine {
 namespace ui {
     using namespace engine::input;
 
-    void Frame::processInputEvent(KeyMap& keyMap)
+    void Frame::processInputEvent(maps::AnalogMap& keyMap)
     {
         //TODO: use proper mapping for this instead of hardcoded W and S
         // if navigation key(s)

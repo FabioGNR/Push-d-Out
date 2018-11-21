@@ -9,12 +9,13 @@ namespace events {
     class EventManager {
 
     private:
-        input::InputManager m_inputManager;
         std::unique_ptr<IEventHandler> m_handler;
+        input::InputManager m_inputManager;
 
     public:
         explicit EventManager(std::unique_ptr<IEventHandler> mapper)
-            : m_handler{ std::move(mapper) } {};
+            : m_handler{ std::move(mapper) }
+            , m_inputManager{ m_handler.get() } {};
 
         bool getEvents();
         input::InputManager& getInput();
