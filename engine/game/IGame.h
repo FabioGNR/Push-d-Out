@@ -10,6 +10,7 @@ class State;
 class IGame {
 private:
     bool m_isRunning = false;
+    double m_speed = 1;
 
 protected:
     std::stack<std::unique_ptr<State>> m_states;
@@ -31,5 +32,9 @@ public:
     virtual void next(std::unique_ptr<engine::State> state);
     virtual void stop();
     virtual void run();
+
+    virtual void setSpeed(double);
+    virtual void resetSpeed();
+    virtual double speed() const;
 };
 }
