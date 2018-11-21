@@ -53,6 +53,8 @@ set(GRAPHICS_SRC
         graphics/SDL/SDLRenderer.h
         graphics/drawable/RectangleShape.cpp
         graphics/drawable/RectangleShape.h
+        graphics/drawable/Circle.cpp
+        graphics/drawable/Circle.h
         graphics/drawable/LineShape.cpp
         graphics/drawable/LineShape.h
         graphics/drawable/Font.cpp
@@ -62,7 +64,7 @@ set(GRAPHICS_SRC
         graphics/Color.h
         graphics/Camera.h
         graphics/Camera.cpp
-        )
+        graphics/BlendModes.h graphics/SDL/SDLBlendModes.h graphics/SDL/SDLBlendModes.cpp graphics/drawable/Surface.cpp graphics/drawable/Surface.h)
 
 set(PHYSICS_SRC
         physics/PhysicsManager.h
@@ -197,5 +199,3 @@ target_link_libraries(engine
         ${SDL2_MIXER_LIBRARIES}
         ${BOX2D_LIBRARY}
         )
-
-target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

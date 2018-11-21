@@ -20,6 +20,8 @@ namespace physics {
         World& m_world;
         b2Body* m_body;
 
+        ecs::EntityId m_ownerId = 0;
+
         friend WorldImpl;
         friend World;
 

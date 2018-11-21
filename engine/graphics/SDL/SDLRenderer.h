@@ -2,8 +2,8 @@
 
 #include "engine/graphics/IRenderer.h"
 #include "engine/window/SDLWindow.h"
-
 #include <engine/common/ResourceCache.h>
+#include <engine/graphics/drawable/Surface.h>
 #include <memory>
 
 struct SDL_Renderer;
@@ -14,9 +14,10 @@ typedef struct _TTF_Font TTF_Font;
 namespace engine {
 
 using SurfaceTexturePair = std::pair<std::shared_ptr<SDL_Surface>, std::shared_ptr<SDL_Texture>>;
-static common::ResourceCache<std::string, std::shared_ptr<TTF_Font>> fontCache;
+static common::ResourceCache<std::pair<int, std::string>, std::shared_ptr<TTF_Font>> fontCache;
 static common::ResourceCache<Font, SurfaceTexturePair> textCache;
 static common::ResourceCache<Sprite, SurfaceTexturePair> spriteCache;
+static common::ResourceCache<Surface, std::shared_ptr<SDL_Texture>> surfaceCache;
 
 class SDLRenderer : public IRenderer {
     friend class SDLRenderVisitor;
@@ -40,6 +41,7 @@ public:
     void clear() override;
 
     common::Vector2D<int> getFontSize(const Font& font) const override;
+    void setBlendMode(engine::graphics::BlendModes) override;
     common::Vector2D<int> getSpriteSize(const Sprite& sprite) const override;
 };
 } // end namespace engine

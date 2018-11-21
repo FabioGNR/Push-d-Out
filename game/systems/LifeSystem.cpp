@@ -42,16 +42,12 @@ namespace systems {
                     int randomValue = common::RNG::generate(1, static_cast<int>(positions.size()));
                     const auto newPosition = positions[randomValue - 1];
 
-                    body->setPosition(newPosition);
-                } else {
-                    entitiesToRemove.push_back(&entity);
+                    if (lifeCounter > 0) {
+                        body->setPosition(newPosition);
+                    }
                 }
             }
         });
-
-        for (auto& entityDestroy : entitiesToRemove) {
-            m_world.destroyEntity(*entityDestroy);
-        }
     }
 
     void LifeSystem::render(engine::IRenderer& /*renderer*/) {}

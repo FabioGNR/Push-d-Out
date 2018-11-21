@@ -7,9 +7,19 @@
 namespace engine {
 Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition)
     : m_spritePath(std::move(spritePath))
-    , m_sourcePosition{ sourcePosition }
     , m_position(position)
+    , m_size(sourceSize)
+    , m_sourcePosition{ sourcePosition }
     , m_sourceSize(sourceSize)
+{
+}
+
+Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> size)
+    : m_spritePath(std::move(spritePath))
+    , m_position(position)
+    , m_size(size)
+    , m_sourcePosition{ common::Vector2D<int>(0, 0) }
+    , m_sourceSize{ size }
 {
 }
 
@@ -21,6 +31,11 @@ void Sprite::accept(IRenderVisitor& visitor) const
 const std::string& Sprite::spritePath() const
 {
     return m_spritePath;
+}
+
+void Sprite::spritePath(std::string path)
+{
+    m_spritePath = std::move(path);
 }
 
 common::Vector2D<int> Sprite::position() const

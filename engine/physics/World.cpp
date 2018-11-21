@@ -14,17 +14,17 @@ namespace physics {
     class World::WorldImpl : b2ContactListener {
     public:
         WorldImpl(
-            World* world_,
             const common::Vector2D<int>& size,
             const common::Vector2D<double>& gravity,
             const common::Vector2D<double>& friction)
             : size(size)
             , gravity(gravity)
             , friction(friction)
-            , physicsWorld(world_)
             , world(nullptr)
         {
         }
+
+        ~WorldImpl() override = default;
 
         WorldImpl(const WorldImpl& other) = delete;
         WorldImpl& operator=(const WorldImpl& other) = delete;
@@ -33,24 +33,67 @@ namespace physics {
         WorldImpl& operator=(WorldImpl&& other) = default;
 
     private:
-        void BeginContact(b2Contact* contact) override;
-        void EndContact(b2Contact* contact) override;
+        void BeginContact(b2Contact* contact) override
+        {
+            Body* body1 = nullptr;
+            Body* body2 = nullptr;
+
+            for (auto& body : bodies) {
+                if (contact->GetFixtureA()->GetBody() == body->m_body) {
+                    body1 = body.get();
+                }
+
+                if (contact->GetFixtureB()->GetBody() == body->m_body) {
+                    body2 = body.get();
+                }
+            }
+
+            std::for_each(
+                contactListeners.begin(),
+                contactListeners.end(),
+                [&body1, &body2](auto& cl) {
+                    cl->beginContact(Contact(body1, body2));
+                });
+        }
+        void EndContact(b2Contact* contact) override
+        {
+            Body* body1 = nullptr;
+            Body* body2 = nullptr;
+
+            for (auto& body : bodies) {
+                if (contact->GetFixtureA()->GetBody() == body->m_body) {
+                    body1 = body.get();
+                }
+
+                if (contact->GetFixtureB()->GetBody() == body->m_body) {
+                    body2 = body.get();
+                }
+            }
+
+            std::for_each(
+                contactListeners.begin(),
+                contactListeners.end(),
+                [&body1, &body2](auto& cl) {
+                    cl->endContact(Contact(body1, body2));
+                });
+        }
 
     public:
         common::Vector2D<int> size;
         common::Vector2D<double> gravity;
         common::Vector2D<double> friction;
 
-        World* physicsWorld;
         std::unique_ptr<b2World> world;
         std::vector<std::unique_ptr<Body>> bodies;
+
+        std::vector<std::unique_ptr<ContactListener>> contactListeners;
     };
 
     World::World(common::Vector2D<int> size, double gravity, double friction)
         : m_impl(std::make_unique<WorldImpl>(
-            this, size,
-            common::Vector2D<double>{ 0.0, gravity },
-            common::Vector2D<double>{ friction, 0.0 }))
+              size,
+              common::Vector2D<double>{ 0.0, gravity },
+              common::Vector2D<double>{ friction, 0.0 }))
     {
         const b2Vec2 grav{ 0, (float32)gravity };
         m_impl->world = std::make_unique<b2World>(grav);
@@ -154,45 +197,7 @@ namespace physics {
 
     void World::addContactListener(std::unique_ptr<ContactListener> contactListener)
     {
-        m_contactListeners.push_back(std::move(contactListener));
-    }
-
-    void World::WorldImpl::BeginContact(b2Contact* contact)
-    {
-        Body *body1, *body2;
-
-        for (auto& body : bodies) {
-            if (contact->GetFixtureA()->GetBody() == body->m_body) {
-                body1 = body.get();
-            }
-
-            if (contact->GetFixtureB()->GetBody() == body->m_body) {
-                body2 = body.get();
-            }
-        }
-
-        std::for_each(physicsWorld->m_contactListeners.begin(),
-            physicsWorld->m_contactListeners.end(),
-            [&body1, &body2](auto& cl) { cl->beginContact(Contact{ body1, body2 }); });
-    }
-
-    void World::WorldImpl::EndContact(b2Contact* contact)
-    {
-        Body *body1, *body2;
-
-        for (auto& body : bodies) {
-            if (contact->GetFixtureA()->GetBody() == body->m_body) {
-                body1 = body.get();
-            }
-
-            if (contact->GetFixtureB()->GetBody() == body->m_body) {
-                body2 = body.get();
-            }
-        }
-
-        std::for_each(physicsWorld->m_contactListeners.begin(),
-            physicsWorld->m_contactListeners.end(),
-            [&body1, &body2](auto& cl) { cl->endContact(Contact{ body1, body2 }); });
+        m_impl->contactListeners.push_back(std::move(contactListener));
     }
 }
 }

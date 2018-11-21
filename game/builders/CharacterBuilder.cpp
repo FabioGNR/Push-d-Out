@@ -84,10 +84,10 @@ namespace builders {
         KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
         std::vector<std::map<std::string, components::SpriteComponent>> playerAnimations;
-        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playergreen.png", assetsFolder + "datafile.json" }.build());
-        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playerblue.png", assetsFolder + "datafile.json" }.build());
-        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playerred.png", assetsFolder + "datafile.json" }.build());
-        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "playeryellow.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerGreen.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerBlue.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerRed.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
 
         for (size_t i = 0; i < m_playerCount; ++i) {
             // Make character jumpable
@@ -115,7 +115,7 @@ namespace builders {
                 auto spriteComponent = spriteComponentPair->second;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
-          
+
             // Open the required controller
             if (m_inputManager.openController(i)) {
                 components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };

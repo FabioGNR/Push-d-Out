@@ -1,4 +1,5 @@
 #include "SDLRenderer.h"
+#include "SDLBlendModes.h"
 #include "SDLRenderVisitor.h"
 #include "graphics/IGraphicsElement.h"
 
@@ -14,9 +15,12 @@ SDLRenderer::SDLRenderer(const SDLWindow& window)
     : m_renderer{ nullptr, nullptr }
     , m_dimensions{ window.getDimensions().x, window.getDimensions().y }
 {
+    auto flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE;
+
     m_renderer = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>(
-        SDL_CreateRenderer(window.m_window.get(), -1, SDL_RENDERER_ACCELERATED),
+        SDL_CreateRenderer(window.m_window.get(), -1, flags),
         SDL_DestroyRenderer);
+
     static bool isTtfInitialized = false;
     if (!isTtfInitialized) {
         if (TTF_Init() == -1) {
@@ -51,7 +55,7 @@ void SDLRenderer::clear()
 
 common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
 {
-    if (!fontCache.hasResource(font.fontPath())) {
+    if (!fontCache.hasResource(std::pair<int, std::string>(font.fontSize(), font.fontPath()))) {
         const auto ttfFont = std::shared_ptr<TTF_Font>(
             TTF_OpenFont(font.fontPath().c_str(), font.fontSize()),
             TTF_CloseFont);
@@ -60,7 +64,7 @@ common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
             throw std::runtime_error(TTF_GetError());
         }
 
-        fontCache.addResource(font.fontPath(), ttfFont);
+        fontCache.addResource(std::pair<int, std::string>(font.fontSize(), font.fontPath()), ttfFont);
 
         int calculatedWidth = 0, calculatedHeight = 0;
         int calculationError = TTF_SizeText(ttfFont.get(), font.text().c_str(), &calculatedWidth, &calculatedHeight);
@@ -69,7 +73,7 @@ common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
         }
         return { calculatedWidth, calculatedHeight };
     } else {
-        auto ttfFont = fontCache.getResource(font.fontPath()).get();
+        auto ttfFont = fontCache.getResource(std::pair<int, std::string>(font.fontSize(), font.fontPath())).get();
 
         int calculatedWidth = 0, calculatedHeight = 0;
         int calculationError = TTF_SizeText(ttfFont, font.text().c_str(), &calculatedWidth, &calculatedHeight);
@@ -107,6 +111,11 @@ common::Vector2D<int> SDLRenderer::getSpriteSize(const Sprite& sprite) const
         auto surface = surfaceTexturePair.first.get();
         return { surface->w, surface->h };
     }
+}
+
+void SDLRenderer::setBlendMode(graphics::BlendModes blend)
+{
+    SDL_SetRenderDrawBlendMode(m_renderer.get(), graphics::SDLBlendModes::getMode(blend));
 }
 
 } // end namespace engine

@@ -37,18 +37,18 @@ struct Vector2D {
         return *this;
     }
 
+    Vector2D<T>& operator+=(T addition)
+    {
+        x += addition;
+        y += addition;
+        return *this;
+    }
+
     friend Vector2D<T> operator+(Vector2D<T> left, const Vector2D<T>& right)
     {
         left.x += right.x;
         left.y += right.y;
         return left;
-    }
-
-    Vector2D<T>& operator+=(T increment)
-    {
-        x += increment;
-        y += increment;
-        return *this;
     }
 
     friend Vector2D<T> operator+(Vector2D<T> left, T increment)

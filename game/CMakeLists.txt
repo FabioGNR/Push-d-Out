@@ -93,6 +93,14 @@ set(EQUIPMENT_SRC
         equipment/EquipmentFactory.h
         )
 
+set(HUD_SRC
+        hud/HUD.cpp
+        hud/HUD.h
+        exceptions/PlayerAmountOutOfBoundsException.h
+        hud/FpsCounter.cpp
+        hud/FpsCounter.h
+        )
+
 #more engine stuff
 set(BUILDER_SRC
         builders/IBuilder.h
@@ -119,6 +127,7 @@ add_executable(PushdOut
         ${DEFINITION_SRC}
         ${LEVEL_SRC}
         ${BUILDER_SRC}
+        ${HUD_SRC}
         ${EQUIPMENT_SRC}
         )
 target_link_libraries(PushdOut engine)

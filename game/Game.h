@@ -6,7 +6,6 @@
 #include <engine/game/State.h>
 #include <engine/graphics/SDL/SDLRenderer.h>
 #include <engine/window/Window.h>
-
 #include <memory>
 #include <stack>
 
@@ -24,6 +23,7 @@ public:
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
 
+    engine::Window& window() const;
     common::Vector2D<int> getScreenSize() const;
     engine::input::InputManager& getInputManager();
 };

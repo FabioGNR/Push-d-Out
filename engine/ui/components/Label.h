@@ -12,7 +12,6 @@ namespace ui {
             , TextComponent(text, textSize)
         {
         }
-        virtual ~Label() = default;
 
         common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 

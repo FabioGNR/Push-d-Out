@@ -54,6 +54,9 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
     m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
 
+    // Create HUD
+    m_hud = std::make_unique<game::hud::HUD>(dynamic_cast<Game&>(m_context).window(), m_ecsWorld, *camera, m_inputManager);
+
     // Build characters into the ECS and physics world
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
@@ -79,11 +82,14 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 {
     m_world->update(timeStep);
     m_ecsWorld.update(timeStep);
+    m_hud->update(timeStep);
 }
 
 void GameState::render(engine::IRenderer& renderer)
 {
+    renderer.draw(engine::RectangleShape{ common::Vector2D<int>(0, 0), m_world->getSize() * 32, engine::Color(20, 255, 20, 255) });
     m_ecsWorld.render(renderer);
+    m_hud->render(renderer);
 }
 
 void GameState::resume()

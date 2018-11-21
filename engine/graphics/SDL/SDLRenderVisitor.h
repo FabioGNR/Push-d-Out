@@ -15,6 +15,8 @@ public:
     void visit(const LineShape& shape) override;
     void visit(const Font& font) override;
     void visit(const Sprite& sprite) override;
+    void visit(const Circle& circle) override;
+    void visit(const Surface& surface) override;
     void visit(const IGraphicsElement& element) override;
 };
 } // end namespace engine

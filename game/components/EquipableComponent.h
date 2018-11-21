@@ -7,7 +7,7 @@
 namespace game {
 namespace components {
     struct EquipableComponent : public engine::ecs::BaseComponent<EquipableComponent> {
-        EquipableComponent(EquipmentSpawnerComponent& spawner)
+        explicit EquipableComponent(EquipmentSpawnerComponent& spawner)
             : spawner(spawner)
         {
         }

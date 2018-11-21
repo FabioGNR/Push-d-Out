@@ -8,6 +8,7 @@
 #include <engine/sound/ISoundManager.h>
 
 #include <engine/events/models/Subscription.h>
+#include <game/hud/HUD.h>
 #include <memory>
 
 namespace game {
@@ -18,6 +19,7 @@ private:
 
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     std::unique_ptr<engine::physics::World> m_world;
+    std::unique_ptr<game::hud::HUD> m_hud;
     engine::ecs::World m_ecsWorld;
 
     std::unique_ptr<engine::sound::ISoundManager> m_soundManager;

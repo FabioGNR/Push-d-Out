@@ -41,7 +41,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     projectileBody->setLinearVelocity(common::Vector2D<double>(20, 0));
     ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>(-600, 0), playerPosition);
 
-    auto sprites = game::builders::SpriteBuilder { "assets/sprites/misc/ForceGunProjectile.png", "assets/sprites/misc/datafile.json" }.build();
+    auto sprites = game::builders::SpriteBuilder{ "assets/sprites/misc/ForceGunProjectile.png", "assets/sprites/misc/datafile.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");
     if (sprite != sprites.end()) {
         ecsWorld.addComponent<SpriteComponent>(projectileEntity, sprite->second);
