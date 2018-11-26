@@ -206,6 +206,15 @@ struct Vector2D {
         return str;
     }
 
+    Vector2D<double> normalize() {
+
+        double length = sqrt(pow(x, 2) + pow(y, 2));
+        auto newX = x / length;
+        auto newY = y / length;
+        Vector2D<double> result{newX, newY};
+        return result;
+    }
+
     template <typename X>
     Vector2D<X> castTo() const
     {
