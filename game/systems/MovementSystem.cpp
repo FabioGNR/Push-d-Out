@@ -12,9 +12,10 @@ namespace systems {
     void MovementSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         std::vector<engine::ecs::Entity*> moveComponentsToRemove;
-        m_world.forEachEntityWith<components::MoveComponent, components::BodyComponent>([&](engine::ecs::Entity& entity) {
+        m_world.forEachEntityWith<components::MoveComponent, components::BodyComponent, components::PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& delta = m_world.getComponent<components::MoveComponent>(entity).delta;
             auto& body = m_world.getComponent<components::BodyComponent>(entity).body;
+            auto& position = m_world.getComponent<components::PositionComponent>(entity);
 
             auto velocity = body->getLinearVelocity();
 
@@ -28,7 +29,7 @@ namespace systems {
             }
 
             auto impulse = common::Vector2D<double>(body->getMass() * (deltaX - velocity.x), body->getMass() * delta.y);
-            body->applyLinearImpulse(impulse);
+            body->applyForce(impulse, position.position);
 
             moveComponentsToRemove.push_back(&entity);
         });
