@@ -59,7 +59,7 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
 
 void game::systems::PlayerInputSystem::move(common::Vector2D<double>& delta, bool invert)
 {
-    delta.x += invert ? -7 : 7;
+    delta.x += invert ? -20 : 20;
 }
 void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
 {
