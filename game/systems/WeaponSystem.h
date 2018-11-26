@@ -1,14 +1,14 @@
 #pragma once
 
-#include <game/definitions/Action.h>
-#include <game/definitions/WeaponType.h>
-
+#include "engine/graphics/Camera.h"
 #include <engine/ecs/Entity.h>
 #include <engine/ecs/System.h>
 #include <engine/ecs/World.h>
 #include <engine/input/InputManager.h>
 #include <engine/physics/World.h>
 #include <game/components/WeaponComponent.h>
+#include <game/definitions/Action.h>
+#include <game/definitions/WeaponType.h>
 
 namespace game {
 namespace systems {
@@ -16,12 +16,15 @@ namespace systems {
     private:
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
-        engine::input::maps::InputMap& m_inputMap;
-        std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&)>> fireFunctionMap;
-        void shoot(engine::ecs::Entity& entity, components::WeaponComponent& weapon);
+        engine::input::maps::InputMaps& m_inputMaps;
+        engine::graphics::Camera& m_camera;
+
+        std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&, common::Vector2D<double>& test)>> fireFunctionMap;
+        void shoot(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& test);
+        common::Vector2D<double> test(engine::ecs::Entity& entity, common::Vector2D<int>& test);
 
     public:
-        WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager);
+        WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager, engine::graphics::Camera& camera);
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;

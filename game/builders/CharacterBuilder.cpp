@@ -53,7 +53,7 @@ namespace builders {
         m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
-        m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
+        //m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
 
@@ -72,7 +72,7 @@ namespace builders {
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
         controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
 
-        KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::MOUSE_BUTTON_LEFT;
         KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;

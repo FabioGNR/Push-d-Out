@@ -8,7 +8,7 @@ namespace ui {
         setActive(true);
     }
 
-    void UISystem::processInputEvent(engine::input::maps::AnalogMap& keyMap)
+    void UISystem::processInputEvent(engine::input::maps::InputMap& keyMap)
     {
         //TODO: key event as parameter and pass it through
         if (!m_frames.empty()) {
@@ -37,21 +37,34 @@ namespace ui {
 
     void UISystem::setActive(bool active)
     {
-        m_active = !m_active;
+        m_active = active;
+        /*
         if (!active && m_inputSubscription != nullptr) {
             m_inputSubscription->close();
             m_inputSubscription = nullptr;
-        } else if (active && m_inputSubscription == nullptr) {
+        } else*/
+        if (active && m_inputSubscription == nullptr) {
             subscribeInput();
         }
     }
 
     void UISystem::subscribeInput()
     {
-
-        m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keymap, auto&) {
-            processInputEvent(keymap);
+        std::cout << "UISystem subs, to " << m_inputManager.connectedControllerAmount() << " controllers." << std::endl;
+        m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::InputMap keymap, auto&) {
+            if (m_active) {
+                processInputEvent(keymap);
+            }
         });
+
+        for (size_t i = 0; i < m_inputManager.connectedControllerAmount(); i++) {
+            m_inputManager.subscribe([&](engine::input::maps::InputMap keymap, auto&) {
+                if (m_active) {
+                    processInputEvent(keymap);
+                }
+            },
+                i);
+        }
     }
 }
 }

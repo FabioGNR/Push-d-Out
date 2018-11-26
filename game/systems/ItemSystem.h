@@ -13,7 +13,7 @@ namespace systems {
     class ItemSystem : public engine::ecs::BaseSystem<ItemSystem> {
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
-        engine::input::maps::InputMap& m_inputMap;
+        engine::input::maps::InputMaps& m_inputMaps;
         std::map<definitions::ItemType, std::function<void(engine::ecs::Entity&, engine::physics::World&, engine::ecs::World&)>> activateFunctionMap;
 
     public:

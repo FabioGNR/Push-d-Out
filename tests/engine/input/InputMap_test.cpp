@@ -1,43 +1,42 @@
 #include <Catch/catch2.hpp>
-
-#include <engine/input/maps/KeyMap.h>
+#include "engine/input/maps/InputMap.h"
 
 using namespace engine::input;
 
-TEST_CASE("KeyMap::setKeyState correctly sets PRESSED_AND_RELEASED state")
+TEST_CASE("InputMap::setKeyState correctly sets PRESSED_AND_RELEASED state")
 {
-    maps::KeyMap map;
+    maps::InputMap map;
     SECTION("Pressed -> released")
-    map.setKeyState(Keys::A, KeyStates::PRESSED);
+    map.setValue(Keys::A, KeyStates::PRESSED);
     REQUIRE(map.getKeyState(Keys::A) == KeyStates::PRESSED);
-    map.setKeyState(Keys::A, KeyStates::RELEASED);
+    map.setValue(Keys::A, KeyStates::RELEASED);
     REQUIRE(map.getKeyState(Keys::A) == KeyStates::PRESSED_AND_RELEASED);
 }
 
-TEST_CASE("KeyMap::update correctly sets DOWN state")
+TEST_CASE("InputMap::update correctly sets DOWN state")
 {
-    maps::KeyMap map;
+    maps::InputMap map;
     SECTION("Pressed -> down")
-    map.setKeyState(Keys::A, KeyStates::PRESSED);
+    map.setValue(Keys::A, KeyStates::PRESSED);
     REQUIRE(map.getKeyState(Keys::A) == KeyStates::PRESSED);
     map.update();
     REQUIRE(map.getKeyState(Keys::A) == KeyStates::DOWN);
 }
 
-TEST_CASE("KeyMap::update correctly sets UP state")
+TEST_CASE("InputMap::update correctly sets UP state")
 {
-    maps::KeyMap map;
+    maps::InputMap map;
     SECTION("Released -> up")
-    map.setKeyState(Keys::A, KeyStates::RELEASED);
+    map.setValue(Keys::A, KeyStates::RELEASED);
     REQUIRE(map.getKeyState(Keys::A) == KeyStates::RELEASED);
     map.update();
     REQUIRE(map.getKeyState(Keys::A) == KeyStates::UP);
 }
 
-TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is PRESSED")
+TEST_CASE("InputMap::hasKeyState correctly returns state when key state is PRESSED")
 {
-    maps::KeyMap map;
-    map.setKeyState(Keys::A, KeyStates::PRESSED);
+    maps::InputMap map;
+    map.setValue(Keys::A, KeyStates::PRESSED);
     SECTION("PRESSED")
     REQUIRE(map.hasKeyState(Keys::A, KeyStates::PRESSED));
     SECTION("RELEASED")
@@ -50,10 +49,10 @@ TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is PRESSED
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED_AND_RELEASED));
 }
 
-TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is DOWN")
+TEST_CASE("InputMap::hasKeyState correctly returns state when key state is DOWN")
 {
-    maps::KeyMap map;
-    map.setKeyState(Keys::A, KeyStates::DOWN);
+    maps::InputMap map;
+    map.setValue(Keys::A, KeyStates::DOWN);
     SECTION("PRESSED")
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED));
     SECTION("RELEASED")
@@ -66,10 +65,10 @@ TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is DOWN")
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED_AND_RELEASED));
 }
 
-TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is UP")
+TEST_CASE("InputMap::hasKeyState correctly returns state when key state is UP")
 {
-    maps::KeyMap map;
-    map.setKeyState(Keys::A, KeyStates::UP);
+    maps::InputMap map;
+    map.setValue(Keys::A, KeyStates::UP);
     SECTION("PRESSED")
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED));
     SECTION("RELEASED")
@@ -82,10 +81,10 @@ TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is UP")
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED_AND_RELEASED));
 }
 
-TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is RELEASED")
+TEST_CASE("InputMap::hasKeyState correctly returns state when key state is RELEASED")
 {
-    maps::KeyMap map;
-    map.setKeyState(Keys::A, KeyStates::RELEASED);
+    maps::InputMap map;
+    map.setValue(Keys::A, KeyStates::RELEASED);
     SECTION("PRESSED")
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED));
     SECTION("RELEASED")
@@ -98,10 +97,10 @@ TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is RELEASE
     REQUIRE(!map.hasKeyState(Keys::A, KeyStates::PRESSED_AND_RELEASED));
 }
 
-TEST_CASE("KeyMap::hasKeyState correctly returns state when key state is PRESSED_AND_RELEASED")
+TEST_CASE("InputMap::hasKeyState correctly returns state when key state is PRESSED_AND_RELEASED")
 {
-    maps::KeyMap map;
-    map.setKeyState(Keys::A, KeyStates::PRESSED_AND_RELEASED);
+    maps::InputMap map;
+    map.setValue(Keys::A, KeyStates::PRESSED_AND_RELEASED);
     SECTION("PRESSED")
     REQUIRE(map.hasKeyState(Keys::A, KeyStates::PRESSED));
     SECTION("RELEASED")

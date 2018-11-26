@@ -25,7 +25,9 @@ namespace events {
         case SDL_MOUSEMOTION:
             return std::make_unique<MouseEvent>(event.motion.x, event.motion.y);
         case SDL_MOUSEBUTTONDOWN:
-            return std::make_unique<MouseEvent>(input::SDLKeys::get(event.button.button), true);
+            return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::SDLKeys::get(input::SDLKeys::mouseStart + event.button.button), true);
+        case SDL_MOUSEBUTTONUP:
+            return std::make_unique<MouseEvent>(input::SDLKeys::get(input::SDLKeys::mouseStart + event.button.button), false);
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::SDL_Axis::get(event.caxis.axis);
             int value = event.caxis.value > deadZone || event.caxis.value < -deadZone ? event.caxis.value : 0;
@@ -46,7 +48,7 @@ namespace events {
             return std::make_unique<KeyDownEvent>(input::SDLKeys::get(event.key.keysym.sym));
         case SDL_CONTROLLERDEVICEADDED: {
             SDL_GameControllerOpen(event.cdevice.which);
-            controllerCount++;
+            connectedControllers.push_back(event.cdevice.which);
             return nullptr;
         }
         default:
@@ -54,10 +56,9 @@ namespace events {
         }
     }
 
-
     size_t SDLEventHandler::getConnectedControllers()
     {
-        return controllerCount;
+        return connectedControllers.size();
     }
 }
 }

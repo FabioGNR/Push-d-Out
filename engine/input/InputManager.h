@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/events/IEventHandler.h"
-#include "engine/input/maps/InputMap.h"
+#include "engine/input/maps/InputMaps.h"
 #include <engine/events/models/Subscription.h>
 #include <memory>
 #include <vector>
@@ -10,8 +10,8 @@ namespace engine {
 namespace input {
     class InputManager {
     private:
-        std::vector<std::weak_ptr<events::Subscription<maps::AnalogMap>>> m_subscriptions;
-        maps::InputMap m_inputMap{};
+        std::vector<std::weak_ptr<events::Subscription<maps::InputMap>>> m_subscriptions;
+        maps::InputMaps m_inputMap{};
         events::IEventHandler* m_handler;
 
     public:
@@ -20,12 +20,12 @@ namespace input {
 
         void handle(const std::unique_ptr<events::IEvent>& event_ptr);
 
-        std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify, int id);
-        std::shared_ptr<events::Subscription<maps::AnalogMap>> subscribe(std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify);
+        std::shared_ptr<events::Subscription<maps::InputMap>> subscribe(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify, size_t id);
+        std::shared_ptr<events::Subscription<maps::InputMap>> subscribe(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify);
 
         void notify();
         void update();
-        maps::InputMap& getMap();
+        maps::InputMaps& getMap();
         size_t connectedControllerAmount();
     };
 }

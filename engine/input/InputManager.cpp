@@ -17,12 +17,11 @@ namespace input {
             }
         } else if (auto mouse = dynamic_cast<events::MouseEvent*>(event_ptr.get())) {
             auto& KBM_Map = m_inputMap.getKBM();
-            if (mouse->m_isAnalog) {
-                KBM_Map.setValue(AnalogKeys::MOUSE_X, mouse->m_x);
-                KBM_Map.setValue(AnalogKeys::MOUSE_Y, mouse->m_y);
-            } else {
+            if (!mouse->m_isAnalog) {
                 KBM_Map.setValue(mouse->m_key, (mouse->m_isPressed ? KeyStates::PRESSED : KeyStates::RELEASED));
             }
+            KBM_Map.setValue(AnalogKeys::MOUSE_X, mouse->m_x);
+            KBM_Map.setValue(AnalogKeys::MOUSE_Y, mouse->m_y);
         } else {
             auto& KMB_Map = m_inputMap.getKBM();
             if (auto down = dynamic_cast<events::KeyDownEvent*>(event_ptr.get())) {
@@ -33,18 +32,19 @@ namespace input {
         }
     }
 
-    std::shared_ptr<events::Subscription<maps::AnalogMap>> InputManager::subscribe(
-        std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify, int id)
+    std::shared_ptr<events::Subscription<maps::InputMap>> InputManager::subscribe(
+        std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify, size_t id)
     {
-        auto subscription = std::make_shared<events::Subscription<maps::AnalogMap>>(onNotify, id);
+        auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, id);
         m_subscriptions.push_back(subscription);
+        std::cout << "subbed to controler: " << id << std::endl;
         return subscription;
     }
 
-    std::shared_ptr<events::Subscription<maps::AnalogMap>> InputManager::subscribe(
-        std::function<void(maps::AnalogMap, events::Subscription<maps::AnalogMap>&)> onNotify)
+    std::shared_ptr<events::Subscription<maps::InputMap>> InputManager::subscribe(
+        std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify)
     {
-        auto subscription = std::make_shared<events::Subscription<maps::AnalogMap>>(onNotify, -1);
+        auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, -1);
         m_subscriptions.push_back(subscription);
         return subscription;
     }
@@ -78,7 +78,7 @@ namespace input {
             it = m_subscriptions.erase(it);
         }
     }
-    maps::InputMap& InputManager::getMap()
+    maps::InputMaps& InputManager::getMap()
     {
         return m_inputMap;
     }

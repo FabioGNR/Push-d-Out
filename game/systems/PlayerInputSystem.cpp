@@ -12,7 +12,7 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
     m_world.forEachEntityWith<components::PlayerInputComponent>([&](engine::ecs::Entity& entity) {
         auto& PIC = m_world.getComponent<components::PlayerInputComponent>(entity);
         auto delta = common::Vector2D<double>(0, 0);
-        auto& analogMap = m_inputMap.getMap(PIC.controllerId); // id of controller
+        auto& analogMap = m_inputMaps.getMap(PIC.controllerId); // id of controller
 
         if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > 1) {
             move(delta, false);

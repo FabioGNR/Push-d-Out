@@ -7,21 +7,30 @@
 namespace engine {
 namespace events {
     struct MouseEvent : public IControlEvent {
+        input::Keys m_key;
         int m_x;
         int m_y;
-        input::Keys m_key;
-        bool m_isPressed;
+        bool m_isPressed = false;
         bool m_isAnalog = false;
 
         MouseEvent(int x, int y)
             : m_x(x)
             , m_y(y)
-            , m_isPressed(true)
+            , m_isAnalog(true)
         {
         }
 
-        MouseEvent(input::Keys button)
+        MouseEvent(int x, int y, input::Keys button, bool isPressed)
             : m_key(button)
+            , m_x(x)
+            , m_y(y)
+            , m_isPressed(isPressed)
+        {
+        }
+
+        MouseEvent(input::Keys button, bool isPressed)
+            : m_key(button)
+            , m_isPressed(isPressed)
         {
         }
     };

@@ -82,7 +82,7 @@ namespace input {
         { SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Keys::CON_RIGHTSHOULDER },
         { SDL_CONTROLLER_BUTTON_LEFTSTICK, Keys::CON_LEFTSTICK },
         { SDL_CONTROLLER_BUTTON_RIGHTSTICK, Keys::CON_RIGHTSTICK },
-        { SDL_BUTTON_LEFT, Keys::MOUSE_BUTTON_LEFT }
+        { mouseStart + 1, Keys::MOUSE_BUTTON_LEFT }
     };
 
     input::Keys SDLKeys::get(int SDL_Key)

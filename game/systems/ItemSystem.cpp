@@ -32,7 +32,7 @@ namespace systems {
     ItemSystem::ItemSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager)
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
-        , m_inputMap(inputManager.getMap())
+        , m_inputMaps(inputManager.getMap())
     {
         activateFunctionMap[definitions::ItemType::ReverseGravity] = activateReverseGravity;
     }
@@ -49,7 +49,7 @@ namespace systems {
                 if (itemEntity.hasComponent<components::ItemComponent>()) {
                     auto& item = m_ecsWorld.getComponent<components::ItemComponent>(itemEntity);
 
-                    auto& analogMap = m_inputMap.getMap(inputComponent.controllerId);
+                    auto& analogMap = m_inputMaps.getMap(inputComponent.controllerId);
                     const auto action = definitions::Action::UseItem;
                     const auto control = inputComponent.getKey(action);
 
