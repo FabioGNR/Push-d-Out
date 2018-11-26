@@ -1,0 +1,7 @@
+{
+  "name": "Ice",
+  "gravity": -9.81,
+  "friction": 0.5,
+  "track": "ice-theme.wav",
+  "sprites": "ice"
+}
