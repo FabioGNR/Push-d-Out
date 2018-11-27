@@ -20,7 +20,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     const common::Vector2D<double>& playerPosition,
     engine::physics::World& physicsWorld,
     engine::ecs::World& ecsWorld,
-    common::Vector2D<double> test)
+    common::Vector2D<double>& direction)
 {
     common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>(1, 1);
     auto& projectileEntity = ecsWorld.createEntity();
@@ -39,7 +39,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     auto projectileComponent = ProjectileComponent();
     ecsWorld.addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
 
-    projectileBody->setLinearVelocity(common::Vector2D<double>(test.x, test.y));
+    projectileBody->setLinearVelocity(common::Vector2D<double>(direction.x, direction.y));
     ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>(0, 0), playerPosition);
 
     return projectileEntity;
@@ -76,7 +76,7 @@ namespace systems {
                 engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
 
-                auto& inputMap = m_inputMaps.getMap(inputComponent.controllerId);
+                const auto& inputMap = m_inputMaps.getMap(inputComponent.controllerId);
                 const auto action = definitions::Action::UseWeapon;
                 const auto control = inputComponent.getKey(action);
                 const auto analogControl = inputComponent.getAnalog(action);
@@ -88,7 +88,7 @@ namespace systems {
 
                 if (inputMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
                     auto testr = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    auto testrr = test(entity, testr);
+                    auto testrr = calculateDirection(entity, testr);
                     shoot(entity, weapon, testrr);
                 }
             }
@@ -109,41 +109,30 @@ namespace systems {
         }
     }
 
-    common::Vector2D<double> WeaponSystem::test(engine::ecs::Entity& entity, common::Vector2D<int>& test)
+    common::Vector2D<double> WeaponSystem::calculateDirection(engine::ecs::Entity& entity, common::Vector2D<int>& direction)
     {
-        std::cout << test.x << " " << test.y << std::endl;
+        auto playerPosition = m_camera.translatePosition(m_ecsWorld.getComponent<PositionComponent>(entity).position);
 
-        auto pos = m_ecsWorld.getComponent<PositionComponent>(entity);
+        direction.x -= playerPosition.x;
+        direction.y -= playerPosition.y;
 
-        auto plz = m_camera.translatePosition(pos.position);
+        auto normalizedDirection = direction.normalize();
+        normalizedDirection.x = normalizedDirection.x * 20;
+        normalizedDirection.y = -normalizedDirection.y * 20;
+        /*
+        auto doublex = (double)direction.x;
+        auto doubley = -(double)direction.y;
 
-        int x = test.x - plz.x;
-        int y = test.y - plz.y;
+        double pytA = doublex * doublex;
+        double pytB = doubley * doubley;
+        double pytC = pytA + pytB;
 
-        auto ttx = (double) x;
-        auto tty = (double) y;
+        pytC = sqrt(pytC);
+        pytA = (doublex / pytC) * 20;
+        pytB = (doubley / pytC) * 20;
 
-        //double tx = x < 0 ? -ttx * ttx : ttx * ttx;
-        double tx = ttx*ttx;
-        double ty = tty*tty;
-        //double ty = y < 0 ? -tty * tty : tty * tty;
-        double testr = tx + ty;
-        testr = sqrt(testr);
-        tx = (x / testr) * 20;
-        ty = (y / testr) * 20;
-
-        std::cout << x;
-        std::cout << " ";
-        std::cout << y;
-        std::cout << " ";
-        std::cout << tx;
-        std::cout << " ";
-        std::cout << ty;
-        std::cout << " ";
-        std::cout << testr;
-        std::cout << std::endl;
-
-        return common::Vector2D<double>(x, y);
+        std::cout << pytA << " " << pytB << std::endl;*/
+        return normalizedDirection; //common::Vector2D<double>(pytA, pytB);
     }
 
     void WeaponSystem::render(engine::IRenderer& /* renderer */) {}

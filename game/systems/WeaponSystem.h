@@ -19,9 +19,9 @@ namespace systems {
         engine::input::maps::InputMaps& m_inputMaps;
         engine::graphics::Camera& m_camera;
 
-        std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&, common::Vector2D<double>& test)>> fireFunctionMap;
+        std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&, common::Vector2D<double>& direction)>> fireFunctionMap;
         void shoot(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& test);
-        common::Vector2D<double> test(engine::ecs::Entity& entity, common::Vector2D<int>& test);
+        common::Vector2D<double> calculateDirection(engine::ecs::Entity& entity, common::Vector2D<int>& direction);
 
     public:
         WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager, engine::graphics::Camera& camera);

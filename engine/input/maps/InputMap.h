@@ -18,9 +18,9 @@ namespace input {
 
             void setValue(AnalogKeys key, int value);
             void setValue(Keys key, KeyStates state);
-            KeyStates getKeyState(Keys key);
-            int getValue(AnalogKeys key);
-            bool hasKeyState(Keys key, KeyStates state);
+            KeyStates getKeyState(Keys key) const;
+            int getValue(AnalogKeys key) const;
+            bool hasKeyState(Keys key, KeyStates state) const;
 
         };
     }

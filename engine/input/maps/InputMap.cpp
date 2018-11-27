@@ -45,7 +45,7 @@ namespace input {
             m_analogMap[key] = value;
         }
 
-        KeyStates InputMap::getKeyState(engine::input::Keys key)
+        KeyStates InputMap::getKeyState(engine::input::Keys key) const
         {
             if (m_keyMap.find(key) == m_keyMap.end()) {
                 return KeyStates::UP;
@@ -53,7 +53,7 @@ namespace input {
             return m_keyMap.at(key);
         }
 
-        int InputMap::getValue(engine::input::AnalogKeys key)
+        int InputMap::getValue(engine::input::AnalogKeys key) const
         {
             if (m_analogMap.find(key) == m_analogMap.end()) {
                 return 0;
@@ -61,7 +61,7 @@ namespace input {
             return m_analogMap.at(key);
         }
 
-        bool InputMap::hasKeyState(engine::input::Keys key, KeyStates state)
+        bool InputMap::hasKeyState(engine::input::Keys key, KeyStates state) const
         {
             return ((getKeyState(key) & state) == state);
         }
