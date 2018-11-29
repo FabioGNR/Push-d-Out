@@ -8,8 +8,13 @@
 
 namespace game {
 class BaseMenuState : public engine::State {
+private:
+    common::Vector2D<int> m_screenSize{};
+
 protected:
     std::unique_ptr<engine::ui::UISystem> m_uiSystem;
+    virtual void prependButtons(engine::ui::StackPanel& panel) = 0;
+    virtual void appendButtons(engine::ui::StackPanel& panel) = 0;
 
 public:
     explicit BaseMenuState(engine::IGame& context);
@@ -21,9 +26,5 @@ public:
     void render(engine::IRenderer& renderer) override;
 
     void close() override;
-
-protected:
-    virtual void prependButtons(engine::ui::StackPanel& panel) = 0;
-    virtual void appendButtons(engine::ui::StackPanel& panel) = 0;
 };
 }

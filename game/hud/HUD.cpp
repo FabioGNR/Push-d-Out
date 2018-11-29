@@ -16,7 +16,7 @@ namespace game {
 namespace hud {
     HUD::HUD(engine::Window& window,
         engine::ecs::World& world,
-        engine::graphics::Camera& camera,
+        engine::graphics::Camera* camera,
         engine::input::InputManager& inputManager)
         : m_world{ world }
         , m_window{ window }
@@ -62,8 +62,8 @@ namespace hud {
 
         m_world.forEachEntityWith<components::PlayerInputComponent, components::PositionComponent>([&](auto& entity) {
             auto pos = m_world.getComponent<components::PositionComponent>(entity).position;
-            if (m_camera.isPointVisible(pos)) {
-                auto screenPos = m_camera.translatePosition(pos);
+            if (m_camera->isPointVisible(pos)) {
+                auto screenPos = m_camera->translatePosition(pos);
                 for (auto& surface : m_playerHUDs) {
                     auto surfacePos = surface.second->position();
                     auto surfaceSize = surface.second->size();

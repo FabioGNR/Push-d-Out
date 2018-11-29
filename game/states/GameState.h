@@ -8,6 +8,7 @@
 #include <engine/sound/ISoundManager.h>
 
 #include <engine/events/models/Subscription.h>
+#include <engine/graphics/Camera.h>
 #include <game/hud/HUD.h>
 #include <memory>
 
@@ -19,6 +20,7 @@ private:
 
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     std::unique_ptr<engine::physics::World> m_world;
+    engine::graphics::Camera m_camera;
     std::unique_ptr<game::hud::HUD> m_hud;
     engine::ecs::World m_ecsWorld;
 

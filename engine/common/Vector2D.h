@@ -205,10 +205,10 @@ struct Vector2D {
         return distance;
     }
 
-    inline std::ostream& operator<<(std::ostream& str)
+    friend std::ostream& operator<<(std::ostream& str, const Vector2D<T>& vector)
     {
         // print something from v to str, e.g: Str << v.getX();
-        str << "{" << this->x << ", " << this->y << "}";
+        str << "{" << vector.x << ", " << vector.y << "}";
         return str;
     }
 

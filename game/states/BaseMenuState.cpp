@@ -19,6 +19,7 @@ BaseMenuState::BaseMenuState(engine::IGame& context)
     : engine::State(context)
 {
     auto& game = dynamic_cast<Game&>(m_context);
+    m_screenSize = game.getScreenSize();
     m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
 }
 
@@ -152,7 +153,7 @@ void BaseMenuState::update(std::chrono::nanoseconds /* timeStep */)
 
 void BaseMenuState::render(engine::IRenderer& renderer)
 {
-    m_uiSystem->draw(renderer, common::Vector2D<int>(1280, 768));
+    m_uiSystem->draw(renderer, common::Vector2D<int>(m_screenSize));
 }
 
 void BaseMenuState::resume()

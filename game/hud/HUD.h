@@ -19,7 +19,7 @@ namespace hud {
 
         engine::ecs::World& m_world;
         engine::Window& m_window;
-        engine::graphics::Camera& m_camera;
+        engine::graphics::Camera* m_camera;
 
         std::vector<engine::ecs::EntityId> m_players;
         std::map<engine::ecs::EntityId, std::vector<std::unique_ptr<engine::IGraphicsElement>>> m_shapes;
@@ -36,7 +36,7 @@ namespace hud {
         void setPlayerHUDs();
 
     public:
-        HUD(engine::Window&, engine::ecs::World&, engine::graphics::Camera&, engine::input::InputManager&);
+        HUD(engine::Window&, engine::ecs::World&, engine::graphics::Camera*, engine::input::InputManager&);
         ~HUD();
 
         void update(std::chrono::nanoseconds);

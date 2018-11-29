@@ -1,4 +1,5 @@
 #include "LevelReader.h"
+
 #include "game/builders/SpriteBuilder.h"
 #include "game/components/BodyComponent.h"
 #include "game/components/CharacterSpawnComponent.h"
@@ -28,8 +29,10 @@ namespace level {
         std::string levelSheet{ level.theme.sprites };
 
         auto& entityMeta = world.createEntity();
-        auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme, level.height, level.width);
+        auto levelMetaComponent = components::LevelMetaComponent(level.name, level.theme);
+        auto levelBoundsComponent = components::DimensionComponent(common::Vector2D<double>(level.width, level.height));
         world.addComponent<components::LevelMetaComponent>(entityMeta, levelMetaComponent);
+        world.addComponent<components::DimensionComponent>(entityMeta, levelBoundsComponent);
 
         world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, world);
         world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);

@@ -35,7 +35,7 @@ set(COMPONENT_SRC
         components/ItemComponent.h
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
-        )
+        components/DestructibleComponent.h)
 
 set(SYSTEM_SRC
         systems/MovementSystem.cpp
@@ -60,12 +60,16 @@ set(SYSTEM_SRC
         systems/ItemSystem.h
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
+        systems/GarbageCollectorSystem.cpp
+        systems/GarbageCollectorSystem.h
         systems/LifeSystem.cpp
         systems/LifeSystem.h 
         systems/BackgroundSystem.cpp 
         systems/BackgroundSystem.h
         systems/JumpSystem.cpp 
         systems/JumpSystem.h
+        systems/ProjectileDestroyerSystem.cpp
+        systems/ProjectileDestroyerSystem.h
         )
 
 set(DEFINITION_SRC

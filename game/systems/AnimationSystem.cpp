@@ -14,14 +14,13 @@ namespace systems {
     using namespace components;
     void AnimationSystem::update(std::chrono::nanoseconds timeStep)
     {
-        // First clear the list of rectangles
-        this->rectangles.clear();
-        this->sprites.clear();
+        // First clear the list of sprites
+        m_sprites.clear();
 
-        world.forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
-            auto& positionComponent = world.getComponent<PositionComponent>(entity);
-            auto& dimensionComponent = world.getComponent<DimensionComponent>(entity);
-            auto& spriteComponent = world.getComponent<SpriteComponent>(entity);
+        m_world->forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
+            auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
+            auto& dimensionComponent = m_world->getComponent<DimensionComponent>(entity);
+            auto& spriteComponent = m_world->getComponent<SpriteComponent>(entity);
             if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension)) {
                 common::Vector2D<int> position = m_camera->translatePosition(positionComponent.position);
                 common::Vector2D<int> size = m_camera->scaleSize(dimensionComponent.dimension);
@@ -38,19 +37,15 @@ namespace systems {
                     spriteComponent.index = spriteComponent.index % spriteComponent.frameCount;
                     spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
                 }
-                this->sprites.push_back(sprite);
+                m_sprites.push_back(sprite);
             }
         });
     }
 
     void AnimationSystem::render(engine::IRenderer& renderer)
     {
-        // Draw the rectangles to the screen
-        for (const auto& rectangle : this->rectangles) {
-            renderer.draw(rectangle);
-        }
-
-        for (const auto& sprite : this->sprites) {
+        // Draw the sprites to the screen
+        for (const auto& sprite : m_sprites) {
             renderer.draw(sprite);
         }
     }

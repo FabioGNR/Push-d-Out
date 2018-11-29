@@ -183,6 +183,14 @@ namespace physics {
         return m_impl->world->CreateBody(&def);
     }
 
+    void World::destroyBody(Body* body)
+    {
+        m_impl->bodies.erase(std::remove_if(m_impl->bodies.begin(), m_impl->bodies.end(), [&](auto& element) {
+            return element.get() == body;
+        }),
+            m_impl->bodies.end());
+    }
+
     void World::destroyBody(b2Body* body)
     {
         m_impl->world->DestroyBody(body);

@@ -48,6 +48,7 @@ namespace physics {
         void setGravity(common::Vector2D<double> gravity);
 
         b2Body* createBody(const b2BodyDef& def) const;
+        void destroyBody(Body* body);
         void destroyBody(b2Body* body);
 
         void addContactListener(std::unique_ptr<ContactListener> contactListener);

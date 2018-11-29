@@ -136,7 +136,6 @@ namespace builders {
             components::InventoryComponent inventoryComponent{};
             inventoryComponent.activeEquipment.set(&gunEntity);
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
-
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
         }

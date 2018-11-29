@@ -13,6 +13,7 @@
 #include <game/systems/AnimationSystem.h>
 #include <game/systems/BackgroundSystem.h>
 #include <game/systems/CameraSystem.h>
+#include <game/systems/GarbageCollectorSystem.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
 #include <game/systems/JumpSystem.h>
@@ -20,6 +21,7 @@
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
+#include <game/systems/ProjectileDestroyerSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
@@ -50,14 +52,13 @@ void GameState::init()
     m_soundManager->play(music);
 
     // Set-up camera
-    auto camera = std::make_shared<engine::graphics::Camera>(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
-    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+    m_camera = engine::graphics::Camera(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
+    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
 
     // Create HUD
-    m_hud = std::make_unique<game::hud::HUD>(dynamic_cast<Game&>(m_context).window(), m_ecsWorld, *camera, m_inputManager);
+    m_hud = std::make_unique<game::hud::HUD>(dynamic_cast<Game&>(m_context).window(), m_ecsWorld, &m_camera, m_inputManager);
 
-    // Build characters into the ECS and physics world
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
@@ -66,14 +67,18 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
-    m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *camera);
+    m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
 
+    // Build characters into the ECS and physics world
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
 
     // Add animation system
-    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, camera);
+    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
+
+    m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld, m_world.get());
 
     subscribeInput();
 }

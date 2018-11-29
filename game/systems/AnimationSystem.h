@@ -14,14 +14,13 @@ namespace game {
 namespace systems {
     class AnimationSystem : public engine::ecs::BaseSystem<AnimationSystem> {
     private:
-        engine::ecs::World& world;
-        std::shared_ptr<engine::graphics::Camera> m_camera;
-        std::vector<engine::RectangleShape> rectangles;
-        std::vector<engine::Sprite> sprites;
+        engine::ecs::World* m_world;
+        engine::graphics::Camera* m_camera;
+        std::vector<engine::Sprite> m_sprites;
 
     public:
-        AnimationSystem(engine::ecs::World& world, std::shared_ptr<engine::graphics::Camera> camera)
-            : world(world)
+        AnimationSystem(engine::ecs::World* world, engine::graphics::Camera* camera)
+            : m_world(world)
             , m_camera{ std::move(camera) }
         {
         }
