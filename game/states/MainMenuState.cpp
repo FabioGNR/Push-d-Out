@@ -42,7 +42,7 @@ void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
     });
     auto editorButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
-            engine::ui::ComponentSizeType::Fit,
+            engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "EDITOR");
