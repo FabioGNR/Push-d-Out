@@ -4,7 +4,7 @@
 #include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/definitions/Action.h"
-#include <engine/input/KeyStates.h>
+#include <engine/input/States.h>
 
 namespace game {
 namespace systems {
@@ -25,12 +25,12 @@ namespace systems {
             const auto pickupAction = definitions::Action::PickupEquippable;
             const auto pickupControl = inputComponent.getKey(pickupAction);
 
-            if (analogMap.hasKeyState(pickupControl, engine::input::KeyStates::PRESSED)) {
+            if (analogMap.hasState(pickupControl, engine::input::States::PRESSED)) {
                 attemptPickup(entity, inventoryComponent);
             }
             const auto switchAction = definitions::Action::SwitchWeapon;
             const auto switchControl = inputComponent.getKey(switchAction);
-            if (analogMap.hasKeyState(switchControl, engine::input::KeyStates::PRESSED)) {
+            if (analogMap.hasState(switchControl, engine::input::States::PRESSED)) {
                 attemptSwitch(inventoryComponent);
             }
         });

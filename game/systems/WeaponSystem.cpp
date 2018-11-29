@@ -87,7 +87,7 @@ namespace systems {
                 if (inputMap.getValue(analogControl) > 1) {
                     auto analogDirection = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
                     shoot(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
-                } else if (inputMap.hasKeyState(control, engine::input::KeyStates::DOWN)) {
+                } else if (inputMap.hasState(control, engine::input::States::DOWN)) {
                     auto mousePosition = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
                     shoot(entity, weapon, calculateDirection(entity, mousePosition, directionComponent));
                 }

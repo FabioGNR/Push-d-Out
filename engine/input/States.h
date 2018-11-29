@@ -20,7 +20,7 @@ namespace input {
      * RELEASED     | UP            | true          | 0100
      * etc...
      */
-    enum KeyStates {
+    enum States {
         DOWN = 0b0010,
         PRESSED = 0b0011,
         UP = 0b0100,

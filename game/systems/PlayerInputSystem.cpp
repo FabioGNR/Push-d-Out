@@ -22,13 +22,13 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft)) < -1) {
             move(delta, true, dirComp);
         }
-        if (analogMap.hasKeyState(PIC.getKey(definitions::Action::MoveLeft), KeyStates::DOWN)) {
+        if (analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), States::DOWN)) {
             move(delta, true, dirComp);
         }
-        if (analogMap.hasKeyState(PIC.getKey(definitions::Action::MoveRight), KeyStates::DOWN)) {
+        if (analogMap.hasState(PIC.getKey(definitions::Action::MoveRight), States::DOWN)) {
             move(delta, false, dirComp);
         }
-        if (analogMap.hasKeyState(PIC.getKey(definitions::Action::Jump), KeyStates::PRESSED)) {
+        if (analogMap.hasState(PIC.getKey(definitions::Action::Jump), States::PRESSED)) {
             jump(delta);
         }
 

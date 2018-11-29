@@ -53,7 +53,7 @@ namespace systems {
                     const auto action = definitions::Action::UseItem;
                     const auto control = inputComponent.getKey(action);
 
-                    if (analogMap.hasKeyState(control, engine::input::KeyStates::PRESSED)) {
+                    if (analogMap.hasState(control, engine::input::States::PRESSED)) {
                         if (activateFunctionMap.find(item.type) != activateFunctionMap.end()) {
                             activateFunctionMap[item.type](itemEntity, m_physicsWorld, m_ecsWorld);
                         }

@@ -1,36 +1,64 @@
 #include "InputMap.h"
+#include <iostream>
 
 namespace engine {
 namespace input {
     namespace maps {
         void InputMap::update()
         {
+            updateKeys();
+            updateAnalog();
+        }
+
+        void InputMap::updateAnalog()
+        {
+            auto it = m_analogStateMap.begin();
+            while (it != m_analogStateMap.end()) {
+                switch (it->second) {
+                case States::PRESSED:
+                    it->second = States::DOWN;
+                    ++it;
+                    break;
+                case States::DOWN:
+                    ++it;
+                    break;
+                case States::UP:
+                case States::PRESSED_AND_RELEASED:
+                case States::RELEASED:
+                    it = m_analogStateMap.erase(it);
+                    break;
+                }
+            }
+        }
+
+        void InputMap::updateKeys()
+        {
             auto it = m_keyMap.begin();
             while (it != m_keyMap.end()) {
                 switch (it->second) {
-                case KeyStates::PRESSED:
-                    it->second = KeyStates::DOWN;
+                case States::PRESSED:
+                    it->second = States::DOWN;
                     ++it;
                     break;
-                case KeyStates::DOWN:
+                case States::DOWN:
                     ++it;
                     break;
-                case KeyStates::UP:
-                case KeyStates::PRESSED_AND_RELEASED:
-                case KeyStates::RELEASED:
+                case States::UP:
+                case States::PRESSED_AND_RELEASED:
+                case States::RELEASED:
                     it = m_keyMap.erase(it);
                     break;
                 }
             }
         }
 
-        void InputMap::setValue(const engine::input::Keys key, const engine::input::KeyStates state)
+        void InputMap::setValue(const Keys key, const States state)
         {
             if (key == Keys::UNKNOWN) {
                 return;
             }
 
-            if (getKeyState(key) == PRESSED && state == RELEASED) {
+            if (getState(key) == PRESSED && state == RELEASED) {
                 m_keyMap[key] = PRESSED_AND_RELEASED;
             } else {
                 m_keyMap[key] = state;
@@ -42,18 +70,34 @@ namespace input {
             if (key == AnalogKeys::CON_UNKNOWN) {
                 return;
             }
+
+            States state = value == 0 ? RELEASED : PRESSED;
+
+            if (getState(key) == PRESSED && state == RELEASED) {
+                m_analogStateMap[key] = PRESSED_AND_RELEASED;
+            } else {
+                m_analogStateMap[key] = m_analogStateMap[key] == DOWN && state == PRESSED ? DOWN : state;
+            }
             m_analogMap[key] = value;
         }
 
-        KeyStates InputMap::getKeyState(const engine::input::Keys key) const
+        States InputMap::getState(Keys key) const
         {
             if (m_keyMap.find(key) == m_keyMap.end()) {
-                return KeyStates::UP;
+                return States::UP;
             }
             return m_keyMap.at(key);
         }
 
-        int InputMap::getValue(const engine::input::AnalogKeys key) const
+        States InputMap::getState(AnalogKeys key) const
+        {
+            if (m_analogStateMap.find(key) == m_analogStateMap.end()) {
+                return States::UP;
+            }
+            return m_analogStateMap.at(key);
+        }
+
+        int InputMap::getValue(const AnalogKeys key) const
         {
             if (m_analogMap.find(key) == m_analogMap.end()) {
                 return 0;
@@ -61,9 +105,14 @@ namespace input {
             return m_analogMap.at(key);
         }
 
-        bool InputMap::hasKeyState(const engine::input::Keys key, KeyStates state) const
+        bool InputMap::hasState(Keys key, States state) const
         {
-            return ((getKeyState(key) & state) == state);
+            return ((getState(key) & state) == state);
+        }
+
+        bool InputMap::hasState(AnalogKeys key, States state) const
+        {
+            return ((getState(key) & state) == state);
         }
     }
 }

@@ -50,21 +50,11 @@ namespace ui {
 
     void UISystem::subscribeInput()
     {
-        std::cout << "UISystem subs, to " << m_inputManager.connectedControllerAmount() << " controllers." << std::endl;
-        m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::InputMap keymap, auto&) {
+        m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap keymap, auto&) {
             if (m_active) {
                 processInputEvent(keymap);
             }
         });
-
-        for (size_t i = 0; i < m_inputManager.connectedControllerAmount(); i++) {
-            m_inputManager.subscribe([&](engine::input::maps::InputMap keymap, auto&) {
-                if (m_active) {
-                    processInputEvent(keymap);
-                }
-            },
-                i);
-        }
     }
 }
 }

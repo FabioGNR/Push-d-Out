@@ -34,8 +34,8 @@ namespace ui {
     void Button::processInputEvent(engine::input::maps::InputMap& inputMap)
     {
         //TODO: replace shouldExecute with proper mapping
-        bool shouldExecute = inputMap.hasKeyState(engine::input::Keys::SPACE, engine::input::KeyStates::PRESSED);
-        shouldExecute = inputMap.hasKeyState(engine::input::Keys::CON_A, engine::input::KeyStates::PRESSED) ? true : shouldExecute;
+        bool shouldExecute = inputMap.hasState(engine::input::Keys::SPACE, engine::input::States::PRESSED);
+        shouldExecute = inputMap.hasState(engine::input::Keys::CON_A, engine::input::States::PRESSED) ? true : shouldExecute;
         if (shouldExecute && m_action != nullptr) {
             m_action->execute();
         }

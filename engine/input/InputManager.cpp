@@ -13,21 +13,21 @@ namespace input {
             if (con->m_isAnalog) {
                 conMap.setValue(con->m_analogKey, con->m_axisValue);
             } else {
-                conMap.setValue(con->m_key, (con->m_keyDown ? KeyStates::PRESSED : KeyStates::RELEASED));
+                conMap.setValue(con->m_key, (con->m_keyDown ? States::PRESSED : States::RELEASED));
             }
         } else if (auto mouse = dynamic_cast<events::MouseEvent*>(event_ptr.get())) {
             auto& KBM_Map = m_inputMap.getKBM();
             if (!mouse->m_isAnalog) {
-                KBM_Map.setValue(mouse->m_key, (mouse->m_isPressed ? KeyStates::PRESSED : KeyStates::RELEASED));
+                KBM_Map.setValue(mouse->m_key, (mouse->m_isPressed ? States::PRESSED : States::RELEASED));
             }
             KBM_Map.setValue(AnalogKeys::MOUSE_X, mouse->m_x);
             KBM_Map.setValue(AnalogKeys::MOUSE_Y, mouse->m_y);
         } else {
             auto& KMB_Map = m_inputMap.getKBM();
             if (auto down = dynamic_cast<events::KeyDownEvent*>(event_ptr.get())) {
-                KMB_Map.setValue(down->value, KeyStates::PRESSED);
+                KMB_Map.setValue(down->value, States::PRESSED);
             } else if (auto up = dynamic_cast<events::KeyUpEvent*>(event_ptr.get())) {
-                KMB_Map.setValue(up->value, KeyStates::RELEASED);
+                KMB_Map.setValue(up->value, States::RELEASED);
             }
         }
     }
@@ -37,11 +37,11 @@ namespace input {
     {
         auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, id);
         m_subscriptions.push_back(subscription);
-        std::cout << "subbed to controler: " << id << std::endl;
+        std::cout << "subbed to controller: " << id << std::endl;
         return subscription;
     }
 
-    std::shared_ptr<events::Subscription<maps::InputMap>> InputManager::subscribe(
+    std::shared_ptr<events::Subscription<maps::InputMap>> InputManager::subscribeAll(
         std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify)
     {
         auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, -1);
@@ -54,6 +54,11 @@ namespace input {
         for (const auto& weakObserver : m_subscriptions) {
             if (auto observer = weakObserver.lock()) {
                 if (observer->isActive) {
+                    if (observer->subbedTo == -1) {
+                        for (size_t i = 0; i < m_handler->getConnectedControllers(); i++) {
+                            observer->update(m_inputMap.getMap(i), *observer);
+                        }
+                    }
                     observer->update(m_inputMap.getMap(observer->subbedTo), *observer);
                 }
             }

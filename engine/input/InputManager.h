@@ -21,7 +21,7 @@ namespace input {
         void handle(const std::unique_ptr<events::IEvent>& event_ptr);
 
         std::shared_ptr<events::Subscription<maps::InputMap>> subscribe(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify, size_t id);
-        std::shared_ptr<events::Subscription<maps::InputMap>> subscribe(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify);
+        std::shared_ptr<events::Subscription<maps::InputMap>> subscribeAll(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify);
 
         void notify();
         void update();

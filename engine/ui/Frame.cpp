@@ -1,4 +1,5 @@
 #include "Frame.h"
+#include <iostream>
 #include <ui/components/ComponentPanel.h>
 
 namespace engine {
@@ -9,12 +10,12 @@ namespace ui {
     {
         //TODO: use proper mapping for this instead of hardcoded W and S
         // if navigation key(s)
-        bool navigate = inputMap.hasKeyState(Keys::W, KeyStates::PRESSED) || inputMap.hasKeyState(Keys::S, KeyStates::PRESSED);
-        //navigate = keyMap.hasKeyState(Keys::CON_DPAD_UP, KeyStates::PRESSED) || keyMap.hasKeyState(Keys::CON_DPAD_DOWN, KeyStates::PRESSED) ? true : navigate;
+        bool navigate = inputMap.hasState(Keys::W, States::PRESSED) || inputMap.hasState(Keys::S, States::PRESSED);
+        navigate = inputMap.hasState(AnalogKeys::CON_LEFTSTICK_Y, States::PRESSED) ? true : navigate;
         if (navigate) {
             size_t navigatableComponentCount = getNavigatableComponentCount();
-            bool goForward = inputMap.hasKeyState(Keys::S, KeyStates::PRESSED);
-           //goForward = keyMap.hasKeyState(Keys::CON_DPAD_DOWN, KeyStates::PRESSED) ? true : goForward;
+            bool goForward = inputMap.hasState(Keys::S, States::PRESSED);
+            goForward = inputMap.getValue(AnalogKeys::CON_LEFTSTICK_Y) > 1 ? true : goForward;
             if (goForward) {
                 m_activeComponent++;
                 if (m_activeComponent >= navigatableComponentCount) {

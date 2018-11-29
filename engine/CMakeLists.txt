@@ -87,7 +87,7 @@ set(INPUT_SRC
         input/Keys.h
         input/SDLKeys.cpp
         input/SDLKeys.h
-        input/KeyStates.h
+        input/States.h
         input/maps/InputMap.cpp
         input/maps/InputMap.h
         input/AnalogKeys.h)
