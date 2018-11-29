@@ -15,7 +15,10 @@ namespace level {
     public:
         Level build(const json& j) override;
 
-        static void createEntities(engine::ecs::World& world, engine::physics::World& physics, Level level);
+        static void createEntities(engine::ecs::World& world, engine::physics::World& physics, const Level& level);
+
+    private:
+        static void makePlatforms(engine::ecs::World& world, engine::physics::World& physics, const Level& level);
     };
 }
 }

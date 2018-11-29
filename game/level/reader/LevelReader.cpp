@@ -3,6 +3,7 @@
 #include "game/components/BodyComponent.h"
 #include "game/components/CharacterSpawnComponent.h"
 #include "game/components/DimensionComponent.h"
+#include "game/components/EquipableComponent.h"
 #include "game/components/EquipmentSpawnerComponent.h"
 #include "game/components/LevelMetaComponent.h"
 #include "game/components/PositionComponent.h"
@@ -10,9 +11,7 @@
 #include "game/systems/EquipmentSpawnSystem.h"
 #include "game/systems/PositionSystem.h"
 #include "game/systems/SpriteSystem.h"
-#include <engine/exceptions/ResourceNotFoundException.h>
-#include <fstream>
-#include <game/components/EquipableComponent.h>
+#include <iostream>
 
 namespace game {
 namespace level {
@@ -22,10 +21,8 @@ namespace level {
         return level;
     }
 
-    void LevelReader::createEntities(engine::ecs::World& world, engine::physics::World& physics, Level level)
+    void LevelReader::createEntities(engine::ecs::World& world, engine::physics::World& physics, const Level& level)
     {
-        common::Vector2D<double> dimension{ 1, 1 };
-
         std::string basePath{ "assets/sprites/" };
         std::string baseThemePath{ basePath + "themes/" };
         std::string levelSheet{ level.theme.sprites };
@@ -49,29 +46,8 @@ namespace level {
         builders::SpriteBuilder miscSpriteBuilder{ basePath + "misc/misc.png", basePath + "misc/misc.json" };
         auto miscSpriteComponentMap = miscSpriteBuilder.build();
 
-        for (const auto& curTile : level.tiles) {
-            common::Vector2D<double> position{ curTile.x, curTile.y };
+        makePlatforms(world, physics, level);
 
-            auto& entity = world.createEntity();
-
-            // Add a position component to tile entity
-            auto posComponent = components::PositionComponent(position);
-            world.addComponent<components::PositionComponent>(entity, posComponent);
-
-            // Add a body component to tile entity
-            auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, dimension, entity.id()));
-            world.addComponent<components::BodyComponent>(entity, bodyComponent);
-
-            // Add a sprite component to tile entity
-            auto spriteComponentPair = tileSpriteComponentMap.find(curTile.sprite);
-            if (spriteComponentPair != tileSpriteComponentMap.end()) {
-                auto spriteComponent = spriteComponentPair->second;
-                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
-            }
-
-            auto dimensionComponent = components::DimensionComponent(dimension);
-            world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
-        }
         for (const auto& curSpawn : level.CharacterSpawns) {
             common::Vector2D<double> position{ curSpawn.x, curSpawn.y };
 
@@ -114,6 +90,79 @@ namespace level {
             // Add an equipment spawner component to equipment spawn entity
             auto spawnerComponent = components::EquipmentSpawnerComponent(10);
             world.addComponent<components::EquipmentSpawnerComponent>(entity, spawnerComponent);
+        }
+    }
+
+    void LevelReader::makePlatforms(engine::ecs::World& world, engine::physics::World& physics, const Level& level)
+    {
+        std::string basePath{ "assets/sprites/themes/" };
+        std::string levelSheet{ level.theme.sprites };
+
+        builders::SpriteBuilder tileSpriteBuilder{ basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json" };
+        auto tileSpriteComponentMap = tileSpriteBuilder.build();
+
+        auto remainingTiles = level.tiles;
+        const auto defaultTileSize = common::Vector2D<double>{ 1, 1 };
+
+        while (!remainingTiles.empty()) {
+            auto& currentTile = remainingTiles[0];
+            common::Vector2D<double> bodySize{ 1, 1 };
+
+            Tile* nextTile = nullptr;
+            do {
+                auto nextTileCandidate = std::find_if(remainingTiles.begin(), remainingTiles.end(), [&](const auto& other) {
+                    return std::abs(currentTile.x - (other.x - bodySize.x)) < 0.1
+                        && std::abs(other.y - currentTile.y) < 0.1;
+                });
+                if (nextTileCandidate != remainingTiles.end()) {
+                    nextTile = &*nextTileCandidate;
+                    bodySize.x += defaultTileSize.x;
+
+                    auto& entity = world.createEntity();
+                    common::Vector2D<double> position{ nextTile->x, nextTile->y };
+
+                    // Add a position component to tile entity
+                    auto posComponent = components::PositionComponent(position);
+                    world.addComponent<components::PositionComponent>(entity, posComponent);
+
+                    // Add a sprite component to tile entity
+                    auto spriteComponentPair = tileSpriteComponentMap.find(nextTile->sprite);
+                    if (spriteComponentPair != tileSpriteComponentMap.end()) {
+                        auto spriteComponent = spriteComponentPair->second;
+                        world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+                    }
+
+                    auto dimensionComponent = components::DimensionComponent(defaultTileSize);
+                    world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
+
+                    remainingTiles.erase(nextTileCandidate);
+                } else {
+                    nextTile = nullptr;
+                }
+            } while (nextTile != nullptr);
+
+            auto& entity = world.createEntity();
+            common::Vector2D<double> position{ currentTile.x, currentTile.y };
+
+            // Add a position component to tile entity
+            auto posComponent = components::PositionComponent(position);
+            world.addComponent<components::PositionComponent>(entity, posComponent);
+
+            // Add a body component to tile entity
+            auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, bodySize, entity.id()));
+            world.addComponent<components::BodyComponent>(entity, bodyComponent);
+
+            // Add a sprite component to tile entity
+            auto spriteComponentPair = tileSpriteComponentMap.find(currentTile.sprite);
+            if (spriteComponentPair != tileSpriteComponentMap.end()) {
+                auto spriteComponent = spriteComponentPair->second;
+                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+            }
+
+            auto dimensionComponent = components::DimensionComponent(defaultTileSize);
+            world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
+
+            remainingTiles.erase(remainingTiles.begin());
         }
     }
 }
