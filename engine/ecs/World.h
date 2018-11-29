@@ -83,6 +83,18 @@ namespace ecs {
         }
 
         template <typename Component>
+        std::unordered_map<EntityId, std::unique_ptr<IComponent>>::iterator begin()
+        {
+            return m_componentManager.getManager<Component>().getAll().begin();
+        }
+
+        template <typename Component>
+        std::unordered_map<EntityId, std::unique_ptr<IComponent>>::iterator end()
+        {
+            return m_componentManager.getManager<Component>().getAll().end();
+        }
+
+        template <typename Component>
         void addComponentManager()
         {
             m_componentManager.addManager<Component>();

@@ -9,7 +9,10 @@ namespace level {
             { "gravity", theme.gravity },
             { "friction", theme.friction },
             { "track", theme.trackName },
-            { "sprites", theme.sprites }
+            { "sprites", theme.sprites },
+            { "movementSpeed", theme.movementSpeed },
+            { "jumpSpeed", theme.jumpSpeed },
+            { "glide", theme.glide }
         };
     }
 
@@ -21,7 +24,14 @@ namespace level {
         theme.trackName = j["track"];
         theme.friction = j.at("friction").get<double>();
         theme.gravity = j.at("gravity").get<double>();
+        theme.movementSpeed = j.at("movementSpeed").get<double>();
+        theme.jumpSpeed = j.at("jumpSpeed").get<double>();
         theme.sprites = j.at("sprites").get<std::string>();
+
+        auto glide = j.find("glide");
+        if (glide != j.end()) {
+            theme.glide = j.at("glide").get<bool>();
+        }
     }
 }
 }

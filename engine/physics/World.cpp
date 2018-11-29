@@ -185,10 +185,14 @@ namespace physics {
 
     void World::destroyBody(Body* body)
     {
-        m_impl->bodies.erase(std::remove_if(m_impl->bodies.begin(), m_impl->bodies.end(), [&](auto& element) {
+        auto it = std::find_if(m_impl->bodies.begin(), m_impl->bodies.end(), [&](auto& element) {
             return element.get() == body;
-        }),
-            m_impl->bodies.end());
+        });
+
+        // move body out of the list
+        // so that the destructor doesn't get called before EndContact
+        auto temp = std::move(*it);
+        m_impl->bodies.erase(it);
     }
 
     void World::destroyBody(b2Body* body)

@@ -3,6 +3,7 @@
 #include <engine/sound/Music.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
 #include <game/components/JumpComponent.h>
+#include <game/components/LevelMetaComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
 
@@ -59,17 +60,29 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
 
 void game::systems::PlayerInputSystem::move(common::Vector2D<double>& delta, bool invert)
 {
-    delta.x += invert ? -20 : 20;
+    auto levelIt = m_world.begin<components::LevelMetaComponent>();
+    components::LevelMetaComponent* level = nullptr;
+    if (levelIt != m_world.end<components::LevelMetaComponent>()) {
+        level = dynamic_cast<components::LevelMetaComponent*>(levelIt->second.get());
+    }
+
+    auto deltaX = level != nullptr ? level->theme.movementSpeed : 20;
+    delta.x += invert ? -deltaX : deltaX;
 }
 void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
 {
+    auto levelIt = m_world.begin<components::LevelMetaComponent>();
+    components::LevelMetaComponent* level = nullptr;
+    if (levelIt != m_world.end<components::LevelMetaComponent>()) {
+        level = dynamic_cast<components::LevelMetaComponent*>(levelIt->second.get());
+    }
 
     engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
     engine::sound::Volume volume{ 10 };
     m_soundManager->setSfxVolume(volume);
     m_soundManager->play(sound);
 
-    delta.y += 10;
+    delta.y += level != nullptr ? level->theme.jumpSpeed : 10;
 }
 
 void game::systems::PlayerInputSystem::render(engine::IRenderer& /* renderer */) {}
