@@ -1,5 +1,6 @@
 #include "WeaponSystem.h"
 
+#include <game/builders/SpriteBuilder.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
@@ -13,6 +14,7 @@
 #include <engine/physics/DynamicBody.h>
 
 #include <chrono>
+#include <game/components/SpriteComponent.h>
 
 using namespace game::components;
 
@@ -23,9 +25,10 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     common::Vector2D<double>& direction)
 {
     common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>((direction.x > 0 ? 1 : 0), 1);
+    //common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>(1.2, 1); TODO ask wtf 1.2 does
     auto& projectileEntity = ecsWorld.createEntity();
     common::Vector2D<double> dimensionVector(0.5, 0.5);
-    engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector);
+    engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector, projectileEntity.id());
 
     auto posComponent = PositionComponent(playerPosition);
     ecsWorld.addComponent<PositionComponent>(projectileEntity, posComponent);
@@ -43,6 +46,11 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     projectileBody->setLinearVelocity(common::Vector2D<double>(direction.x, direction.y));
     ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>(0, 0), playerPosition);
 
+    auto sprites = game::builders::SpriteBuilder{ "assets/sprites/equipment/equipment.png", "assets/sprites/equipment/equipment.json" }.build();
+    auto sprite = sprites.find("ForceGunProjectile");
+    if (sprite != sprites.end()) {
+        ecsWorld.addComponent<SpriteComponent>(projectileEntity, sprite->second);
+    }
     return projectileEntity;
 }
 

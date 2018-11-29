@@ -12,7 +12,7 @@ namespace components {
     struct ItemComponent : public engine::ecs::BaseComponent<ItemComponent> {
         definitions::ItemType type;
 
-        ItemComponent(definitions::ItemType type)
+        explicit ItemComponent(definitions::ItemType type)
             : type(type)
         {
         }

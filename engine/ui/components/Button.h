@@ -18,7 +18,7 @@ namespace ui {
         {
         }
 
-        virtual ~Button() = default;
+        ~Button() override = default;
 
         DrawContext draw(DrawContext context) override;
 

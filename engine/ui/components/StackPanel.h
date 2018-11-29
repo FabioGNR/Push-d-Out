@@ -14,7 +14,7 @@ namespace ui {
         {
         }
 
-        virtual ~StackPanel() = default;
+        ~StackPanel() override = default;
 
         common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 

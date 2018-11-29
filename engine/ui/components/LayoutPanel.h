@@ -17,7 +17,7 @@ namespace ui {
         {
         }
 
-        virtual ~LayoutPanel() = default;
+        ~LayoutPanel() override = default;
 
         common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const override;
 

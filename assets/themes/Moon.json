@@ -1,6 +1,7 @@
 {
 	"name": "Moon",
-	"gravity": -1.6,
-	"friction": 0.5,
-	"track": "01.wav"
+	"gravity": -3.5,
+	"friction": 3.0,
+	"track": "01.wav",
+	"sprites": "moon"
 }

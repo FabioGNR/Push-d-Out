@@ -14,12 +14,12 @@ namespace systems {
     void RenderSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         // First clear the list of rectangles
-        this->rectangles.clear();
+        m_rectangles.clear();
 
         // Iterate through the components and draw the necessary shapes
-        world.forEachEntityWith<components::PositionComponent, components::DimensionComponent>([&](engine::ecs::Entity& entity) {
-            auto& positionComponent = world.getComponent<components::PositionComponent>(entity);
-            auto& dimensionComponent = world.getComponent<components::DimensionComponent>(entity);
+        m_world->forEachEntityWith<components::PositionComponent, components::DimensionComponent>([&](engine::ecs::Entity& entity) {
+            auto& positionComponent = m_world->getComponent<components::PositionComponent>(entity);
+            auto& dimensionComponent = m_world->getComponent<components::DimensionComponent>(entity);
             if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension)) {
                 common::Vector2D<int> position = m_camera->translatePosition(positionComponent.position);
                 common::Vector2D<int> size = m_camera->scaleSize(dimensionComponent.dimension);
@@ -33,7 +33,7 @@ namespace systems {
                 position.y = position.y - size.y;
                 engine::RectangleShape shape{ position, size, color };
 
-                this->rectangles.push_back(shape);
+                m_rectangles.push_back(shape);
             }
         });
     }
@@ -41,7 +41,7 @@ namespace systems {
     void RenderSystem::render(engine::IRenderer& renderer)
     {
         // Draw the rectangles to the screen
-        for (const auto& rectangle : this->rectangles) {
+        for (const auto& rectangle : m_rectangles) {
             renderer.draw(rectangle);
         }
     }

@@ -9,6 +9,7 @@ namespace level {
             { "gravity", theme.gravity },
             { "friction", theme.friction },
             { "track", theme.trackName },
+            { "sprites", theme.sprites }
         };
     }
 
@@ -20,6 +21,7 @@ namespace level {
         theme.trackName = j["track"];
         theme.friction = j.at("friction").get<double>();
         theme.gravity = j.at("gravity").get<double>();
+        theme.sprites = j.at("sprites").get<std::string>();
     }
 }
 }

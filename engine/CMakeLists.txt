@@ -51,17 +51,24 @@ set(GRAPHICS_SRC
         graphics/SDL/SDLRenderVisitor.h
         graphics/SDL/SDLRenderer.cpp
         graphics/SDL/SDLRenderer.h
+        graphics/SDL/SDLBlendModes.h 
+        graphics/SDL/SDLBlendModes.cpp 
         graphics/drawable/RectangleShape.cpp
         graphics/drawable/RectangleShape.h
+        graphics/drawable/Circle.cpp
+        graphics/drawable/Circle.h
         graphics/drawable/LineShape.cpp
         graphics/drawable/LineShape.h
         graphics/drawable/Font.cpp
         graphics/drawable/Font.h
         graphics/drawable/Sprite.cpp
         graphics/drawable/Sprite.h
+        graphics/drawable/Surface.cpp
+        graphics/drawable/Surface.h
         graphics/Color.h
         graphics/Camera.h
         graphics/Camera.cpp
+        graphics/BlendModes.h 
         )
 
 set(PHYSICS_SRC
@@ -79,6 +86,8 @@ set(PHYSICS_SRC
         physics/Collision.h
         physics/KinematicBody.cpp
         physics/KinematicBody.h
+        physics/ContactListener.h
+        physics/Contact.h
         )
 
 set(INPUT_SRC
@@ -90,9 +99,15 @@ set(INPUT_SRC
         input/KeyStates.h
         input/maps/InputMap.cpp
         input/maps/InputMap.h
-        input/AnalogKeys.h)
+        input/SDL_Axis.h
+        input/SDL_Axis.cpp
+        input/AnalogKeys.h
+        input/maps/InputMaps.cpp
+        input/maps/InputMaps.h
+        )
 
 set(EVENTS_SRC
+        events/models/MouseEvent.h
         events/IEventHandler.h
         events/SDLEventHandler.cpp
         events/SDLEventHandler.h
@@ -104,7 +119,8 @@ set(EVENTS_SRC
         events/models/KeyDownEvent.h
         events/models/QuitEvent.h
         events/models/Subscription.h
-        events/models/ControllerEvent.h)
+        events/models/ControllerEvent.h
+        )
 
 set(WINDOW_SRC
         window/SDLWindow.h
@@ -162,13 +178,9 @@ set(UI_SRC
         ui/components/TextComponent.cpp
         ui/components/ComponentPanel.h
         ui/components/CustomAction.h
-        input/maps/InputMaps.cpp
-        input/maps/InputMaps.h
-        input/SDL_Axis.h
-        input/SDL_Axis.cpp
         ui/components/Image.cpp
         ui/components/Image.h
-        events/models/MouseEvent.h)
+        )
 
 # more engine stuff
 add_library(engine
@@ -193,5 +205,3 @@ target_link_libraries(engine
         ${SDL2_MIXER_LIBRARIES}
         ${BOX2D_LIBRARY}
         )
-
-target_link_libraries(engine ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${BOX2D_LIBRARY})

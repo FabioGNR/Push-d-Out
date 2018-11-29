@@ -1,13 +1,16 @@
 #pragma once
 
 #include <engine/ecs/World.h>
+#include <engine/events/models/Subscription.h>
 #include <engine/game/State.h>
+#include <engine/graphics/Camera.h>
 #include <engine/input/InputManager.h>
 #include <engine/physics/PhysicsManager.h>
 #include <engine/physics/World.h>
 #include <engine/sound/ISoundManager.h>
 
-#include <engine/events/models/Subscription.h>
+#include <game/hud/HUD.h>
+
 #include <memory>
 
 namespace game {
@@ -18,6 +21,8 @@ private:
 
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     std::unique_ptr<engine::physics::World> m_world;
+    engine::graphics::Camera m_camera;
+    std::unique_ptr<game::hud::HUD> m_hud;
     engine::ecs::World m_ecsWorld;
 
     std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
@@ -25,8 +30,10 @@ private:
     engine::input::InputManager& m_inputManager;
     std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;
 
+    std::string m_levelToPlay;
+
 public:
-    explicit GameState(engine::IGame& game);
+    explicit GameState(std::string levelToPlay, engine::IGame& game);
     ~GameState() override = default;
 
     GameState(const GameState& other) = delete;

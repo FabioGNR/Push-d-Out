@@ -7,7 +7,7 @@ namespace ui {
     DrawContext Button::draw(DrawContext context)
     {
         Color btnColor{
-            255, 255, 255, 130
+            255, 255, 255, 255
         };
 
         if (context.focusedComponent == this) {
@@ -17,7 +17,9 @@ namespace ui {
         RectangleShape shape{ context.pos, calculatedSize, btnColor };
 
         context.renderer.draw(shape);
-        m_font.setPosition(context.pos + m_size.getPadding());
+        common::Vector2D<int> requiredTextSize = calculateTextSize(context.renderer);
+
+        m_font.setPosition(context.pos + m_size.getPadding() + (calculatedSize - requiredTextSize) / 2);
         context.renderer.draw(m_font);
         context.pos += calculatedSize;
         return context;

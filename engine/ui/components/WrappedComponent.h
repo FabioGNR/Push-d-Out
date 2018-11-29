@@ -17,7 +17,7 @@ namespace ui {
             , m_component{ std::move(component) }
         {
         }
-        DrawContext draw(DrawContext context) const { return m_component->draw(std::move(context)); };
+        DrawContext draw(DrawContext context) const { return m_component->draw(context); };
         Component& getComponent() const { return *m_component; }
         LayoutAnchor getAnchor() const { return m_anchor; }
 

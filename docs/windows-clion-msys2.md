@@ -22,6 +22,8 @@ Start the MSYS2 terminal.
 
     `pacman -S mingw-w64-x86_64-SDL2_mixer`
 
+    `pacman -S mingw-w64-x86_64-boost`
+
 ## Clion
 
 Download [Clion](https://www.jetbrains.com/clion/download/#section=windows) from their website. If you have not already, get a free student license.

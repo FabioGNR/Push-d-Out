@@ -30,6 +30,7 @@ public:
 
     virtual void previous();
     virtual void next(std::unique_ptr<engine::State> state);
+    virtual void clearStates();
     virtual void stop();
     virtual void run();
 

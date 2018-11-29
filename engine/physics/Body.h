@@ -1,11 +1,15 @@
 #pragma once
 
 #include "engine/common/Vector2D.h"
+#include "engine/ecs/Entity.h"
 #include <memory>
+
+class b2Body;
 
 namespace engine {
 namespace physics {
     class World;
+    class WorldImpl;
 
     class Body {
     protected:
@@ -13,8 +17,13 @@ namespace physics {
         common::Vector2D<double> m_dimensions;
 
         double m_angle = 0;
-
         World& m_world;
+        b2Body* m_body;
+
+        ecs::EntityId m_ownerId = 0;
+
+        friend WorldImpl;
+        friend World;
 
     public:
         Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
@@ -35,12 +44,16 @@ namespace physics {
 
         virtual double getAngle() const;
 
-        virtual void applyForce(const common::Vector2D<double>& force, const common::Vector2D<double>& point) const = 0;
+        virtual void applyForce(const common::Vector2D<double>& force,
+            const common::Vector2D<double>& point) const = 0;
 
         virtual const common::Vector2D<double> getLinearVelocity() const = 0;
         virtual void setLinearVelocity(common::Vector2D<double> vel) const = 0;
         virtual void applyLinearImpulse(const common::Vector2D<double>& impulse) const = 0;
         virtual double getMass() const = 0;
+
+        virtual void setEntityId(ecs::EntityId);
+        virtual ecs::EntityId getEntityId();
     };
 }
 }
