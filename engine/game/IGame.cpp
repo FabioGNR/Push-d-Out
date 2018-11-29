@@ -78,4 +78,13 @@ double IGame::speed() const
 {
     return m_speed;
 }
+
+void IGame::clearStates()
+{
+    while (!m_states.empty()) {
+        auto& currentState = m_states.top();
+        currentState->close();
+        m_states.pop();
+    }
+}
 }
