@@ -2,40 +2,55 @@
 #include "graphics/IRenderVisitor.h"
 
 namespace engine {
-void RectangleShape::accept(IRenderVisitor& visitor) const
-{
-    visitor.visit(*this);
-}
-
-common::Vector2D<int> RectangleShape::size() const
-{
-    return m_size;
-}
-
-common::Vector2D<int> RectangleShape::position() const
-{
-    return m_position;
-}
-
-RectangleShape::RectangleShape(common::Vector2D<int> position, common::Vector2D<int> size, const Color& color)
+RectangleShape::RectangleShape(common::Vector2D<int> position, common::Vector2D<int> size, const Color& color, bool fill)
     : m_position(position)
     , m_size(size)
+    , m_fill(fill)
     , m_color(color)
 {
 }
 
-void RectangleShape::setSize(common::Vector2D<int> size)
+void RectangleShape::accept(IRenderVisitor& visitor) const
 {
-    m_size = size;
-}
-
-void RectangleShape::setPosition(common::Vector2D<int> position)
-{
-    m_position = position;
+    visitor.visit(*this);
 }
 
 const Color& RectangleShape::color() const
 {
     return m_color;
 }
+
+const common::Vector2D<int>& RectangleShape::size() const
+{
+    return m_size;
+}
+
+const common::Vector2D<int>& RectangleShape::position() const
+{
+    return m_position;
+}
+
+void RectangleShape::setColor(const Color& color)
+{
+    m_color = color;
+}
+
+void RectangleShape::setSize(const common::Vector2D<int>& size)
+{
+    m_size = size;
+}
+
+void RectangleShape::setPosition(const common::Vector2D<int>& position)
+{
+    m_position = position;
+}
+bool RectangleShape::isFilled() const
+{
+    return m_fill;
+}
+void RectangleShape::setFill(bool fill)
+{
+    m_fill = fill;
+}
+
 } // end namespace engine

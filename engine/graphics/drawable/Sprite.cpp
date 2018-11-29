@@ -38,19 +38,34 @@ void Sprite::spritePath(std::string path)
     m_spritePath = std::move(path);
 }
 
-common::Vector2D<int> Sprite::position() const
+const common::Vector2D<int>& Sprite::position() const
 {
     return m_position;
 }
 
-common::Vector2D<int> Sprite::sourcePosition() const
+const common::Vector2D<int>& Sprite::sourcePosition() const
 {
     return m_sourcePosition;
 }
 
-common::Vector2D<int> Sprite::sourceSize() const
+const common::Vector2D<int>& Sprite::sourceSize() const
 {
     return m_sourceSize;
+}
+
+const common::Vector2D<int>& Sprite::size() const
+{
+    return m_size;
+}
+
+void Sprite::setPosition(const common::Vector2D<int>& position)
+{
+    m_position = position;
+}
+
+void Sprite::setSize(const common::Vector2D<int>& size)
+{
+    m_size = size;
 }
 
 bool Sprite::operator==(const Sprite& rhs) const
@@ -61,21 +76,6 @@ bool Sprite::operator==(const Sprite& rhs) const
 bool Sprite::operator!=(const Sprite& rhs) const
 {
     return !(rhs == *this);
-}
-
-void Sprite::setPosition(common::Vector2D<int> position)
-{
-    m_position = position;
-}
-
-void Sprite::setSize(common::Vector2D<int> size)
-{
-    m_size = size;
-}
-
-common::Vector2D<int> Sprite::size() const
-{
-    return m_size;
 }
 
 } // end namespace engine

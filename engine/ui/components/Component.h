@@ -17,6 +17,7 @@ namespace ui {
         {
         }
         virtual ~Component() = default;
+
         virtual DrawContext draw(DrawContext context) = 0;
 
         virtual void processInputEvent(engine::input::maps::AnalogMap& /*unused*/) {}

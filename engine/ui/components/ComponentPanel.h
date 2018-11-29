@@ -11,6 +11,8 @@ namespace ui {
             , m_flowDirection{ flowDirection }
         {
         }
+        ~ComponentPanel() override = default;
+
         virtual size_t countNavigatableChildren() const = 0;
         virtual Component* getNavigatableAt(size_t index) const = 0;
 

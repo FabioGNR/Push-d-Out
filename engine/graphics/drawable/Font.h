@@ -17,6 +17,7 @@ class Font : public IGraphicsElement {
 
 public:
     Font(std::string fontPath, std::string text, int fontSize, Color color, common::Vector2D<int> position);
+    ~Font() override = default;
 
     void accept(IRenderVisitor& visitor) const override;
 

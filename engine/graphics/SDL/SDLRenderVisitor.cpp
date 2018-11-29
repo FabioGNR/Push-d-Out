@@ -23,42 +23,42 @@ SDLRenderVisitor::SDLRenderVisitor(const SDLRenderer& renderer)
 
 void SDLRenderVisitor::visit(const RectangleShape& shape)
 {
-    auto* renderer = m_renderer.m_renderer.get();
+    if (shape.isFilled()) {
+        visitFilledRectangle(shape);
 
-    SDL_SetRenderDrawColor(renderer,
-        (uint8_t)(shape.color().r),
-        (uint8_t)(shape.color().g),
-        (uint8_t)(shape.color().b),
-        (uint8_t)(shape.color().a));
-
-    SDL_Rect positionRect{
-        shape.position().x,
-        shape.position().y,
-        shape.size().x,
-        shape.size().y
-    };
-
-    SDL_RenderFillRect(renderer, &positionRect);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    } else {
+        visitOutlinedRectangle(shape);
+    }
 }
 
 void SDLRenderVisitor::visit(const LineShape& shape)
 {
     auto* renderer = m_renderer.m_renderer.get();
 
-    SDL_SetRenderDrawColor(renderer, shape.color().r, shape.color().g, shape.color().b, shape.color().a);
+    SDL_SetRenderDrawColor(
+        renderer,
+        static_cast<Uint8>(shape.color().r),
+        static_cast<Uint8>(shape.color().g),
+        static_cast<Uint8>(shape.color().b),
+        static_cast<Uint8>(shape.color().a));
+
     SDL_RenderDrawLine(renderer,
         shape.position1().x, shape.position1().y,
         shape.position2().x, shape.position2().y);
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
 void SDLRenderVisitor::visit(const Font& font)
 {
+    if (font.text().empty()) {
+        return;
+    }
+
     auto* renderer = m_renderer.m_renderer.get();
 
     TTF_Font* ttfFont = nullptr;
-    if (!fontCache.hasResource(std::pair<int, std::string>(font.fontSize(), font.fontPath()))) {
+    if (!m_renderer.fontCache.hasResource(std::make_pair(font.fontPath(), font.fontSize()))) {
         const auto ttf = std::shared_ptr<TTF_Font>(
             TTF_OpenFont(font.fontPath().c_str(), font.fontSize()),
             TTF_CloseFont);
@@ -66,16 +66,16 @@ void SDLRenderVisitor::visit(const Font& font)
         if (ttf == nullptr) {
             throw std::runtime_error(TTF_GetError());
         }
-        fontCache.addResource(std::pair<int, std::string>(font.fontSize(), font.fontPath()), ttf);
+        m_renderer.fontCache.addResource(std::make_pair(font.fontPath(), font.fontSize()), ttf);
 
         ttfFont = ttf.get();
     } else {
-        ttfFont = fontCache.getResource(std::pair<int, std::string>(font.fontSize(), font.fontPath())).get();
+        ttfFont = m_renderer.fontCache.getResource(std::make_pair(font.fontPath(), font.fontSize())).get();
     }
 
     SDL_Surface* surface = nullptr;
     SDL_Texture* texture = nullptr;
-    if (!textCache.hasResource(font)) {
+    if (!m_renderer.textCache.hasResource(font)) {
         SDL_Color color{
             (uint8_t)font.color().r,
             (uint8_t)font.color().g,
@@ -98,12 +98,12 @@ void SDLRenderVisitor::visit(const Font& font)
         if (textureMessage == nullptr) {
             throw std::runtime_error(TTF_GetError());
         }
-        textCache.addResource(font, std::make_pair(surfaceMessage, textureMessage));
+        m_renderer.textCache.addResource(font, std::make_pair(surfaceMessage, textureMessage));
 
         surface = surfaceMessage.get();
         texture = textureMessage.get();
     } else {
-        const auto& surfaceTexturePair = textCache.getResource(font);
+        const auto& surfaceTexturePair = m_renderer.textCache.getResource(font);
         surface = surfaceTexturePair.first.get();
         texture = surfaceTexturePair.second.get();
     }
@@ -124,7 +124,8 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
 
     SDL_Texture* texture = nullptr;
     SDL_Surface* surface = nullptr;
-    if (!spriteCache.hasResource(sprite)) {
+
+    if (!m_renderer.spriteCache.hasResource(sprite)) {
         const auto surfaceImage = std::shared_ptr<SDL_Surface>(
             IMG_Load(sprite.spritePath().c_str()),
             SDL_FreeSurface);
@@ -132,6 +133,7 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
         if (surfaceImage == nullptr) {
             throw std::runtime_error(IMG_GetError());
         }
+        surface = surfaceImage.get();
 
         const auto textureImage = std::shared_ptr<SDL_Texture>(
             SDL_CreateTextureFromSurface(renderer, surfaceImage.get()),
@@ -140,14 +142,13 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
         if (textureImage == nullptr) {
             throw std::runtime_error(IMG_GetError());
         }
-
         texture = textureImage.get();
-        surface = surfaceImage.get();
-        spriteCache.addResource(sprite, std::make_pair(surfaceImage, textureImage));
+
+        m_renderer.spriteCache.addResource(sprite, std::make_pair(surfaceImage, textureImage));
     } else {
-        const auto& surfaceTexturePair = spriteCache.getResource(sprite);
-        texture = surfaceTexturePair.second.get();
+        const auto& surfaceTexturePair = m_renderer.spriteCache.getResource(sprite);
         surface = surfaceTexturePair.first.get();
+        texture = surfaceTexturePair.second.get();
     }
 
     SDL_Rect positionRect = {
@@ -174,63 +175,10 @@ void SDLRenderVisitor::visit(const Sprite& sprite)
 
 void SDLRenderVisitor::visit(const Circle& circle)
 {
-    if (!circle.fill()) { // draw the outline
-        auto sides = static_cast<size_t>(2 * PI * circle.radius() / 2);
-
-        double d_a = 2 * PI / sides, angle = d_a;
-        common::Vector2D<double> end{ circle.radius(), 0.0 };
-        end = end + circle.center();
-
-        for (size_t i = 0; i <= sides; ++i) {
-            common::Vector2D<double> start = end;
-            end.x = cos(angle) * circle.radius();
-            end.y = sin(angle) * circle.radius();
-            end = end + circle.center();
-            angle += d_a;
-
-            visit(LineShape{ start.castTo<int>(), end.castTo<int>(), circle.color() });
-        }
+    if (circle.fill()) { // draw the outline
+        visitFilledCircle(circle);
     } else {
-        auto* renderer = m_renderer.m_renderer.get();
-
-        SDL_SetRenderDrawColor(renderer,
-            static_cast<Uint8>(circle.color().r),
-            static_cast<Uint8>(circle.color().g),
-            static_cast<Uint8>(circle.color().b),
-            static_cast<Uint8>(circle.color().a));
-
-        const auto radius = static_cast<int>(circle.radius());
-        const double radiusSquared = circle.radius() * circle.radius();
-        const common::Vector2D<int> center = circle.center().castTo<int>();
-
-        std::vector<SDL_Rect> lines;
-        SDL_Rect lineRect{ 0, 0, 1, 0 };
-        for (int dx = -radius; dx <= 0; dx++) {
-            // shift the vertical line to the current column
-            lineRect.x = center.x + dx;
-            int dxSquared = dx * dx;
-            for (int dy = -radius; dy < 0; dy++) {
-                if ((dxSquared + dy * dy) > radiusSquared) {
-                    continue; // this pixel isn't within the circle
-                }
-                // shift the vertical line to the starting y position
-                lineRect.y = center.y + dy;
-                // set the height to double the position (symmetrical)
-                lineRect.h = dy * -2;
-                // draw this line later
-                lines.push_back(lineRect);
-                // if we are not yet at the center of the circle
-                if (dx != 0) {
-                    // then duplicate the line on the horizontal axis (symmetrical)
-                    lineRect.x = center.x - dx;
-                    lines.push_back(lineRect);
-                }
-                break;
-            }
-        }
-        // send all the lines to SDL in one call
-        SDL_RenderDrawRects(renderer, lines.data(), lines.size());
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        visitOutlinedCircle(circle);
     }
 }
 
@@ -238,14 +186,14 @@ void SDLRenderVisitor::visit(const Surface& surface)
 {
     auto* renderer = m_renderer.m_renderer.get();
     SDL_Texture* texture = nullptr;
-    if (!surfaceCache.hasResource(surface)) {
+    if (!m_renderer.surfaceCache.hasResource(surface)) {
         auto textureCached = std::shared_ptr<SDL_Texture>(
             SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_TARGET, surface.size().x, surface.size().y),
             SDL_DestroyTexture);
         texture = textureCached.get();
-        surfaceCache.addResource(surface, textureCached);
+        m_renderer.surfaceCache.addResource(surface, textureCached);
     } else {
-        texture = surfaceCache.getResource(surface).get();
+        texture = m_renderer.surfaceCache.getResource(surface).get();
     }
 
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
@@ -268,4 +216,109 @@ void SDLRenderVisitor::visit(const IGraphicsElement& element)
 {
     (void)element;
 }
+
+void SDLRenderVisitor::visitOutlinedRectangle(const RectangleShape& shape) const
+{
+    auto* renderer = m_renderer.m_renderer.get();
+
+    SDL_SetRenderDrawColor(renderer,
+        (uint8_t)(shape.color().r),
+        (uint8_t)(shape.color().g),
+        (uint8_t)(shape.color().b),
+        (uint8_t)(shape.color().a));
+
+    SDL_Rect positionRect{
+        shape.position().x,
+        shape.position().y,
+        shape.size().x,
+        shape.size().y
+    };
+
+    SDL_RenderDrawRect(renderer, &positionRect);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+}
+void SDLRenderVisitor::visitFilledRectangle(const RectangleShape& shape) const
+{
+    auto* renderer = m_renderer.m_renderer.get();
+
+    SDL_SetRenderDrawColor(renderer,
+        (uint8_t)(shape.color().r),
+        (uint8_t)(shape.color().g),
+        (uint8_t)(shape.color().b),
+        (uint8_t)(shape.color().a));
+
+    SDL_Rect positionRect{
+        shape.position().x,
+        shape.position().y,
+        shape.size().x,
+        shape.size().y
+    };
+
+    SDL_RenderFillRect(renderer, &positionRect);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void SDLRenderVisitor::visitFilledCircle(const Circle& circle) const
+{
+    auto* renderer = m_renderer.m_renderer.get();
+
+    SDL_SetRenderDrawColor(renderer,
+        static_cast<Uint8>(circle.color().r),
+        static_cast<Uint8>(circle.color().g),
+        static_cast<Uint8>(circle.color().b),
+        static_cast<Uint8>(circle.color().a));
+
+    const auto radius = static_cast<int>(circle.radius());
+    const double radiusSquared = circle.radius() * circle.radius();
+    const common::Vector2D<int> center = circle.center().castTo<int>();
+
+    std::vector<SDL_Rect> lines;
+    SDL_Rect lineRect{ 0, 0, 1, 0 };
+    for (int dx = -radius; dx <= 0; dx++) {
+        // shift the vertical line to the current column
+        lineRect.x = center.x + dx;
+        int dxSquared = dx * dx;
+        for (int dy = -radius; dy < 0; dy++) {
+            if ((dxSquared + dy * dy) > radiusSquared) {
+                continue; // this pixel isn't within the circle
+            }
+            // shift the vertical line to the starting y position
+            lineRect.y = center.y + dy;
+            // set the height to double the position (symmetrical)
+            lineRect.h = dy * -2;
+            // draw this line later
+            lines.push_back(lineRect);
+            // if we are not yet at the center of the circle
+            if (dx != 0) {
+                // then duplicate the line on the horizontal axis (symmetrical)
+                lineRect.x = center.x - dx;
+                lines.push_back(lineRect);
+            }
+            break;
+        }
+    }
+    // send all the lines to SDL in one call
+    SDL_RenderDrawRects(renderer, lines.data(), lines.size());
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void SDLRenderVisitor::visitOutlinedCircle(const Circle& circle)
+{
+    auto sides = static_cast<size_t>(2 * PI * circle.radius() / 2);
+
+    double d_a = 2 * PI / sides, angle = d_a;
+    common::Vector2D<double> end{ circle.radius(), 0.0 };
+    end = end + circle.center();
+
+    for (size_t i = 0; i <= sides; ++i) {
+        common::Vector2D<double> start = end;
+        end.x = cos(angle) * circle.radius();
+        end.y = sin(angle) * circle.radius();
+        end = end + circle.center();
+        angle += d_a;
+
+        visit(LineShape{ start.castTo<int>(), end.castTo<int>(), circle.color() });
+    }
+}
+
 } // end namespace engine

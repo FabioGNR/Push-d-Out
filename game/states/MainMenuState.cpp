@@ -1,5 +1,6 @@
 #include "MainMenuState.h"
 #include "GameState.h"
+#include "LevelEditorState.h"
 #include "LevelSelectorState.h"
 #include "game/Game.h"
 
@@ -35,6 +36,18 @@ void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
         "START");
     startButton->setAction(std::move(startGameAction));
     panel.addComponent(std::move(startButton));
+
+    std::unique_ptr<engine::ui::IAction> editorAction = std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.next(std::make_unique<LevelEditorState>(m_context));
+    });
+    auto editorButton = std::make_unique<engine::ui::Button>(
+        engine::ui::ComponentSize(
+            engine::ui::ComponentSizeType::Fit,
+            engine::ui::ComponentSizeType::Fit,
+            common::Vector2D<double>(1, 1)),
+        "EDITOR");
+    editorButton->setAction(std::move(editorAction));
+    panel.addComponent(std::move(editorButton));
 }
 
 void MainMenuState::appendButtons(engine::ui::StackPanel& panel)

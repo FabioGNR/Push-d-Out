@@ -6,6 +6,7 @@
 
 namespace engine {
 class Sprite : public IGraphicsElement {
+public:
     std::string m_spritePath;
 
     common::Vector2D<int> m_position;
@@ -23,13 +24,13 @@ public:
     const std::string& spritePath() const;
     void spritePath(std::string);
 
-    common::Vector2D<int> position() const;
-    common::Vector2D<int> sourcePosition() const;
-    common::Vector2D<int> sourceSize() const;
-    common::Vector2D<int> size() const;
+    const common::Vector2D<int>& position() const;
+    const common::Vector2D<int>& sourcePosition() const;
+    const common::Vector2D<int>& sourceSize() const;
+    const common::Vector2D<int>& size() const;
 
-    void setPosition(common::Vector2D<int> position);
-    void setSize(common::Vector2D<int> size);
+    void setPosition(const common::Vector2D<int>& position);
+    void setSize(const common::Vector2D<int>& size);
 
     bool operator==(const Sprite& rhs) const;
     bool operator!=(const Sprite& rhs) const;

@@ -27,8 +27,6 @@ namespace physics {
         class WorldImpl;
         std::unique_ptr<WorldImpl> m_impl;
 
-        std::vector<std::unique_ptr<ContactListener>> m_contactListeners;
-
     public:
         World(common::Vector2D<int> size, double gravity, double friction);
 

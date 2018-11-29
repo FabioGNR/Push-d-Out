@@ -13,17 +13,18 @@ typedef struct _TTF_Font TTF_Font;
 
 namespace engine {
 
-using SurfaceTexturePair = std::pair<std::shared_ptr<SDL_Surface>, std::shared_ptr<SDL_Texture>>;
-static common::ResourceCache<std::pair<int, std::string>, std::shared_ptr<TTF_Font>> fontCache;
-static common::ResourceCache<Font, SurfaceTexturePair> textCache;
-static common::ResourceCache<Sprite, SurfaceTexturePair> spriteCache;
-static common::ResourceCache<Surface, std::shared_ptr<SDL_Texture>> surfaceCache;
-
 class SDLRenderer : public IRenderer {
     friend class SDLRenderVisitor;
 
     std::unique_ptr<SDL_Renderer, void (*)(SDL_Renderer*)> m_renderer;
     common::Vector2D<int> m_dimensions;
+
+    using SurfaceTexturePair = std::pair<std::shared_ptr<SDL_Surface>, std::shared_ptr<SDL_Texture>>;
+    using FontFontsizePair = std::pair<std::string, int>;
+    mutable common::ResourceCache<FontFontsizePair, std::shared_ptr<TTF_Font>> fontCache;
+    mutable common::ResourceCache<Font, SurfaceTexturePair> textCache;
+    mutable common::ResourceCache<Sprite, SurfaceTexturePair> spriteCache;
+    mutable common::ResourceCache<Surface, std::shared_ptr<SDL_Texture>> surfaceCache;
 
 public:
     explicit SDLRenderer(const SDLWindow& window);

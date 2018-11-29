@@ -11,6 +11,7 @@ class Surface;
 
 class IRenderVisitor {
 public:
+    virtual ~IRenderVisitor() = default;
     virtual void visit(const RectangleShape&) = 0;
     virtual void visit(const LineShape&) = 0;
     virtual void visit(const Font&) = 0;

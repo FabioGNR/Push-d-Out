@@ -14,11 +14,12 @@ void LineShape::accept(IRenderVisitor& visitor) const
     visitor.visit(*this);
 }
 
-common::Vector2D<int> LineShape::position1() const
+const common::Vector2D<int>& LineShape::position1() const
 {
     return m_position1;
 }
-common::Vector2D<int> LineShape::position2() const
+
+const common::Vector2D<int>& LineShape::position2() const
 {
     return m_position2;
 }

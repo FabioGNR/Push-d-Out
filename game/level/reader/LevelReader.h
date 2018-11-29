@@ -13,6 +13,7 @@ namespace level {
 
     class LevelReader : public Reader<Level> {
     public:
+        ~LevelReader() override = default;
         Level build(const json& j) override;
 
         static void createEntities(engine::ecs::World& world, engine::physics::World& physics, const Level& level);

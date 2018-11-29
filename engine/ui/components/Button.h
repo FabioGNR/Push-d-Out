@@ -18,6 +18,8 @@ namespace ui {
         {
         }
 
+        ~Button() override = default;
+
         DrawContext draw(DrawContext context) override;
 
         void setAction(std::unique_ptr<IAction> action)

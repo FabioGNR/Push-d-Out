@@ -12,8 +12,13 @@ set(GAME_SRC
         states/PauseMenuState.h
         states/BaseMenuState.cpp
         states/BaseMenuState.h
+        states/LevelEditorState.cpp
+        states/LevelEditorState.h
+        states/LevelEditorMenuState.cpp
+        states/LevelEditorMenuState.h
         exceptions/NoPlayersFoundException.h
         exceptions/MissingCharacterSpawnException.h
+        exceptions/PlayerAmountOutOfBoundsException.h
         listeners/JumpContactListener.cpp
         listeners/JumpContactListener.h
         states/LevelSelectorState.cpp
@@ -81,16 +86,32 @@ set(DEFINITION_SRC
         )
 
 set(LEVEL_SRC
-        level/Theme.h
-        level/reader/LevelReader.h
-        level/reader/LevelReader.cpp
         level/LevelDomain.cpp
         level/LevelDomain.h
+        level/Theme.cpp
+        level/Theme.h
+        level/editor/Editor.cpp
+        level/editor/Editor.h
+        level/editor/TileType.h
+        level/editor/ui/Cursor.cpp
+        level/editor/ui/Cursor.h
+        level/editor/ui/ITile.h
+        level/editor/ui/KeyboardScreen.cpp
+        level/editor/ui/KeyboardScreen.h
+        level/editor/ui/PlatformTile.cpp
+        level/editor/ui/PlatformTile.h
+        level/editor/ui/SpawnTile.cpp
+        level/editor/ui/SpawnTile.h
+        level/editor/ui/TileSet.cpp
+        level/editor/ui/TileSet.h
+        level/editor/ui/TileSpriteSelectionScrollbar.cpp
+        level/editor/ui/TileSpriteSelectionScrollbar.h
+        level/reader/LevelReader.cpp
+        level/reader/LevelReader.h
+        level/reader/Reader.cpp
+        level/reader/Reader.h
         level/reader/ThemeReader.cpp
         level/reader/ThemeReader.h
-        level/reader/Reader.h
-        level/reader/Reader.cpp
-        level/Theme.cpp
         )
 
 set(EQUIPMENT_SRC
@@ -102,7 +123,6 @@ set(EQUIPMENT_SRC
 set(HUD_SRC
         hud/HUD.cpp
         hud/HUD.h
-        exceptions/PlayerAmountOutOfBoundsException.h
         hud/FpsCounter.cpp
         hud/FpsCounter.h
         )

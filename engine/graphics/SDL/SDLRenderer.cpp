@@ -55,7 +55,7 @@ void SDLRenderer::clear()
 
 common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
 {
-    if (!fontCache.hasResource(std::pair<int, std::string>(font.fontSize(), font.fontPath()))) {
+    if (!fontCache.hasResource(std::make_pair(font.fontPath(), font.fontSize()))) {
         const auto ttfFont = std::shared_ptr<TTF_Font>(
             TTF_OpenFont(font.fontPath().c_str(), font.fontSize()),
             TTF_CloseFont);
@@ -64,7 +64,7 @@ common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
             throw std::runtime_error(TTF_GetError());
         }
 
-        fontCache.addResource(std::pair<int, std::string>(font.fontSize(), font.fontPath()), ttfFont);
+        fontCache.addResource(std::make_pair(font.fontPath(), font.fontSize()), ttfFont);
 
         int calculatedWidth = 0, calculatedHeight = 0;
         int calculationError = TTF_SizeText(ttfFont.get(), font.text().c_str(), &calculatedWidth, &calculatedHeight);
@@ -73,7 +73,7 @@ common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
         }
         return { calculatedWidth, calculatedHeight };
     } else {
-        auto ttfFont = fontCache.getResource(std::pair<int, std::string>(font.fontSize(), font.fontPath())).get();
+        auto ttfFont = fontCache.getResource(std::make_pair(font.fontPath(), font.fontSize())).get();
 
         int calculatedWidth = 0, calculatedHeight = 0;
         int calculationError = TTF_SizeText(ttfFont, font.text().c_str(), &calculatedWidth, &calculatedHeight);
