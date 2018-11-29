@@ -16,6 +16,8 @@ set(GAME_SRC
         exceptions/MissingCharacterSpawnException.h
         listeners/JumpContactListener.cpp
         listeners/JumpContactListener.h
+        states/LevelSelectorState.cpp
+        states/LevelSelectorState.h
         )
 
 set(COMPONENT_SRC
@@ -118,6 +120,11 @@ set(BUILDER_SRC
         builders/SpriteBuilder.h
         )
 
+find_package(Boost COMPONENTS
+        filesystem REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
+
 target_include_directories(
         engine PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
@@ -134,7 +141,8 @@ add_executable(PushdOut
         ${HUD_SRC}
         ${EQUIPMENT_SRC}
         )
-target_link_libraries(PushdOut engine)
+
+target_link_libraries(PushdOut engine ${Boost_LIBRARIES})
 
 #Copy asset folder to bin folder
 add_custom_command(

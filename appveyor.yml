@@ -17,6 +17,8 @@ install:
 
       .\vcpkg.exe install box2d
 
+      .\vcpkg.exe install boost-filesystem
+
       .\vcpkg.exe integrate install
 
 build_script:

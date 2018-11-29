@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "GameState.h"
 #include "PauseMenuState.h"
 
@@ -27,10 +29,11 @@
 #include <game/systems/items/ReverseGravitySystem.h>
 
 namespace game {
-GameState::GameState(engine::IGame& game)
+GameState::GameState(std::string levelToPlay, engine::IGame& game)
     : engine::State(game)
     , m_soundManager(new engine::sound::SDLSoundManager)
     , m_inputManager(dynamic_cast<Game&>(game).getInputManager())
+    , m_levelToPlay(std::move(levelToPlay))
 {
     m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
 }
@@ -41,7 +44,7 @@ void GameState::init()
 
     // Read Level based on JSON file
     level::LevelReader lr{};
-    auto level = lr.build(lr.parse("assets/levels/base-level.json"));
+    auto level = lr.build(lr.parse(m_levelToPlay));
 
     // Create level from theme
     m_world = m_physicsManager->createWorld(common::Vector2D<int>(level.width, level.height), level.theme.gravity, level.theme.friction);

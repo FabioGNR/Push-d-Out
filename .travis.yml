@@ -18,6 +18,7 @@ addons:
       - libsdl2-image-dev
       - libsdl2-mixer-dev
       - libbox2d-dev
+      - libboost-filesystem-dev
 
 python:
   - "2.7"

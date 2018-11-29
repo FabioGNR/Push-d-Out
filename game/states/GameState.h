@@ -29,8 +29,10 @@ private:
     engine::input::InputManager& m_inputManager;
     std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
 
+    std::string m_levelToPlay;
+
 public:
-    explicit GameState(engine::IGame& game);
+    explicit GameState(std::string levelToPlay, engine::IGame& game);
     ~GameState() override = default;
 
     GameState(const GameState& other) = delete;
