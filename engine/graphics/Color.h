@@ -9,6 +9,13 @@ struct Color {
         , a{ a }
     {
     }
+    explicit Color(int r, int g, int b)
+        : r{ r }
+        , g{ g }
+        , b{ b }
+        , a{ 255 }
+    {
+    }
     explicit Color()
         : r{ 0 }
         , g{ 0 }

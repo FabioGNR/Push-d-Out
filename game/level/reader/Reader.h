@@ -15,6 +15,8 @@ namespace level {
     template <typename T>
     class Reader {
     public:
+        virtual ~Reader() = default;
+
         json parse(const std::string& fileName) const
         {
             std::ifstream i(fileName);

@@ -28,6 +28,7 @@ PS> .\vcpkg install sdl2-ttf
 PS> .\vcpkg install sdl2-image
 PS> .\vcpkg install sdl2-mixer
 PS> .\vcpkg install box2d
+PS> .\vcpkg install boost-filesystem
 ```
 
 ## Clion

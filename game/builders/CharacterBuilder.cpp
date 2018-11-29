@@ -1,4 +1,5 @@
 #include "CharacterBuilder.h"
+#include "SpriteBuilder.h"
 
 #include <engine/common/RNG.h>
 #include <engine/definitions/SystemPriority.h>
@@ -7,6 +8,7 @@
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
+#include <game/components/JumpComponent.h>
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
@@ -17,6 +19,7 @@
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
+#include <game/systems/JumpSystem.h>
 #include <game/systems/LifeSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
@@ -81,13 +84,22 @@ namespace builders {
         KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
         KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
 
+        std::vector<std::map<std::string, components::SpriteComponent>> playerAnimations;
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerGreen.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerBlue.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerRed.png", assetsFolder + "datafile.json" }.build());
+        playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
+
         for (size_t i = 0; i < m_playerCount; ++i) {
+            // Make character jumpable
+            m_ecsWorld.addComponent<components::JumpComponent>(players[i], common::Vector2D{ 0.0, 0.0 });
+
             // Create a position vector based on a random index
             int randomValue = common::RNG::generate(1, static_cast<int>(positions.size()));
             common::Vector2D<double> position = positions[randomValue - 1];
 
             // Create a dynamic body for the Physics World
-            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension) };
+            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id()) };
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], bodyComponent);
 
             // Create the dimension component for player entity
@@ -98,6 +110,12 @@ namespace builders {
             components::PositionComponent positionComponent{ position };
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
 
+            // Create the sprite component for the player entity
+            auto spriteComponentPair = playerAnimations[i].find("Idle");
+            if (spriteComponentPair != playerAnimations[i].end()) {
+                auto spriteComponent = spriteComponentPair->second;
+                m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
+            }
             components::DirectionComponent directionComponent{};
             m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);
 
@@ -115,10 +133,6 @@ namespace builders {
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
 
-            // Create the sprite component for the player entity
-            components::SpriteComponent spriteComponent{ "sheet", "spriteName" };
-            m_ecsWorld.addComponent<game::components::SpriteComponent>(players[i], spriteComponent);
-
             //Creating force gun entity
             auto& gunEntity = m_ecsWorld.createEntity();
             components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
@@ -126,7 +140,6 @@ namespace builders {
             components::InventoryComponent inventoryComponent{};
             inventoryComponent.activeEquipment.set(&gunEntity);
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
-
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
         }

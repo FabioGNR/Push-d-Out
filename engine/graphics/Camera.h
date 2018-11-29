@@ -14,6 +14,14 @@ namespace graphics {
         {
         }
 
+        Camera()
+            : m_viewport{ 1, 1 }
+            , m_zoomLevel{ 1 }
+            , m_position{ 0, 0 }
+            , m_unitSize{ 1 }
+        {
+        }
+
         common::Vector2D<int> translatePosition(common::Vector2D<double> position) const;
 
         common::Vector2D<int> scaleSize(common::Vector2D<double> size) const;
@@ -34,6 +42,8 @@ namespace graphics {
 
         double getFittedZoom(common::Vector2D<double> visibleDimensions) const;
 
+        common::Vector2D<double> getVisibleRegionSize() const;
+
     private:
         common::Vector2D<int> m_viewport;
         double m_zoomLevel;
@@ -43,8 +53,6 @@ namespace graphics {
         double getActualUnitSize() const;
 
         common::Vector2D<double> getViewStart() const;
-
-        common::Vector2D<double> getVisibleRegionSize() const;
     };
 }
 }

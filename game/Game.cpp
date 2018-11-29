@@ -45,4 +45,9 @@ common::Vector2D<int> Game::getScreenSize() const
 {
     return m_window->getDimensions();
 }
+
+engine::Window& Game::window() const
+{
+    return *m_window;
+}
 }

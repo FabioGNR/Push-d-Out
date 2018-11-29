@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BlendModes.h"
 #include "engine/common/Vector2D.h"
 #include "engine/graphics/drawable/Font.h"
 #include <engine/graphics/drawable/Sprite.h>
@@ -18,6 +19,7 @@ public:
 
     virtual ~IRenderer() = default;
 
+    virtual void setBlendMode(graphics::BlendModes) = 0;
     virtual void draw(const IGraphicsElement& graphicElement) const = 0;
     virtual void show() = 0;
     virtual void clear() = 0;

@@ -17,11 +17,11 @@ SDLWindow::SDLWindow(WindowProperties properties)
         = std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>(
             SDL_CreateWindow(
                 m_properties.title.c_str(),
-                getPosition(m_properties.x),
-                getPosition(m_properties.y),
+                getPositionValue(m_properties.x),
+                getPositionValue(m_properties.y),
                 m_properties.width,
                 m_properties.height,
-                static_cast<Uint32>(getFlags())),
+                static_cast<Uint32>(getFlagsValue())),
             SDL_DestroyWindow);
 }
 
@@ -30,7 +30,7 @@ SDLWindow::~SDLWindow()
     SDL_Quit();
 }
 
-int SDLWindow::getFlags() const
+int SDLWindow::getFlagsValue() const
 {
     int flags = SDL_WINDOW_RESIZABLE;
     if (m_properties.fullscreen) {
@@ -42,7 +42,7 @@ int SDLWindow::getFlags() const
     return flags;
 }
 
-int SDLWindow::getPosition(int coord) const
+int SDLWindow::getPositionValue(int coord) const
 {
     if (m_properties.centered) {
         return static_cast<int>(SDL_WINDOWPOS_CENTERED);
@@ -52,6 +52,8 @@ int SDLWindow::getPosition(int coord) const
 
 const common::Vector2D<int> SDLWindow::getDimensions() const
 {
-    return common::Vector2D<int>(m_properties.width, m_properties.height);
+    common::Vector2D<int> screenSize{};
+    SDL_GetWindowSize(m_window.get(), &screenSize.x, &screenSize.y);
+    return screenSize;
 }
 }

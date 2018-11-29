@@ -6,16 +6,28 @@ set(GAME_SRC
         states/GameState.h
         states/MainMenuState.cpp
         states/MainMenuState.h
+        sprite/reader/SpriteReader.cpp
+        sprite/reader/SpriteReader.h
         states/PauseMenuState.cpp
         states/PauseMenuState.h
         states/BaseMenuState.cpp
         states/BaseMenuState.h
+        states/LevelEditorState.cpp
+        states/LevelEditorState.h
+        states/LevelEditorMenuState.cpp
+        states/LevelEditorMenuState.h
         exceptions/NoPlayersFoundException.h
         exceptions/MissingCharacterSpawnException.h
+        exceptions/PlayerAmountOutOfBoundsException.h
+        listeners/JumpContactListener.cpp
+        listeners/JumpContactListener.h
+        states/LevelSelectorState.cpp
+        states/LevelSelectorState.h
         )
 
 set(COMPONENT_SRC
         components/MoveComponent.h
+        components/JumpComponent.h
         components/PlayerInputComponent.h
         components/PositionComponent.h
         components/BodyComponent.h
@@ -30,7 +42,8 @@ set(COMPONENT_SRC
         components/ItemComponent.h
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
-        components/DirectionComponent.h)
+        components/DirectionComponent.h
+        components/DestructibleComponent.h)
 
 set(SYSTEM_SRC
         systems/MovementSystem.cpp
@@ -41,8 +54,8 @@ set(SYSTEM_SRC
         systems/PositionSystem.h
         systems/SpriteSystem.cpp
         systems/SpriteSystem.h
-        systems/RenderSystem.cpp
-        systems/RenderSystem.h
+        systems/AnimationSystem.cpp
+        systems/AnimationSystem.h
         systems/WeaponSystem.cpp
         systems/WeaponSystem.h
         systems/InventorySystem.cpp
@@ -55,8 +68,17 @@ set(SYSTEM_SRC
         systems/ItemSystem.h
         systems/items/ReverseGravitySystem.cpp
         systems/items/ReverseGravitySystem.h
+        systems/GarbageCollectorSystem.cpp
+        systems/GarbageCollectorSystem.h
         systems/LifeSystem.cpp
-        systems/LifeSystem.h)
+        systems/LifeSystem.h 
+        systems/BackgroundSystem.cpp 
+        systems/BackgroundSystem.h
+        systems/JumpSystem.cpp 
+        systems/JumpSystem.h
+        systems/ProjectileDestroyerSystem.cpp
+        systems/ProjectileDestroyerSystem.h
+        )
 
 set(DEFINITION_SRC
         definitions/Action.h
@@ -65,16 +87,33 @@ set(DEFINITION_SRC
         )
 
 set(LEVEL_SRC
-        level/Theme.h
-        level/reader/LevelReader.h
-        level/reader/LevelReader.cpp
         level/LevelDomain.cpp
         level/LevelDomain.h
+        level/Theme.cpp
+        level/Theme.h
+        level/editor/Editor.cpp
+        level/editor/Editor.h
+        level/editor/TileType.h
+        level/editor/ui/Cursor.cpp
+        level/editor/ui/Cursor.h
+        level/editor/ui/ITile.h
+        level/editor/ui/KeyboardScreen.cpp
+        level/editor/ui/KeyboardScreen.h
+        level/editor/ui/PlatformTile.cpp
+        level/editor/ui/PlatformTile.h
+        level/editor/ui/SpawnTile.cpp
+        level/editor/ui/SpawnTile.h
+        level/editor/ui/TileSet.cpp
+        level/editor/ui/TileSet.h
+        level/editor/ui/TileSpriteSelectionScrollbar.cpp
+        level/editor/ui/TileSpriteSelectionScrollbar.h
+        level/reader/LevelReader.cpp
+        level/reader/LevelReader.h
+        level/reader/Reader.cpp
+        level/reader/Reader.h
         level/reader/ThemeReader.cpp
         level/reader/ThemeReader.h
-        level/reader/Reader.h
-        level/reader/Reader.cpp
-        level/Theme.cpp)
+        )
 
 set(EQUIPMENT_SRC
         equipment/InventorySlot.h
@@ -82,14 +121,30 @@ set(EQUIPMENT_SRC
         equipment/EquipmentFactory.h
         )
 
+set(HUD_SRC
+        hud/HUD.cpp
+        hud/HUD.h
+        hud/FpsCounter.cpp
+        hud/FpsCounter.h
+        )
+
 #more engine stuff
 set(BUILDER_SRC
         builders/IBuilder.h
         builders/CharacterBuilder.cpp
         builders/CharacterBuilder.h
-        builders/CharacterSpawnGenerator.cpp
         builders/CharacterSpawnGenerator.h
+        builders/CharacterSpawnGenerator.cpp
+        sprite/SpriteDomain.cpp
+        sprite/SpriteDomain.h
+        builders/SpriteBuilder.cpp
+        builders/SpriteBuilder.h
         )
+
+find_package(Boost COMPONENTS
+        filesystem REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
 
 target_include_directories(
         engine PUBLIC
@@ -104,9 +159,11 @@ add_executable(PushdOut
         ${DEFINITION_SRC}
         ${LEVEL_SRC}
         ${BUILDER_SRC}
+        ${HUD_SRC}
         ${EQUIPMENT_SRC}
         )
-target_link_libraries(PushdOut engine)
+
+target_link_libraries(PushdOut engine ${Boost_LIBRARIES})
 
 #Copy asset folder to bin folder
 add_custom_command(

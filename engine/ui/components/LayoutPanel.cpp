@@ -15,12 +15,12 @@ namespace ui {
         DrawContext childContext{ context };
         childContext.availableSize = (context.availableSize / sumRelativeSize()).castTo<int>();
         for (const auto& component : m_components) {
-            common::Vector2D<int> childPosition = getChildPosition(context.renderer,
+            const auto childPosition = getChildPosition(context.renderer,
                 component,
                 childContext.availableSize,
                 context.availableSize);
 
-            childContext.pos = childPosition + context.pos;
+            childContext.pos = context.pos + childPosition;
             DrawContext updatedContext = component.draw(childContext);
             compositeContext.pos = common::Vector2D<int>::max(compositeContext.pos, updatedContext.pos);
         }
@@ -30,10 +30,10 @@ namespace ui {
     common::Vector2D<int> LayoutPanel::calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const
     {
         common::Vector2D<int> requiredSize{ 0, 0 };
-        common::Vector2D<int> availableChildSize = (availableSize / sumRelativeSize()).castTo<int>();
+        const auto availableChildSize = (availableSize / sumRelativeSize().castTo<int>()).castTo<int>();
 
         for (const auto& component : m_components) {
-            common::Vector2D<int> componentSize = component.getComponent().calculateSize(renderer,
+            const auto componentSize = component.getComponent().calculateSize(renderer,
                 availableChildSize);
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
@@ -67,24 +67,16 @@ namespace ui {
         common::Vector2D<int> parentSize) const
     {
         common::Vector2D<int> position{ 0, 0 };
-        common::Vector2D<int> calculatedSize = component.getComponent().calculateSize(renderer, availableSize);
+        const auto calculatedSize = component.getComponent().calculateSize(renderer, availableSize);
 
         switch (component.getAnchor()) {
         case LayoutAnchor::Start:
             break;
         case LayoutAnchor::End:
-            if (m_flowDirection == FlowDirection::Horizontal) {
-                position.x = parentSize.x - calculatedSize.x;
-            } else {
-                position.y = parentSize.y - calculatedSize.y;
-            }
+            position = parallelWithDirection(parentSize - calculatedSize);
             break;
         case LayoutAnchor::Center:
-            if (m_flowDirection == FlowDirection::Horizontal) {
-                position.x = (parentSize.x - calculatedSize.x) / 2;
-            } else {
-                position.y = (parentSize.y - calculatedSize.y) / 2;
-            }
+            position = parallelWithDirection((parentSize - calculatedSize) / 2);
             break;
         }
         return position;
@@ -94,7 +86,7 @@ namespace ui {
     {
         size_t currentTotal = 0;
         for (const auto& wrapper : m_components) {
-            auto* panel = dynamic_cast<ComponentPanel*>(&(wrapper.getComponent()));
+            const auto* panel = dynamic_cast<ComponentPanel*>(&(wrapper.getComponent()));
             if (panel != nullptr) {
                 size_t childTotal = panel->countNavigatableChildren();
                 if (currentTotal + childTotal > index) {
@@ -115,7 +107,7 @@ namespace ui {
     {
         size_t total = 0;
         for (const auto& wrapper : m_components) {
-            auto* panel = dynamic_cast<ComponentPanel*>(&(wrapper.getComponent()));
+            const auto* panel = dynamic_cast<ComponentPanel*>(&(wrapper.getComponent()));
             if (panel != nullptr) {
                 total += panel->countNavigatableChildren();
             } else if (wrapper.getComponent().isNavigatable()) {

@@ -3,7 +3,6 @@
 
 namespace common {
 class RNG {
-
     // Disable instantiation of RNG object
     RNG() = default;
     RNG(const RNG&) = default; // Copy constructor

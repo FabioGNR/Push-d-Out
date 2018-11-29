@@ -18,6 +18,7 @@ namespace physics {
         : m_position{ position }
         , m_dimensions{ dimension }
         , m_world{ world }
+        , m_body(nullptr)
     {
     }
 
@@ -31,8 +32,10 @@ namespace physics {
     const common::Vector2D<double> Body::getPosition() const
     {
         // because box2d sees its position as center, shift it by half of the dimensions
-        return { m_position.x - m_dimensions.x / 2,
-            m_position.y - m_dimensions.y / 2 };
+        return {
+            m_position.x - m_dimensions.x / 2,
+            m_position.y - m_dimensions.y / 2
+        };
     }
 
     void Body::setPosition(const common::Vector2D<double> position)
@@ -48,6 +51,19 @@ namespace physics {
     const common::Vector2D<double> Body::getCenterPoint() const
     {
         return common::Vector2D<double>((m_dimensions.x) / 2.0, (m_dimensions.y) / 2.0);
+    }
+
+    void Body::setEntityId(ecs::EntityId id)
+    {
+        m_ownerId = id;
+        if (m_body != nullptr) {
+            m_body->SetUserData(static_cast<void*>(&m_ownerId));
+        }
+    }
+
+    ecs::EntityId Body::getEntityId()
+    {
+        return *static_cast<ecs::EntityId*>(m_body->GetUserData());
     }
 }
 }

@@ -31,6 +31,7 @@ namespace ecs {
         virtual ~World() = default;
 
         Entity& createEntity();
+        Entity& getEntity(EntityId id);
         void update(std::chrono::nanoseconds timeStep);
         void render(engine::IRenderer& renderer);
 
@@ -79,6 +80,18 @@ namespace ecs {
                     func(entity);
                 }
             }
+        }
+
+        template <typename Component>
+        std::unordered_map<EntityId, std::unique_ptr<IComponent>>::iterator begin()
+        {
+            return m_componentManager.getManager<Component>().getAll().begin();
+        }
+
+        template <typename Component>
+        std::unordered_map<EntityId, std::unique_ptr<IComponent>>::iterator end()
+        {
+            return m_componentManager.getManager<Component>().getAll().end();
         }
 
         template <typename Component>
