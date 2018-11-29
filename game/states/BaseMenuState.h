@@ -10,6 +10,7 @@ namespace game {
 class BaseMenuState : public engine::State {
 private:
     common::Vector2D<int> m_screenSize{};
+    void openHelpMenu();
 
 protected:
     std::unique_ptr<engine::ui::UISystem> m_uiSystem;
