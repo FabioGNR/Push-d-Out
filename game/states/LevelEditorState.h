@@ -11,7 +11,7 @@ class LevelEditorState : public engine::State {
     level::Editor m_editor;
 
     engine::input::InputManager& m_inputManager;
-    std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
+    std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;
 
 public:
     explicit LevelEditorState(engine::IGame& context);

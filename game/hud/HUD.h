@@ -29,7 +29,7 @@ namespace hud {
 
         bool m_showFps = false;
         game::hud::FpsCounter m_fpsCounter;
-        std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_fpsKeySubscription;
+        std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_fpsKeySubscription;
 
         engine::input::InputManager& m_inputManager;
 

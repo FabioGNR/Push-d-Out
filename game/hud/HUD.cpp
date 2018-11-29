@@ -23,8 +23,8 @@ namespace hud {
         , m_camera{ camera }
         , m_inputManager{ inputManager }
     {
-        m_fpsKeySubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap analogMap, auto&) {
-            if (analogMap.getKeystate(engine::input::Keys::F1) == engine::input::KeyStates::PRESSED) {
+        m_fpsKeySubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
+            if (inputMap.getState(engine::input::Keys::F1) == engine::input::States::PRESSED) {
                 m_showFps = !m_showFps;
             }
         });
