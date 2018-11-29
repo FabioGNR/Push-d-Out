@@ -21,7 +21,7 @@ namespace systems {
         void render(engine::IRenderer& renderer) override;
 
     private:
-        const common::Vector2D<double> m_spawnOffset{ 0.2, 0.5 };
+        const common::Vector2D<double> m_spawnOffset{ 0, 0.4 };
         engine::ecs::World& m_world;
         equipment::EquipmentFactory m_equipmentFactory;
     };

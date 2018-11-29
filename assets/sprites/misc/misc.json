@@ -1,0 +1,38 @@
+{
+    "Animations": [
+        {
+            "name": "EquipmentSpawner",
+            "frameCount": 17,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 10
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "JumpPad",
+            "frameCount": 1,
+            "frameTime": 0.2,
+            "frameSize": {
+                "x": 32,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 11
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    ]
+}

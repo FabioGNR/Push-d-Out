@@ -48,10 +48,11 @@ namespace equipment {
         // add equipment specific components
         m_factories[chosenType](entity, m_world, m_spriteComponentMap);
         // add common components
-        PositionComponent positionComponent{ position };
-        m_world.addComponent<PositionComponent>(entity, positionComponent);
         DimensionComponent dimensionComponent{ common::Vector2D<double>(0.5, 0.5) };
         m_world.addComponent<DimensionComponent>(entity, dimensionComponent);
+        PositionComponent positionComponent{ position - (dimensionComponent.dimension / 2) };
+        m_world.addComponent<PositionComponent>(entity, positionComponent);
+
         return entity;
     }
 
@@ -72,7 +73,8 @@ namespace equipment {
         }
 
         //Build sprite component map
-        builders::SpriteBuilder eqSpriteBuilder{ "assets/sprites/equipment/equipment.png", "assets/sprites/equipment/datafile.json" };
+        builders::SpriteBuilder eqSpriteBuilder{ "assets/sprites/equipment/equipment.png",
+            "assets/sprites/equipment/equipment.json" };
         m_spriteComponentMap = eqSpriteBuilder.build();
     }
 }
