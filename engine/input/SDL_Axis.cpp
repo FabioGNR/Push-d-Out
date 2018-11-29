@@ -14,7 +14,7 @@ namespace input {
         { static_cast<uint8_t>(SDL_CONTROLLER_AXIS_TRIGGERRIGHT), input::AnalogKeys::CON_TRIGGER_RIGHT }
     };
 
-    input::AnalogKeys SDL_Axis::get(uint8_t axis)
+    input::AnalogKeys SDL_Axis::get(const uint8_t axis)
     {
         if (SDL_Axis::axises.find(axis) == SDL_Axis::axises.end()) {
             return AnalogKeys::CON_UNKNOWN;

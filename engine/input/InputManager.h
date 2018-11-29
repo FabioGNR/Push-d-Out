@@ -25,8 +25,8 @@ namespace input {
 
         void notify();
         void update();
-        maps::InputMaps& getMap();
-        size_t connectedControllerAmount();
+         maps::InputMaps& getMap();
+        size_t connectedControllerAmount() const;
     };
 }
 }

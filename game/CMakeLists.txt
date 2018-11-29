@@ -30,7 +30,7 @@ set(COMPONENT_SRC
         components/ItemComponent.h
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
-        )
+        components/DirectionComponent.h)
 
 set(SYSTEM_SRC
         systems/MovementSystem.cpp

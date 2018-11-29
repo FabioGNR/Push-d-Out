@@ -23,6 +23,7 @@
 #include <game/systems/PositionSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
+#include <game/components/DirectionComponent.h>
 
 namespace game {
 namespace builders {
@@ -96,6 +97,9 @@ namespace builders {
             // Create the position component for player entity
             components::PositionComponent positionComponent{ position };
             m_ecsWorld.addComponent<components::PositionComponent>(players[i], positionComponent);
+
+            components::DirectionComponent directionComponent{};
+            m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);
 
             // Add keyboard if i is the same or higher than the amount of connected controller
             // Since we start this for loop at 0 and not at 1 we also have to check if its the same

@@ -19,9 +19,11 @@ namespace events {
         return events;
     }
 
-    std::unique_ptr<IEvent> SDLEventHandler::mapEvent(SDL_Event& event)
+    std::unique_ptr<IEvent> SDLEventHandler::mapEvent(const SDL_Event& event)
     {
         switch (event.type) {
+        case SDL_MOUSEMOTION:
+            return std::make_unique<MouseEvent>(event.motion.x, event.motion.y);
         case SDL_MOUSEBUTTONDOWN:
             return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::SDLKeys::get(input::SDLKeys::mouseStart + event.button.button), true);
         case SDL_MOUSEBUTTONUP:

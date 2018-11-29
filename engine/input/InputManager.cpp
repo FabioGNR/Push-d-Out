@@ -78,12 +78,13 @@ namespace input {
             it = m_subscriptions.erase(it);
         }
     }
+
     maps::InputMaps& InputManager::getMap()
     {
         return m_inputMap;
     }
 
-    size_t InputManager::connectedControllerAmount()
+    size_t InputManager::connectedControllerAmount() const
     {
         return m_handler->getConnectedControllers();
     }

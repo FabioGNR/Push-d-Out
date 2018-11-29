@@ -15,7 +15,7 @@ namespace events {
     private:
         const int deadZone = 15000;
         std::vector<int> connectedControllers;
-        std::unique_ptr<IEvent> mapEvent(SDL_Event& event);
+        std::unique_ptr<IEvent> mapEvent(const SDL_Event& event);
 
     public:
         std::vector<std::unique_ptr<IEvent>> getEvents() override;

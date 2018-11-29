@@ -85,7 +85,7 @@ namespace input {
         { mouseStart + 1, Keys::MOUSE_BUTTON_LEFT }
     };
 
-    input::Keys SDLKeys::get(int SDL_Key)
+    input::Keys SDLKeys::get(const int SDL_Key)
     {
         if (SDLKeys::KEYCODES.find(SDL_Key) == SDLKeys::KEYCODES.end()) {
             return Keys::UNKNOWN;

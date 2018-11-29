@@ -8,7 +8,7 @@ namespace input {
             return m_KBM;
         }
 
-        InputMap& InputMaps::getMap(int id)
+        InputMap& InputMaps::getMap(const int id)
         {
             if (id == -1) {
                 return m_KBM;

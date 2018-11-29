@@ -5,6 +5,7 @@
 #include <engine/input/InputManager.h>
 #include <engine/sound/ISoundManager.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
+#include <game/components/DirectionComponent.h>
 
 namespace game {
 namespace systems {
@@ -24,7 +25,7 @@ namespace systems {
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;
-        void move(common::Vector2D<double>& delta, bool invert);
+        void move(common::Vector2D<double>& delta, bool invert, game::components::DirectionComponent& directionComponent);
         void jump(common::Vector2D<double>& delta);
     };
 }

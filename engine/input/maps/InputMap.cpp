@@ -24,7 +24,7 @@ namespace input {
             }
         }
 
-        void InputMap::setValue(engine::input::Keys key, engine::input::KeyStates state)
+        void InputMap::setValue(const engine::input::Keys key, const engine::input::KeyStates state)
         {
             if (key == Keys::UNKNOWN) {
                 return;
@@ -37,7 +37,7 @@ namespace input {
             }
         }
 
-        void InputMap::setValue(engine::input::AnalogKeys key, int value)
+        void InputMap::setValue(const engine::input::AnalogKeys key, const int value)
         {
             if (key == AnalogKeys::CON_UNKNOWN) {
                 return;
@@ -45,7 +45,7 @@ namespace input {
             m_analogMap[key] = value;
         }
 
-        KeyStates InputMap::getKeyState(engine::input::Keys key) const
+        KeyStates InputMap::getKeyState(const engine::input::Keys key) const
         {
             if (m_keyMap.find(key) == m_keyMap.end()) {
                 return KeyStates::UP;
@@ -53,7 +53,7 @@ namespace input {
             return m_keyMap.at(key);
         }
 
-        int InputMap::getValue(engine::input::AnalogKeys key) const
+        int InputMap::getValue(const engine::input::AnalogKeys key) const
         {
             if (m_analogMap.find(key) == m_analogMap.end()) {
                 return 0;
@@ -61,7 +61,7 @@ namespace input {
             return m_analogMap.at(key);
         }
 
-        bool InputMap::hasKeyState(engine::input::Keys key, KeyStates state) const
+        bool InputMap::hasKeyState(const engine::input::Keys key, KeyStates state) const
         {
             return ((getKeyState(key) & state) == state);
         }

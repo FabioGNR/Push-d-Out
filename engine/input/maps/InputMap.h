@@ -1,9 +1,9 @@
 #pragma once
 
 #include <engine/input/AnalogKeys.h>
-#include <map>
 #include <engine/input/KeyStates.h>
 #include <engine/input/Keys.h>
+#include <map>
 
 namespace engine {
 namespace input {
@@ -21,7 +21,6 @@ namespace input {
             KeyStates getKeyState(Keys key) const;
             int getValue(AnalogKeys key) const;
             bool hasKeyState(Keys key, KeyStates state) const;
-
         };
     }
 }
