@@ -14,6 +14,8 @@ namespace input {
         maps::InputMaps m_inputMap{};
         events::IEventHandler* m_handler;
 
+        void notifyObserver(std::shared_ptr<events::Subscription<maps::InputMap>> observer, int mapID);
+
     public:
         explicit InputManager(events::IEventHandler* handler)
             : m_handler{ handler } {};
@@ -23,7 +25,7 @@ namespace input {
         std::shared_ptr<events::Subscription<maps::InputMap>> subscribe(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify, size_t id);
         std::shared_ptr<events::Subscription<maps::InputMap>> subscribeAll(std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify);
 
-        void notify();
+        void notifyAll();
         void update();
          maps::InputMaps& getMap();
         size_t connectedControllerAmount() const;

@@ -10,6 +10,7 @@ namespace input {
     namespace maps {
         class InputMap {
         private:
+            const int stateDeadZone = 7500;
             std::map<AnalogKeys, int> m_analogMap;
             std::map<AnalogKeys, States> m_analogStateMap;
             std::map<Keys, States> m_keyMap;

@@ -30,7 +30,7 @@ namespace events {
             return std::make_unique<MouseEvent>(input::SDLKeys::get(input::SDLKeys::mouseStart + event.button.button), false);
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::SDL_Axis::get(event.caxis.axis);
-            int value = event.caxis.value > deadZone || event.caxis.value < -deadZone ? event.caxis.value : 0;
+            int value = std::abs(event.caxis.value) > deadZone ? event.caxis.value : 0;
             return std::make_unique<ControllerEvent>(event.cdevice.which, key, value);
         }
         case SDL_CONTROLLERBUTTONDOWN:

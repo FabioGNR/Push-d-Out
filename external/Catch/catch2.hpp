@@ -10093,7 +10093,7 @@ namespace Catch {
             m_startupExceptions = true;
             Colour colourGuard( Colour::Red );
             Catch::cerr() << "Errors occurred during startup!" << '\n';
-            // iterate over all exceptions and notify user
+            // iterate over all exceptions and notifyAll user
             for ( const auto& ex_ptr : exceptions ) {
                 try {
                     std::rethrow_exception(ex_ptr);

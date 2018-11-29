@@ -70,15 +70,15 @@ namespace input {
             if (key == AnalogKeys::CON_UNKNOWN) {
                 return;
             }
+            m_analogMap[key] = value;
 
-            States state = value == 0 ? RELEASED : PRESSED;
+            States state = std::abs(value) < stateDeadZone ? RELEASED : PRESSED;
 
             if (getState(key) == PRESSED && state == RELEASED) {
                 m_analogStateMap[key] = PRESSED_AND_RELEASED;
             } else {
                 m_analogStateMap[key] = m_analogStateMap[key] == DOWN && state == PRESSED ? DOWN : state;
             }
-            m_analogMap[key] = value;
         }
 
         States InputMap::getState(Keys key) const

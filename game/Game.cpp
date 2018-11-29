@@ -22,7 +22,7 @@ void Game::init()
 
 void Game::onUpdate(std::chrono::nanoseconds timeStep)
 {
-    m_eventManager->getInput().notify();
+    m_eventManager->getInput().notifyAll();
     if (!m_eventManager->getEvents()) {
         stop();
     }

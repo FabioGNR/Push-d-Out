@@ -49,19 +49,24 @@ namespace input {
         return subscription;
     }
 
-    void InputManager::notify()
+    void InputManager::notifyAll()
     {
         for (const auto& weakObserver : m_subscriptions) {
             if (auto observer = weakObserver.lock()) {
-                if (observer->isActive) {
-                    if (observer->subbedTo == -1) {
-                        for (size_t i = 0; i < m_handler->getConnectedControllers(); i++) {
-                            observer->update(m_inputMap.getMap(i), *observer);
-                        }
+                if (observer->subbedTo == -1) {
+                    for (size_t i = 0; i < m_handler->getConnectedControllers(); i++) {
+                        notifyObserver(observer, i);
                     }
-                    observer->update(m_inputMap.getMap(observer->subbedTo), *observer);
                 }
+                notifyObserver(observer, observer->subbedTo);
             }
+        }
+    }
+
+    void InputManager::notifyObserver(std::shared_ptr<events::Subscription<maps::InputMap>> observer, int mapID)
+    {
+        if (observer->isActive) {
+            observer->update(m_inputMap.getMap(mapID), *observer);
         }
     }
 

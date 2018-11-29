@@ -13,7 +13,7 @@ namespace engine {
 namespace events {
     class SDLEventHandler : public IEventHandler {
     private:
-        const int deadZone = 15000;
+        const int deadZone = 2000;
         std::vector<int> connectedControllers;
         std::unique_ptr<IEvent> mapEvent(const SDL_Event& event);
 

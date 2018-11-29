@@ -16,10 +16,10 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         auto delta = common::Vector2D<double>(0, 0);
         auto& analogMap = m_inputMaps.getMap(PIC.controllerId); // id of controller
 
-        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > 1) {
+        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > moveDeadZone) {
             move(delta, false, dirComp);
         }
-        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft)) < -1) {
+        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft)) < -moveDeadZone) {
             move(delta, true, dirComp);
         }
         if (analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), States::DOWN)) {

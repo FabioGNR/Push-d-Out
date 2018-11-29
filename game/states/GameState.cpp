@@ -104,22 +104,22 @@ void GameState::close()
 void GameState::subscribeInput()
 {
     std::cout << "GameState subs." << std::endl;
-    m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap keyMap, auto&) {
+    m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
         //TODO: add check for 'start' button on controller(s) when controller input is supported
-        if (keyMap.hasState(engine::input::Keys::ESCAPE, engine::input::States::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::ESCAPE, engine::input::States::PRESSED) || inputMap.hasState(engine::input::Keys::CON_START, engine::input::States::PRESSED)) {
             auto pauseMenu = std::make_unique<PauseMenuState>(m_context);
             m_context.next(std::move(pauseMenu));
         }
 
-        if (keyMap.hasState(engine::input::Keys::F2, engine::input::States::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::F2, engine::input::States::PRESSED)) {
             m_context.setSpeed(m_context.speed() - .1);
         }
 
-        if (keyMap.hasState(engine::input::Keys::F3, engine::input::States::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::F3, engine::input::States::PRESSED)) {
             m_context.resetSpeed();
         }
 
-        if (keyMap.hasState(engine::input::Keys::F4, engine::input::States::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::F4, engine::input::States::PRESSED)) {
             m_context.setSpeed(m_context.speed() + .1);
         }
     });

@@ -38,12 +38,11 @@ namespace ui {
     void UISystem::setActive(bool active)
     {
         m_active = active;
-        /*
+
         if (!active && m_inputSubscription != nullptr) {
             m_inputSubscription->close();
             m_inputSubscription = nullptr;
-        } else*/
-        if (active && m_inputSubscription == nullptr) {
+        } else if (active && m_inputSubscription == nullptr) {
             subscribeInput();
         }
     }
@@ -51,9 +50,7 @@ namespace ui {
     void UISystem::subscribeInput()
     {
         m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap keymap, auto&) {
-            if (m_active) {
-                processInputEvent(keymap);
-            }
+            processInputEvent(keymap);
         });
     }
 }
