@@ -36,15 +36,7 @@ before_script:
 jobs:
   include:
     - stage: build
-      name: "Build, test, format"
-      script:
-        - mkdir build
-        - cd build
-        - cmake ..
-        - make
-        - ../bin/tests
-        - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
-    - name: "Clang-tidy"
+      name: "Clang-tidy"
       script:
         - mkdir build-tidy
         - cd build-tidy
@@ -56,3 +48,11 @@ jobs:
               awk '(/ warning: /||/ error: /){p=!($0 in a);a[$0]}p' output2.txt | grep --color=always -z -E 'warning|error|note|\^'
               exit -1;
           fi
+    - name: "Build, test, format"
+      script:
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make
+        - ../bin/tests
+        - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
