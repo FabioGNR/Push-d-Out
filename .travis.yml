@@ -38,15 +38,14 @@ jobs:
       script:
         - mkdir build
         - cd build
-        - cmake .. -DENABLE_CLANG_TIDY=ON
+        - cmake ..
         - make
         - ../bin/tests
         - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
     - script:
-        - mkdir build
-        - cd build
+        - mkdir build-tidy
+        - cd build-tidy
         - cmake .. -DENABLE_CLANG_TIDY=ON
-        - make
         - make tidy &> output.txt
         - |
           if [[ -n $(awk '/^[^[:blank:]]/{p=0} (/ warning:/||/error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt) ]]; then
