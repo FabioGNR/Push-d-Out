@@ -1,5 +1,7 @@
 language: cpp
 compiler: gcc
+cache:
+  - ccache
 
 os: linux
 addons:
