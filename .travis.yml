@@ -44,7 +44,8 @@ jobs:
         - make
         - ../bin/tests
         - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
-    - script:
+    - name: "Clang-tidy"
+      script:
         - mkdir build-tidy
         - cd build-tidy
         - cmake .. -DENABLE_CLANG_TIDY=ON
