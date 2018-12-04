@@ -1,4 +1,5 @@
 #include "InventorySystem.h"
+#include "game/components/DestructibleComponent.h"
 #include "game/components/EquipableComponent.h"
 #include "game/components/ItemComponent.h"
 #include "game/components/PlayerInputComponent.h"
@@ -40,7 +41,7 @@ namespace systems {
     {
         double equipableCandidateDistance = -1;
         engine::ecs::Entity* equipableCandidate = nullptr;
-        // find the closest equipable entity near the player
+        // find the closest entity near the player that can be equipped
         m_world.forEachEntityWith<EquipableComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             const auto& playerPosition = m_world.getComponent<PositionComponent>(player).position;
             const auto& equipablePosition = m_world.getComponent<PositionComponent>(entity).position;
@@ -56,25 +57,11 @@ namespace systems {
             // make sure the spawner knows the item was picked up
             auto& equipableComponent = m_world.getComponent<EquipableComponent>(*equipableCandidate);
             equipableComponent.spawner.hasEquipment = false;
-            // prevent the equipment from being picked up again and place it in the inventory
+            // prevent the equipment from being picked up again
             m_world.removeComponent<PositionComponent>(*equipableCandidate);
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
-            bool isItem = equipableCandidate->hasComponent<ItemComponent>();
-            if (isItem) {
-                if (inventoryComponent.item.hasValue()) {
-                    m_world.destroyEntity(inventoryComponent.item.get());
-                    inventoryComponent.item.clear();
-                }
-                inventoryComponent.item.set(equipableCandidate);
-            } else if (inventoryComponent.otherEquipment.hasValue()) {
-                if (inventoryComponent.activeEquipment.hasValue()) {
-                    m_world.destroyEntity(inventoryComponent.activeEquipment.get());
-                    inventoryComponent.activeEquipment.clear();
-                }
-                inventoryComponent.activeEquipment.set(equipableCandidate);
-            } else {
-                inventoryComponent.otherEquipment.set(equipableCandidate);
-            }
+            // place the equipment in the inventory
+            placeInInventory(inventoryComponent, equipableCandidate);
         }
     }
 
@@ -92,6 +79,40 @@ namespace systems {
                 inventoryComponent.otherEquipment.set(&activeEquipment);
             }
             inventoryComponent.activeEquipment.set(&otherEquipment);
+        }
+    }
+
+    void InventorySystem::placeInInventory(components::InventoryComponent& inventoryComponent,
+        engine::ecs::Entity* equipment) const
+    {
+        bool isItem = equipment->hasComponent<ItemComponent>();
+        if (isItem) {
+            if (inventoryComponent.item.hasValue()) {
+                components::DestructibleComponent destructibleComponent{};
+                m_world.addComponent<components::DestructibleComponent>(inventoryComponent.item.get(), destructibleComponent);
+                inventoryComponent.item.clear();
+            }
+            inventoryComponent.item.set(equipment);
+        } else {
+            bool otherHasEquipment = inventoryComponent.otherEquipment.hasValue();
+            bool activeHasEquipment = inventoryComponent.activeEquipment.hasValue();
+            // if we already have an active weapon first make sure the slot is clear
+            if (activeHasEquipment) {
+                if (!otherHasEquipment) {
+                    // Other slot is free. Move the currently active equipment to other slot.
+                    // This frees up the active equipment slot
+                    auto& activeEquipment = inventoryComponent.activeEquipment.get();
+                    inventoryComponent.otherEquipment.set(&activeEquipment);
+                } else {
+                    // no free slots, destroy the active equipment
+                    // so there is room for the new equipment
+                    components::DestructibleComponent destructibleComponent{};
+                    m_world.addComponent<components::DestructibleComponent>(inventoryComponent.activeEquipment.get(), destructibleComponent);
+                    inventoryComponent.activeEquipment.clear();
+                }
+            }
+            // add equipment to inventory
+            inventoryComponent.activeEquipment.set(equipment);
         }
     }
 }
