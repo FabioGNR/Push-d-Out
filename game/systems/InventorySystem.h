@@ -15,6 +15,7 @@ namespace systems {
 
         void attemptPickup(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent);
         void attemptSwitch(components::InventoryComponent& inventoryComponent);
+        void placeInInventory(components::InventoryComponent& inventoryComponent, engine::ecs::Entity* equipment) const;
 
     public:
         InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager);
