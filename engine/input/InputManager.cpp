@@ -66,7 +66,7 @@ namespace input {
         }
     }
 
-    void InputManager::notifyObserver(std::shared_ptr<events::Subscription<maps::InputMap>> observer, int mapID)
+    void InputManager::notifyObserver(const std::shared_ptr<events::Subscription<maps::InputMap>>& observer, int mapID)
     {
         if (observer->isActive && m_inputMap.getMap(mapID).changed) {
             observer->update(m_inputMap.getMap(mapID), *observer);

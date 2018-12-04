@@ -14,7 +14,7 @@ namespace input {
         maps::InputMaps m_inputMap{};
         events::IEventHandler* m_handler;
 
-        void notifyObserver(std::shared_ptr<events::Subscription<maps::InputMap>> observer, int mapID);
+        void notifyObserver(const std::shared_ptr<events::Subscription<maps::InputMap>>& observer, int mapID);
 
     public:
         explicit InputManager(events::IEventHandler* handler)

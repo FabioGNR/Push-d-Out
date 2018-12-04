@@ -17,7 +17,7 @@ namespace events {
             : update{ std::move(update) }
             , isActive{ true }
             , subbedTo{ id }
-            , subAll (subToAll){};
+            , subAll(subToAll){};
         Subscription(const Subscription& other) = default;
         Subscription& operator=(const Subscription& other) = default;
 

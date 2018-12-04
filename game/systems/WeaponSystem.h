@@ -6,10 +6,10 @@
 #include <engine/ecs/World.h>
 #include <engine/input/InputManager.h>
 #include <engine/physics/World.h>
+#include <game/components/DirectionComponent.h>
 #include <game/components/WeaponComponent.h>
 #include <game/definitions/Action.h>
 #include <game/definitions/WeaponType.h>
-#include <game/components/DirectionComponent.h>
 
 namespace game {
 namespace systems {

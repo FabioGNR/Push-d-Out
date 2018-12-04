@@ -7,6 +7,7 @@
 #include <game/components/BodyComponent.h>
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/DimensionComponent.h>
+#include <game/components/DirectionComponent.h>
 #include <game/components/InventoryComponent.h>
 #include <game/components/JumpComponent.h>
 #include <game/components/LifeComponent.h>
@@ -26,7 +27,6 @@
 #include <game/systems/PositionSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
-#include <game/components/DirectionComponent.h>
 
 namespace game {
 namespace builders {
