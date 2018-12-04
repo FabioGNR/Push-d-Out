@@ -19,7 +19,7 @@ namespace builders {
             : m_ecsWorld(world)
             , m_physicsWorld(physics)
             , m_inputManager(inputManager)
-            , m_playerCount(inputManager.connectedControllerAmount())
+            , m_playerCount(inputManager.getConnectedControllers().size())
         {
             if (m_playerCount < 4) {
                 // for the keyboard

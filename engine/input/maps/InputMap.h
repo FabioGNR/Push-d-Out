@@ -19,6 +19,8 @@ namespace input {
             void updateAnalog();
 
         public:
+            bool changed = false;
+
             void update();
 
             void setValue(AnalogKeys key, int value);

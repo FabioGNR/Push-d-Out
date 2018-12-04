@@ -8,6 +8,7 @@ namespace input {
         {
             updateKeys();
             updateAnalog();
+            changed = false;
         }
 
         void InputMap::updateAnalog()

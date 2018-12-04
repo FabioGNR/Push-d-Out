@@ -121,11 +121,11 @@ namespace builders {
 
             // Add keyboard if i is the same or higher than the amount of connected controller
             // Since we start this for loop at 0 and not at 1 we also have to check if its the same
-            if (i >= m_inputManager.connectedControllerAmount()) {
+            if (i >= m_inputManager.getConnectedControllers().size()) {
                 components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else {
-                components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ m_inputManager.getConnectedControllers().at(i), controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             }
 

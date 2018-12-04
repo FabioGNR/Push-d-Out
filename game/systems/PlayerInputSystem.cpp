@@ -18,17 +18,13 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
         auto delta = common::Vector2D<double>(0, 0);
         auto& analogMap = m_inputMaps.getMap(PIC.controllerId); // id of controller
 
-        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > moveDeadZone) {
+        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > moveDeadZone
+            || analogMap.hasState(PIC.getKey(definitions::Action::MoveRight), States::DOWN)) {
             move(delta, false, dirComp);
-        } else if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft)) < -moveDeadZone) {
+        } else if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft)) < -moveDeadZone
+            || analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), States::DOWN)) {
             move(delta, true, dirComp);
-        } else if (analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), States::DOWN)) {
-            move(delta, true, dirComp);
-        } else if (analogMap.hasState(PIC.getKey(definitions::Action::MoveRight), States::DOWN)) {
-            move(delta, false, dirComp);
         }
-        //if (analogMap.hasState(PIC.getKey(definitions::Action::Jump), States::PRESSED)) {
-
         if (delta != common::Vector2D<double>(0, 0)) {
             auto move = components::MoveComponent(delta);
             m_world.addComponent<components::MoveComponent>(entity, move);

@@ -122,7 +122,6 @@ void GameState::close()
 void GameState::subscribeInput()
 {
     m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
-        //TODO: add check for 'start' button on controller(s) when controller input is supported
         if (inputMap.hasState(engine::input::Keys::ESCAPE, engine::input::States::PRESSED) || inputMap.hasState(engine::input::Keys::CON_START, engine::input::States::PRESSED)) {
             auto pauseMenu = std::make_unique<PauseMenuState>(m_context);
             m_context.next(std::move(pauseMenu));

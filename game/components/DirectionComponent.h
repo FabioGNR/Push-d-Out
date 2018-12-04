@@ -1,12 +1,12 @@
 #pragma once
 
 #include "engine/ecs/Component.h"
-
+#include <iostream>
 namespace game {
 namespace components {
     struct DirectionComponent : public engine::ecs::BaseComponent<DirectionComponent> {
     private:
-        // true is left looking, false is right looking
+        // true is right looking, false is left looking
         bool directionLeft = false;
 
     public:

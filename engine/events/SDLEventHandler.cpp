@@ -34,9 +34,9 @@ namespace events {
             return std::make_unique<ControllerEvent>(event.cdevice.which, key, value);
         }
         case SDL_CONTROLLERBUTTONDOWN:
-            return std::make_unique<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), true);
+            return std::make_unique<ControllerEvent>(event.cdevice.which, input::SDLKeys::get(input::SDLKeys::conStart + (SDL_GameControllerButton)event.cbutton.button), true);
         case SDL_CONTROLLERBUTTONUP:
-            return std::make_unique<ControllerEvent>(event.cdevice.which, input::SDLKeys::get((SDL_GameControllerButton)event.cbutton.button), false);
+            return std::make_unique<ControllerEvent>(event.cdevice.which, input::SDLKeys::get(input::SDLKeys::conStart + (SDL_GameControllerButton)event.cbutton.button), false);
         case SDL_QUIT:
             return std::make_unique<QuitEvent>();
         case SDL_KEYUP:
@@ -56,9 +56,9 @@ namespace events {
         }
     }
 
-    size_t SDLEventHandler::getConnectedControllers()
+    std::vector<int>& SDLEventHandler::getConnectedControllers()
     {
-        return connectedControllers.size();
+        return connectedControllers;
     }
 }
 }
