@@ -1,5 +1,7 @@
 language: cpp
 compiler: gcc
+cache:
+  - ccache
 
 os: linux
 addons:
@@ -31,17 +33,26 @@ before_script:
   - export CC=gcc-8
   - export CXX=g++-8
 
-script:
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_CLANG_TIDY=ON
-  - make  
-  - ../bin/tests
-  - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
-  - make tidy &> output.txt
-  - |
-    if [[ -n $(awk '/^[^[:blank:]]/{p=0} (/ warning:/||/error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt) ]]; then
-        awk  '/^[^[:blank:]]/{p=0} (/ warning:/||/ error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt > output2.txt
-        awk '(/ warning: /||/ error: /){p=!($0 in a);a[$0]}p' output2.txt | grep --color=always -z -E 'warning|error|note|\^'
-        exit -1;
-    fi
+jobs:
+  include:
+    - stage: build
+      name: "Clang-tidy"
+      script:
+        - mkdir build-tidy
+        - cd build-tidy
+        - cmake .. -DENABLE_CLANG_TIDY=ON
+        - make tidy &> output.txt
+        - |
+          if [[ -n $(awk '/^[^[:blank:]]/{p=0} (/ warning:/||/error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt) ]]; then
+              awk  '/^[^[:blank:]]/{p=0} (/ warning:/||/ error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt > output2.txt
+              awk '(/ warning: /||/ error: /){p=!($0 in a);a[$0]}p' output2.txt | grep --color=always -z -E 'warning|error|note|\^'
+              exit -1;
+          fi
+    - name: "Build, test, format"
+      script:
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make
+        - ../bin/tests
+        - ../external/Clang-Format/run-clang-format.py -r --exclude '*/.ccls-cache/*' ../engine ../game
