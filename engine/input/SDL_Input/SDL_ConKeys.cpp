@@ -20,7 +20,7 @@ namespace input {
             { SDL_CONTROLLER_BUTTON_START, Keys::CON_START },
         };
 
-        Keys SDL_ConKeys::get(uint8_t SDL_Button)
+        Keys SDL_ConKeys::get(const uint8_t SDL_Button)
         {
             if (SDL_ConKeys::CON_KEYCODES.find(SDL_Button) == SDL_ConKeys::CON_KEYCODES.end()) {
                 return Keys::UNKNOWN;

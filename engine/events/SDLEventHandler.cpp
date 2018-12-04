@@ -6,6 +6,7 @@
 #include <events/models/MouseEvent.h>
 #include <events/models/QuitEvent.h>
 #include <input/SDL_Input/SDL_ConKeys.h>
+#include <input/SDL_Input/SDL_MouseKeys.h>
 
 namespace engine {
 namespace events {
@@ -26,9 +27,9 @@ namespace events {
         case SDL_MOUSEMOTION:
             return std::make_unique<MouseEvent>(event.motion.x, event.motion.y);
         case SDL_MOUSEBUTTONDOWN:
-            return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::sdl::SDLKeys::get(input::sdl::SDLKeys::mouseStart + event.button.button), true);
+            return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::sdl::SDL_MouseKeys::get(event.button.button), true);
         case SDL_MOUSEBUTTONUP:
-            return std::make_unique<MouseEvent>(input::sdl::SDLKeys::get(input::sdl::SDLKeys::mouseStart + event.button.button), false);
+            return std::make_unique<MouseEvent>(input::sdl::SDL_MouseKeys::get(event.button.button), false);
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::sdl::SDL_Axis::get(event.caxis.axis);
             int value = std::abs(event.caxis.value) > deadZone ? event.caxis.value : 0;

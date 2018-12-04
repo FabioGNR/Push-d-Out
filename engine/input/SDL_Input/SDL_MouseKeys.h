@@ -6,8 +6,8 @@
 namespace engine {
 namespace input {
     namespace sdl {
-        struct SDL_ConKeys {
-            static const std::map<uint8_t, Keys> CON_KEYCODES;
+        struct SDL_MouseKeys {
+            static const std::map<uint8_t, Keys> MOUSE_KEYCODES;
 
             static Keys get(uint8_t SDL_Button);
         };

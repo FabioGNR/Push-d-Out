@@ -70,8 +70,7 @@ namespace input {
             { SDLK_F9, Keys::F9 },
             { SDLK_F10, Keys::F10 },
             { SDLK_F11, Keys::F11 },
-            { SDLK_F12, Keys::F12 },
-            { mouseStart + 1, Keys::MOUSE_BUTTON_LEFT }
+            { SDLK_F12, Keys::F12 }
         };
 
         input::Keys SDLKeys::get(const int SDL_Key)

@@ -108,7 +108,9 @@ set(INPUT_SRC
         input/maps/InputMaps.cpp
         input/maps/InputMaps.h
         input/SDL_Input/SDL_ConKeys.cpp
-        input/SDL_Input/SDL_ConKeys.h)
+        input/SDL_Input/SDL_ConKeys.h
+        input/SDL_Input/SDL_MouseKeys.h
+        input/SDL_Input/SDL_MouseKeys.cpp)
 
 set(EVENTS_SRC
         events/models/MouseEvent.h
