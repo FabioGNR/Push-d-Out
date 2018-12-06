@@ -73,9 +73,9 @@ namespace systems {
     void InventorySystem::attemptSwitch(components::InventoryComponent& inventoryComponent)
     {
         if (inventoryComponent.otherEquipment.hasValue()) {
-            auto& otherEquipment = inventoryComponent.otherEquipment.get();
+            auto& otherEquipment = *inventoryComponent.otherEquipment.get();
             if (inventoryComponent.activeEquipment.hasValue()) {
-                auto& activeEquipment = inventoryComponent.activeEquipment.get();
+                auto& activeEquipment = *inventoryComponent.activeEquipment.get();
                 inventoryComponent.otherEquipment.set(&activeEquipment);
             }
             inventoryComponent.activeEquipment.set(&otherEquipment);
@@ -89,7 +89,7 @@ namespace systems {
         if (isItem) {
             if (inventoryComponent.item.hasValue()) {
                 components::DestructibleComponent destructibleComponent{};
-                m_world.addComponent<components::DestructibleComponent>(inventoryComponent.item.get(), destructibleComponent);
+                m_world.addComponent<components::DestructibleComponent>(*inventoryComponent.item.get(), destructibleComponent);
                 inventoryComponent.item.clear();
             }
             inventoryComponent.item.set(equipment);
@@ -101,13 +101,13 @@ namespace systems {
                 if (!otherHasEquipment) {
                     // Other slot is free. Move the currently active equipment to other slot.
                     // This frees up the active equipment slot
-                    auto& activeEquipment = inventoryComponent.activeEquipment.get();
+                    auto& activeEquipment = *inventoryComponent.activeEquipment.get();
                     inventoryComponent.otherEquipment.set(&activeEquipment);
                 } else {
                     // no free slots, destroy the active equipment
                     // so there is room for the new equipment
                     components::DestructibleComponent destructibleComponent{};
-                    m_world.addComponent<components::DestructibleComponent>(inventoryComponent.activeEquipment.get(), destructibleComponent);
+                    m_world.addComponent<components::DestructibleComponent>(*inventoryComponent.activeEquipment.get(), destructibleComponent);
                     inventoryComponent.activeEquipment.clear();
                 }
             }

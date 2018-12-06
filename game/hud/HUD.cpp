@@ -15,7 +15,6 @@ HUD::HUD(engine::Window& window,
     : m_world{ world }
     , m_window{ window }
     , m_camera{ camera }
-    , m_playerInfo{ nullptr }
     , m_fpsCounter({ 0, 0 })
     , m_inputManager{ inputManager }
 {
@@ -27,10 +26,10 @@ HUD::HUD(engine::Window& window,
 
     const auto& windowSize = m_window.getDimensions();
     const auto size = common::Vector2D<int>{ 300, 170 };
-    m_playerInfo.at(0) = std::make_unique<ui::PlayerInfo>("P1", common::Vector2D<int>{ 0, 0 }, size);
-    m_playerInfo.at(1) = std::make_unique<ui::PlayerInfo>("P2", common::Vector2D<int>{ windowSize.x - size.x, 0 }, size, true);
-    m_playerInfo.at(2) = std::make_unique<ui::PlayerInfo>("P3", common::Vector2D<int>{ 0, windowSize.y - size.y }, size);
-    m_playerInfo.at(3) = std::make_unique<ui::PlayerInfo>("P4", common::Vector2D<int>{ windowSize.x - size.x, windowSize.y - size.y }, size, true);
+    m_hudSize.at(0) = std::pair(common::Vector2D<int>{ 0, 0 }, size);
+    m_hudSize.at(1) = std::pair(common::Vector2D<int>{ windowSize.x - size.x, 0 }, size);
+    m_hudSize.at(2) = std::pair(common::Vector2D<int>{ 0, windowSize.y - size.y }, size);
+    m_hudSize.at(3) = std::pair(common::Vector2D<int>{ windowSize.x - size.x, windowSize.y - size.y }, size);
 }
 
 HUD::~HUD()
@@ -41,12 +40,13 @@ HUD::~HUD()
 void HUD::update(std::chrono::nanoseconds /* timestep */)
 {
     updateHudTransparancy();
-    updatePlayerLifes();
+    updateLives();
+    updateItems();
 }
 
 void HUD::render(engine::IRenderer& renderer)
 {
-    for (const auto& playerIdAndInfo : m_playerInfoById) {
+    for (const auto& playerIdAndInfo : m_playerInfo) {
         renderer.draw(*playerIdAndInfo.second);
     }
 
@@ -55,23 +55,25 @@ void HUD::render(engine::IRenderer& renderer)
     }
 }
 
-void HUD::updatePlayerLifes()
+void HUD::updateLives()
 {
     m_foundPlayers = 0;
     m_world.forEachEntityWith<components::LifeComponent>([&](engine::ecs::Entity& entity) {
         // 4 is max players atm
         if (m_foundPlayers < 4) {
             // Assign new player to PlayerInfo UI
-            if (m_playerInfoById.count(entity.id()) == 0) {
-                m_playerInfoById[entity.id()] = m_playerInfo.at(m_foundPlayers++).get();
+            if (m_playerInfo.count(entity.id()) == 0) {
+                auto size = m_hudSize.at(m_foundPlayers);
+                m_playerInfo[entity.id()] = std::make_unique<ui::PlayerInfo>(&entity, "P" + std::to_string(m_foundPlayers + 1), size.first, size.second, m_foundPlayers % 2);
+                ++m_foundPlayers;
             }
         }
 
-        const auto playerLifes = m_world.getComponent<components::LifeComponent>(entity).count;
+        const auto lives = m_world.getComponent<components::LifeComponent>(entity).count;
 
-        auto* playerInfo = m_playerInfoById.at(entity.id());
-        playerInfo->setRemainingLifes(playerLifes);
-        if (playerLifes <= 0) {
+        auto* playerInfo = m_playerInfo.at(entity.id()).get();
+        playerInfo->setRemainingLifes(lives);
+        if (lives <= 0) {
             playerInfo->setAlpha(75);
         }
     });
@@ -80,7 +82,7 @@ void HUD::updatePlayerLifes()
 void HUD::updateHudTransparancy()
 {
     for (auto& surface : m_playerInfo) {
-        surface->setAlpha(255);
+        surface.second->setAlpha(255);
     }
 
     m_world.forEachEntityWith<components::PlayerInputComponent, components::PositionComponent>([&](auto& entity) {
@@ -88,15 +90,22 @@ void HUD::updateHudTransparancy()
         const auto screenPos = m_camera->translatePosition(pos);
         if (m_camera->isPointVisible(pos)) {
             for (auto& surface : m_playerInfo) {
-                const auto& surfacePos = surface->position();
-                const auto& surfaceSize = surface->size();
+                const auto& surfacePos = surface.second->position();
+                const auto& surfaceSize = surface.second->size();
 
                 if (screenPos.x >= surfacePos.x && screenPos.x <= surfacePos.x + surfaceSize.x
                     && screenPos.y >= surfacePos.y && screenPos.y <= surfacePos.y + surfaceSize.y) {
-                    surface->setAlpha(100); // if player is behind HUD, change to alpha
+                    surface.second->setAlpha(100); // if player is behind HUD, change to alpha
                 }
             }
         }
+    });
+}
+
+void HUD::updateItems()
+{
+    std::for_each(m_playerInfo.begin(), m_playerInfo.end(), [&](auto& surface) {
+        surface.second->update(m_world);
     });
 }
 }

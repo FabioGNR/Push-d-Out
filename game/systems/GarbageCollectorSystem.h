@@ -12,9 +12,8 @@ namespace game {
 namespace systems {
     class GarbageCollectorSystem : public engine::ecs::BaseSystem<GarbageCollectorSystem> {
     public:
-        explicit GarbageCollectorSystem(engine::ecs::World* ecsWorld, engine::physics::World* physWorld)
+        explicit GarbageCollectorSystem(engine::ecs::World* ecsWorld)
             : m_ecsWorld{ ecsWorld }
-            , m_physWorld{ physWorld }
         {
         }
 
@@ -23,7 +22,6 @@ namespace systems {
 
     private:
         engine::ecs::World* m_ecsWorld;
-        engine::physics::World* m_physWorld;
 
         void cleanUpEntity(engine::ecs::Entity* entityToDestroy);
     };

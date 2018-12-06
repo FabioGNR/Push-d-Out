@@ -46,15 +46,13 @@ namespace physics {
         void setGravity(common::Vector2D<double> gravity);
 
         b2Body* createBody(const b2BodyDef& def) const;
-        void destroyBody(Body* body);
-        void destroyBody(b2Body* body);
+        void destroyBody(Body* body, b2Body* b2Body);
 
         void addContactListener(std::unique_ptr<ContactListener> contactListener);
 
-        Body* createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
-        Body* createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
-        Body* createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
-        const std::vector<std::unique_ptr<Body>>& getBodies() const;
+        std::unique_ptr<Body> createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
+        std::unique_ptr<Body> createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
+        std::unique_ptr<Body> createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
     };
 }
 }

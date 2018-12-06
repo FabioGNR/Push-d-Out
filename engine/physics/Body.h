@@ -17,7 +17,7 @@ namespace physics {
         common::Vector2D<double> m_dimensions;
 
         double m_angle = 0;
-        World& m_world;
+        World* m_world;
         b2Body* m_body;
 
         ecs::EntityId m_ownerId = 0;
@@ -26,7 +26,7 @@ namespace physics {
         friend World;
 
     public:
-        Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
+        Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World* world);
 
         Body(const Body& other) = delete;
         Body& operator=(const Body& other) = delete;
@@ -50,9 +50,13 @@ namespace physics {
         virtual const common::Vector2D<double> getLinearVelocity() const = 0;
         virtual void setLinearVelocity(common::Vector2D<double> vel) const = 0;
         virtual void applyLinearImpulse(const common::Vector2D<double>& impulse) const = 0;
-        virtual double getMass() const = 0;
 
+        virtual double getMass() const;
+        virtual void setDensity(double density);
+        virtual void setSensor(bool isSensor);
+        virtual void setGravityScale(double scale);
         virtual void setEntityId(ecs::EntityId);
+        virtual void setBullet(bool);
         virtual ecs::EntityId getEntityId();
     };
 }

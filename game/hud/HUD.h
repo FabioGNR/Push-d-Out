@@ -21,8 +21,8 @@ private:
     engine::Window& m_window;
     engine::graphics::Camera* m_camera;
 
-    std::map<engine::ecs::EntityId, ui::PlayerInfo*> m_playerInfoById;
-    std::array<std::unique_ptr<ui::PlayerInfo>, 4> m_playerInfo;
+    std::map<engine::ecs::EntityId, std::unique_ptr<ui::PlayerInfo>> m_playerInfo;
+    std::array<std::pair<common::Vector2D<int>, common::Vector2D<int>>, 4> m_hudSize;
 
     bool m_showFps = false;
     game::hud::FpsCounter m_fpsCounter;
@@ -40,7 +40,8 @@ public:
     void render(engine::IRenderer&);
 
 private:
-    void updatePlayerLifes();
+    void updateLives();
     void updateHudTransparancy();
+    void updateItems();
 };
 }

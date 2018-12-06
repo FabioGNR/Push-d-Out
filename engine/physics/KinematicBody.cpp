@@ -5,13 +5,13 @@
 namespace engine {
 namespace physics {
     KinematicBody::KinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
-        : Body(position, dimension, world)
+        : Body(position, dimension, &world)
     {
         b2BodyDef dynamicBodyDef; // set position
         dynamicBodyDef.position.Set(static_cast<float32>(position.x), static_cast<float32>(position.y));
         dynamicBodyDef.type = b2_kinematicBody;
         // create the body
-        b2Body* b2Body = m_world.createBody(dynamicBodyDef);
+        b2Body* b2Body = m_world->createBody(dynamicBodyDef);
 
         b2PolygonShape groundBox; // set half-height and half-width
         groundBox.SetAsBox(static_cast<float32>(dimension.x) / 2.0f, static_cast<float32>(dimension.y) / 2.0f);
@@ -24,7 +24,7 @@ namespace physics {
 
     KinematicBody::~KinematicBody()
     {
-        m_world.destroyBody(m_body);
+        m_world->destroyBody(this, m_body);
     }
 
     void KinematicBody::update()
@@ -52,11 +52,6 @@ namespace physics {
     {
         const auto impulse_f = impulse.castTo<float32>();
         m_body->ApplyLinearImpulse(b2Vec2{ impulse_f.x, impulse_f.y }, m_body->GetWorldCenter(), true);
-    }
-
-    double KinematicBody::getMass() const
-    {
-        return m_body->GetMass();
     }
 
     void KinematicBody::setLinearVelocity(common::Vector2D<double> vel) const

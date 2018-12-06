@@ -8,11 +8,11 @@ namespace systems {
     void PositionSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         m_world.forEachEntityWith<components::BodyComponent, components::PositionComponent>([&](engine::ecs::Entity& entity) {
-            auto body = m_world.getComponent<components::BodyComponent>(entity).body;
+            auto& body = *m_world.getComponent<components::BodyComponent>(entity).body;
             auto& positionComponent = m_world.getComponent<components::PositionComponent>(entity);
 
-            positionComponent.position.x = body->getPosition().x;
-            positionComponent.position.y = body->getPosition().y;
+            positionComponent.position.x = body.getPosition().x;
+            positionComponent.position.y = body.getPosition().y;
         });
     }
 

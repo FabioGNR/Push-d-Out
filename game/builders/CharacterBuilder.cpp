@@ -16,6 +16,7 @@
 #include <game/components/SpriteComponent.h>
 #include <game/components/WeaponComponent.h>
 #include <game/definitions/Action.h>
+#include <game/equipment/EquipmentFactory.h>
 #include <game/exceptions/MissingCharacterSpawnException.h>
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
@@ -68,6 +69,7 @@ namespace builders {
 
         // TODO: Move these actions to some kind of configurations
         analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys::CON_TRIGGER_RIGHT;
+        analogControls[definitions::Action::UseWeaponAlternative] = engine::input::AnalogKeys::CON_TRIGGER_LEFT;
         analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
@@ -76,6 +78,7 @@ namespace builders {
         controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
 
         KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::MOUSE_BUTTON_LEFT;
+        KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::Q;
         KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
@@ -101,7 +104,7 @@ namespace builders {
 
             // Create a dynamic body for the Physics World
             components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id()) };
-            m_ecsWorld.addComponent<components::BodyComponent>(players[i], bodyComponent);
+            m_ecsWorld.addComponent<components::BodyComponent>(players[i], std::move(bodyComponent));
 
             // Create the dimension component for player entity
             components::DimensionComponent dimensionComponent{ dimension };
@@ -133,13 +136,15 @@ namespace builders {
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
 
-            //Creating force gun entity
-            auto& gunEntity = m_ecsWorld.createEntity();
-            components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
-            m_ecsWorld.addComponent<components::WeaponComponent>(gunEntity, weaponComponent);
+            equipment::EquipmentFactory ef{ m_ecsWorld };
+
+            // Add default force gun to player, and portal gun as secondary
             components::InventoryComponent inventoryComponent{};
-            inventoryComponent.activeEquipment.set(&gunEntity);
+            inventoryComponent.activeEquipment.set(&ef.get(definitions::WeaponType::ForceGun));
+            inventoryComponent.otherEquipment.set(&ef.get(definitions::WeaponType::PortalGun));
+
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
+
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
         };

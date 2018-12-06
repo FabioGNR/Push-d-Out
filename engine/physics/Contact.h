@@ -5,14 +5,9 @@
 namespace engine {
 namespace physics {
     struct Contact {
-        Contact(Body* body1, Body* body2)
-            : a{ body1 }
-            , b{ body2 }
-        {
-        }
-
-        Body* a;
-        Body* b;
+        common::Vector2D<double> point;
+        Body* a = nullptr;
+        Body* b = nullptr;
     };
 }
 }

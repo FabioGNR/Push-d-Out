@@ -1,0 +1,55 @@
+{
+  "Animations": [
+    {
+      "name": "ForceGunProjectile",
+      "frameCount": 1,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 6
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "BluePortalProjectile",
+      "frameCount": 1,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 6
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 6
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "OrangePortalProjectile",
+      "frameCount": 1,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 6
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 12
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}

@@ -6,15 +6,19 @@ namespace game {
 namespace listeners {
     void JumpContactListener::beginContact(engine::physics::Contact contact)
     {
-        auto& a = m_world->getEntity(contact.a->getEntityId());
-        auto& b = m_world->getEntity(contact.b->getEntityId());
+        try {
+            auto& a = m_world->getEntity(contact.a->getEntityId());
+            auto& b = m_world->getEntity(contact.b->getEntityId());
 
-        if (a.hasComponent<components::PlayerInputComponent, components::JumpComponent>()
-            && !b.hasComponent<components::PlayerInputComponent>()) {
-            resetJump(a);
-        } else if (!a.hasComponent<components::PlayerInputComponent>()
-            && b.hasComponent<components::PlayerInputComponent, components::JumpComponent>()) {
-            resetJump(b);
+            if (a.hasComponent<components::PlayerInputComponent, components::JumpComponent>()
+                && !b.hasComponent<components::PlayerInputComponent>()) {
+                resetJump(a);
+            } else if (!a.hasComponent<components::PlayerInputComponent>()
+                && b.hasComponent<components::PlayerInputComponent, components::JumpComponent>()) {
+                resetJump(b);
+            }
+        } catch (...) {
+            return; // nothing to do here!
         }
     }
 

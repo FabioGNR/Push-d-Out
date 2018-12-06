@@ -12,12 +12,13 @@ using namespace components;
 
 void ProjectileDestroyerSystem::update(std::chrono::nanoseconds /* timestep */)
 {
+    const int margin = 5;
     const auto& levelDimensions = getLevelDimensions();
     m_ecsWorld->forEachEntityWith<PositionComponent, DimensionComponent, ProjectileComponent>([&](engine::ecs::Entity& entity) {
         const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
         const auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
-        bool xOutOfBounds = position.x > levelDimensions.x || position.x + dimension.x < 0;
-        bool yOutOfBounds = position.y > levelDimensions.y || position.y + dimension.y < 0;
+        bool xOutOfBounds = position.x > levelDimensions.x + margin || position.x + dimension.x < -margin;
+        bool yOutOfBounds = position.y > levelDimensions.y + margin || position.y + dimension.y < -margin;
         if (!(xOutOfBounds || yOutOfBounds)) {
             return; // projectile is still in the level bounds
         }

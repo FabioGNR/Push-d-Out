@@ -14,7 +14,7 @@ namespace physics {
          * @param unitSize  size of 1 unit
          * @param world     Box2D's world object
          */
-    Body::Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
+    Body::Body(common::Vector2D<double> position, common::Vector2D<double> dimension, World* world)
         : m_position{ position }
         , m_dimensions{ dimension }
         , m_world{ world }
@@ -64,6 +64,31 @@ namespace physics {
     ecs::EntityId Body::getEntityId()
     {
         return *static_cast<ecs::EntityId*>(m_body->GetUserData());
+    }
+
+    void Body::setGravityScale(double scale)
+    {
+        m_body->SetGravityScale(static_cast<float32>(scale));
+    }
+
+    void Body::setSensor(bool isSensor)
+    {
+        m_body->GetFixtureList()->SetSensor(isSensor);
+    }
+
+    void Body::setBullet(bool isBullet)
+    {
+        m_body->SetBullet(isBullet);
+    }
+
+    double Body::getMass() const
+    {
+        return m_body->GetMass();
+    }
+
+    void Body::setDensity(double density)
+    {
+        m_body->GetFixtureList()->SetDensity(density);
     }
 }
 }

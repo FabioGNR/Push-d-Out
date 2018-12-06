@@ -15,13 +15,15 @@ namespace equipment {
     public:
         explicit EquipmentFactory(engine::ecs::World& world);
         engine::ecs::Entity& createRandomEquipment(common::Vector2D<double> position) const;
+        engine::ecs::Entity& get(definitions::WeaponType weaponType);
+        engine::ecs::Entity& get(definitions::ItemType itemType);
 
     private:
         engine::ecs::World& m_world;
 
-        std::vector<std::function<void(engine::ecs::Entity&, engine::ecs::World&, std::map<std::string, components::SpriteComponent>)>> m_factories;
-        std::map<definitions::ItemType, std::function<void(engine::ecs::Entity&, engine::ecs::World&, std::map<std::string, components::SpriteComponent>)>> m_itemFactoryMap;
-        std::map<definitions::WeaponType, std::function<void(engine::ecs::Entity&, engine::ecs::World&, std::map<std::string, components::SpriteComponent>)>> m_weaponFactoryMap;
+        std::vector<std::pair<std::function<void(engine::ecs::Entity&, engine::ecs::World&, std::map<std::string, components::SpriteComponent>)>, common::Vector2D<double>>> m_factories;
+        std::map<definitions::ItemType, std::pair<std::function<void(engine::ecs::Entity&, engine::ecs::World&, std::map<std::string, components::SpriteComponent>)>, common::Vector2D<double>>> m_itemFactoryMap;
+        std::map<definitions::WeaponType, std::pair<std::function<void(engine::ecs::Entity&, engine::ecs::World&, std::map<std::string, components::SpriteComponent>)>, common::Vector2D<double>>> m_weaponFactoryMap;
 
         std::map<std::string, components::SpriteComponent> m_spriteComponentMap;
     };

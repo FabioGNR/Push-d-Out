@@ -151,6 +151,7 @@ set(DEFINITION_SRC
 set(EXCEPTION_SRC
         exceptions/SDLMixerException.h
         exceptions/ResourceNotFoundException.h
+        exceptions/EntityNotFoundException.h
         )
 
 set(UI_SRC

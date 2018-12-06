@@ -15,10 +15,10 @@ namespace systems {
     {
         m_world.forEachEntityWith<components::JumpComponent, components::BodyComponent>([&](engine::ecs::Entity& entity) {
             auto& jump = m_world.getComponent<components::JumpComponent>(entity);
-            auto& body = m_world.getComponent<components::BodyComponent>(entity).body;
+            auto& body = *m_world.getComponent<components::BodyComponent>(entity).body;
 
-            auto impulse = common::Vector2D<double>(0, body->getMass() * jump.delta.y);
-            body->applyLinearImpulse(impulse);
+            auto impulse = common::Vector2D<double>(0, body.getMass() * jump.delta.y);
+            body.applyLinearImpulse(impulse);
 
             jump.delta = { 0, 0 }; // reset jump height
         });
