@@ -15,6 +15,7 @@
 #include <game/components/SpriteComponent.h>
 #include <game/components/WeaponComponent.h>
 #include <game/definitions/Action.h>
+#include <game/equipment/EquipmentFactory.h>
 #include <game/exceptions/MissingCharacterSpawnException.h>
 #include <game/exceptions/NoPlayersFoundException.h>
 #include <game/systems/InventorySystem.h>
@@ -131,17 +132,12 @@ namespace builders {
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
 
-            // Add default force gun to player, and portal gun as secondary
-            auto& gunEntity = m_ecsWorld.createEntity();
-            components::WeaponComponent weaponComponent(definitions::WeaponType::ForceGun, 1, definitions::ProjectileType::Force);
-            m_ecsWorld.addComponent<components::WeaponComponent>(gunEntity, weaponComponent);
-            components::InventoryComponent inventoryComponent{};
-            inventoryComponent.activeEquipment.set(&gunEntity);
+            equipment::EquipmentFactory ef{ m_ecsWorld };
 
-            auto& portalGun = m_ecsWorld.createEntity();
-            components::WeaponComponent portalGunComponent(definitions::WeaponType::PortalGun, 1, definitions::ProjectileType::BluePortal, 1, definitions::ProjectileType::OrangePortal);
-            m_ecsWorld.addComponent<components::WeaponComponent>(portalGun, portalGunComponent);
-            inventoryComponent.otherEquipment.set(&portalGun);
+            // Add default force gun to player, and portal gun as secondary
+            components::InventoryComponent inventoryComponent{};
+            inventoryComponent.activeEquipment.set(&ef.get(definitions::WeaponType::ForceGun));
+            inventoryComponent.otherEquipment.set(&ef.get(definitions::WeaponType::PortalGun));
 
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
 

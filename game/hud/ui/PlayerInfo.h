@@ -7,6 +7,8 @@
 #include <engine/graphics/drawable/Font.h>
 #include <engine/graphics/drawable/Surface.h>
 
+#include <engine/ecs/Entity.h>
+#include <engine/ecs/World.h>
 #include <memory>
 
 namespace game::hud::ui {
@@ -32,16 +34,19 @@ private:
 
     std::string m_playerName;
     engine::Font* m_name;
-    ItemBubble* m_mainItem;
-    ItemBubble* m_secondaryItem;
-    ItemBubble* m_tertiaryItem;
+    ItemBubble* m_primarySlot;
+    ItemBubble* m_secondarySlot;
+    ItemBubble* m_itemSlot;
     LifeBar* m_lifeBar;
+    engine::ecs::Entity* m_player;
 
     void init();
     void initFlipped();
 
+    void updateEquipment(engine::ecs::World& world, engine::ecs::Entity*, ItemBubble* bubble);
+
 public:
-    PlayerInfo(std::string playerName, const common::Vector2D<int>& position, const ::common::Vector2D<int>& size, bool flipped = false);
+    PlayerInfo(engine::ecs::Entity* entity, std::string playerName, const common::Vector2D<int>& position, const ::common::Vector2D<int>& size, bool flipped = false);
     ~PlayerInfo() override = default;
 
     const common::Vector2D<int>& position() const override;
@@ -52,5 +57,6 @@ public:
     void draw(const engine::IRenderer& renderer) const override;
     void setRemainingLifes(int lifes);
     void setAlpha(int alpha);
+    void update(engine::ecs::World& world);
 };
 }

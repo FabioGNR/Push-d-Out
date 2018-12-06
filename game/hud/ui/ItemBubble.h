@@ -3,7 +3,7 @@
 #include <engine/graphics/IGraphicsElement.h>
 #include <engine/graphics/drawable/Circle.h>
 #include <engine/graphics/drawable/Sprite.h>
-
+#include <game/sprite/SpriteDomain.h>
 #include <memory>
 
 namespace game::hud::ui {
@@ -17,10 +17,8 @@ public:
 
     const common::Vector2D<int>& position() const override;
     void setPosition(const common::Vector2D<int>& position) override;
-
     void draw(const engine::IRenderer& renderer) const override;
-
-    void replaceItem(std::unique_ptr<engine::Sprite> item);
-    void resetItem();
+    void set(std::unique_ptr<engine::Sprite> item);
+    void clear();
 };
 }

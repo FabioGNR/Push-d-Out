@@ -15,6 +15,8 @@ namespace equipment {
     public:
         explicit EquipmentFactory(engine::ecs::World& world);
         engine::ecs::Entity& createRandomEquipment(common::Vector2D<double> position) const;
+        engine::ecs::Entity& get(definitions::WeaponType weaponType);
+        engine::ecs::Entity& get(definitions::ItemType itemType);
 
     private:
         engine::ecs::World& m_world;

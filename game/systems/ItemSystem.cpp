@@ -45,7 +45,7 @@ namespace systems {
             auto& inventory = m_ecsWorld.getComponent<InventoryComponent>(entity);
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
             if (inventory.item.hasValue()) {
-                engine::ecs::Entity& itemEntity = inventory.item.get();
+                engine::ecs::Entity& itemEntity = *inventory.item.get();
                 if (itemEntity.hasComponent<components::ItemComponent>()) {
                     auto& item = m_ecsWorld.getComponent<components::ItemComponent>(itemEntity);
 

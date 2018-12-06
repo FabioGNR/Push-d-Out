@@ -27,9 +27,9 @@ namespace equipment {
             m_entity = nullptr;
         }
 
-        engine::ecs::Entity& get() const
+        engine::ecs::Entity* get() const
         {
-            return *m_entity;
+            return m_entity;
         }
     };
 }

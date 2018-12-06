@@ -101,5 +101,19 @@ namespace equipment {
             "assets/sprites/equipment/equipment.json" };
         m_spriteComponentMap = eqSpriteBuilder.build();
     }
+
+    engine::ecs::Entity& EquipmentFactory::get(definitions::WeaponType weaponType)
+    {
+        engine::ecs::Entity& entity = m_world.createEntity();
+        m_weaponFactoryMap[weaponType].first(entity, m_world, m_spriteComponentMap);
+        return entity;
+    }
+
+    engine::ecs::Entity& EquipmentFactory::get(definitions::ItemType itemType)
+    {
+        engine::ecs::Entity& entity = m_world.createEntity();
+        m_itemFactoryMap[itemType].first(entity, m_world, m_spriteComponentMap);
+        return entity;
+    }
 }
 }

@@ -18,15 +18,19 @@ void ItemBubble::draw(const engine::IRenderer& renderer) const
     }
 }
 
-void ItemBubble::replaceItem(std::unique_ptr<engine::Sprite> item)
+void ItemBubble::set(std::unique_ptr<engine::Sprite> item)
 {
     m_item = std::move(item);
+    auto ratio = m_item->size().x / m_item->size().y;
+    m_item->setSize(common::Vector2D<int>{
+        static_cast<int>(m_boundingCircle.radius() * ratio * 0.8),
+        static_cast<int>(m_boundingCircle.radius() * 0.8) });
     m_item->setPosition(common::Vector2D<int>{
-        static_cast<int>(m_boundingCircle.position().x - m_boundingCircle.radius()),
-        static_cast<int>(m_boundingCircle.position().y - m_boundingCircle.radius()) });
+        static_cast<int>(m_boundingCircle.position().x - (m_item->size().x / 2)),
+        static_cast<int>(m_boundingCircle.position().y - (m_item->size().y / 2)) });
 }
 
-void ItemBubble::resetItem()
+void ItemBubble::clear()
 {
     m_item = nullptr;
 }

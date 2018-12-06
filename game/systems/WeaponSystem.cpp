@@ -133,7 +133,7 @@ namespace systems {
             auto& inventory = m_ecsWorld.getComponent<InventoryComponent>(entity);
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
             if (inventory.activeEquipment.hasValue()) {
-                engine::ecs::Entity weaponEntity = inventory.activeEquipment.get();
+                engine::ecs::Entity weaponEntity = *inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld.getComponent<components::WeaponComponent>(weaponEntity);
                 auto& analogMap = m_inputMap.getMap(inputComponent.controllerId);
 
