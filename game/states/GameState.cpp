@@ -24,6 +24,7 @@
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
 #include <game/systems/ProjectileDestroyerSystem.h>
+#include <game/systems/ScoreSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
@@ -76,12 +77,11 @@ void GameState::init()
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
 
-    // Add animation system
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
-
     m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld, m_world.get());
+    m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager.connectedControllerAmount());
 
     subscribeInput();
 }
