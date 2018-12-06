@@ -13,17 +13,21 @@ class Circle : public IGraphicsElement {
 
 public:
     Circle(common::Vector2D<double> center, double radius, const Color& color, bool fill = false);
-    virtual ~Circle() = default;
+    ~Circle() override = default;
 
-    void accept(IRenderVisitor& visitor) const override;
+    void draw(const IRenderer& renderer) const override;
+
+    void accept(const IRenderVisitor& visitor) const override;
+
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
+
+    const Color& color() const;
 
     double radius() const;
-    const common::Vector2D<double> center() const;
-    const Color& color() const;
-    bool fill() const;
-
     void radius(double radius);
-    void center(common::Vector2D<double> center);
+
+    bool fill() const;
     void fill(bool fill);
 };
 } // end namespace engine

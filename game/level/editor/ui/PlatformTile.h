@@ -19,9 +19,9 @@ public:
     PlatformTile(const common::Vector2D<int>& position, const common::Vector2D<int>& size);
     ~PlatformTile() override = default;
 
-    void draw(engine::IRenderer& renderer) override;
-    void select(bool value) override;
-    const common::Vector2D<int>& getPosition() const override;
+    void draw(const engine::IRenderer& renderer) const override;
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
 
     void setTileSprite(const std::string& spriteName);
     const engine::Sprite* getTileSprite() const;

@@ -76,7 +76,7 @@ void Editor::init(const common::Vector2D<int>& tileMatrixSize, const common::Vec
     });
 
     auto& currentTile = getCurrentTile();
-    m_cursor.setPosition(currentTile.getPosition());
+    m_cursor.setPosition(currentTile.position());
     updateSelectionScrollbar();
 }
 
@@ -120,7 +120,7 @@ void Editor::move(int x, int y)
     m_currentTile.x = std::clamp(m_currentTile.x + x, 0, m_tileMatrixSize.x - 1);
     m_currentTile.y = std::clamp(m_currentTile.y - y, 0, m_tileMatrixSize.y - 1);
 
-    m_cursor.setPosition(getCurrentTile().getPosition());
+    m_cursor.setPosition(getCurrentTile().position());
     updateSelectionScrollbar();
 }
 
@@ -144,34 +144,29 @@ void Editor::updateSelectionScrollbar()
     // if current tile is too close to the left side
     // and the selectionBox does not fit on the left
     // move it to the right
-    if (getCurrentTile().getPosition().x < m_tileSelection.getSize().x) {
-        m_tileSelection.setPosition(getCurrentTile().getPosition() + common::Vector2D<int>{ m_tileSize.x, 0 });
+    if (getCurrentTile().position().x < m_tileSelection.getSize().x) {
+        m_tileSelection.setPosition(getCurrentTile().position() + common::Vector2D<int>{ m_tileSize.x, 0 });
     } else {
-        m_tileSelection.setPosition(getCurrentTile().getPosition() - common::Vector2D<int>{ m_tileSelection.getSize().x, 0 });
+        m_tileSelection.setPosition(getCurrentTile().position() - common::Vector2D<int>{ m_tileSelection.getSize().x, 0 });
     }
 }
 
 void Editor::nextTileType()
 {
     if (getCurrentTile().getTileType() == TileType::PLATFORM) {
-        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::SpawnTile>(getCurrentTile().getPosition(), m_tileSize);
+        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::SpawnTile>(getCurrentTile().position(), m_tileSize);
     } else {
-        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::PlatformTile>(getCurrentTile().getPosition(), m_tileSize);
+        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::PlatformTile>(getCurrentTile().position(), m_tileSize);
     }
 }
 
 void Editor::previousTileType()
 {
     if (getCurrentTile().getTileType() == TileType::PLATFORM) {
-        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::SpawnTile>(getCurrentTile().getPosition(), m_tileSize);
+        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::SpawnTile>(getCurrentTile().position(), m_tileSize);
     } else {
-        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::PlatformTile>(getCurrentTile().getPosition(), m_tileSize);
+        m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<ui::PlatformTile>(getCurrentTile().position(), m_tileSize);
     }
-}
-
-void Editor::setBackground(const std::string& backgroundPath)
-{
-    m_backgroundSprite = std::make_unique<engine::Sprite>(backgroundPath, common::Vector2D<int>{ 0, 0 }, m_tileSize * m_tileMatrixSize);
 }
 
 void Editor::makeSelection()
@@ -211,7 +206,7 @@ void Editor::exportAsJson(const std::string& fileName)
                         static_cast<double>(x),
                         static_cast<double>(m_tileMatrixSize.y - y),
                         "middleMiddle",
-                        //platformTile->getTileSprite()->spritePath(),
+                        //platformTile->getTileSprite()->setSpritePath(),
                         PlatformKind::Solid });
                 }
             } else {
@@ -237,6 +232,11 @@ void Editor::showKeyboard(bool shown)
 void Editor::toggleKeyboard()
 {
     m_showKeyboard = !m_showKeyboard;
+}
+
+void Editor::setBackground(const std::string& backgroundPath)
+{
+    m_backgroundSprite = std::make_unique<engine::Sprite>(backgroundPath, common::Vector2D<int>{ 0, 0 }, m_tileSize * m_tileMatrixSize);
 }
 
 } // end namespace

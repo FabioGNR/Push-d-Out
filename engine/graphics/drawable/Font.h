@@ -19,19 +19,21 @@ public:
     Font(std::string fontPath, std::string text, int fontSize, Color color, common::Vector2D<int> position);
     ~Font() override = default;
 
-    void accept(IRenderVisitor& visitor) const override;
+    void draw(const IRenderer& renderer) const override;
+    void accept(const IRenderVisitor& visitor) const override;
 
     const std::string& text() const;
 
     const std::string& fontPath() const;
 
-    common::Vector2D<int> position() const;
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
+
     int fontSize() const;
     const Color& color() const;
 
     void setText(const std::string& text);
     void setFontSize(int fontSize);
-    void setPosition(common::Vector2D<int> position);
     void setColor(const Color& color);
 
     bool operator==(const Font& rhs) const;

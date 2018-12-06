@@ -130,6 +130,12 @@ set(HUD_SRC
         hud/HUD.h
         hud/FpsCounter.cpp
         hud/FpsCounter.h
+        hud/ui/ItemBubble.cpp 
+        hud/ui/ItemBubble.h 
+        hud/ui/PlayerInfo.cpp 
+        hud/ui/PlayerInfo.h 
+        hud/ui/LifeBar.cpp 
+        hud/ui/LifeBar.h
         )
 
 #more engine stuff

@@ -1,5 +1,6 @@
 #include "RectangleShape.h"
 #include "graphics/IRenderVisitor.h"
+#include "graphics/IRenderer.h"
 
 namespace engine {
 RectangleShape::RectangleShape(common::Vector2D<int> position, common::Vector2D<int> size, const Color& color, bool fill)
@@ -10,7 +11,7 @@ RectangleShape::RectangleShape(common::Vector2D<int> position, common::Vector2D<
 {
 }
 
-void RectangleShape::accept(IRenderVisitor& visitor) const
+void RectangleShape::accept(const IRenderVisitor& visitor) const
 {
     visitor.visit(*this);
 }
@@ -51,6 +52,11 @@ bool RectangleShape::isFilled() const
 void RectangleShape::setFill(bool fill)
 {
     m_fill = fill;
+}
+
+void RectangleShape::draw(const IRenderer& renderer) const
+{
+    renderer.draw(*this);
 }
 
 } // end namespace engine

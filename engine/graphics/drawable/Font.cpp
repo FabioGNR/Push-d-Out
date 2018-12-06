@@ -1,10 +1,7 @@
-#include <utility>
-
-#include <utility>
-
 #include "Font.h"
 
 #include <graphics/IRenderVisitor.h>
+#include <graphics/IRenderer.h>
 
 namespace engine {
 
@@ -17,7 +14,7 @@ Font::Font(std::string fontPath, std::string text, int fontSize, Color color, co
 {
 }
 
-void Font::accept(engine::IRenderVisitor& visitor) const
+void Font::accept(const IRenderVisitor& visitor) const
 {
     visitor.visit(*this);
 }
@@ -30,11 +27,6 @@ const std::string& Font::text() const
 const std::string& Font::fontPath() const
 {
     return m_fontPath;
-}
-
-common::Vector2D<int> Font::position() const
-{
-    return m_position;
 }
 
 int Font::fontSize() const
@@ -52,11 +44,6 @@ void Font::setFontSize(int fontSize)
     m_fontSize = fontSize;
 }
 
-void Font::setPosition(common::Vector2D<int> position)
-{
-    m_position = position;
-}
-
 const Color& Font::color() const
 {
     return m_color;
@@ -71,6 +58,7 @@ bool Font::operator==(const Font& rhs) const
 {
     return m_fontPath == rhs.m_fontPath
         && m_text == rhs.m_text
+        && m_position == rhs.m_position
         && m_fontSize == rhs.m_fontSize
         && m_color == rhs.m_color;
 }
@@ -78,6 +66,21 @@ bool Font::operator==(const Font& rhs) const
 bool Font::operator!=(const Font& rhs) const
 {
     return !(rhs == *this);
+}
+
+void Font::draw(const IRenderer& renderer) const
+{
+    renderer.draw(*this);
+}
+
+const common::Vector2D<int>& Font::position() const
+{
+    return m_position;
+}
+
+void Font::setPosition(const common::Vector2D<int>& position)
+{
+    m_position = position;
 }
 
 } // end namespace engine
