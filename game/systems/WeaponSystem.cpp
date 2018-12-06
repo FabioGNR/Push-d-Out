@@ -47,6 +47,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     ecsWorld.addComponent<DimensionComponent>(projectileEntity, dimensionComponent);
 
     auto projectileComponent = ProjectileComponent(game::definitions::WeaponType::ForceGun, game::definitions::ProjectileType::Force);
+    projectileComponent.force = direction;
     ecsWorld.addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
     ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
 

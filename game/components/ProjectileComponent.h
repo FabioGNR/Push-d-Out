@@ -10,6 +10,8 @@ namespace components {
         game::definitions::WeaponType weaponType;
         game::definitions::ProjectileType type;
 
+        common::Vector2D<double> force {};
+
         ProjectileComponent(game::definitions::WeaponType weaponType, game::definitions::ProjectileType type)
             : weaponType{ weaponType }
             , type{ type } {};
