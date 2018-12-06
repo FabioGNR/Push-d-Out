@@ -1,11 +1,11 @@
 #include "HUD.h"
 
+#include <engine/common/RNG.h>
+#include <engine/graphics/Camera.h>
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/exceptions/PlayerAmountOutOfBoundsException.h>
-#include <engine/common/RNG.h>
-#include <engine/graphics/Camera.h>
 
 namespace game::hud {
 HUD::HUD(engine::Window& window,
