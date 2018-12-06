@@ -2,6 +2,7 @@
 
 #include "Sprite.h"
 
+#include "graphics/IRenderer.h"
 #include <graphics/IRenderVisitor.h>
 
 namespace engine {
@@ -23,7 +24,7 @@ Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::V
 {
 }
 
-void Sprite::accept(IRenderVisitor& visitor) const
+void Sprite::accept(const IRenderVisitor& visitor) const
 {
     visitor.visit(*this);
 }
@@ -33,9 +34,9 @@ const std::string& Sprite::spritePath() const
     return m_spritePath;
 }
 
-void Sprite::spritePath(std::string path)
+void Sprite::setSpritePath(std::string spritePath)
 {
-    m_spritePath = std::move(path);
+    m_spritePath = std::move(spritePath);
 }
 
 const common::Vector2D<int>& Sprite::position() const
@@ -76,6 +77,11 @@ bool Sprite::operator==(const Sprite& rhs) const
 bool Sprite::operator!=(const Sprite& rhs) const
 {
     return !(rhs == *this);
+}
+
+void Sprite::draw(const IRenderer& renderer) const
+{
+    renderer.draw(*this);
 }
 
 } // end namespace engine

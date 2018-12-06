@@ -12,10 +12,13 @@ class LineShape : public IGraphicsElement {
 
 public:
     LineShape(common::Vector2D<int> pos1, common::Vector2D<int> pos2, const Color& color);
-
     ~LineShape() override = default;
 
-    void accept(IRenderVisitor& visitor) const override;
+    void draw(const IRenderer& renderer) const override;
+    void accept(const IRenderVisitor& visitor) const override;
+
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
 
     const common::Vector2D<int>& position1() const;
     const common::Vector2D<int>& position2() const;

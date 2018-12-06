@@ -18,16 +18,17 @@ public:
 
     ~RectangleShape() override = default;
 
-    void accept(IRenderVisitor& visitor) const override;
+    void draw(const IRenderer& renderer) const override;
+    void accept(const IRenderVisitor& visitor) const override;
 
     const common::Vector2D<int>& size() const;
-    const common::Vector2D<int>& position() const;
+    const common::Vector2D<int>& position() const override;
     const Color& color() const;
     bool isFilled() const;
 
     void setColor(const Color& color);
     void setSize(const common::Vector2D<int>& size);
-    void setPosition(const common::Vector2D<int>& position);
+    void setPosition(const common::Vector2D<int>& position) override;
     void setFill(bool fill);
 };
 } // end namespace engine

@@ -13,7 +13,7 @@ TileSpriteSelectionScrollbar::TileSpriteSelectionScrollbar(
 {
 }
 
-void TileSpriteSelectionScrollbar::draw(engine::IRenderer& renderer)
+void TileSpriteSelectionScrollbar::draw(const engine::IRenderer& renderer) const
 {
     renderer.draw(m_backgroundShape);
 
@@ -50,11 +50,6 @@ void TileSpriteSelectionScrollbar::draw(engine::IRenderer& renderer)
     }
 }
 
-const common::Vector2D<int>& TileSpriteSelectionScrollbar::getPosition() const
-{
-    return m_backgroundShape.position();
-}
-
 void TileSpriteSelectionScrollbar::setPosition(const common::Vector2D<int>& position)
 {
     m_backgroundShape.setPosition(position);
@@ -70,4 +65,8 @@ void TileSpriteSelectionScrollbar::setSize(const common::Vector2D<int>& size)
     m_backgroundShape.setSize(size);
 }
 
+const common::Vector2D<int>& TileSpriteSelectionScrollbar::position() const
+{
+    return m_backgroundShape.position();
+}
 } // end namespace

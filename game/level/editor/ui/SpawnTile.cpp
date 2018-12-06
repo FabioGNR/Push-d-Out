@@ -10,7 +10,7 @@ SpawnTile::SpawnTile(const common::Vector2D<int>& position, const common::Vector
 {
 }
 
-void SpawnTile::draw(engine::IRenderer& renderer)
+void SpawnTile::draw(const engine::IRenderer& renderer) const
 {
     // always draw bounding box
     renderer.draw(m_boundingBoxShape);
@@ -20,7 +20,6 @@ void SpawnTile::draw(engine::IRenderer& renderer)
         renderer.draw(*m_tileSprite);
     }
 }
-
 void SpawnTile::select(bool value)
 {
     ITile::select(value);
@@ -35,9 +34,12 @@ void SpawnTile::select(bool value)
         m_tileSprite = nullptr;
     }
 }
-
-const common::Vector2D<int>& SpawnTile::getPosition() const
+const common::Vector2D<int>& SpawnTile::position() const
 {
     return m_boundingBoxShape.position();
+}
+void SpawnTile::setPosition(const common::Vector2D<int>& position)
+{
+    m_boundingBoxShape.setPosition(position);
 }
 }

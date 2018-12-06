@@ -21,8 +21,10 @@ public:
     SpawnTile(const common::Vector2D<int>& position, const common::Vector2D<int>& size);
     ~SpawnTile() override = default;
 
-    void draw(engine::IRenderer& renderer) override;
     void select(bool value) override;
-    const common::Vector2D<int>& getPosition() const override;
+
+    void draw(const engine::IRenderer& renderer) const override;
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
 };
 }

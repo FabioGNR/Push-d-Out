@@ -11,7 +11,7 @@ PlatformTile::PlatformTile(const common::Vector2D<int>& position, const common::
 {
 }
 
-void PlatformTile::draw(engine::IRenderer& renderer)
+void PlatformTile::draw(const engine::IRenderer& renderer) const
 {
     // always draw bounding box
     renderer.draw(m_boundingBoxShape);
@@ -21,14 +21,7 @@ void PlatformTile::draw(engine::IRenderer& renderer)
         renderer.draw(*m_tileSprite);
     }
 }
-void PlatformTile::select(bool value)
-{
-    ITile::select(value);
-}
-const common::Vector2D<int>& PlatformTile::getPosition() const
-{
-    return m_boundingBoxShape.position();
-}
+
 void PlatformTile::setTileSprite(const std::string& spriteName)
 {
     if (spriteName.empty()) {
@@ -42,5 +35,15 @@ void PlatformTile::setTileSprite(const std::string& spriteName)
 const engine::Sprite* PlatformTile::getTileSprite() const
 {
     return m_tileSprite.get();
+}
+
+const common::Vector2D<int>& PlatformTile::position() const
+{
+    return m_boundingBoxShape.position();
+}
+
+void PlatformTile::setPosition(const common::Vector2D<int>& position)
+{
+    m_boundingBoxShape.setPosition(position);
 }
 } // end namespace game::level

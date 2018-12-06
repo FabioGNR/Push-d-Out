@@ -19,18 +19,18 @@ public:
     Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition);
     Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> size);
 
-    void accept(IRenderVisitor& visitor) const override;
+    void draw(const IRenderer& renderer) const override;
+    void accept(const IRenderVisitor& visitor) const override;
 
     const std::string& spritePath() const;
-    void spritePath(std::string);
-
-    const common::Vector2D<int>& position() const;
+    const common::Vector2D<int>& position() const override;
+    const common::Vector2D<int>& size() const;
     const common::Vector2D<int>& sourcePosition() const;
     const common::Vector2D<int>& sourceSize() const;
-    const common::Vector2D<int>& size() const;
 
-    void setPosition(const common::Vector2D<int>& position);
+    void setPosition(const common::Vector2D<int>& position) override;
     void setSize(const common::Vector2D<int>& size);
+    void setSpritePath(std::string spritePath);
 
     bool operator==(const Sprite& rhs) const;
     bool operator!=(const Sprite& rhs) const;

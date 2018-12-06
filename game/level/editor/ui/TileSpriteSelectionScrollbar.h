@@ -13,15 +13,17 @@ class IRenderer;
 }
 
 namespace game::level::editor::ui {
-class TileSpriteSelectionScrollbar {
+class TileSpriteSelectionScrollbar : public engine::IGraphicsElement {
     TileSet& m_tileSet;
     engine::Sprite m_backgroundShape;
 
 public:
     TileSpriteSelectionScrollbar(TileSet& tileSet, const common::Vector2D<int>& position, const common::Vector2D<int>& size);
-    void draw(engine::IRenderer& renderer);
-    const common::Vector2D<int>& getPosition() const;
-    void setPosition(const common::Vector2D<int>& position);
+
+    ~TileSpriteSelectionScrollbar() override = default;
+    void draw(const engine::IRenderer& renderer) const override;
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
 
     const common::Vector2D<int>& getSize();
     void setSize(const common::Vector2D<int>& size);

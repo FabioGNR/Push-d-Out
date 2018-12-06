@@ -7,13 +7,16 @@ class IRenderer;
 }
 
 namespace game::level::editor::ui {
-class Cursor {
+class Cursor : public engine::IGraphicsElement {
     engine::Sprite m_cursorSprite;
 
 public:
     explicit Cursor(const std::string& cursorSprite);
-    void draw(engine::IRenderer& renderer) const;
-    void setPosition(common::Vector2D<int> position);
+    ~Cursor() override = default;
+
+    void draw(const engine::IRenderer& renderer) const override;
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
 };
 
 } // end namespace

@@ -1,46 +1,46 @@
 #pragma once
 
 #include "FpsCounter.h"
-#include "game/components/LifeComponent.h"
+#include "ui/PlayerInfo.h"
+
 #include <engine/ecs/World.h>
 #include <engine/graphics/Camera.h>
 #include <engine/graphics/drawable/Surface.h>
 #include <engine/input/InputManager.h>
 #include <engine/ui/UISystem.h>
 #include <engine/window/Window.h>
+
+#include <array>
+#include <map>
 #include <vector>
 
-namespace game {
-namespace hud {
-    class HUD {
-    private:
-        const int SCALE = 4;
-        const size_t AMOUNT = 4;
+namespace game::hud {
+class HUD {
+private:
+    engine::ecs::World& m_world;
+    engine::Window& m_window;
+    engine::graphics::Camera* m_camera;
 
-        engine::ecs::World& m_world;
-        engine::Window& m_window;
-        engine::graphics::Camera* m_camera;
+    std::map<engine::ecs::EntityId, ui::PlayerInfo*> m_playerInfoById;
+    std::array<std::unique_ptr<ui::PlayerInfo>, 4> m_playerInfo;
 
-        std::vector<engine::ecs::EntityId> m_players;
-        std::map<engine::ecs::EntityId, std::vector<std::unique_ptr<engine::IGraphicsElement>>> m_shapes;
-        std::map<engine::ecs::EntityId, std::unique_ptr<engine::Surface>> m_playerHUDs;
-        std::map<engine::ecs::EntityId, components::LifeComponent*> m_lives;
-        std::map<engine::ecs::EntityId, std::vector<engine::Sprite*>> m_hearts;
+    bool m_showFps = false;
+    game::hud::FpsCounter m_fpsCounter;
+    int m_foundPlayers = 0;
 
-        bool m_showFps = false;
-        game::hud::FpsCounter m_fpsCounter;
-        std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_fpsKeySubscription;
+    std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_fpsKeySubscription;
 
-        engine::input::InputManager& m_inputManager;
+    engine::input::InputManager& m_inputManager;
 
-        void setPlayerHUDs();
+public:
+    HUD(engine::Window&, engine::ecs::World&, engine::graphics::Camera*, engine::input::InputManager&);
+    ~HUD();
 
-    public:
-        HUD(engine::Window&, engine::ecs::World&, engine::graphics::Camera*, engine::input::InputManager&);
-        ~HUD();
+    void update(std::chrono::nanoseconds);
+    void render(engine::IRenderer&);
 
-        void update(std::chrono::nanoseconds);
-        void render(engine::IRenderer&);
-    };
-}
+private:
+    void updatePlayerLifes();
+    void updateHudTransparancy();
+};
 }

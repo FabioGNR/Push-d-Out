@@ -29,7 +29,7 @@ struct TextInput {
     engine::Font text;
 };
 
-class KeyboardScreen {
+class KeyboardScreen : public engine::IGraphicsElement {
     TextInput m_textInput;
 
     KeyboardRow<10> m_numRow{};
@@ -44,9 +44,14 @@ class KeyboardScreen {
 
 public:
     explicit KeyboardScreen(const common::Vector2D<int>& screenSize);
+    ~KeyboardScreen() override = default;
+
+    void draw(const engine::IRenderer& renderer) const override;
+    const common::Vector2D<int>& position() const override;
+    void setPosition(const common::Vector2D<int>& position) override;
+
     void move(int x, int y);
     void makeSelection();
-    void draw(engine::IRenderer& renderer);
 
     const std::string& getInputText() const;
     void onOk(std::function<void()> onClick);

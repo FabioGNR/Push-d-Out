@@ -94,7 +94,8 @@ void MainMenuState::openCreditsFrame()
     auto goBackAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_uiSystem->pop();
     });
-    auto backButton = std::make_unique<engine::ui::Button>(fitSize, std::string(" BACK "), 12);
+    auto backButton = std::make_unique<engine::ui::Button>(
+        fitSize, std::string(" BACK "), 12);
     backButton->setAction(std::move(goBackAction));
     centeredStack->addComponent(std::move(backButton));
     centeredLayout->addComponent(std::move(centeredStack), engine::ui::LayoutAnchor::Center);

@@ -34,7 +34,7 @@ KeyboardScreen::KeyboardScreen(const common::Vector2D<int>& screenSize)
     move(0, 0);
 }
 
-void KeyboardScreen::draw(engine::IRenderer& renderer)
+void KeyboardScreen::draw(const engine::IRenderer& renderer) const
 {
     renderer.draw(m_textInput.boundingBox);
     renderer.draw(m_textInput.text);
@@ -173,5 +173,16 @@ void KeyboardScreen::onOk(std::function<void()> onClick)
 void KeyboardScreen::onCancel(std::function<void()> onClick)
 {
     m_OkCancelRow.buttons.at(1)->onClick = std::move(onClick);
+}
+
+const common::Vector2D<int>& KeyboardScreen::position() const
+{
+    return m_textInput.boundingBox.position();
+}
+
+void KeyboardScreen::setPosition(const common::Vector2D<int>& position)
+{
+    m_textInput.boundingBox.setPosition(position);
+    m_textInput.text.setPosition(position);
 }
 }

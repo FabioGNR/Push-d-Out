@@ -3,13 +3,13 @@
 
 #include <game/Game.h>
 
+#include <engine/ui/components/Button.h>
+#include <engine/ui/components/CustomAction.h>
 #include <engine/ui/components/Label.h>
 #include <engine/ui/components/LayoutPanel.h>
 #include <engine/ui/components/StackPanel.h>
 
 #include <boost/filesystem.hpp>
-#include <engine/ui/components/Button.h>
-#include <engine/ui/components/CustomAction.h>
 
 namespace game {
 

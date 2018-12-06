@@ -11,23 +11,27 @@ class Surface : public IGraphicsElement {
     common::Vector2D<int> m_position;
     common::Vector2D<int> m_size;
     int m_alpha;
-    std::vector<const IGraphicsElement*> m_shapes;
+    std::vector<std::unique_ptr<IGraphicsElement>> m_shapes;
 
 public:
-    Surface(common::Vector2D<int> position, common::Vector2D<int> size, int alpha)
+    Surface(const common::Vector2D<int>& position, const common::Vector2D<int>& size, int alpha)
         : m_position{ position }
         , m_size{ size }
         , m_alpha{ alpha } {};
 
-    void accept(IRenderVisitor& visitor) const override;
+    void draw(const IRenderer& renderer) const override;
+    void accept(const IRenderVisitor& visitor) const override;
 
-    common::Vector2D<int> position() const;
-    common::Vector2D<int> size() const;
+    const common::Vector2D<int>& position() const override;
+    const common::Vector2D<int>& size() const;
+
+    void setPosition(const common::Vector2D<int>& position) override;
+    void setSize(const common::Vector2D<int>& size);
+
     int alpha() const;
-    std::vector<const IGraphicsElement*> shapes() const;
 
-    void draw(const IGraphicsElement*);
-    void alpha(int);
+    void addShape(std::unique_ptr<IGraphicsElement> shape);
+    void setAlpha(int alpha);
 
     bool operator==(const Surface& rhs) const;
 

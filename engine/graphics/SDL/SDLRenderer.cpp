@@ -15,7 +15,7 @@ SDLRenderer::SDLRenderer(const SDLWindow& window)
     : m_renderer{ nullptr, nullptr }
     , m_dimensions{ window.getDimensions().x, window.getDimensions().y }
 {
-    auto flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE;
+    auto flags = SDL_RENDERER_ACCELERATED;
 
     m_renderer = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>(
         SDL_CreateRenderer(window.m_window.get(), -1, flags),
@@ -39,7 +39,7 @@ SDLRenderer::SDLRenderer(const SDLWindow& window)
 
 void SDLRenderer::draw(const IGraphicsElement& graphicElement) const
 {
-    SDLRenderVisitor visitor(*this);
+    static SDLRenderVisitor visitor(*this);
     graphicElement.accept(visitor);
 }
 

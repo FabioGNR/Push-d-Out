@@ -1,5 +1,6 @@
 #include "LineShape.h"
 #include <graphics/IRenderVisitor.h>
+#include <graphics/IRenderer.h>
 
 namespace engine {
 LineShape::LineShape(common::Vector2D<int> pos1, common::Vector2D<int> pos2, const Color& color)
@@ -9,7 +10,7 @@ LineShape::LineShape(common::Vector2D<int> pos1, common::Vector2D<int> pos2, con
 {
 }
 
-void LineShape::accept(IRenderVisitor& visitor) const
+void LineShape::accept(const IRenderVisitor& visitor) const
 {
     visitor.visit(*this);
 }
@@ -27,5 +28,18 @@ const common::Vector2D<int>& LineShape::position2() const
 const Color& LineShape::color() const
 {
     return m_color;
+}
+
+void LineShape::draw(const IRenderer& renderer) const
+{
+    renderer.draw(*this);
+}
+const common::Vector2D<int>& LineShape::position() const
+{
+    return position1();
+}
+void LineShape::setPosition(const common::Vector2D<int>& position)
+{
+    m_position1 = position;
 }
 } // end namespace engine
