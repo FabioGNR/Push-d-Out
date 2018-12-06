@@ -23,6 +23,8 @@ set(GAME_SRC
         listeners/JumpContactListener.h
         states/LevelSelectorState.cpp
         states/LevelSelectorState.h
+        states/ScoreState.cpp
+        states/ScoreState.h
         )
 
 set(COMPONENT_SRC
@@ -78,6 +80,8 @@ set(SYSTEM_SRC
         systems/JumpSystem.h
         systems/ProjectileDestroyerSystem.cpp
         systems/ProjectileDestroyerSystem.h
+        systems/ScoreSystem.cpp
+        systems/ScoreSystem.h
         )
 
 set(DEFINITION_SRC
