@@ -21,10 +21,10 @@ namespace systems {
 
         m_world.forEachEntityWith<components::MoveComponent, components::BodyComponent, components::PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& delta = m_world.getComponent<components::MoveComponent>(entity).delta;
-            auto& body = m_world.getComponent<components::BodyComponent>(entity).body;
+            auto& body = *m_world.getComponent<components::BodyComponent>(entity).body;
             auto& position = m_world.getComponent<components::PositionComponent>(entity);
 
-            auto velocity = body->getLinearVelocity();
+            auto velocity = body.getLinearVelocity();
 
             double deltaX = 0;
             if (delta.x < 0) {
@@ -35,11 +35,11 @@ namespace systems {
                 deltaX = velocity.x * 0.98;
             }
 
-            auto impulse = common::Vector2D<double>(body->getMass() * (deltaX - velocity.x), body->getMass() * delta.y);
+            auto impulse = common::Vector2D<double>(body.getMass() * (deltaX - velocity.x), body.getMass() * delta.y);
             if (level->theme.glide) {
-                body->applyForce(impulse, position.position);
+                body.applyForce(impulse, position.position);
             } else {
-                body->applyLinearImpulse(impulse);
+                body.applyLinearImpulse(impulse);
             }
 
             moveComponentsToRemove.push_back(&entity);

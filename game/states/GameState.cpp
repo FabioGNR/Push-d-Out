@@ -15,6 +15,7 @@
 #include <game/systems/AnimationSystem.h>
 #include <game/systems/BackgroundSystem.h>
 #include <game/systems/CameraSystem.h>
+#include <game/systems/CooldownSystem.h>
 #include <game/systems/GarbageCollectorSystem.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
@@ -26,6 +27,7 @@
 #include <game/systems/ProjectileDestroyerSystem.h>
 #include <game/systems/ScoreSystem.h>
 #include <game/systems/SpriteSystem.h>
+#include <game/systems/TeleportSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
 
@@ -72,6 +74,8 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
+    m_ecsWorld.addSystem<systems::TeleportSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld);
 
     // Build characters into the ECS and physics world
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
@@ -80,7 +84,7 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld, m_world.get());
+    m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager.connectedControllerAmount());
 
     subscribeInput();

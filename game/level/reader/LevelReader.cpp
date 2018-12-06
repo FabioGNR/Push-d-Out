@@ -153,7 +153,7 @@ namespace level {
 
             // Add a body component to tile entity
             auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, bodySize, entity.id()));
-            world.addComponent<components::BodyComponent>(entity, bodyComponent);
+            world.addComponent<components::BodyComponent>(entity, std::move(bodyComponent));
 
             // Add a sprite component to tile entity
             auto spriteComponentPair = tileSpriteComponentMap.find(currentTile.sprite);

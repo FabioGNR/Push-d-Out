@@ -27,10 +27,6 @@ void GarbageCollectorSystem::render(engine::IRenderer& /*renderer*/)
 
 void GarbageCollectorSystem::cleanUpEntity(engine::ecs::Entity* entityToDestroy)
 {
-    if (entityToDestroy->hasComponent<components::BodyComponent>()) {
-        auto* body = m_ecsWorld->getComponent<components::BodyComponent>(*entityToDestroy).body;
-        m_physWorld->destroyBody(body);
-    }
     m_ecsWorld->destroyEntity(*entityToDestroy);
 }
 }

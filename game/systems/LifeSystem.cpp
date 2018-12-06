@@ -20,7 +20,7 @@ namespace systems {
             components::DimensionComponent>([&](engine::ecs::Entity& entity) {
             auto& position = m_world->getComponent<components::PositionComponent>(entity).position;
             auto& dimension = m_world->getComponent<components::DimensionComponent>(entity).dimension;
-            auto& body = m_world->getComponent<components::BodyComponent>(entity).body;
+            auto& body = *m_world->getComponent<components::BodyComponent>(entity).body;
 
             if ((position.y + dimension.y) < range && !m_camera->isRectangleVisible(position, dimension)) {
                 int& lifeCounter = m_world->getComponent<components::LifeComponent>(entity).count;
@@ -41,7 +41,8 @@ namespace systems {
                     const auto newPosition = positions[randomValue - 1];
 
                     if (lifeCounter > 0) {
-                        body->setPosition(newPosition);
+                        body.setPosition(newPosition);
+                        body.setLinearVelocity({ 0, 0 }); // Reset the forces
                     }
                 }
             }

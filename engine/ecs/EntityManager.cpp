@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 
+#include "engine/exceptions/EntityNotFoundException.h"
 #include <algorithm>
 #include <utility>
 
@@ -26,14 +27,11 @@ namespace ecs {
 
     Entity& EntityManager::entity(const EntityId entityId)
     {
-        /*
-        const auto entity = std::find_if(m_entities.begin(), m_entities.end(), [&](const auto& lhs) {
-            return lhs->id() == entityId;
-        });
-        return *entity->get();
-        */
-        auto& entity = m_entities.at(entityId);
-        return *entity;
+        auto it = m_entities.find(entityId);
+        if (it != m_entities.end()) {
+            return *(it->second);
+        }
+        throw engine::exceptions::EntityNotFoundException();
     }
 
     EntityId EntityManager::makeUniqueEntityId()

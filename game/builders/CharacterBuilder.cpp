@@ -68,6 +68,7 @@ namespace builders {
 
         // TODO: Move these actions to some kind of configurations
         analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys::CON_TRIGGER_RIGHT;
+        analogControls[definitions::Action::UseWeaponAlternative] = engine::input::AnalogKeys::CON_TRIGGER_LEFT;
         analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
         controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
@@ -76,6 +77,7 @@ namespace builders {
         controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
 
         KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::Q;
         KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
@@ -99,7 +101,7 @@ namespace builders {
 
             // Create a dynamic body for the Physics World
             components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id()) };
-            m_ecsWorld.addComponent<components::BodyComponent>(players[i], bodyComponent);
+            m_ecsWorld.addComponent<components::BodyComponent>(players[i], std::move(bodyComponent));
 
             // Create the dimension component for player entity
             components::DimensionComponent dimensionComponent{ dimension };
@@ -129,13 +131,20 @@ namespace builders {
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
 
-            //Creating force gun entity
+            // Add default force gun to player, and portal gun as secondary
             auto& gunEntity = m_ecsWorld.createEntity();
-            components::WeaponComponent weaponComponent(1, definitions::WeaponType::ForceGun);
+            components::WeaponComponent weaponComponent(definitions::WeaponType::ForceGun, 1, definitions::ProjectileType::Force);
             m_ecsWorld.addComponent<components::WeaponComponent>(gunEntity, weaponComponent);
             components::InventoryComponent inventoryComponent{};
             inventoryComponent.activeEquipment.set(&gunEntity);
+
+            auto& portalGun = m_ecsWorld.createEntity();
+            components::WeaponComponent portalGunComponent(definitions::WeaponType::PortalGun, 1, definitions::ProjectileType::BluePortal, 1, definitions::ProjectileType::OrangePortal);
+            m_ecsWorld.addComponent<components::WeaponComponent>(portalGun, portalGunComponent);
+            inventoryComponent.otherEquipment.set(&portalGun);
+
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
+
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
         }

@@ -5,7 +5,7 @@
 namespace engine {
 namespace physics {
     DynamicBody::DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
-        : Body(position, dimension, world)
+        : Body(position, dimension, &world)
     {
         b2BodyDef bodyDef;
         // You must set the body type to b2_dynamicBody if you want the body to move in response to forces
@@ -15,14 +15,14 @@ namespace physics {
         bodyDef.fixedRotation = true;
 
         // create new body from world object
-        b2Body* b2Body = m_world.createBody(bodyDef);
+        b2Body* b2Body = m_world->createBody(bodyDef);
         b2PolygonShape dynamicBox; // set half height and half width
         dynamicBox.SetAsBox((float32)dimension.x / 2.0f, (float32)dimension.y / 2.0f);
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &dynamicBox;
         fixtureDef.density = 1.0f;
 
-        auto friction = m_world.getFriction();
+        auto friction = m_world->getFriction();
         fixtureDef.friction = (float32)friction.x;
 
         b2Body->CreateFixture(&fixtureDef);
@@ -33,7 +33,7 @@ namespace physics {
 
     DynamicBody::~DynamicBody()
     {
-        m_world.destroyBody(m_body);
+        m_world->destroyBody(this, m_body);
     }
 
     void DynamicBody::update()
@@ -48,7 +48,6 @@ namespace physics {
     void DynamicBody::setPosition(common::Vector2D<double> d)
     {
         Body::setPosition(d);
-        this->setLinearVelocity({ 0, 0 }); // Reset the forces
         m_body->SetTransform(b2Vec2{ static_cast<float32>(d.x), static_cast<float32>(d.y) }, m_body->GetAngle());
     }
 

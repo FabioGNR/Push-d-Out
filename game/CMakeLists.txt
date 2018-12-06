@@ -23,6 +23,12 @@ set(GAME_SRC
         listeners/JumpContactListener.h
         states/LevelSelectorState.cpp
         states/LevelSelectorState.h
+        listeners/ProjectileContactListener.cpp 
+        listeners/ProjectileContactListener.h
+        listeners/PortalContactListener.cpp 
+        listeners/PortalContactListener.h
+        listeners/ProjectilePortalContactListener.h
+        listeners/ProjectilePortalContactListener.cpp
         states/ScoreState.cpp
         states/ScoreState.h
         )
@@ -36,6 +42,7 @@ set(COMPONENT_SRC
         components/DimensionComponent.h
         components/SpriteComponent.h
         components/EquipmentComponent.h
+        components/PortalComponent.h
         components/WeaponComponent.h
         components/InventoryComponent.h
         components/EquipableComponent.h
@@ -44,7 +51,9 @@ set(COMPONENT_SRC
         components/ItemComponent.h
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
-        components/DestructibleComponent.h)
+        components/DestructibleComponent.h
+        components/TeleportComponent.h
+        )
 
 set(SYSTEM_SRC
         systems/MovementSystem.cpp
@@ -79,6 +88,10 @@ set(SYSTEM_SRC
         systems/JumpSystem.h
         systems/ProjectileDestroyerSystem.cpp
         systems/ProjectileDestroyerSystem.h
+        systems/CooldownSystem.cpp
+        systems/CooldownSystem.h
+        systems/TeleportSystem.cpp
+        systems/TeleportSystem.h
         systems/ScoreSystem.cpp
         systems/ScoreSystem.h
         )
@@ -86,6 +99,7 @@ set(SYSTEM_SRC
 set(DEFINITION_SRC
         definitions/Action.h
         definitions/WeaponType.h
+        definitions/ProjectileType.h
         definitions/ItemType.h
         )
 

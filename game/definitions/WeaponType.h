@@ -3,7 +3,8 @@
 namespace game {
 namespace definitions {
     enum class WeaponType {
-        ForceGun
+        ForceGun,
+        PortalGun
     };
 }
 }

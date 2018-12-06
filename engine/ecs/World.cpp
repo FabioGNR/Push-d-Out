@@ -10,7 +10,11 @@ namespace ecs {
 
     Entity& World::getEntity(EntityId id)
     {
-        return m_entityManager.entity(id);
+        try {
+            return m_entityManager.entity(id);
+        } catch (...) {
+            throw; // probably entity not found
+        }
     }
 
     void World::destroyEntity(Entity& entity)
@@ -21,8 +25,23 @@ namespace ecs {
         m_entityManager.destroy(entity);
     }
 
+    void World::destroyEntityNextUpdate(Entity& entity)
+    {
+        m_entitiesToDestroy.push_back(entity.id());
+    }
+
     void World::update(std::chrono::nanoseconds timeStep)
     {
+        std::for_each(m_entitiesToDestroy.begin(), m_entitiesToDestroy.end(), [&](auto& id) {
+            try {
+                auto& entity = getEntity(id);
+                destroyEntity(entity);
+            } catch (...) {
+                // entity not found
+            }
+        });
+        m_entitiesToDestroy.clear();
+
         m_systemManager.update(timeStep);
     }
 

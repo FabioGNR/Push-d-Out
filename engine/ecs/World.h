@@ -21,6 +21,8 @@ namespace ecs {
         ComponentManager m_componentManager;
         SystemManager m_systemManager;
 
+        std::vector<EntityId> m_entitiesToDestroy;
+
     public:
         World() = default;
         World(const World& other) = delete;
@@ -36,6 +38,7 @@ namespace ecs {
         void render(engine::IRenderer& renderer);
 
         void destroyEntity(Entity& entity);
+        void destroyEntityNextUpdate(Entity& entity);
 
         template <typename Component>
         Component& getComponent(const Entity& entity)
@@ -63,7 +66,7 @@ namespace ecs {
         }
 
         template <typename... Components>
-        void forEachEntityWith(std::function<void(Entity&)>&& func)
+        void forEachEntityWith(std::function<void(Entity&)> func)
         {
             const std::vector<std::reference_wrapper<ComponentMap>> componentMaps = {
                 m_componentManager.getManager<Components>().getAll()...
