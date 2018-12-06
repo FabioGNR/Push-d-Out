@@ -19,7 +19,7 @@ namespace events {
 
     public:
         std::vector<std::unique_ptr<IEvent>> getEvents() override;
-        std::vector<int>& getConnectedControllers() override;
+        const std::vector<int>& getConnectedControllers() override;
     };
 }
 }

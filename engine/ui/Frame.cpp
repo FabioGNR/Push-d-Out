@@ -1,5 +1,4 @@
 #include "Frame.h"
-#include <iostream>
 #include <ui/components/ComponentPanel.h>
 
 namespace engine {

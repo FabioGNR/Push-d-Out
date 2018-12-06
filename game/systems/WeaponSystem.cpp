@@ -24,8 +24,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     engine::ecs::World& ecsWorld,
     common::Vector2D<double>& direction)
 {
-    common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>((direction.x > 0 ? 1 : 0), 1);
-    //common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>(1.2, 1); // TODO ask why the 1.2 is there
+    common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>((direction.x > 0 ? 1.2 : -0.2), 1);
     auto& projectileEntity = ecsWorld.createEntity();
     common::Vector2D<double> dimensionVector(0.5, 0.5);
     engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector, projectileEntity.id());
@@ -44,7 +43,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
 
     direction *= 20; // TODO get rid of magic value, possible put fireForceGun in its own class?
     projectileBody->setLinearVelocity(common::Vector2D<double>(direction.x, direction.y));
-    ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>(0, 0), playerPosition);
+    ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/equipment/equipment.png", "assets/sprites/equipment/equipment.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");
@@ -120,11 +119,7 @@ namespace systems {
     common::Vector2D<double> WeaponSystem::calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<int>& direction, const game::components::DirectionComponent& directionComponent)
     {
         if (direction.x == 0 && direction.y == 0) {
-            if (directionComponent.getDir()) {
-                return common::Vector2D<double>(1, 0);
-            } else {
-                return common::Vector2D<double>(-1, 0);
-            }
+            return common::Vector2D<double>((directionComponent.direction == DirectionComponent::Direction::RIGHT ? 1 : -1), 0);
         }
 
         auto playerPosition = m_camera.translatePosition(m_ecsWorld.getComponent<PositionComponent>(entity).position);

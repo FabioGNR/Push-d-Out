@@ -11,13 +11,19 @@ namespace events {
         std::function<void(T, events::Subscription<T>&)> update;
         bool isActive;
         int subbedTo;
-        bool subAll;
+        bool subAll = false;
 
-        Subscription(std::function<void(T, events::Subscription<T>&)> update, int id, bool subToAll)
+        Subscription(std::function<void(T, events::Subscription<T>&)> update, int id)
             : update{ std::move(update) }
             , isActive{ true }
-            , subbedTo{ id }
-            , subAll(subToAll){};
+            , subbedTo{ id }{};
+
+        explicit Subscription(std::function<void(T, events::Subscription<T>&)> update)
+        : update{std::move(update)}
+        , isActive{true}
+        , subbedTo{-1}
+        , subAll{true}{};
+
         Subscription(const Subscription& other) = default;
         Subscription& operator=(const Subscription& other) = default;
 

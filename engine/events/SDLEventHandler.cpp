@@ -58,7 +58,7 @@ namespace events {
         }
     }
 
-    std::vector<int>& SDLEventHandler::getConnectedControllers()
+    const std::vector<int>& SDLEventHandler::getConnectedControllers()
     {
         return connectedControllers;
     }

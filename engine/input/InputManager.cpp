@@ -38,16 +38,15 @@ namespace input {
     std::shared_ptr<events::Subscription<maps::InputMap>> InputManager::subscribe(
         std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify, int id)
     {
-        auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, id, false);
+        auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, id);
         m_subscriptions.push_back(subscription);
-        std::cout << "subbed to controller: " << id << std::endl;
         return subscription;
     }
 
     std::shared_ptr<events::Subscription<maps::InputMap>> InputManager::subscribeAll(
         std::function<void(maps::InputMap, events::Subscription<maps::InputMap>&)> onNotify)
     {
-        auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify, -1, true);
+        auto subscription = std::make_shared<events::Subscription<maps::InputMap>>(onNotify);
         m_subscriptions.push_back(subscription);
         return subscription;
     }
@@ -97,7 +96,7 @@ namespace input {
         return m_inputMap;
     }
 
-    std::vector<int>& InputManager::getConnectedControllers() const
+    const std::vector<int>& InputManager::getConnectedControllers() const
     {
         return m_handler->getConnectedControllers();
     }
