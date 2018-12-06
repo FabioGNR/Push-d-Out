@@ -107,7 +107,7 @@ namespace builders {
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], std::move(bodyComponent));
 
             // Create the dimension component for player entity
-            components::DimensionComponent dimensionComponent{ dimension };
+            components::DimensionComponent dimensionComponent{ common::Vector2D<double>(1.4, 2.1) };
             m_ecsWorld.addComponent<components::DimensionComponent>(players[i], dimensionComponent);
 
             // Create the position component for player entity
