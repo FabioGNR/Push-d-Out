@@ -3,6 +3,7 @@
 
 int main()
 {
+    game::Game::DEBUG = true;
     engine::WindowProperties windowProperties{};
     windowProperties.title = "Push'd Out!";
     windowProperties.maximized = false;

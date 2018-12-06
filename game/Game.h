@@ -17,6 +17,7 @@ private:
     std::unique_ptr<engine::events::EventManager> m_eventManager;
 
 public:
+    static bool DEBUG;
     explicit Game(engine::WindowProperties& properties);
 
     void init() override;

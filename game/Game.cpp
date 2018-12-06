@@ -8,6 +8,8 @@
 #include <engine/window/Window.h>
 
 namespace game {
+bool Game::DEBUG = false;
+
 Game::Game(engine::WindowProperties& properties)
 {
     m_window = std::make_unique<engine::SDLWindow>(properties);

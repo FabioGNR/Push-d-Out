@@ -145,7 +145,7 @@ namespace builders {
         };
 
         std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
-        if (DEBUG && m_playerCount < 4) {
+        if (game::Game::DEBUG && m_playerCount != connectedControllersVector.size()) {
             // for the keyboard
             buildFunc(m_playerCount - 1); // -1 because this is a count, so it starts at 1, but the player ids start at 0
         }
