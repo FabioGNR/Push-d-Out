@@ -24,9 +24,14 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     engine::ecs::World& ecsWorld,
     common::Vector2D<double>& direction)
 {
-    common::Vector2D<double> projPos = playerPosition + common::Vector2D<double>((direction.x > 0 ? 1.2 : -0.2), 1);
-    auto& projectileEntity = ecsWorld.createEntity();
+    auto playerDimension = ecsWorld.getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
+    common::Vector2D<double> shootDirection = direction;
+
+    shootDirection *= playerDimension / 2 + dimensionVector;
+
+    auto& projectileEntity = ecsWorld.createEntity();
+    common::Vector2D<double> projPos = playerPosition + playerDimension / 2 + shootDirection;
     engine::physics::Body* projectileBody = physicsWorld.createKinematicBody(projPos, dimensionVector, projectileEntity.id());
 
     auto posComponent = PositionComponent(playerPosition);
@@ -43,7 +48,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
 
     direction *= 20; // TODO get rid of magic value, possible put fireForceGun in its own class?
     projectileBody->setLinearVelocity(common::Vector2D<double>(direction.x, direction.y));
-    ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
+    //ecsWorld.getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/equipment/equipment.png", "assets/sprites/equipment/equipment.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");
