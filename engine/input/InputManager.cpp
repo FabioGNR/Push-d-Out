@@ -96,7 +96,7 @@ namespace input {
         return m_inputMap;
     }
 
-    const std::vector<int>& InputManager::getConnectedControllers() const
+    const std::vector<size_t>& InputManager::getConnectedControllers() const
     {
         return m_handler->getConnectedControllers();
     }

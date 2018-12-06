@@ -16,7 +16,7 @@ namespace events {
         IEventHandler& operator=(IEventHandler&& other) = default;
         virtual ~IEventHandler() = default;
         virtual std::vector<std::unique_ptr<IEvent>> getEvents() = 0;
-        virtual const std::vector<int>& getConnectedControllers() = 0;
+        virtual const std::vector<size_t>& getConnectedControllers() = 0;
     };
 }
 }

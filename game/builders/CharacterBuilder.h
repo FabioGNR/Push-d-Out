@@ -13,6 +13,7 @@ namespace builders {
         engine::input::InputManager& m_inputManager;
         std::string assetsFolder = "assets/sprites/players/";
         size_t m_playerCount;
+        bool DEBUG = false;
 
     public:
         CharacterBuilder(engine::ecs::World& world, engine::physics::World& physics, engine::input::InputManager& inputManager)
@@ -21,7 +22,8 @@ namespace builders {
             , m_inputManager(inputManager)
             , m_playerCount(inputManager.getConnectedControllers().size())
         {
-            if (m_playerCount < 4) {
+            DEBUG = true;
+            if (DEBUG && m_playerCount < 4) {
                 // for the keyboard
                 m_playerCount++;
             }

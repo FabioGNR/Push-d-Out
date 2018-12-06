@@ -50,7 +50,7 @@ namespace events {
             return std::make_unique<KeyDownEvent>(input::sdl::SDLKeys::get(event.key.keysym.sym));
         case SDL_CONTROLLERDEVICEADDED: {
             SDL_GameControllerOpen(event.cdevice.which);
-            connectedControllers.push_back(event.cdevice.which);
+            connectedControllers.push_back((size_t)event.cdevice.which);
             return nullptr;
         }
         default:
@@ -58,7 +58,7 @@ namespace events {
         }
     }
 
-    const std::vector<int>& SDLEventHandler::getConnectedControllers()
+    const std::vector<size_t>& SDLEventHandler::getConnectedControllers()
     {
         return connectedControllers;
     }

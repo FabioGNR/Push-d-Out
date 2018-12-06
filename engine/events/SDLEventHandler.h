@@ -14,12 +14,12 @@ namespace events {
     class SDLEventHandler : public IEventHandler {
     private:
         const int deadZone = 2000;
-        std::vector<int> connectedControllers;
+        std::vector<size_t> connectedControllers;
         std::unique_ptr<IEvent> mapEvent(const SDL_Event& event);
 
     public:
         std::vector<std::unique_ptr<IEvent>> getEvents() override;
-        const std::vector<int>& getConnectedControllers() override;
+        const std::vector<size_t>& getConnectedControllers() override;
     };
 }
 }

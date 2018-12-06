@@ -89,7 +89,9 @@ namespace builders {
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerRed.png", assetsFolder + "datafile.json" }.build());
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
 
-        for (size_t i = 0; i < m_playerCount; ++i) {
+        const auto& connectedControllersVector = m_inputManager.getConnectedControllers();
+
+        auto buildFunc = [&](const size_t& i) {
             // Make character jumpable
             m_ecsWorld.addComponent<components::JumpComponent>(players[i], common::Vector2D{ 0.0, 0.0 });
 
@@ -119,12 +121,11 @@ namespace builders {
             m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);
 
             // Add keyboard if i is the same or higher than the amount of connected controller
-            // Since we start this for loop at 0 and not at 1 we also have to check if its the same
-            if (i >= m_inputManager.getConnectedControllers().size()) {
-                components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
+            if (std::find(m_inputManager.getConnectedControllers().begin(), m_inputManager.getConnectedControllers().end(), i) != m_inputManager.getConnectedControllers().end()) {
+                components::PlayerInputComponent playerInputComponent{ (int)m_inputManager.getConnectedControllers().at(i), controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else {
-                components::PlayerInputComponent playerInputComponent{ m_inputManager.getConnectedControllers().at(i), controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             }
 
@@ -141,6 +142,12 @@ namespace builders {
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
+        };
+
+        std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
+        if (DEBUG && m_playerCount < 4) {
+            // for the keyboard
+            buildFunc(m_playerCount - 1); // -1 because this is a count, so it starts at 1, but the player ids start at 0
         }
     }
 }
