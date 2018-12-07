@@ -10,7 +10,8 @@
 
 using namespace game::components;
 
-void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
+namespace game::systems {
+void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
 {
     m_world.forEachEntityWith<PlayerInputComponent>([&](engine::ecs::Entity& entity) {
         auto& PIC = m_world.getComponent<PlayerInputComponent>(entity);
@@ -54,7 +55,9 @@ void game::systems::PlayerInputSystem::update(std::chrono::nanoseconds /* timeSt
     });
 }
 
-void game::systems::PlayerInputSystem::move(common::Vector2D<double>& delta, bool invert, components::DirectionComponent& directionComponent)
+void PlayerInputSystem::move(common::Vector2D<double>& delta,
+    bool invert,
+    components::DirectionComponent& directionComponent)
 {
     auto levelIt = m_world.begin<LevelMetaComponent>();
     LevelMetaComponent* level = nullptr;
@@ -66,7 +69,8 @@ void game::systems::PlayerInputSystem::move(common::Vector2D<double>& delta, boo
     delta.x += invert ? -deltaX : deltaX;
     directionComponent.direction = (invert) ? DirectionComponent::Direction::LEFT : DirectionComponent::Direction::RIGHT;
 }
-void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
+
+void PlayerInputSystem::jump(common::Vector2D<double>& delta)
 {
     auto levelIt = m_world.begin<LevelMetaComponent>();
     LevelMetaComponent* level = nullptr;
@@ -82,4 +86,5 @@ void game::systems::PlayerInputSystem::jump(common::Vector2D<double>& delta)
     delta.y += level != nullptr ? level->theme.jumpSpeed : 10;
 }
 
-void game::systems::PlayerInputSystem::render(engine::IRenderer& /* renderer */) {}
+void PlayerInputSystem::render(engine::IRenderer& /* renderer */) {}
+}
