@@ -16,7 +16,7 @@ namespace ui {
 
     common::Vector2D<int> Image::calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const
     {
-        const auto requiredSize = renderer.getSpriteSize(m_sprite);
+        const auto requiredSize = renderer.calculateSpriteSize(m_sprite);
         const auto calculatedSize = m_size.getSize(requiredSize, availableSize);
         return calculatedSize;
     }

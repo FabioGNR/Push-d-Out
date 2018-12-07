@@ -33,7 +33,7 @@ common::Vector2D<int> NumericSlider::calculateSize(const IRenderer& renderer, co
 
 common::Vector2D<int> NumericSlider::getBoxSize(const Font& font, const IRenderer& renderer) const
 {
-    const auto fontSize = renderer.getFontSize(font);
+    const auto fontSize = renderer.calculateFontSize(font);
     const auto requiredSize = fontSize + m_boxFontPadding; // bit of padding
     return common::Vector2D<int>::max(requiredSize, m_minBoxSize);
 }

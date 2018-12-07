@@ -53,7 +53,7 @@ void SDLRenderer::clear()
     SDL_RenderClear(m_renderer.get());
 }
 
-common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
+common::Vector2D<int> SDLRenderer::calculateFontSize(const Font& font) const
 {
     if (!fontCache.hasResource(std::make_pair(font.fontPath(), font.fontSize()))) {
         const auto ttfFont = std::shared_ptr<TTF_Font>(
@@ -84,7 +84,7 @@ common::Vector2D<int> SDLRenderer::getFontSize(const Font& font) const
     }
 }
 
-common::Vector2D<int> SDLRenderer::getSpriteSize(const Sprite& sprite) const
+common::Vector2D<int> SDLRenderer::calculateSpriteSize(const Sprite& sprite) const
 {
     if (!spriteCache.hasResource(sprite)) {
         const auto surfaceImage = std::shared_ptr<SDL_Surface>(

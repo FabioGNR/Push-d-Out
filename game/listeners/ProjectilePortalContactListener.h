@@ -16,8 +16,8 @@ namespace listeners {
         engine::ecs::Entity* findOtherPortal(engine::ecs::EntityId id);
 
     public:
-        explicit ProjectilePortalContactListener(engine::ecs::World& world)
-            : m_ecsWorld{ &world } {};
+        explicit ProjectilePortalContactListener(engine::ecs::World* world)
+            : m_ecsWorld{ world } {};
 
         void beginContact(engine::physics::Contact contact) override;
         void endContact(engine::physics::Contact contact) override;

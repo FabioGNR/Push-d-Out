@@ -45,8 +45,8 @@ public:
     void show() override;
     void clear() override;
 
-    common::Vector2D<int> getFontSize(const Font& font) const override;
+    common::Vector2D<int> calculateFontSize(const Font& font) const override;
     void setBlendMode(engine::graphics::BlendModes) override;
-    common::Vector2D<int> getSpriteSize(const Sprite& sprite) const override;
+    common::Vector2D<int> calculateSpriteSize(const Sprite& sprite) const override;
 };
 } // end namespace engine

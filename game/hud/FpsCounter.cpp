@@ -29,7 +29,7 @@ void FpsCounter::draw(const engine::IRenderer& renderer) const
         m_font.setText(std::to_string(m_displayCount));
     }
 
-    auto size = renderer.getFontSize(m_font);
+    auto size = renderer.calculateFontSize(m_font);
     size.y += 6;
     size.x += 8;
 

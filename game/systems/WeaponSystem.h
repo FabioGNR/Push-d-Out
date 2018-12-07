@@ -13,21 +13,26 @@
 
 namespace game {
 namespace systems {
+    using WeaponFireFunc = std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World*, engine::ecs::World*, common::Vector2D<double>& direction)>;
+
     class WeaponSystem : public engine::ecs::BaseSystem<WeaponSystem> {
     private:
-        engine::ecs::World& m_ecsWorld;
-        engine::physics::World& m_physicsWorld;
+        engine::ecs::World* m_ecsWorld;
+        engine::physics::World* m_physicsWorld;
+        engine::graphics::Camera* m_camera;
         engine::input::maps::InputMaps& m_inputMaps;
-        engine::graphics::Camera& m_camera;
 
-        std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&, common::Vector2D<double>& direction)>> fireFunctionMap;
-        std::map<definitions::WeaponType, std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World&, engine::ecs::World&, common::Vector2D<double>& direction)>> altFireFunctionMap;
+        void updateLastFiredTimers(const std::chrono::nanoseconds& timeStep) const;
         void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
         void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
+
+        std::map<definitions::WeaponType, WeaponFireFunc> fireFunctionMap;
+        std::map<definitions::WeaponType, WeaponFireFunc> altFireFunctionMap;
+
         common::Vector2D<double> calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<int>& direction, const game::components::DirectionComponent& directionComponent);
 
     public:
-        WeaponSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager, engine::graphics::Camera& camera);
+        WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::graphics::Camera* camera);
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;

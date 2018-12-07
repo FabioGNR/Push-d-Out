@@ -9,7 +9,7 @@ namespace ui {
 
     common::Vector2D<int> TextComponent::calculateTextSize(const IRenderer& renderer) const
     {
-        return renderer.getFontSize(m_font);
+        return renderer.calculateFontSize(m_font);
     }
 
     void TextComponent::setFont(const std::string& fontPath)

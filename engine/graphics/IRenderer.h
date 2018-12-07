@@ -23,7 +23,7 @@ public:
     virtual void draw(const IGraphicsElement& graphicElement) const = 0;
     virtual void show() = 0;
     virtual void clear() = 0;
-    virtual common::Vector2D<int> getFontSize(const Font& font) const = 0;
-    virtual common::Vector2D<int> getSpriteSize(const Sprite& sprite) const = 0;
+    virtual common::Vector2D<int> calculateFontSize(const Font& font) const = 0;
+    virtual common::Vector2D<int> calculateSpriteSize(const Sprite& sprite) const = 0;
 };
 } // end namespace engine
