@@ -27,7 +27,6 @@ namespace physics {
         void setPosition(common::Vector2D<double> d) override;
         void setLinearVelocity(common::Vector2D<double> vel) const override;
         void applyLinearImpulse(const common::Vector2D<double>& impulse) const override;
-        double getMass() const override;
     };
 }
 }

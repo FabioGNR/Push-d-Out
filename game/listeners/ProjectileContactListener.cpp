@@ -20,22 +20,23 @@ namespace listeners {
             if (a.hasComponent<components::ProjectileComponent>()
                 && !b.hasComponent<components::PortalComponent>()
                 && b.hasComponent<components::BodyComponent>()) {
-                act(a, m_ecsWorld->getComponent<components::PositionComponent>(a).position);
+                act(a, b, m_ecsWorld->getComponent<components::PositionComponent>(a).position);
             } else if (a.hasComponent<components::BodyComponent>()
                 && !a.hasComponent<components::PortalComponent>()
                 && b.hasComponent<components::ProjectileComponent>()) {
-                act(b, m_ecsWorld->getComponent<components::PositionComponent>(b).position);
+                act(b, a, m_ecsWorld->getComponent<components::PositionComponent>(b).position);
             }
         } catch (engine::exceptions::EntityNotFoundException&) {
             return; // nothing to do here
         }
     }
 
-    void ProjectileContactListener::act(engine::ecs::Entity& entity, common::Vector2D<double> position)
+    void ProjectileContactListener::act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, common::Vector2D<double> position)
     {
-        auto& projectile = m_ecsWorld->getComponent<components::ProjectileComponent>(entity);
-        switch (projectile.type) {
+        auto& proj = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile);
+        switch (proj.type) {
         case definitions::ProjectileType::Force:
+            applyForce(body, projectile);
             break;
         case definitions::ProjectileType::BluePortal:
             createPortal(position, false);
@@ -47,7 +48,7 @@ namespace listeners {
             break;
         }
 
-        m_ecsWorld->destroyEntityNextUpdate(entity);
+        m_ecsWorld->destroyEntityNextUpdate(projectile);
     }
 
     void ProjectileContactListener::endContact(engine::physics::Contact /* contact */)
@@ -109,6 +110,13 @@ namespace listeners {
             });
 
         return entity;
+    }
+
+    void ProjectileContactListener::applyForce(engine::ecs::Entity& body, engine::ecs::Entity& projectile)
+    {
+        auto& player = m_ecsWorld->getComponent<components::BodyComponent>(body).body;
+        auto force = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile).force;
+        player->applyLinearImpulse(force * 40);
     }
 }
 }

@@ -1,19 +1,20 @@
 #include "Frame.h"
-#include <input/maps/KeyMap.h>
 #include <ui/components/ComponentPanel.h>
 
 namespace engine {
 namespace ui {
     using namespace engine::input;
 
-    void Frame::processInputEvent(maps::AnalogMap& keyMap)
+    void Frame::processInputEvent(maps::InputMap& inputMap)
     {
         //TODO: use proper mapping for this instead of hardcoded W and S
         // if navigation key(s)
-        bool navigate = keyMap.hasKeyState(Keys::W, KeyStates::PRESSED) || keyMap.hasKeyState(Keys::S, KeyStates::PRESSED);
+        bool navigate = inputMap.hasState(Keys::W, States::PRESSED) || inputMap.hasState(Keys::S, States::PRESSED);
+        navigate = inputMap.hasState(AnalogKeys::CON_LEFTSTICK_Y, States::PRESSED) ? true : navigate;
         if (navigate) {
             size_t navigatableComponentCount = getNavigatableComponentCount();
-            bool goForward = keyMap.hasKeyState(Keys::S, KeyStates::PRESSED);
+            bool goForward = inputMap.hasState(Keys::S, States::PRESSED);
+            goForward = inputMap.getValue(AnalogKeys::CON_LEFTSTICK_Y) > 1 ? true : goForward;
             if (goForward) {
                 m_activeComponent++;
                 if (m_activeComponent >= navigatableComponentCount) {
@@ -28,7 +29,7 @@ namespace ui {
             }
             m_focusedComponent = getNavigatableAt(m_activeComponent);
         } else if (m_focusedComponent != nullptr) {
-            m_focusedComponent->processInputEvent(keyMap);
+            m_focusedComponent->processInputEvent(inputMap);
         }
     }
 

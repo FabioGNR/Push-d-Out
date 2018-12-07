@@ -3,6 +3,7 @@
 #include "IBuilder.h"
 #include <engine/input/InputManager.h>
 #include <engine/physics/World.h>
+#include <game/Game.h>
 
 namespace game {
 namespace builders {
@@ -19,10 +20,11 @@ namespace builders {
             : m_ecsWorld(world)
             , m_physicsWorld(physics)
             , m_inputManager(inputManager)
-            , m_playerCount(inputManager.connectedControllerAmount())
+            , m_playerCount(inputManager.getConnectedControllers().size())
         {
-            if (m_playerCount < 4) {
-                m_playerCount++; // for the keyboard
+            if (game::Game::DEBUG && m_playerCount < 4) {
+                // for the keyboard
+                m_playerCount++;
             }
         }
         void build() const override;

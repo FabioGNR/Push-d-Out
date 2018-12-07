@@ -70,11 +70,6 @@ namespace physics {
         m_body->ApplyLinearImpulse(b2Vec2{ impulsef.x, impulsef.y }, m_body->GetWorldCenter(), true);
     }
 
-    double DynamicBody::getMass() const
-    {
-        return m_body->GetMass();
-    }
-
     void DynamicBody::setLinearVelocity(common::Vector2D<double> vel) const
     {
         auto velf = vel.castTo<float32>();

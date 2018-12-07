@@ -54,11 +54,6 @@ namespace physics {
         m_body->ApplyLinearImpulse(b2Vec2{ impulse_f.x, impulse_f.y }, m_body->GetWorldCenter(), true);
     }
 
-    double KinematicBody::getMass() const
-    {
-        return m_body->GetMass();
-    }
-
     void KinematicBody::setLinearVelocity(common::Vector2D<double> vel) const
     {
         const auto velocity_f = vel.castTo<float32>();

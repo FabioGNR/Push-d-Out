@@ -28,7 +28,7 @@ private:
     std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
 
     engine::input::InputManager& m_inputManager;
-    std::shared_ptr<engine::events::Subscription<engine::input::maps::AnalogMap>> m_inputSubscription;
+    std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;
 
     std::string m_levelToPlay;
 

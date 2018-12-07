@@ -80,5 +80,15 @@ namespace physics {
     {
         m_body->SetBullet(isBullet);
     }
+
+    double Body::getMass() const
+    {
+        return m_body->GetMass();
+    }
+
+    void Body::setDensity(double density)
+    {
+        m_body->GetFixtureList()->SetDensity(density);
+    }
 }
 }

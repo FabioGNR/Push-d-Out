@@ -2,8 +2,8 @@
 
 #include "IEventHandler.h"
 #include "engine/input/AnalogKeys.h"
-#include "engine/input/SDL_Axis.h"
-#include <engine/input/SDLKeys.h>
+#include "engine/input/SDL_Input/SDL_Axis.h"
+#include <engine/input/SDL_Input/SDLKeys.h>
 #include <map>
 #include <vector>
 
@@ -13,14 +13,13 @@ namespace engine {
 namespace events {
     class SDLEventHandler : public IEventHandler {
     private:
-        const int deadZone = 15000;
-        std::map<int, bool> cCon;
-        std::unique_ptr<IEvent> mapEvent(SDL_Event& event);
+        const int deadZone = 2000;
+        std::vector<size_t> connectedControllers;
+        std::unique_ptr<IEvent> mapEvent(const SDL_Event& event);
 
     public:
         std::vector<std::unique_ptr<IEvent>> getEvents() override;
-        bool openController(int id) override;
-        size_t getConnectedControllers() override;
+        const std::vector<size_t>& getConnectedControllers() override;
     };
 }
 }

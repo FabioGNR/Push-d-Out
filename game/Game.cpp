@@ -8,6 +8,8 @@
 #include <engine/window/Window.h>
 
 namespace game {
+bool Game::DEBUG = false;
+
 Game::Game(engine::WindowProperties& properties)
 {
     m_window = std::make_unique<engine::SDLWindow>(properties);
@@ -22,7 +24,7 @@ void Game::init()
 
 void Game::onUpdate(std::chrono::nanoseconds timeStep)
 {
-    m_eventManager->getInput().notify();
+    m_eventManager->getInput().notifyAll();
     if (!m_eventManager->getEvents()) {
         stop();
     }

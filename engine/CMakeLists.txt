@@ -94,19 +94,20 @@ set(INPUT_SRC
         input/InputManager.h
         input/InputManager.cpp
         input/Keys.h
-        input/SDLKeys.cpp
-        input/SDLKeys.h
-        input/maps/KeyMap.cpp
-        input/maps/KeyMap.h
-        input/KeyStates.h
-        input/maps/AnalogMap.cpp
-        input/maps/AnalogMap.h
+        input/States.h
+        input/AnalogKeys.h
         input/maps/InputMap.cpp
         input/maps/InputMap.h
-        input/SDL_Axis.h
-        input/SDL_Axis.cpp
-        input/AnalogKeys.h
-        )
+        input/maps/InputMaps.cpp
+        input/maps/InputMaps.h
+        input/SDL_Input/SDL_Axis.h
+        input/SDL_Input/SDL_Axis.cpp
+        input/SDL_Input/SDLKeys.cpp
+        input/SDL_Input/SDLKeys.h
+        input/SDL_Input/SDL_ConKeys.cpp
+        input/SDL_Input/SDL_ConKeys.h
+        input/SDL_Input/SDL_MouseKeys.h
+        input/SDL_Input/SDL_MouseKeys.cpp)
 
 set(EVENTS_SRC
         events/models/MouseEvent.h

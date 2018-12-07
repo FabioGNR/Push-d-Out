@@ -9,6 +9,10 @@ TEST_CASE("common::Vector2D's can handle basic arithmetics")
     {
         REQUIRE(testVector.magnitude() == 5);
     }
+    
+    SECTION("Normalize") {
+        REQUIRE(testVector.normalize().magnitude() == 1);
+    }
 }
 
 TEST_CASE("common::Vector2D's have basic mathematical properties")

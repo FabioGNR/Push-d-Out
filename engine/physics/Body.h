@@ -50,8 +50,9 @@ namespace physics {
         virtual const common::Vector2D<double> getLinearVelocity() const = 0;
         virtual void setLinearVelocity(common::Vector2D<double> vel) const = 0;
         virtual void applyLinearImpulse(const common::Vector2D<double>& impulse) const = 0;
-        virtual double getMass() const = 0;
 
+        virtual double getMass() const;
+        virtual void setDensity(double density);
         virtual void setSensor(bool isSensor);
         virtual void setGravityScale(double scale);
         virtual void setEntityId(ecs::EntityId);

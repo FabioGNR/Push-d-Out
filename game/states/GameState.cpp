@@ -70,7 +70,7 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
-    m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
+    m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager, m_camera); // TODO make camera use "&"
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
@@ -85,7 +85,7 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
-    m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager.connectedControllerAmount());
+    m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager.getConnectedControllers().size());
 
     subscribeInput();
 }
@@ -125,22 +125,21 @@ void GameState::close()
 
 void GameState::subscribeInput()
 {
-    m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keyMap, auto&) {
-        //TODO: add check for 'start' button on controller(s) when controller input is supported
-        if (keyMap.hasKeyState(engine::input::Keys::ESCAPE, engine::input::KeyStates::PRESSED)) {
+    m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
+        if (inputMap.hasState(engine::input::Keys::ESCAPE, engine::input::States::PRESSED) || inputMap.hasState(engine::input::Keys::CON_START, engine::input::States::PRESSED)) {
             auto pauseMenu = std::make_unique<PauseMenuState>(m_context);
             m_context.next(std::move(pauseMenu));
         }
 
-        if (keyMap.hasKeyState(engine::input::Keys::F2, engine::input::KeyStates::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::F2, engine::input::States::PRESSED)) {
             m_context.setSpeed(m_context.speed() - .1);
         }
 
-        if (keyMap.hasKeyState(engine::input::Keys::F3, engine::input::KeyStates::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::F3, engine::input::States::PRESSED)) {
             m_context.resetSpeed();
         }
 
-        if (keyMap.hasKeyState(engine::input::Keys::F4, engine::input::KeyStates::PRESSED)) {
+        if (inputMap.hasState(engine::input::Keys::F4, engine::input::States::PRESSED)) {
             m_context.setSpeed(m_context.speed() + .1);
         }
     });

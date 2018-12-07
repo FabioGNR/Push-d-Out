@@ -60,11 +60,6 @@ namespace physics {
         // don't apply forces
     }
 
-    double StaticBody::getMass() const
-    {
-        return m_body->GetMass();
-    }
-
     void StaticBody::setLinearVelocity(common::Vector2D<double> vel) const
     {
         auto velf = vel.castTo<float32>();

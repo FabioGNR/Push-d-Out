@@ -53,6 +53,7 @@ set(COMPONENT_SRC
         components/LifeComponent.h
         components/DestructibleComponent.h
         components/TeleportComponent.h
+        components/DirectionComponent.h
         )
 
 set(SYSTEM_SRC

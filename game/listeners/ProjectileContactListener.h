@@ -13,8 +13,9 @@ namespace listeners {
         engine::ecs::World* m_ecsWorld;
         engine::physics::World* m_physicsWorld;
 
-        void act(engine::ecs::Entity&, common::Vector2D<double> position);
+        void act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, common::Vector2D<double> position);
         void createPortal(common::Vector2D<double> position, bool alternative);
+        void applyForce(engine::ecs::Entity& body, engine::ecs::Entity& projectile);
         engine::ecs::Entity* findPortal(bool alternative);
 
     public:

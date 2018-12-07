@@ -1,12 +1,11 @@
 #include "HUD.h"
 
+#include <engine/common/RNG.h>
+#include <engine/graphics/Camera.h>
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/exceptions/PlayerAmountOutOfBoundsException.h>
-
-#include <engine/common/RNG.h>
-#include <engine/graphics/Camera.h>
 
 namespace game::hud {
 HUD::HUD(engine::Window& window,
@@ -19,8 +18,8 @@ HUD::HUD(engine::Window& window,
     , m_fpsCounter({ 0, 0 })
     , m_inputManager{ inputManager }
 {
-    m_fpsKeySubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap analogMap, auto&) {
-        if (analogMap.getKeystate(engine::input::Keys::F1) == engine::input::KeyStates::PRESSED) {
+    m_fpsKeySubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
+        if (inputMap.getState(engine::input::Keys::F1) == engine::input::States::PRESSED) {
             m_showFps = !m_showFps;
         }
     });

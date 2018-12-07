@@ -8,7 +8,7 @@ namespace ui {
         setActive(true);
     }
 
-    void UISystem::processInputEvent(engine::input::maps::AnalogMap& keyMap)
+    void UISystem::processInputEvent(engine::input::maps::InputMap& keyMap)
     {
         //TODO: key event as parameter and pass it through
         if (!m_frames.empty()) {
@@ -37,7 +37,8 @@ namespace ui {
 
     void UISystem::setActive(bool active)
     {
-        m_active = !m_active;
+        m_active = active;
+
         if (!active && m_inputSubscription != nullptr) {
             m_inputSubscription->close();
             m_inputSubscription = nullptr;
@@ -48,8 +49,7 @@ namespace ui {
 
     void UISystem::subscribeInput()
     {
-
-        m_inputSubscription = m_inputManager.subscribe([&](engine::input::maps::AnalogMap keymap, auto&) {
+        m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap keymap, auto&) {
             processInputEvent(keymap);
         });
     }

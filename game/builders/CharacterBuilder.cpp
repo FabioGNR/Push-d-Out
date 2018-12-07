@@ -7,6 +7,7 @@
 #include <game/components/BodyComponent.h>
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/DimensionComponent.h>
+#include <game/components/DirectionComponent.h>
 #include <game/components/InventoryComponent.h>
 #include <game/components/JumpComponent.h>
 #include <game/components/LifeComponent.h>
@@ -57,7 +58,6 @@ namespace builders {
         m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
-        m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
 
@@ -77,7 +77,7 @@ namespace builders {
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
         controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
 
-        KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::F;
+        KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::MOUSE_BUTTON_LEFT;
         KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::Q;
         KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
@@ -92,7 +92,9 @@ namespace builders {
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerRed.png", assetsFolder + "datafile.json" }.build());
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
 
-        for (size_t i = 0; i < m_playerCount; ++i) {
+        const auto& connectedControllersVector = m_inputManager.getConnectedControllers();
+
+        auto buildFunc = [&](const size_t& i) {
             // Make character jumpable
             m_ecsWorld.addComponent<components::JumpComponent>(players[i], common::Vector2D{ 0.0, 0.0 });
 
@@ -105,7 +107,7 @@ namespace builders {
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], std::move(bodyComponent));
 
             // Create the dimension component for player entity
-            components::DimensionComponent dimensionComponent{ dimension };
+            components::DimensionComponent dimensionComponent{ common::Vector2D<double>(1.4, 2.1) };
             m_ecsWorld.addComponent<components::DimensionComponent>(players[i], dimensionComponent);
 
             // Create the position component for player entity
@@ -118,12 +120,14 @@ namespace builders {
                 auto spriteComponent = spriteComponentPair->second;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
+            components::DirectionComponent directionComponent{};
+            m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);
 
-            // Open the required controller
-            if (m_inputManager.openController(i)) {
-                components::PlayerInputComponent playerInputComponent{ static_cast<int>(i), controls, analogControls };
+            // Add keyboard if i is the same or higher than the amount of connected controller
+            if (std::find(m_inputManager.getConnectedControllers().begin(), m_inputManager.getConnectedControllers().end(), i) != m_inputManager.getConnectedControllers().end()) {
+                components::PlayerInputComponent playerInputComponent{ (int)m_inputManager.getConnectedControllers().at(i), controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
-            } else { // DEBUG
+            } else {
                 components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             }
@@ -143,6 +147,12 @@ namespace builders {
 
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
+        };
+
+        std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
+        if (game::Game::DEBUG && m_playerCount != connectedControllersVector.size()) {
+            // for the keyboard
+            buildFunc(m_playerCount - 1); // -1 because this is a count, so it starts at 1, but the player ids start at 0
         }
     }
 }

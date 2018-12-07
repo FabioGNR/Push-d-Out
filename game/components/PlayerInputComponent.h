@@ -22,7 +22,7 @@ namespace components {
             , analogControls(std::move(analogControls))
             , controllerId(controllerId){};
 
-        engine::input::AnalogKeys getAnalog(definitions::Action action)
+        engine::input::AnalogKeys getAnalog(const definitions::Action action) const
         {
             if (analogControls.find(action) == analogControls.end()) {
                 return engine::input::AnalogKeys::CON_UNKNOWN;
@@ -30,7 +30,7 @@ namespace components {
             return analogControls.at(action);
         }
 
-        engine::input::Keys getKey(definitions::Action action)
+        engine::input::Keys getKey(const definitions::Action action) const
         {
             if (controls.find(action) == controls.end()) {
                 return engine::input::UNKNOWN;

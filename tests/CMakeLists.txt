@@ -1,7 +1,7 @@
 set(TEST_SRC
         test_main.cpp
         engine/common/Vector2D_test.cpp
-        engine/input/KeyMap_test.cpp
+        engine/input/InputMap_test.cpp
         engine/ecs/ecs_test.cpp)
 
 target_include_directories(
