@@ -13,13 +13,13 @@
 #include <engine/ui/components/Label.h>
 #include <engine/ui/components/LayoutPanel.h>
 #include <engine/ui/components/StackPanel.h>
+#include <game/config/ConfigurationRepository.h>
 
 using namespace std::chrono_literals;
 
 namespace game {
 MainMenuState::MainMenuState(engine::IGame& context)
     : BaseMenuState(context)
-    , m_soundManager(new engine::sound::SDLSoundManager)
 {
 }
 
@@ -31,8 +31,7 @@ void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
     auto startButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
+            engine::ui::ComponentSizeType::Fit),
         "START");
     startButton->setAction(std::move(startGameAction));
     panel.addComponent(std::move(startButton));
@@ -43,8 +42,7 @@ void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
     auto editorButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
+            engine::ui::ComponentSizeType::Fit),
         "EDITOR");
     editorButton->setAction(std::move(editorAction));
     panel.addComponent(std::move(editorButton));
@@ -57,9 +55,8 @@ void MainMenuState::appendButtons(engine::ui::StackPanel& panel)
     });
     auto creditsButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
-            engine::ui::ComponentSizeType::Fit,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
+            engine::ui::ComponentSizeType::Stretch,
+            engine::ui::ComponentSizeType::Fit),
         "CREDITS");
     creditsButton->setAction(std::move(openCreditsAction));
     panel.addComponent(std::move(creditsButton));
@@ -106,6 +103,8 @@ void MainMenuState::openCreditsFrame()
 
 void MainMenuState::init()
 {
+    auto& game = dynamic_cast<Game&>(m_context);
+    m_soundManager = game.getSoundManager();
     engine::sound::Music music("assets/sounds/menu.wav");
     m_soundManager->play(music);
     BaseMenuState::init();

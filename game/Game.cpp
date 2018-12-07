@@ -4,8 +4,10 @@
 #include <engine/events/SDLEventHandler.h>
 #include <engine/graphics/SDL/SDLRenderer.h>
 #include <engine/graphics/drawable/RectangleShape.h>
+#include <engine/sound/SDL/SDLSoundManager.h>
 #include <engine/window/SDLWindow.h>
 #include <engine/window/Window.h>
+#include <game/config/ConfigurationRepository.h>
 
 namespace game {
 bool Game::DEBUG = false;
@@ -16,10 +18,12 @@ Game::Game(engine::WindowProperties& properties)
     m_eventManager = std::make_unique<engine::events::EventManager>(std::make_unique<engine::events::SDLEventHandler>());
     m_renderer = std::make_unique<engine::SDLRenderer>(
         *dynamic_cast<engine::SDLWindow*>(m_window.get()));
+    m_soundManager = std::make_unique<engine::sound::SDLSoundManager>();
 }
 
 void Game::init()
 {
+    applyConfig();
 }
 
 void Game::onUpdate(std::chrono::nanoseconds timeStep)
@@ -51,5 +55,25 @@ common::Vector2D<int> Game::getScreenSize() const
 engine::Window& Game::window() const
 {
     return *m_window;
+}
+
+engine::sound::ISoundManager* Game::getSoundManager()
+{
+    return m_soundManager.get();
+}
+
+void Game::applyConfig()
+{
+    config::ConfigurationRepository repository{};
+    const auto& config = repository.readConfig();
+    applyConfig(config);
+}
+
+void Game::applyConfig(const config::UserConfig& config)
+{
+    const auto volumeScalar = config.masterVolume / 100.0;
+    // set music volume lower than sfx volume (max is 80%)
+    m_soundManager->setMusicVolume(engine::sound::Volume(static_cast<int>(config.musicVolume * volumeScalar * 0.8)));
+    m_soundManager->setSfxVolume(engine::sound::Volume(static_cast<int>(config.sfxVolume * volumeScalar * 0.8)));
 }
 }

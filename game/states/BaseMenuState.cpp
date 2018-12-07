@@ -1,5 +1,6 @@
 #include "BaseMenuState.h"
 #include "GameState.h"
+#include "OptionMenuState.h"
 #include "game/Game.h"
 #include <engine/common/Vector2D.h>
 #include <engine/game/IGame.h>
@@ -55,12 +56,17 @@ void BaseMenuState::init()
 
     prependButtons(*buttonStack);
 
+    auto optionsAction = std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.next(std::make_unique<OptionMenuState>(m_context));
+    });
+
     auto optionsButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "OPTIONS");
+    optionsButton->setAction(std::move(optionsAction));
     buttonStack->addComponent(std::move(optionsButton));
 
     auto helpButton = std::make_unique<engine::ui::Button>(

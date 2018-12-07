@@ -1,5 +1,6 @@
 #include "PlayerInputSystem.h"
 
+#include <engine/common/RNG.h>
 #include <engine/sound/Music.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
 #include <game/components/DirectionComponent.h>
@@ -7,6 +8,7 @@
 #include <game/components/LevelMetaComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <sstream>
 
 using namespace game::components;
 
@@ -78,9 +80,11 @@ void PlayerInputSystem::jump(common::Vector2D<double>& delta)
         level = dynamic_cast<LevelMetaComponent*>(levelIt->second.get());
     }
 
-    engine::sound::SoundEffect sound("assets/sounds/jump.wav", 0);
-    engine::sound::Volume volume{ 10 };
-    m_soundManager->setSfxVolume(volume);
+    std::stringstream soundPath{};
+    soundPath << "assets/sounds/jump-";
+    soundPath << std::to_string(common::RNG::generate(0, 1));
+    soundPath << ".wav";
+    const engine::sound::SoundEffect sound(soundPath.str(), 0);
     m_soundManager->play(sound);
 
     delta.y += level != nullptr ? level->theme.jumpSpeed : 10;

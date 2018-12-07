@@ -10,7 +10,6 @@ namespace ui {
 
     void UISystem::processInputEvent(engine::input::maps::InputMap& keyMap)
     {
-        //TODO: key event as parameter and pass it through
         if (!m_frames.empty()) {
             Frame& currentFrame = m_frames.top();
             currentFrame.processInputEvent(keyMap);

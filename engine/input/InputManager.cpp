@@ -10,7 +10,6 @@ namespace input {
     {
         if (auto con = dynamic_cast<events::ControllerEvent*>(event_ptr.get())) {
             auto& conMap = m_inputMap.getMap(con->m_ID);
-            conMap.changed = true;
             if (con->m_isAnalog) {
                 conMap.setValue(con->m_analogKey, con->m_axisValue);
             } else {
@@ -18,7 +17,6 @@ namespace input {
             }
         } else if (auto mouse = dynamic_cast<events::MouseEvent*>(event_ptr.get())) {
             auto& KBM_Map = m_inputMap.getKBM();
-            KBM_Map.changed = true;
             if (!mouse->m_isAnalog) {
                 KBM_Map.setValue(mouse->m_key, (mouse->m_isPressed ? States::PRESSED : States::RELEASED));
             }
@@ -26,7 +24,6 @@ namespace input {
             KBM_Map.setValue(AnalogKeys::MOUSE_Y, mouse->m_y);
         } else {
             auto& KBM_Map = m_inputMap.getKBM();
-            KBM_Map.changed = true;
             if (auto down = dynamic_cast<events::KeyDownEvent*>(event_ptr.get())) {
                 KBM_Map.setValue(down->value, States::PRESSED);
             } else if (auto up = dynamic_cast<events::KeyUpEvent*>(event_ptr.get())) {
@@ -67,8 +64,9 @@ namespace input {
 
     void InputManager::notifyObserver(const std::shared_ptr<events::Subscription<maps::InputMap>>& observer, int mapID)
     {
-        if (observer->isActive && m_inputMap.getMap(mapID).changed) {
-            observer->update(m_inputMap.getMap(mapID), *observer);
+        const auto& map = m_inputMap.getMap(mapID);
+        if (observer->isActive && !map.isEmpty()) {
+            observer->update(map, *observer);
         }
     }
 

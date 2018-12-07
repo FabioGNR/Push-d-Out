@@ -13,16 +13,15 @@ namespace systems {
     private:
         const int moveDeadZone = 10000;
         engine::ecs::World& m_world;
+        engine::sound::ISoundManager* m_soundManager;
         engine::input::maps::InputMaps& m_inputMaps;
-        std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
 
     public:
-        PlayerInputSystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
+        PlayerInputSystem(engine::ecs::World& world, engine::input::InputManager& inputManager,
+            engine::sound::ISoundManager* soundManager)
             : m_world{ world }
-            , m_inputMaps{ inputManager.getMap() }
-        {
-            m_soundManager = std::make_unique<engine::sound::SDLSoundManager>();
-        };
+            , m_soundManager{ soundManager }
+            , m_inputMaps{ inputManager.getMap() } {};
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;

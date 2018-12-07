@@ -22,7 +22,7 @@ namespace ui {
 
         virtual void processInputEvent(engine::input::maps::InputMap& /*unused*/) {}
         virtual common::Vector2D<int> calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const = 0;
-        ComponentSize getSize() { return m_size; }
+        ComponentSize& getSize() { return m_size; }
         virtual bool isNavigatable() { return false; }
 
     protected:

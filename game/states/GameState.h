@@ -25,7 +25,7 @@ private:
     std::unique_ptr<game::hud::HUD> m_hud;
     engine::ecs::World m_ecsWorld;
 
-    std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
+    engine::sound::ISoundManager* m_soundManager{};
 
     engine::input::InputManager& m_inputManager;
     std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;

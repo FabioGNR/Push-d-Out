@@ -10,10 +10,7 @@
 namespace game {
 class MainMenuState : public BaseMenuState {
 private:
-    std::unique_ptr<engine::sound::ISoundManager> m_soundManager;
-
-public:
-    explicit MainMenuState(engine::IGame& context);
+    engine::sound::ISoundManager* m_soundManager{};
 
 protected:
     void prependButtons(engine::ui::StackPanel& panel) override;
@@ -22,6 +19,8 @@ protected:
     void openCreditsFrame();
 
 public:
+    explicit MainMenuState(engine::IGame& context);
+
     void resume() override;
     void pause() override;
     void close() override;

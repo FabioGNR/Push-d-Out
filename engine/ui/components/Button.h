@@ -35,6 +35,7 @@ namespace ui {
 
     private:
         std::unique_ptr<IAction> m_action;
+        const common::Vector2D<int> m_textPadding{ 6, 0 };
     };
 }
 }

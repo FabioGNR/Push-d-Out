@@ -1,15 +1,12 @@
-#include <utility>
-
 #include "GameState.h"
 #include "PauseMenuState.h"
-
 #include <engine/game/IGame.h>
 #include <engine/graphics/Camera.h>
 #include <engine/physics/PhysicsManager.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
-
 #include <game/Game.h>
 #include <game/builders/CharacterBuilder.h>
+#include <game/config/ConfigurationRepository.h>
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
 #include <game/systems/AnimationSystem.h>
@@ -30,11 +27,11 @@
 #include <game/systems/TeleportSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
+#include <utility>
 
 namespace game {
 GameState::GameState(std::string levelToPlay, engine::IGame& game)
     : engine::State(game)
-    , m_soundManager(new engine::sound::SDLSoundManager)
     , m_inputManager(dynamic_cast<Game&>(game).getInputManager())
     , m_levelToPlay(std::move(levelToPlay))
 {
@@ -44,6 +41,8 @@ GameState::GameState(std::string levelToPlay, engine::IGame& game)
 void GameState::init()
 {
     auto& game = dynamic_cast<Game&>(m_context);
+
+    m_soundManager = game.getSoundManager();
 
     // Read Level based on JSON file
     level::LevelReader lr{};
@@ -64,8 +63,9 @@ void GameState::init()
 
     // Create HUD
     m_hud = std::make_unique<game::hud::HUD>(dynamic_cast<Game&>(m_context).window(), m_ecsWorld, &m_camera, m_inputManager);
-
-    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+    // Add various systems
+    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld,
+        m_inputManager, m_soundManager);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
@@ -74,6 +74,9 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld,
+        *m_world, m_soundManager);
     m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
     m_ecsWorld.addSystem<systems::TeleportSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld);
 
@@ -81,8 +84,6 @@ void GameState::init()
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
 
-    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager.getConnectedControllers().size());

@@ -18,11 +18,12 @@ namespace ui {
             // center component in cross axis
             const auto childSize = component->calculateSize(context.renderer, childrenContext.availableSize);
             componentContext.pos += perpendicularWithDirection((requiredSize - childSize) / 2);
+            componentContext.pos += parallelWithDirection(component->getSize().getMarginStart());
             // draw component
             DrawContext updatedContext = component->draw(componentContext);
             // update position for next component
             childrenContext.pos = parallelWithDirection(updatedContext.pos) + perpendicularWithDirection(context.pos);
-            childrenContext.pos += parallelWithDirection(component->getSize().getMargin());
+            childrenContext.pos += parallelWithDirection(component->getSize().getMarginEnd());
         }
         return context;
     }
@@ -89,7 +90,9 @@ namespace ui {
         common::Vector2D<int> requiredSize{ 0, 0 };
 
         for (const auto& component : m_components) {
-            const auto componentSize = component->calculateSize(renderer, availableChildSize);
+            auto componentSize = component->calculateSize(renderer, availableChildSize);
+            componentSize += component->getSize().getMarginStart();
+            componentSize += component->getSize().getMarginEnd();
             if (m_flowDirection == FlowDirection::Horizontal) {
                 requiredSize.x += componentSize.x;
                 requiredSize.y = std::max(requiredSize.y, componentSize.y);

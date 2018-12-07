@@ -21,6 +21,8 @@ set(GAME_SRC
         exceptions/PlayerAmountOutOfBoundsException.h
         listeners/JumpContactListener.cpp
         listeners/JumpContactListener.h
+        states/OptionMenuState.cpp
+        states/OptionMenuState.h
         states/LevelSelectorState.cpp
         states/LevelSelectorState.h
         listeners/ProjectileContactListener.cpp 
@@ -152,6 +154,12 @@ set(HUD_SRC
         hud/ui/LifeBar.h
         )
 
+set(CONFIG_SRC
+        config/ConfigurationRepository.h
+        config/ConfigurationRepository.cpp
+        exceptions/CanNotSaveConfigException.h
+        )
+
 #more engine stuff
 set(BUILDER_SRC
         builders/IBuilder.h
@@ -185,6 +193,7 @@ add_executable(PushdOut
         ${BUILDER_SRC}
         ${HUD_SRC}
         ${EQUIPMENT_SRC}
+        ${CONFIG_SRC}
         )
 
 target_link_libraries(PushdOut engine ${Boost_LIBRARIES})

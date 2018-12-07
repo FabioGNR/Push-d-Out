@@ -68,7 +68,11 @@ set(GRAPHICS_SRC
         graphics/Color.h
         graphics/Camera.h
         graphics/Camera.cpp
-        graphics/BlendModes.h 
+        graphics/BlendModes.h
+        graphics/SDL/SDLBlendModes.h
+        graphics/SDL/SDLBlendModes.cpp
+        graphics/drawable/Surface.cpp
+        graphics/drawable/Surface.h
         )
 
 set(PHYSICS_SRC
@@ -107,10 +111,10 @@ set(INPUT_SRC
         input/SDL_Input/SDL_ConKeys.cpp
         input/SDL_Input/SDL_ConKeys.h
         input/SDL_Input/SDL_MouseKeys.h
-        input/SDL_Input/SDL_MouseKeys.cpp)
+        input/SDL_Input/SDL_MouseKeys.cpp
+        )
 
 set(EVENTS_SRC
-        events/models/MouseEvent.h
         events/IEventHandler.h
         events/SDLEventHandler.cpp
         events/SDLEventHandler.h
@@ -120,6 +124,7 @@ set(EVENTS_SRC
         events/models/IControlEvent.h
         events/models/KeyUpEvent.h
         events/models/KeyDownEvent.h
+        events/models/MouseEvent.h
         events/models/QuitEvent.h
         events/models/Subscription.h
         events/models/ControllerEvent.h
@@ -184,6 +189,8 @@ set(UI_SRC
         ui/components/CustomAction.h
         ui/components/Image.cpp
         ui/components/Image.h
+        ui/components/NumericSlider.cpp
+        ui/components/NumericSlider.h
         )
 
 # more engine stuff

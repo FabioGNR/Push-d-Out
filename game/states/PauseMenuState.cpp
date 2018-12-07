@@ -21,33 +21,30 @@ PauseMenuState::PauseMenuState(engine::IGame& context)
 
 void PauseMenuState::prependButtons(engine::ui::StackPanel& panel)
 {
-    const auto& fitSize = engine::ui::ComponentSize(
-        engine::ui::ComponentSizeType::Fit,
-        engine::ui::ComponentSizeType::Fit,
-        common::Vector2D<double>(1, 1));
+    const auto& buttonSize = engine::ui::ComponentSize(
+        engine::ui::ComponentSizeType::Stretch,
+        engine::ui::ComponentSizeType::Fit);
     std::unique_ptr<engine::ui::IAction> resumeGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_context.previous();
     });
-    auto resumeButton = std::make_unique<engine::ui::Button>(fitSize,
+    auto resumeButton = std::make_unique<engine::ui::Button>(buttonSize,
         "RESUME");
-    resumeButton->getSize().setMargin({ 0, 5 });
     resumeButton->setAction(std::move(resumeGameAction));
     panel.addComponent(std::move(resumeButton));
 }
 
 void PauseMenuState::appendButtons(engine::ui::StackPanel& panel)
 {
-    const auto& fitSize = engine::ui::ComponentSize(
-        engine::ui::ComponentSizeType::Fit,
-        engine::ui::ComponentSizeType::Fit,
-        common::Vector2D<double>(1, 1));
+    const auto& buttonSize = engine::ui::ComponentSize(
+        engine::ui::ComponentSizeType::Stretch,
+        engine::ui::ComponentSizeType::Fit);
     std::unique_ptr<engine::ui::IAction> mainMenuAction = std::make_unique<engine::ui::CustomAction>([&]() {
         auto* context = &m_context;
         context->clearStates();
         context->next(std::make_unique<MainMenuState>(*context));
     });
 
-    auto mainMenuButton = std::make_unique<engine::ui::Button>(fitSize, "MAIN MENU");
+    auto mainMenuButton = std::make_unique<engine::ui::Button>(buttonSize, "MAIN MENU");
     mainMenuButton->setAction(std::move(mainMenuAction));
     panel.addComponent(std::move(mainMenuButton));
 }

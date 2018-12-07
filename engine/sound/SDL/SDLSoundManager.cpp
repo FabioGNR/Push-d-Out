@@ -18,14 +18,16 @@ namespace sound {
         if (!isInitialized) {
             /*
              * From http://lazyfoo.net/SDL_tutorials/lesson11/index.php
-             * Mix_OpenAudio()'s first argument is the sound frequency we use, and in this case it's 22050 which is what's recommended.
+             * Mix_OpenAudio()'s first argument is the sound frequency we use, and the default is 22050 which is what's recommended.
+             * A higher frequency will reduce latency but leads to more CPU usage.
              * The second argument is the sound format used which we set to the default.
              * The third argument is how many channels we plan to use.
              * We set it to 2 so we have stereo sound, if it was set to one we'd have mono sound.
-             * The last argument is the sample size, which is set to 4096.
+             * The last argument is the sample size, which is set to 1024.
+             * Lower sample sizes lead to less latency but can lead to crackling on slower computers.
              */
 
-            if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+            if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
                 throw SDLMixerException(Mix_GetError());
             }
             isInitialized = true;

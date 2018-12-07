@@ -13,14 +13,15 @@ namespace systems {
             engine::physics::World& m_physicsWorld;
 
         public:
-            ReverseGravitySystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld);
+            ReverseGravitySystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld,
+                engine::sound::ISoundManager* soundManager);
 
             void update(std::chrono::nanoseconds timeStep) override;
 
             void render(engine::IRenderer& renderer) override;
 
         private:
-            std::unique_ptr<engine::sound::ISoundManager> m_soundManager{};
+            engine::sound::ISoundManager* m_soundManager{};
             static constexpr double DURATION_SECONDS = 2.0;
 
             void reverseGravity();

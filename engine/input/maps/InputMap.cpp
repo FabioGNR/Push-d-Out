@@ -8,7 +8,6 @@ namespace input {
         {
             updateKeys();
             updateAnalog();
-            changed = false;
         }
 
         void InputMap::updateAnalog()
@@ -64,6 +63,11 @@ namespace input {
             } else {
                 m_keyMap[key] = state;
             }
+        }
+
+        bool InputMap::isEmpty() const
+        {
+            return m_analogMap.empty() && m_analogStateMap.empty() && m_keyMap.empty();
         }
 
         void InputMap::setValue(const engine::input::AnalogKeys key, const int value)

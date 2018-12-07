@@ -8,11 +8,12 @@ using namespace game::components::items;
 namespace game {
 namespace systems {
     namespace items {
-        ReverseGravitySystem::ReverseGravitySystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld)
+        ReverseGravitySystem::ReverseGravitySystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld,
+            engine::sound::ISoundManager* soundManager)
             : m_ecsWorld(ecsWorld)
             , m_physicsWorld(physicsWorld)
+            , m_soundManager(soundManager)
         {
-            m_soundManager = std::make_unique<engine::sound::SDLSoundManager>();
         }
 
         void ReverseGravitySystem::update(std::chrono::nanoseconds timeStep)
@@ -26,8 +27,6 @@ namespace systems {
                         reverseGravity();
                         component.activated = true;
                         engine::sound::SoundEffect sound("assets/sounds/reverse-gravity.wav", 0);
-                        engine::sound::Volume volume{ 10 };
-                        m_soundManager->setSfxVolume(volume);
                         m_soundManager->play(sound);
                     } else {
                         component.timeSinceActivated += timeStep;
@@ -40,8 +39,6 @@ namespace systems {
                             reverseGravity();
                             itemsToBeRemoved.push_back(&itemEntity);
                             engine::sound::SoundEffect sound("assets/sounds/reverse-gravity-end.wav", 0);
-                            engine::sound::Volume volume{ 10 };
-                            m_soundManager->setSfxVolume(volume);
                             m_soundManager->play(sound);
                         }
                     }

@@ -15,9 +15,9 @@ namespace ui {
     common::Vector2D<int> Label::calculateSize(const IRenderer& renderer, common::Vector2D<int> availableSize) const
     {
         // add availableSize required for text
-        common::Vector2D<int> requiredSize = calculateTextSize(renderer);
-        common::Vector2D<int> size = m_size.getSize(requiredSize, availableSize);
-        return size;
+        const auto requiredSize = calculateTextSize(renderer);
+        const auto calculatedSize = m_size.getSize(requiredSize, availableSize);
+        return calculatedSize;
     }
 }
 }
