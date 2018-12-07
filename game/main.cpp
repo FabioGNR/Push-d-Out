@@ -6,7 +6,7 @@ int main()
     game::Game::DEBUG = true;
     engine::WindowProperties windowProperties{};
     windowProperties.title = "Push'd Out!";
-    windowProperties.maximized = false;
+    windowProperties.maximized = true;
     windowProperties.centered = true;
     windowProperties.width = 1280;
     windowProperties.height = 768;

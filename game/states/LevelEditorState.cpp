@@ -14,7 +14,7 @@ void LevelEditorState::init()
 {
     const auto& game = dynamic_cast<Game&>(m_context);
     const common::Vector2D<int> numTiles(40, 24);
-    const common::Vector2D<int> tileSize(game.getScreenSize().x / 40, game.getScreenSize().y / 24);
+    const common::Vector2D<int> tileSize(game.getScreenSize().x / numTiles.x, game.getScreenSize().y / numTiles.y);
 
     m_editor.init(numTiles, tileSize);
     m_editor.setBackground("assets/sprites/sky_backdrop.jpg");

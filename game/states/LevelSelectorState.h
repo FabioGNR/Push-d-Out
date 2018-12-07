@@ -9,6 +9,7 @@ namespace game {
 class LevelSelectorState : public engine::State {
     std::vector<std::string> m_availableLevels;
     std::unique_ptr<engine::ui::UISystem> m_uiSystem;
+    common::Vector2D<int> m_screenSize;
 
 public:
     explicit LevelSelectorState(engine::IGame& context);

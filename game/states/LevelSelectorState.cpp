@@ -17,6 +17,7 @@ LevelSelectorState::LevelSelectorState(engine::IGame& context)
     : State(context)
 {
     auto& game = dynamic_cast<Game&>(m_context);
+    m_screenSize = game.getScreenSize();
     m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
 }
 
@@ -26,34 +27,22 @@ void LevelSelectorState::update(std::chrono::nanoseconds /* timeStep */)
 
 void LevelSelectorState::render(engine::IRenderer& renderer)
 {
-    m_uiSystem->draw(renderer, common::Vector2D<int>(1280, 768));
+    m_uiSystem->draw(renderer, m_screenSize);
 }
 
 void LevelSelectorState::init()
 {
+    const auto fitSize = engine::ui::ComponentSize(
+        engine::ui::ComponentSizeType::Fit,
+        engine::ui::ComponentSizeType::Fit);
     auto rootLayout = std::make_unique<engine::ui::LayoutPanel>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Fit, engine::ui::ComponentSizeType::Stretch,
             common::Vector2D<double>(1, 1)),
         engine::ui::FlowDirection::Horizontal);
-    auto centerLayout = std::make_unique<engine::ui::LayoutPanel>(
-        engine::ui::ComponentSize(
-            engine::ui::ComponentSizeType::Fit,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
-        engine::ui::FlowDirection::Vertical);
-    auto buttonStack = std::make_unique<engine::ui::StackPanel>(
-        engine::ui::ComponentSize(
-            engine::ui::ComponentSizeType::Fit,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
-        engine::ui::FlowDirection::Vertical);
-    auto nameLabel = std::make_unique<engine::ui::Label>(
-        engine::ui::ComponentSize(
-            engine::ui::ComponentSizeType::Fit,
-            engine::ui::ComponentSizeType::Fit,
-            common::Vector2D<double>(1, 1)),
-        "Select a level");
+    auto centerLayout = std::make_unique<engine::ui::LayoutPanel>(fitSize, engine::ui::FlowDirection::Vertical);
+    auto buttonStack = std::make_unique<engine::ui::StackPanel>(fitSize, engine::ui::FlowDirection::Vertical);
+    auto nameLabel = std::make_unique<engine::ui::Label>(fitSize, "Select a level");
     buttonStack->addComponent(std::move(nameLabel));
 
     namespace fs = boost::filesystem;
@@ -68,12 +57,7 @@ void LevelSelectorState::init()
             m_context.next(std::make_unique<GameState>("assets/levels/" + filePath + ".json", m_context));
         });
 
-        auto levelButton = std::make_unique<engine::ui::Button>(
-            engine::ui::ComponentSize(
-                engine::ui::ComponentSizeType::Fit,
-                engine::ui::ComponentSizeType::Fit,
-                common::Vector2D<double>(1, 1)),
-            filePath);
+        auto levelButton = std::make_unique<engine::ui::Button>(fitSize, filePath);
         levelButton->setAction(std::move(levelAction));
         buttonStack->addComponent(std::move(levelButton));
     }

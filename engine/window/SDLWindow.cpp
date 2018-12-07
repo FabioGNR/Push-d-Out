@@ -53,7 +53,7 @@ int SDLWindow::getPositionValue(int coord) const
 const common::Vector2D<int> SDLWindow::getDimensions() const
 {
     common::Vector2D<int> screenSize{};
-    SDL_GetWindowSize(m_window.get(), &screenSize.x, &screenSize.y);
+    SDL_GL_GetDrawableSize(m_window.get(), &screenSize.x, &screenSize.y);
     return screenSize;
 }
 }
