@@ -171,7 +171,14 @@ void SDLRenderVisitor::visit(const Sprite& sprite) const
         actualSourceSize.y
     };
 
-    SDL_RenderCopy(renderer, texture, &sourceRect, &positionRect);
+    SDL_RendererFlip rendererFlip = SDL_FLIP_NONE;
+    if (sprite.isFlippedHorizontal()) {
+        rendererFlip = static_cast<SDL_RendererFlip>(rendererFlip | SDL_FLIP_HORIZONTAL);
+    }
+    if (sprite.isFlippedVertical()) {
+        rendererFlip = static_cast<SDL_RendererFlip>(rendererFlip | SDL_FLIP_VERTICAL);
+    }
+    SDL_RenderCopyEx(renderer, texture, &sourceRect, &positionRect, sprite.getRotation(), nullptr, rendererFlip);
 }
 
 void SDLRenderVisitor::visit(const Circle& circle) const

@@ -54,6 +54,7 @@ set(COMPONENT_SRC
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
         components/DestructibleComponent.h
+        components/DestructibleComponent.h
         components/TeleportComponent.h
         components/DirectionComponent.h
         components/PunchComponent.h
@@ -174,6 +175,8 @@ set(BUILDER_SRC
         sprite/SpriteDomain.h
         builders/SpriteBuilder.cpp
         builders/SpriteBuilder.h
+        systems/PlayerAnimationSystem.cpp
+        systems/PlayerAnimationSystem.h
         )
 
 find_package(Boost COMPONENTS

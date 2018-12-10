@@ -11,5 +11,25 @@ namespace ecs {
     {
         return m_id;
     }
+
+    bool Entity::operator<(const Entity& rhs) const
+    {
+        return m_id < rhs.m_id;
+    }
+
+    bool Entity::operator>(const Entity& rhs) const
+    {
+        return rhs < *this;
+    }
+
+    bool Entity::operator<=(const Entity& rhs) const
+    {
+        return !(rhs < *this);
+    }
+
+    bool Entity::operator>=(const Entity& rhs) const
+    {
+        return !(*this < rhs);
+    }
 }
 } // end namespace engine

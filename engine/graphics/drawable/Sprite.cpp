@@ -6,6 +6,7 @@
 #include <graphics/IRenderVisitor.h>
 
 namespace engine {
+
 Sprite::Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition)
     : m_spritePath(std::move(spritePath))
     , m_position(position)
@@ -69,6 +70,21 @@ void Sprite::setSize(const common::Vector2D<int>& size)
     m_size = size;
 }
 
+void Sprite::setFlippedVertical(bool isFlipped)
+{
+    m_flippedVertical = isFlipped;
+}
+
+void Sprite::setFlippedHorizontal(bool isFlipped)
+{
+    m_flippedHorizontal = isFlipped;
+}
+
+void Sprite::setRotation(double rotation)
+{
+    m_rotation = rotation;
+}
+
 bool Sprite::operator==(const Sprite& rhs) const
 {
     return m_spritePath == rhs.m_spritePath;
@@ -82,6 +98,21 @@ bool Sprite::operator!=(const Sprite& rhs) const
 void Sprite::draw(const IRenderer& renderer) const
 {
     renderer.draw(*this);
+}
+
+bool Sprite::isFlippedVertical() const
+{
+    return m_flippedVertical;
+}
+
+bool Sprite::isFlippedHorizontal() const
+{
+    return m_flippedHorizontal;
+}
+
+double Sprite::getRotation() const
+{
+    return m_rotation;
 }
 
 } // end namespace engine

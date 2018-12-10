@@ -23,7 +23,19 @@ namespace components {
             , isAnimated{ true } {};
 
         explicit SpriteComponent(sprite::SpriteResource sprite)
-            : sprites{ std::move(sprite) } {};
+            : sprites{ std::move(sprite) }
+        {
+        }
+
+        bool operator==(const components::SpriteComponent& rhs) const
+        {
+            return sprites == rhs.sprites;
+        }
+
+        bool operator!=(const components::SpriteComponent& rhs) const
+        {
+            return !(rhs == *this);
+        }
     };
 }
 }

@@ -25,6 +25,7 @@
 #include <game/systems/JumpSystem.h>
 #include <game/systems/LifeSystem.h>
 #include <game/systems/MovementSystem.h>
+#include <game/systems/PlayerAnimationSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
 #include <game/systems/SpriteSystem.h>
@@ -94,6 +95,8 @@ namespace builders {
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerRed.png", assetsFolder + "datafile.json" }.build());
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
 
+        std::map<engine::ecs::Entity, std::map<std::string, components::SpriteComponent>> entityAnimations;
+
         const auto& connectedControllersVector = m_inputManager.getConnectedControllers();
 
         auto buildFunc = [&](const size_t& i) {
@@ -150,6 +153,7 @@ namespace builders {
 
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
+            entityAnimations.insert({ players[i].get(), playerAnimations[i] });
         };
 
         std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
@@ -157,6 +161,7 @@ namespace builders {
             // for the keyboard
             buildFunc(m_playerCount - 1); // -1 because this is a count, so it starts at 1, but the player ids start at 0
         }
+        m_ecsWorld.addSystem<systems::PlayerAnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, entityAnimations);
     }
 }
 }

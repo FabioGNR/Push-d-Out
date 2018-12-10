@@ -51,6 +51,14 @@ namespace ecs {
         {
             m_componentSignature.set((std::size_t)Component::familyId(), false);
         }
+
+        bool operator<(const Entity& rhs) const;
+
+        bool operator>(const Entity& rhs) const;
+
+        bool operator<=(const Entity& rhs) const;
+
+        bool operator>=(const Entity& rhs) const;
     };
 }
 } // end namespace engine
