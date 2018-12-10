@@ -77,7 +77,7 @@ namespace builders {
         controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
 
         KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::MOUSE_BUTTON_LEFT;
-        KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::Q;
+        KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::MOUSE_BUTTON_RIGHT;
         KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
         KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
         KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;

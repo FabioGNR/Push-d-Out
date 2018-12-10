@@ -17,6 +17,7 @@ namespace systems {
         engine::ecs::World* m_world;
         engine::graphics::Camera* m_camera;
         std::vector<engine::Sprite> m_sprites;
+        std::vector<std::pair<int, engine::Sprite>> test;
 
     public:
         AnimationSystem(engine::ecs::World* world, engine::graphics::Camera* camera)
