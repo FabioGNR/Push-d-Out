@@ -31,7 +31,7 @@ void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
             engine::ui::ComponentSizeType::Fit),
         "START");
     startButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
-      m_context.next(std::make_unique<LevelSelectorState>(m_context));
+        m_context.next(std::make_unique<LevelSelectorState>(m_context));
     }));
     panel.addComponent(std::move(startButton));
 
@@ -54,7 +54,7 @@ void MainMenuState::appendButtons(engine::ui::StackPanel& panel)
             engine::ui::ComponentSizeType::Fit),
         "CREDITS");
     creditsButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
-      openCreditsFrame();
+        openCreditsFrame();
     }));
     panel.addComponent(std::move(creditsButton));
 }
