@@ -139,8 +139,14 @@ namespace builders {
 
             // Add default force gun to player, and portal gun as secondary
             components::InventoryComponent inventoryComponent{};
-            inventoryComponent.activeEquipment.set(&ef.get(definitions::WeaponType::ForceGun));
-            inventoryComponent.otherEquipment.set(&ef.get(definitions::WeaponType::PortalGun));
+            auto forceTest = &ef.get(definitions::WeaponType::ForceGun);
+            auto portalTest = &ef.get(definitions::WeaponType::PortalGun);
+            m_ecsWorld.addComponent<components::PositionComponent>(*forceTest, components::PositionComponent{common::Vector2D<double>(0,0)});
+            m_ecsWorld.addComponent<components::DimensionComponent>(*forceTest, components::DimensionComponent{common::Vector2D<double>(2,1)});
+            m_ecsWorld.addComponent<components::DimensionComponent>(*portalTest, components::DimensionComponent{common::Vector2D<double>(2, 1)});
+
+            inventoryComponent.activeEquipment.set(forceTest);
+            inventoryComponent.otherEquipment.set(portalTest);
 
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
 

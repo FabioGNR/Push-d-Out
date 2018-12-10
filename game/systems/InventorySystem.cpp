@@ -32,7 +32,7 @@ namespace systems {
             const auto switchAction = definitions::Action::SwitchWeapon;
             const auto switchControl = inputComponent.getKey(switchAction);
             if (analogMap.hasState(switchControl, engine::input::States::PRESSED)) {
-                attemptSwitch(inventoryComponent);
+                attemptSwitch(entity, inventoryComponent);
             }
         });
     }
@@ -61,7 +61,7 @@ namespace systems {
             m_world.removeComponent<PositionComponent>(*equipableCandidate);
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
             // place the equipment in the inventory
-            placeInInventory(inventoryComponent, equipableCandidate);
+            placeInInventory(player, inventoryComponent, equipableCandidate);
         }
     }
 
@@ -70,7 +70,7 @@ namespace systems {
         // no rendering
     }
 
-    void InventorySystem::attemptSwitch(components::InventoryComponent& inventoryComponent)
+    void InventorySystem::attemptSwitch(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent)
     {
         if (inventoryComponent.otherEquipment.hasValue()) {
             auto& otherEquipment = *inventoryComponent.otherEquipment.get();
@@ -80,10 +80,13 @@ namespace systems {
             }
             inventoryComponent.activeEquipment.set(&otherEquipment);
             // TODO remove position component from active and add to other;
+            auto pos = m_world.getComponent<PositionComponent>(player);
+            m_world.removeComponent<PositionComponent>(*inventoryComponent.otherEquipment.get());
+            m_world.addComponent<PositionComponent>(*inventoryComponent.activeEquipment.get(), pos);
         }
     }
 
-    void InventorySystem::placeInInventory(components::InventoryComponent& inventoryComponent,
+    void InventorySystem::placeInInventory(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent,
         engine::ecs::Entity* equipment) const
     {
         bool isItem = equipment->hasComponent<ItemComponent>();
@@ -114,8 +117,9 @@ namespace systems {
             }
             // add equipment to inventory
             inventoryComponent.activeEquipment.set(equipment);
-            PositionComponent positionComponent = PositionComponent{common::Vector2D<double>(0,0)};
-            m_world.addComponent<PositionComponent>(inventoryComponent.activeEquipment, positionComponent);
+
+            auto pos = m_world.getComponent<PositionComponent>(player);
+            m_world.addComponent<PositionComponent>(*inventoryComponent.activeEquipment.get(), pos);
         }
     }
 }

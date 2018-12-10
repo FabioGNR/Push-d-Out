@@ -150,10 +150,14 @@ namespace systems {
             const auto& inventory = m_ecsWorld->getComponent<InventoryComponent>(entity);
             const auto& inputComponent = m_ecsWorld->getComponent<PlayerInputComponent>(entity);
             const auto& directionComponent = m_ecsWorld->getComponent<DirectionComponent>(entity);
+            const auto positionComponent = m_ecsWorld->getComponent<PositionComponent>(entity);
 
             if (inventory.activeEquipment.hasValue()) {
                 const engine::ecs::Entity weaponEntity = *inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld->getComponent<components::WeaponComponent>(weaponEntity);
+
+                auto& test = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
+                test = positionComponent;
 
                 const auto& inputMap = m_inputMaps.getMap(inputComponent.controllerId);
                 const auto action = definitions::Action::UseWeapon;
