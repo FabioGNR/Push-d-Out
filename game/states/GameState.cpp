@@ -130,8 +130,7 @@ void GameState::subscribeInput()
 {
     m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
         if (inputMap.hasState(engine::input::Keys::ESCAPE, engine::input::States::PRESSED) || inputMap.hasState(engine::input::Keys::CON_START, engine::input::States::PRESSED)) {
-            auto pauseMenu = std::make_unique<PauseMenuState>(m_context);
-            m_context.next(std::move(pauseMenu));
+            m_context.next(std::make_unique<PauseMenuState>(m_context));
         }
 
         if (inputMap.hasState(engine::input::Keys::F2, engine::input::States::PRESSED)) {

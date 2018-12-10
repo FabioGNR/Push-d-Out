@@ -25,40 +25,37 @@ MainMenuState::MainMenuState(engine::IGame& context)
 
 void MainMenuState::prependButtons(engine::ui::StackPanel& panel)
 {
-    std::unique_ptr<engine::ui::IAction> startGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.next(std::make_unique<LevelSelectorState>(m_context));
-    });
     auto startButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit),
         "START");
-    startButton->setAction(std::move(startGameAction));
+    startButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+      m_context.next(std::make_unique<LevelSelectorState>(m_context));
+    }));
     panel.addComponent(std::move(startButton));
 
-    std::unique_ptr<engine::ui::IAction> editorAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.next(std::make_unique<LevelEditorState>(m_context));
-    });
     auto editorButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit),
         "EDITOR");
-    editorButton->setAction(std::move(editorAction));
+    editorButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.next(std::make_unique<LevelEditorState>(m_context));
+    }));
     panel.addComponent(std::move(editorButton));
 }
 
 void MainMenuState::appendButtons(engine::ui::StackPanel& panel)
 {
-    auto openCreditsAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        openCreditsFrame();
-    });
     auto creditsButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit),
         "CREDITS");
-    creditsButton->setAction(std::move(openCreditsAction));
+    creditsButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+      openCreditsFrame();
+    }));
     panel.addComponent(std::move(creditsButton));
 }
 
@@ -88,12 +85,12 @@ void MainMenuState::openCreditsFrame()
     centeredStack->addComponent(std::make_unique<engine::ui::Label>(fitSize, std::string("JORIS WILLIG"), 12));
     centeredStack->addComponent(std::make_unique<engine::ui::Label>(fitSize, std::string("LIBRARIES"), 13));
     centeredStack->addComponent(std::make_unique<engine::ui::Label>(fitSize, std::string("SDL2 | BOX2D | SDL_IMAGE | SDL_TTF | SDL_MIXER"), 12));
-    auto goBackAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_uiSystem->pop();
-    });
+
     auto backButton = std::make_unique<engine::ui::Button>(
         fitSize, std::string(" BACK "), 12);
-    backButton->setAction(std::move(goBackAction));
+    backButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+        m_uiSystem->pop();
+    }));
     centeredStack->addComponent(std::move(backButton));
     centeredLayout->addComponent(std::move(centeredStack), engine::ui::LayoutAnchor::Center);
     creditsRootLayout->addComponent(std::move(centeredLayout), engine::ui::LayoutAnchor::Center);
