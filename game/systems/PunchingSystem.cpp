@@ -80,8 +80,8 @@ bool PunchingSystem::attemptHitInDirection(const engine::physics::Body* playerBo
                 if (hit.body == playerBody) {
                     return -1.0; // ignore collisions with punching player
                 }
-                if (!dynamic_cast<engine::physics::DynamicBody*>(hit.body)) {
-                    return -1.0;
+                if (dynamic_cast<engine::physics::DynamicBody*>(hit.body) == nullptr) {
+                    return -1.0; // ignore punching the floor or other static bodies
                 }
                 hasHit = true;
                 closestHit = hit;
