@@ -15,6 +15,7 @@ namespace components {
         double frameTime = 0.1;
         std::chrono::nanoseconds frameTimeElapsed{ 0 };
         bool isAnimated = false;
+        int renderPriority = 0;
 
         SpriteComponent(std::vector<sprite::SpriteResource> sprites, int frameCount, double frameTime)
             : sprites{ move(sprites) }

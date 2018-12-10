@@ -23,6 +23,7 @@ namespace equipment {
         auto spriteComponentPair = spriteComponentMap.find("ReverseGravity");
         if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.renderPriority = 3;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
     }
@@ -36,6 +37,7 @@ namespace equipment {
         auto spriteComponentPair = spriteComponentMap.find("ForceGun");
         if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.renderPriority = 3;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
     }
@@ -50,6 +52,7 @@ namespace equipment {
         auto spriteComponentPair = spriteComponentMap.find("PortalGun");
         if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.renderPriority = 3;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
     }

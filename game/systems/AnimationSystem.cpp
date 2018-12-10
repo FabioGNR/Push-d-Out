@@ -15,7 +15,8 @@ namespace systems {
     void AnimationSystem::update(std::chrono::nanoseconds timeStep)
     {
         // First clear the list of sprites
-        m_sprites.clear();
+        //m_sprites.clear();
+        test.clear();
 
         m_world->forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
             auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
@@ -37,7 +38,8 @@ namespace systems {
                     spriteComponent.index = spriteComponent.index % spriteComponent.frameCount;
                     spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
                 }
-                m_sprites.push_back(sprite);
+                test.emplace_back(spriteComponent.renderPriority, sprite);
+                std::sort(test.begin(), test.end(), compareFunc);
             }
         });
     }
@@ -45,8 +47,8 @@ namespace systems {
     void AnimationSystem::render(engine::IRenderer& renderer)
     {
         // Draw the sprites to the screen
-        for (const auto& sprite : m_sprites) {
-            renderer.draw(sprite);
+        for (const auto& spritePair : test) {
+            renderer.draw(spritePair.second);
         }
     }
 }
