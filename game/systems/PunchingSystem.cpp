@@ -1,5 +1,7 @@
 #include "PunchingSystem.h"
 #include <chrono>
+#include <engine/physics/DynamicBody.h>
+#include <engine/sound/SoundEffect.h>
 #include <functional>
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
@@ -56,17 +58,16 @@ void PunchingSystem::punch(const engine::ecs::Entity& player, PunchComponent& pu
     common::Vector2D<double> playerCenter = playerPosition + (playerDimension / 2);
     // try to punch horizontally
     common::Vector2D<double> horizontalRay = playerCenter + common::Vector2D<double>(directionFactor * punchRange, 0);
-    if (attemptHitInDirection(playerBody, playerCenter, horizontalRay)) {
-        return; // only allow one hit
-    }
-    // try to punch up
     common::Vector2D<double> upRay = playerCenter + common::Vector2D<double>(0, punchRange).rotateCounterClockwise(-directionFactor * 45);
-    if (attemptHitInDirection(playerBody, playerCenter, upRay)) {
-        return; // only allow one hit
-    }
-    // try to punch down
     common::Vector2D<double> downRay = playerCenter + common::Vector2D<double>(0, -punchRange).rotateCounterClockwise(-directionFactor * 45);
-    attemptHitInDirection(playerBody, playerCenter, downRay);
+
+    bool hasHit = attemptHitInDirection(playerBody, playerCenter, horizontalRay)
+        || attemptHitInDirection(playerBody, playerCenter, upRay)
+        || attemptHitInDirection(playerBody, playerCenter, downRay);
+    if (hasHit) {
+        engine::sound::SoundEffect sound("assets/sounds/punch.wav", 0);
+        m_soundManager->play(sound);
+    }
 }
 
 bool PunchingSystem::attemptHitInDirection(const engine::physics::Body* playerBody, const common::Vector2D<double>& from, const common::Vector2D<double>& to)
@@ -78,6 +79,9 @@ bool PunchingSystem::attemptHitInDirection(const engine::physics::Body* playerBo
             [&](const auto& hit) {
                 if (hit.body == playerBody) {
                     return -1.0; // ignore collisions with punching player
+                }
+                if (!dynamic_cast<engine::physics::DynamicBody*>(hit.body)) {
+                    return -1.0;
                 }
                 hasHit = true;
                 closestHit = hit;
