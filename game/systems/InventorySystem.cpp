@@ -79,6 +79,7 @@ namespace systems {
                 inventoryComponent.otherEquipment.set(&activeEquipment);
             }
             inventoryComponent.activeEquipment.set(&otherEquipment);
+            // TODO remove position component from active and add to other;
         }
     }
 
@@ -113,6 +114,8 @@ namespace systems {
             }
             // add equipment to inventory
             inventoryComponent.activeEquipment.set(equipment);
+            PositionComponent positionComponent = PositionComponent{common::Vector2D<double>(0,0)};
+            m_world.addComponent<PositionComponent>(inventoryComponent.activeEquipment, positionComponent);
         }
     }
 }
