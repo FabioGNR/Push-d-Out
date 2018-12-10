@@ -6,12 +6,14 @@
 #include <Box2D/Box2D.h>
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Dynamics/b2World.h>
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <chrono>
 #include <memory>
 #include <vector>
 
 namespace engine {
 namespace physics {
+
     class World::WorldImpl : b2ContactListener {
     public:
         WorldImpl(
@@ -28,6 +30,8 @@ namespace physics {
         std::vector<Contact> m_beginContactEvents;
         std::vector<Contact> m_endContactEvents;
 
+        void raycast(const common::Vector2D<double>& start, const common::Vector2D<double>& end, const RaycastCallback& callback);
+
         void clearEvents(Body* body);
 
         ~WorldImpl() override = default;
@@ -39,6 +43,8 @@ namespace physics {
         WorldImpl& operator=(WorldImpl&& other) = default;
 
     private:
+        class Box2DRaycastCallback;
+
         void BeginContact(b2Contact* contact) override
         {
             Body* body1 = nullptr;
@@ -89,6 +95,8 @@ namespace physics {
             }
         }
 
+        Body* findBody(b2Body* body);
+
     public:
         common::Vector2D<int> size;
         common::Vector2D<double> gravity;
@@ -98,6 +106,34 @@ namespace physics {
         std::vector<Body*> bodies;
 
         std::vector<std::unique_ptr<ContactListener>> contactListeners;
+    };
+
+    class World::WorldImpl::Box2DRaycastCallback : public b2RayCastCallback {
+        RaycastCallback m_callback;
+        WorldImpl* m_worldImpl;
+
+    public:
+        Box2DRaycastCallback(WorldImpl* worldImpl, RaycastCallback callback)
+            : m_callback{ std::move(callback) }
+            , m_worldImpl{ worldImpl }
+        {
+        }
+
+        float32 ReportFixture(b2Fixture* fixture, const b2Vec2& b2Point, const b2Vec2& b2Normal, float32 fraction) override
+        {
+            auto* b2Body = fixture->GetBody();
+            auto* body = m_worldImpl->findBody(b2Body);
+            if (body != nullptr) {
+                RaycastHit hit{};
+                hit.body = body;
+                hit.point = { b2Point.x, b2Point.y };
+                hit.point = { b2Normal.x, b2Normal.y };
+                hit.fraction = fraction;
+                double returnedFraction = m_callback(hit);
+                return static_cast<float32>(returnedFraction);
+            }
+            return -1; // no callback was called so just skip this one
+        }
     };
 
     void World::WorldImpl::clearEvents(Body* body)
@@ -111,6 +147,28 @@ namespace physics {
             return contact.a == body || contact.b == body;
         }),
             m_endContactEvents.end());
+    }
+
+    void World::WorldImpl::raycast(const common::Vector2D<double>& start, const common::Vector2D<double>& end,
+        const RaycastCallback& callback)
+    {
+
+        Box2DRaycastCallback b2Callback{ this, callback };
+
+        b2Vec2 b2Start{ static_cast<float32>(start.x), static_cast<float32>(start.y) };
+        b2Vec2 b2End{ static_cast<float32>(end.x), static_cast<float32>(end.y) };
+        world->RayCast(&b2Callback, b2Start, b2End);
+    }
+
+    Body* World::WorldImpl::findBody(b2Body* body)
+    {
+        auto bodyIt = std::find_if(bodies.begin(), bodies.end(), [&](Body* vectorBody) {
+            return vectorBody->m_body == body;
+        });
+        if (bodyIt != bodies.end()) {
+            return *bodyIt;
+        }
+        return nullptr;
     }
 
     // this piece doesn't format for some reason, so whatever
@@ -256,6 +314,12 @@ namespace physics {
     void World::addContactListener(std::unique_ptr<ContactListener> contactListener)
     {
         m_impl->contactListeners.push_back(std::move(contactListener));
+    }
+
+    void World::raycast(const common::Vector2D<double>& start, const common::Vector2D<double>& end,
+        const RaycastCallback& callback)
+    {
+        m_impl->raycast(start, end, callback);
     }
 }
 }

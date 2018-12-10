@@ -19,6 +19,7 @@ namespace definitions {
         SwitchWeapon,
         UseWeapon,
         UseWeaponAlternative,
+        Punch,
     };
 }
 }

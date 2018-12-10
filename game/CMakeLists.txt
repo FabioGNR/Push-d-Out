@@ -56,6 +56,7 @@ set(COMPONENT_SRC
         components/DestructibleComponent.h
         components/TeleportComponent.h
         components/DirectionComponent.h
+        components/PunchComponent.h
         )
 
 set(SYSTEM_SRC
@@ -97,6 +98,8 @@ set(SYSTEM_SRC
         systems/TeleportSystem.h
         systems/ScoreSystem.cpp
         systems/ScoreSystem.h
+        systems/PunchingSystem.cpp
+        systems/PunchingSystem.h
         )
 
 set(DEFINITION_SRC

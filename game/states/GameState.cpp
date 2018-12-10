@@ -22,6 +22,7 @@
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
 #include <game/systems/ProjectileDestroyerSystem.h>
+#include <game/systems/PunchingSystem.h>
 #include <game/systems/ScoreSystem.h>
 #include <game/systems/SpriteSystem.h>
 #include <game/systems/TeleportSystem.h>
@@ -75,6 +76,7 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), &m_inputManager);
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld,
         *m_world, m_soundManager);
     m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);

@@ -13,6 +13,7 @@
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
+#include <game/components/PunchComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/components/WeaponComponent.h>
 #include <game/definitions/Action.h>
@@ -75,7 +76,9 @@ namespace builders {
         controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSTICK;
         controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
         controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
+        controls[definitions::Action::Punch] = engine::input::Keys::CON_Y;
 
+        KBM_Controls[definitions::Action::Punch] = engine::input::Keys::R;
         KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::MOUSE_BUTTON_LEFT;
         KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::Q;
         KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
@@ -143,6 +146,7 @@ namespace builders {
             inventoryComponent.otherEquipment.set(&ef.get(definitions::WeaponType::PortalGun));
 
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
+            m_ecsWorld.addComponent<components::PunchComponent>(players[i]);
 
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
