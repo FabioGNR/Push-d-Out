@@ -11,9 +11,9 @@ namespace game {
 namespace systems {
     using namespace components;
 
-    InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager)
+    InventorySystem::InventorySystem(engine::ecs::World& world, engine::input::InputManager* inputManager)
         : m_world{ world }
-        , m_inputMaps{ inputManager.getMap() }
+        , m_inputMaps{ inputManager->getMap() }
     {
     }
 
@@ -22,7 +22,7 @@ namespace systems {
         m_world.forEachEntityWith<PlayerInputComponent, InventoryComponent, PositionComponent>([&](engine::ecs::Entity& entity) {
             auto& inputComponent = m_world.getComponent<PlayerInputComponent>(entity);
             auto& inventoryComponent = m_world.getComponent<InventoryComponent>(entity);
-            auto& analogMap = m_inputMaps.getMap(inputComponent.controllerId);
+            auto& analogMap = m_inputMaps->getMap(inputComponent.controllerId);
             const auto pickupAction = definitions::Action::PickupEquippable;
             const auto pickupControl = inputComponent.getKey(pickupAction);
 

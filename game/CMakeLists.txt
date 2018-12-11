@@ -54,7 +54,7 @@ set(COMPONENT_SRC
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
         components/DestructibleComponent.h
-        components/DestructibleComponent.h
+        components/ActiveCheatsComponent.h
         components/TeleportComponent.h
         components/DirectionComponent.h
         components/PunchComponent.h
@@ -99,6 +99,8 @@ set(SYSTEM_SRC
         systems/TeleportSystem.h
         systems/ScoreSystem.cpp
         systems/ScoreSystem.h
+        systems/CheatsSystem.cpp
+        systems/CheatsSystem.h
         systems/MVPSystem.cpp
         systems/MVPSystem.h
         systems/PunchingSystem.cpp
@@ -110,6 +112,7 @@ set(DEFINITION_SRC
         definitions/WeaponType.h
         definitions/ProjectileType.h
         definitions/ItemType.h
+        definitions/Cheat.h
         )
 
 set(LEVEL_SRC

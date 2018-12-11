@@ -26,7 +26,7 @@ public:
         engine::sound::ISoundManager* soundManager)
         : m_ecsWorld{ ecsWorld }
         , m_world{ world }
-        , m_inputMaps{ &(inputManager->getMap()) }
+        , m_inputMaps{ inputManager->getMap() }
         , m_soundManager{ soundManager }
     {
     }

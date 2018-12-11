@@ -32,7 +32,7 @@ public:
 
     engine::Window& window() const;
     common::Vector2D<int> getScreenSize() const;
-    engine::input::InputManager& getInputManager();
+    engine::input::InputManager* getInputManager();
     engine::sound::ISoundManager* getSoundManager();
 };
 }

@@ -20,9 +20,9 @@ namespace events {
         return true;
     }
 
-    input::InputManager& EventManager::getInput()
+    input::InputManager* EventManager::getInput()
     {
-        return m_inputManager;
+        return &m_inputManager;
     }
 }
 }

@@ -20,7 +20,7 @@ namespace systems {
         engine::ecs::World* m_ecsWorld;
         engine::physics::World* m_physicsWorld;
         engine::graphics::Camera* m_camera;
-        engine::input::maps::InputMaps& m_inputMaps;
+        engine::input::maps::InputMaps* m_inputMaps;
 
         void updateLastFiredTimers(const std::chrono::nanoseconds& timeStep) const;
         void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);

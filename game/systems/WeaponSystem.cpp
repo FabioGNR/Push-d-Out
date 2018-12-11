@@ -155,7 +155,7 @@ namespace systems {
                 const engine::ecs::Entity weaponEntity = *inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld->getComponent<components::WeaponComponent>(weaponEntity);
 
-                const auto& inputMap = m_inputMaps.getMap(inputComponent.controllerId);
+                const auto& inputMap = m_inputMaps->getMap(inputComponent.controllerId);
                 const auto action = definitions::Action::UseWeapon;
                 const auto control = inputComponent.getKey(action);
                 const auto analogControl = inputComponent.getAnalog(action);

@@ -19,7 +19,7 @@ void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
         auto& PIC = m_world.getComponent<PlayerInputComponent>(entity);
         auto& dirComp = m_world.getComponent<DirectionComponent>(entity);
         auto delta = common::Vector2D<double>(0, 0);
-        auto& analogMap = m_inputMaps.getMap(PIC.controllerId); // id of controller
+        auto& analogMap = m_inputMaps->getMap(PIC.controllerId); // id of controller
 
         if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > moveDeadZone
             || analogMap.hasState(PIC.getKey(definitions::Action::MoveRight), engine::input::States::DOWN)) {
@@ -42,7 +42,7 @@ void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
         }
 
         auto& PIC = m_world.getComponent<components::PlayerInputComponent>(entity);
-        auto& analogMap = m_inputMaps.getMap(PIC.controllerId); // id of controller
+        auto& analogMap = m_inputMaps->getMap(PIC.controllerId); // id of controller
 
         auto delta = common::Vector2D<double>(0, 0);
 

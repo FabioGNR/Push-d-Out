@@ -18,7 +18,7 @@ void LevelEditorState::init()
 
     m_editor.init(numTiles, tileSize);
     m_editor.setBackground("assets/sprites/sky_backdrop.jpg");
-    m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
+    m_inputSubscription = m_inputManager->subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
         auto pressedState = engine::input::States::PRESSED;
 
         // Check EXIT condition

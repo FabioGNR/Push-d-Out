@@ -11,14 +11,15 @@ namespace game::hud {
 HUD::HUD(engine::Window& window,
     engine::ecs::World& world,
     engine::graphics::Camera* camera,
-    engine::input::InputManager& inputManager)
+    engine::input::InputManager* inputManager)
     : m_world{ world }
     , m_window{ window }
     , m_camera{ camera }
     , m_fpsCounter({ 0, 0 })
     , m_inputManager{ inputManager }
 {
-    m_fpsKeySubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
+
+    m_fpsKeySubscription = m_inputManager->subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
         if (inputMap.getState(engine::input::Keys::F1) == engine::input::States::PRESSED) {
             m_showFps = !m_showFps;
         }

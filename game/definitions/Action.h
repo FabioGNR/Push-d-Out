@@ -19,6 +19,9 @@ namespace definitions {
         SwitchWeapon,
         UseWeapon,
         UseWeaponAlternative,
+        InfiniteJumpCheat,
+        NoCooldownCheat,
+        ResetLivesCheat,
         Punch,
     };
 }

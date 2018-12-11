@@ -90,6 +90,9 @@ namespace builders {
         KBM_Controls[definitions::Action::MoveRight] = engine::input::Keys::D;
         KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
         KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
+        KBM_Controls[definitions::Action::InfiniteJumpCheat] = engine::input::Keys::F10;
+        KBM_Controls[definitions::Action::NoCooldownCheat] = engine::input::Keys::F11;
+        KBM_Controls[definitions::Action::ResetLivesCheat] = engine::input::Keys::F12;
 
         std::vector<std::map<std::string, components::SpriteComponent>> playerAnimations;
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerGreen.png", assetsFolder + "datafile.json" }.build());
@@ -97,9 +100,9 @@ namespace builders {
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerRed.png", assetsFolder + "datafile.json" }.build());
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
 
-        std::map<engine::ecs::Entity, std::map<std::string, components::SpriteComponent>> entityAnimations;
+        const auto& connectedControllersVector = m_inputManager->getConnectedControllers();
 
-        const auto& connectedControllersVector = m_inputManager.getConnectedControllers();
+        std::map<engine::ecs::Entity, std::map<std::string, components::SpriteComponent>> entityAnimations;
 
         auto buildFunc = [&](const size_t& i) {
             // Make character jumpable
@@ -131,8 +134,9 @@ namespace builders {
             m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);
 
             // Add keyboard if i is the same or higher than the amount of connected controller
-            if (std::find(m_inputManager.getConnectedControllers().begin(), m_inputManager.getConnectedControllers().end(), i) != m_inputManager.getConnectedControllers().end()) {
-                components::PlayerInputComponent playerInputComponent{ (int)m_inputManager.getConnectedControllers().at(i), controls, analogControls };
+            const auto& connectedControllers = m_inputManager->getConnectedControllers();
+            if (std::find(connectedControllers.begin(), connectedControllers.end(), i) != connectedControllers.end()) {
+                components::PlayerInputComponent playerInputComponent{ (int)connectedControllers.at(i), controls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else {
                 components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };

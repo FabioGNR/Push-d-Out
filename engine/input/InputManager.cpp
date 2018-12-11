@@ -89,9 +89,9 @@ namespace input {
         }
     }
 
-    maps::InputMaps& InputManager::getMap()
+    maps::InputMaps* InputManager::getMap()
     {
-        return m_inputMap;
+        return &m_inputMap;
     }
 
     const std::vector<size_t>& InputManager::getConnectedControllers() const

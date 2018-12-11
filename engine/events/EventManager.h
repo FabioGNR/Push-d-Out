@@ -18,7 +18,7 @@ namespace events {
             , m_inputManager{ m_handler.get() } {};
 
         bool getEvents();
-        input::InputManager& getInput();
+        input::InputManager* getInput();
     };
 }
 }
