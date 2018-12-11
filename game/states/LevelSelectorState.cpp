@@ -54,7 +54,11 @@ void LevelSelectorState::init()
         }
         const std::string filePath = file.path().stem().string();
         std::unique_ptr<engine::ui::IAction> levelAction = std::make_unique<engine::ui::CustomAction>([&, filePath]() {
-            m_context.next(std::make_unique<GameState>("assets/levels/" + filePath + ".json", m_context));
+            try {
+                m_context.next(std::make_unique<GameState>("assets/levels/" + filePath + ".json", m_context));
+            } catch (std::exception& e) {
+                m_context.previous();
+            }
         });
 
         auto levelButton = std::make_unique<engine::ui::Button>(fitSize, filePath);
