@@ -14,11 +14,11 @@ class IRenderer;
 
 namespace game::level::editor::ui {
 class TileSpriteSelectionScrollbar : public engine::IGraphicsElement {
-    TileSet& m_tileSet;
+    TileSet* m_tileSet;
     engine::Sprite m_backgroundShape;
 
 public:
-    TileSpriteSelectionScrollbar(TileSet& tileSet, const common::Vector2D<int>& position, const common::Vector2D<int>& size);
+    TileSpriteSelectionScrollbar(TileSet* tileSet, const common::Vector2D<int>& position, const common::Vector2D<int>& size);
 
     ~TileSpriteSelectionScrollbar() override = default;
     void draw(const engine::IRenderer& renderer) const override;

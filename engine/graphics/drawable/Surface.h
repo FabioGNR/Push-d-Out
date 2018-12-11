@@ -33,6 +33,11 @@ public:
     void addShape(std::unique_ptr<IGraphicsElement> shape);
     void setAlpha(int alpha);
 
+    void clear()
+    {
+        m_shapes.clear();
+    }
+
     bool operator==(const Surface& rhs) const;
 
     bool operator!=(const Surface& rhs) const;

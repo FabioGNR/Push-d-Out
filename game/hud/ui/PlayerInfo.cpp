@@ -34,7 +34,7 @@ PlayerInfo::PlayerInfo(engine::ecs::Entity* entity, std::string playerName, cons
     , m_lifeBar(nullptr)
     , m_player(entity)
 {
-    if (flipped) {
+    if (m_flipped) {
         initFlipped();
     } else {
         init();
