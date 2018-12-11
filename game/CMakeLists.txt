@@ -219,11 +219,38 @@ if (MSYS OR MINGW)
     get_filename_component(COMPILER_BIN_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 
     set(THIRD_PARTY_DLLS
+        # explicit libs
+        ${COMPILER_BIN_PATH}/libboost_filesystem-mt.dll
+        ${COMPILER_BIN_PATH}/libboost_system-mt.dll
         ${COMPILER_BIN_PATH}/libBox2D.dll
         ${COMPILER_BIN_PATH}/SDL2.dll
-        ${COMPILER_BIN_PATH}/libstdc++-6.dll
+        ${COMPILER_BIN_PATH}/SDL2_image.dll
+        ${COMPILER_BIN_PATH}/SDL2_mixer.dll
+        ${COMPILER_BIN_PATH}/SDL2_ttf.dll
+
+        # extra DLLs necessary for above libs
+        ${COMPILER_BIN_PATH}/libbz2-1.dll
+        ${COMPILER_BIN_PATH}/libFLAC-8.dll
+        ${COMPILER_BIN_PATH}/libfreetype-6.dll
         ${COMPILER_BIN_PATH}/libgcc_s_seh-1.dll
+        ${COMPILER_BIN_PATH}/libglib-2.0-0.dll
+        ${COMPILER_BIN_PATH}/libgraphite2.dll
+        ${COMPILER_BIN_PATH}/libharfbuzz-0.dll
+        ${COMPILER_BIN_PATH}/libiconv-2.dll
+        ${COMPILER_BIN_PATH}/libintl-8.dll
+        ${COMPILER_BIN_PATH}/libjpeg-8.dll
+        ${COMPILER_BIN_PATH}/liblzma-5.dll
+        ${COMPILER_BIN_PATH}/libmpg123-0.dll
+        ${COMPILER_BIN_PATH}/libogg-0.dll
+        ${COMPILER_BIN_PATH}/libpcre-1.dll
+        ${COMPILER_BIN_PATH}/libpng16-16.dll
+        ${COMPILER_BIN_PATH}/libstdc++-6.dll
+        ${COMPILER_BIN_PATH}/libtiff-5.dll
+        ${COMPILER_BIN_PATH}/libvorbis-0.dll
+        ${COMPILER_BIN_PATH}/libvorbisfile-3.dll
+        ${COMPILER_BIN_PATH}/libwebp-7.dll
         ${COMPILER_BIN_PATH}/libwinpthread-1.dll
+        ${COMPILER_BIN_PATH}/zlib1.dll
         )
 
     foreach (file_i ${THIRD_PARTY_DLLS})
