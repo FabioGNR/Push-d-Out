@@ -2,13 +2,13 @@
 #include <engine/game/State.h>
 #include <engine/ui/UISystem.h>
 #include <engine/ui/components/NumericSlider.h>
-#include <game/config/UserConfig.h>
+#include <game/config/Configuration.h>
 #include <memory>
 
 namespace game {
 class OptionMenuState : public engine::State {
     std::unique_ptr<engine::ui::UISystem> m_uiSystem;
-    config::UserConfig m_currentConfig{};
+    config::Configuration m_currentConfig{};
     common::Vector2D<int> m_screenSize{ 0, 0 };
     engine::ui::NumericSlider* m_sfxSlider{};
     engine::ui::NumericSlider* m_musicSlider{};

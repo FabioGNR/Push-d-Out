@@ -5,6 +5,7 @@
 #include <engine/physics/PhysicsManager.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
 #include <game/Game.h>
+#include <game/builders/BunnyBuilder.h>
 #include <game/builders/CharacterBuilder.h>
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/DimensionComponent.h>
@@ -13,6 +14,7 @@
 #include <game/config/ConfigurationRepository.h>
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
+#include <game/systems/AISystem.h>
 #include <game/systems/AnimationSystem.h>
 #include <game/systems/BackgroundSystem.h>
 #include <game/systems/CameraSystem.h>
@@ -25,9 +27,10 @@
 #include <game/systems/LifeSystem.h>
 #include <game/systems/MVPSystem.h>
 #include <game/systems/MovementSystem.h>
+#include <game/systems/NpcSpawnSystem.h>
+#include <game/systems/OutOfBoundsCleanUpSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
-#include <game/systems/ProjectileDestroyerSystem.h>
 #include <game/systems/PunchingSystem.h>
 #include <game/systems/ScoreSystem.h>
 #include <game/systems/TeleportSystem.h>
@@ -73,32 +76,31 @@ void GameState::init()
 
     // Create HUD
     m_hud = std::make_unique<game::hud::HUD>(game.window(), m_ecsWorld, &m_camera, m_inputManager);
+
     // Add various systems
-    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld,
-        m_inputManager, m_soundManager);
-    m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
+    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager, m_soundManager);
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, &m_camera);
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
+    m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_soundManager);
+    m_ecsWorld.addSystem<systems::TeleportSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
+    m_ecsWorld.addSystem<systems::NpcSpawnSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get());
+    m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, m_soundManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(),
-        m_inputManager, m_soundManager);
-    m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Low, m_ecsWorld,
-        *m_world, m_soundManager);
     m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
-    m_ecsWorld.addSystem<systems::TeleportSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld);
+    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
+    m_ecsWorld.addSystem<systems::AISystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, m_world.get(), &m_camera);
+    m_ecsWorld.addSystem<systems::CheatsSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, m_inputManager);
+    m_ecsWorld.addSystem<systems::OutOfBoundsCleanUpSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
+    m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager->getConnectedControllers().size());
 
     // Build characters into the ECS and physics world
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
     builder.build();
-
-    m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::CheatsSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, m_inputManager);
-    m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
-    m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager->getConnectedControllers().size());
 
     if (GameState::hasMVP) {
         std::map<std::string, components::SpriteComponent> map = builders::SpriteBuilder{ "assets/sprites/misc/misc.png", "assets/sprites/misc/misc.json" }.build();

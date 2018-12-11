@@ -9,9 +9,9 @@
 
 namespace game {
 namespace systems {
-    class ProjectileDestroyerSystem : public engine::ecs::BaseSystem<ProjectileDestroyerSystem> {
+    class OutOfBoundsCleanUpSystem : public engine::ecs::BaseSystem<OutOfBoundsCleanUpSystem> {
     public:
-        explicit ProjectileDestroyerSystem(engine::ecs::World* ecsWorld, engine::graphics::Camera* camera)
+        explicit OutOfBoundsCleanUpSystem(engine::ecs::World* ecsWorld, engine::graphics::Camera* camera)
             : m_ecsWorld{ ecsWorld }
             , m_camera{ camera }
         {

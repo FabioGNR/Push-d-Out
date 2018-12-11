@@ -3,10 +3,9 @@
 #include <game/exceptions/CanNotSaveConfigException.h>
 
 namespace game::config {
-UserConfig ConfigurationRepository::readConfig() const
+Configuration ConfigurationRepository::get()
 {
-
-    UserConfig config{};
+    Configuration config{};
     std::ifstream file(CONFIG_PATH);
     if (!file.good()) {
         return config; // return a default config if no file was found
@@ -17,7 +16,7 @@ UserConfig ConfigurationRepository::readConfig() const
     return config;
 }
 
-void ConfigurationRepository::saveConfig(const UserConfig& config)
+void ConfigurationRepository::save(const Configuration& config)
 {
     json j = config; // this calls the to_json method defined below
     std::ofstream file(CONFIG_PATH); // default file mode opens for overwrite
@@ -28,19 +27,33 @@ void ConfigurationRepository::saveConfig(const UserConfig& config)
     }
 }
 
-void to_json(json& j, const UserConfig& c)
+void to_json(json& j, const Configuration& c)
 {
     j = json{
-        { "sfxVolume", c.sfxVolume },
-        { "musicVolume", c.musicVolume },
-        { "masterVolume", c.masterVolume }
+        { "sound", c.sound },
+        { "assets", c.assets }
     };
 }
 
-void from_json(const json& j, UserConfig& c)
+void from_json(const json& j, Configuration& c)
 {
-    c.sfxVolume = j.at("sfxVolume").get<int>();
-    c.musicVolume = j.at("musicVolume").get<int>();
-    c.masterVolume = j.at("masterVolume").get<int>();
+    c.sound = j.at("sound").get<Sound>();
+    c.assets = j.at("assets").get<std::string>();
+}
+
+void to_json(json& j, const Sound& s)
+{
+    j = json{
+        { "sfxVolume", s.sfxVolume },
+        { "musicVolume", s.musicVolume },
+        { "masterVolume", s.masterVolume }
+    };
+}
+
+void from_json(const json& j, Sound& s)
+{
+    s.sfxVolume = j.at("sfxVolume").get<int>();
+    s.musicVolume = j.at("musicVolume").get<int>();
+    s.masterVolume = j.at("masterVolume").get<int>();
 }
 }

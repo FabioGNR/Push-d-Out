@@ -61,7 +61,7 @@ namespace physics {
         void addContactListener(std::unique_ptr<ContactListener> contactListener);
 
         std::unique_ptr<Body> createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
-        std::unique_ptr<Body> createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
+        std::unique_ptr<Body> createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId, int groupIndex = 0);
         std::unique_ptr<Body> createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
     };
 }

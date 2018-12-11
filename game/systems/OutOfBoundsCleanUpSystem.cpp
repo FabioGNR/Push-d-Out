@@ -1,20 +1,20 @@
-#include "ProjectileDestroyerSystem.h"
+#include "OutOfBoundsCleanUpSystem.h"
 #include "GarbageCollectorSystem.h"
 #include <game/components/DestructibleComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/LevelMetaComponent.h>
+#include <game/components/OnOutOfBoundsDeleteComponent.h>
 #include <game/components/PositionComponent.h>
-#include <game/components/ProjectileComponent.h>
 #include <vector>
 
 namespace game::systems {
 using namespace components;
 
-void ProjectileDestroyerSystem::update(std::chrono::nanoseconds /* timestep */)
+void OutOfBoundsCleanUpSystem::update(std::chrono::nanoseconds /* timestep */)
 {
     const int margin = 5;
     const auto& levelDimensions = getLevelDimensions();
-    m_ecsWorld->forEachEntityWith<PositionComponent, DimensionComponent, ProjectileComponent>([&](engine::ecs::Entity& entity) {
+    m_ecsWorld->forEachEntityWith<PositionComponent, DimensionComponent, OnOutOfBoundsDeleteComponent>([&](engine::ecs::Entity& entity) {
         const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
         const auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
         bool xOutOfBounds = position.x > levelDimensions.x + margin || position.x + dimension.x < -margin;
@@ -30,12 +30,12 @@ void ProjectileDestroyerSystem::update(std::chrono::nanoseconds /* timestep */)
     });
 }
 
-void ProjectileDestroyerSystem::render(engine::IRenderer& /*renderer*/)
+void OutOfBoundsCleanUpSystem::render(engine::IRenderer& /*renderer*/)
 {
     // no rendering
 }
 
-common::Vector2D<double> ProjectileDestroyerSystem::getLevelDimensions() const
+common::Vector2D<double> OutOfBoundsCleanUpSystem::getLevelDimensions() const
 {
     common::Vector2D<double> levelBounds{ 0, 0 };
     m_ecsWorld->forEachEntityWith<LevelMetaComponent, DimensionComponent>([&](engine::ecs::Entity& levelEntity) {
@@ -44,7 +44,7 @@ common::Vector2D<double> ProjectileDestroyerSystem::getLevelDimensions() const
     return levelBounds;
 }
 
-void ProjectileDestroyerSystem::markEntityDestructible(engine::ecs::Entity& entity)
+void OutOfBoundsCleanUpSystem::markEntityDestructible(engine::ecs::Entity& entity)
 {
     DestructibleComponent destructibleComponent{};
     m_ecsWorld->addComponent<DestructibleComponent>(entity, destructibleComponent);

@@ -1,5 +1,3 @@
-
-
 #pragma once
 #include "../components/SpriteComponent.h"
 #include "IBuilder.h"

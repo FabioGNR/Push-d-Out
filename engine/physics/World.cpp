@@ -127,7 +127,7 @@ namespace physics {
                 RaycastHit hit{};
                 hit.body = body;
                 hit.point = { b2Point.x, b2Point.y };
-                hit.point = { b2Normal.x, b2Normal.y };
+                hit.normal = { b2Normal.x, b2Normal.y };
                 hit.fraction = fraction;
                 double returnedFraction = m_callback(hit);
                 return static_cast<float32>(returnedFraction);
@@ -227,9 +227,10 @@ namespace physics {
      */
     std::unique_ptr<Body> World::createDynamicBody(common::Vector2D<double> position,
         common::Vector2D<double> dimension,
-        ecs::EntityId id)
+        ecs::EntityId id,
+        int groupIndex)
     {
-        auto body = std::make_unique<DynamicBody>(position, dimension, *this);
+        auto body = std::make_unique<DynamicBody>(position, dimension, *this, groupIndex);
         body->setEntityId(id);
 
         m_impl->bodies.push_back(body.get());

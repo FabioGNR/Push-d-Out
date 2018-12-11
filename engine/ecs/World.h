@@ -98,6 +98,12 @@ namespace ecs {
         }
 
         template <typename Component>
+        std::size_t size()
+        {
+            return m_componentManager.getManager<Component>().getAll().size();
+        }
+
+        template <typename Component>
         void addComponentManager()
         {
             m_componentManager.addManager<Component>();

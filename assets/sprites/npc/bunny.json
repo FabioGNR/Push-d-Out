@@ -1,0 +1,38 @@
+{
+  "Animations": [
+    {
+      "name": "Walking",
+      "frameCount": 6,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "Idle",
+      "frameCount": 3,
+      "frameTime": 0.3,
+      "frameSize": {
+        "x": 16,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 17
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}

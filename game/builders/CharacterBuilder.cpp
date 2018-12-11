@@ -19,6 +19,7 @@
 #include <game/components/WeaponComponent.h>
 #include <game/config/InputConfiguration.h>
 #include <game/definitions/Action.h>
+#include <game/definitions/BodyGroupIndex.h>
 #include <game/equipment/EquipmentFactory.h>
 #include <game/exceptions/MissingCharacterSpawnException.h>
 #include <game/exceptions/NoPlayersFoundException.h>
@@ -88,7 +89,9 @@ namespace builders {
             common::Vector2D<double> position = positions[randomValue - 1];
 
             // Create a dynamic body for the Physics World
-            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id()) };
+            components::BodyComponent bodyComponent{
+                m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id(), static_cast<int>(definitions::BodyGroupIndex::PLAYER))
+            };
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], std::move(bodyComponent));
 
             // Create the dimension component for player entity
