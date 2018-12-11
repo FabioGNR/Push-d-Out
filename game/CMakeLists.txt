@@ -99,6 +99,8 @@ set(SYSTEM_SRC
         systems/TeleportSystem.h
         systems/ScoreSystem.cpp
         systems/ScoreSystem.h
+        systems/MVPSystem.cpp
+        systems/MVPSystem.h
         systems/PunchingSystem.cpp
         systems/PunchingSystem.h
         )

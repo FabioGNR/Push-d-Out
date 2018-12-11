@@ -20,10 +20,12 @@
 #include <game/equipment/EquipmentFactory.h>
 #include <game/exceptions/MissingCharacterSpawnException.h>
 #include <game/exceptions/NoPlayersFoundException.h>
+#include <game/states/GameState.h>
 #include <game/systems/InventorySystem.h>
 #include <game/systems/ItemSystem.h>
 #include <game/systems/JumpSystem.h>
 #include <game/systems/LifeSystem.h>
+#include <game/systems/MVPSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerAnimationSystem.h>
 #include <game/systems/PlayerInputSystem.h>

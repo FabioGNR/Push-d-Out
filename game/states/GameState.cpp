@@ -6,6 +6,10 @@
 #include <engine/sound/SDL/SDLSoundManager.h>
 #include <game/Game.h>
 #include <game/builders/CharacterBuilder.h>
+#include <game/builders/SpriteBuilder.h>
+#include <game/components/DimensionComponent.h>
+#include <game/components/PositionComponent.h>
+#include <game/components/SpriteComponent.h>
 #include <game/config/ConfigurationRepository.h>
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
@@ -18,6 +22,7 @@
 #include <game/systems/ItemSystem.h>
 #include <game/systems/JumpSystem.h>
 #include <game/systems/LifeSystem.h>
+#include <game/systems/MVPSystem.h>
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
@@ -31,6 +36,10 @@
 #include <utility>
 
 namespace game {
+
+int GameState::MVP = 0;
+bool GameState::hasMVP = false;
+
 GameState::GameState(std::string levelToPlay, engine::IGame& game)
     : engine::State(game)
     , m_inputManager(dynamic_cast<Game&>(game).getInputManager())
@@ -90,6 +99,26 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::ProjectileDestroyerSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager.getConnectedControllers().size());
+
+    if (GameState::hasMVP) {
+        std::map<std::string, components::SpriteComponent> map = builders::SpriteBuilder{ "assets/sprites/misc/misc.png", "assets/sprites/misc/misc.json" }.build();
+        m_ecsWorld.forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
+            auto playerInputComponent = m_ecsWorld.getComponent<components::PlayerInputComponent>(entity);
+            auto position = m_ecsWorld.getComponent<components::PositionComponent>(entity).position;
+
+            if (playerInputComponent.controllerId == GameState::MVP) {
+                common::Vector2D<double> dim{ 0.8, 0.8 };
+                common::Vector2D<double> pos = position;
+                auto& mvp = m_ecsWorld.createEntity();
+                m_ecsWorld.addSystem<systems::MVPSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, mvp.id());
+                m_ecsWorld.addComponent<components::DimensionComponent>(mvp, dim);
+                m_ecsWorld.addComponent<components::PositionComponent>(mvp, pos);
+
+                auto spriteComponent = map.find("Crown");
+                m_ecsWorld.addComponent<components::SpriteComponent>(mvp, spriteComponent->second);
+            }
+        });
+    }
 
     subscribeInput();
 }
