@@ -166,6 +166,8 @@ set(CONFIG_SRC
         config/ConfigurationRepository.h
         config/ConfigurationRepository.cpp
         exceptions/CanNotSaveConfigException.h
+        config/InputConfiguration.cpp
+        config/InputConfiguration.h
         )
 
 #more engine stuff

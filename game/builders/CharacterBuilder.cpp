@@ -17,6 +17,7 @@
 #include <game/components/PunchComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/components/WeaponComponent.h>
+#include <game/config/InputConfiguration.h>
 #include <game/definitions/Action.h>
 #include <game/equipment/EquipmentFactory.h>
 #include <game/exceptions/MissingCharacterSpawnException.h>
@@ -63,35 +64,10 @@ namespace builders {
         m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
 
-        // Create the player input scheme for the player entity
-        // TODO : Build the key mapper for player controls
-        std::map<game::definitions::Action, engine::input::Keys> KBM_Controls;
-        std::map<game::definitions::Action, engine::input::Keys> controls;
-        std::map<game::definitions::Action, engine::input::AnalogKeys> analogControls;
-
-        // TODO: Move these actions to some kind of configurations
-        analogControls[definitions::Action::UseWeapon] = engine::input::AnalogKeys::CON_TRIGGER_RIGHT;
-        analogControls[definitions::Action::UseWeaponAlternative] = engine::input::AnalogKeys::CON_TRIGGER_LEFT;
-        analogControls[definitions::Action::MoveLeft] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
-        analogControls[definitions::Action::MoveRight] = engine::input::AnalogKeys::CON_LEFTSTICK_X;
-        controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
-        controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSTICK;
-        controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
-        controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
-        controls[definitions::Action::Punch] = engine::input::Keys::CON_Y;
-
-        KBM_Controls[definitions::Action::Punch] = engine::input::Keys::R;
-        KBM_Controls[definitions::Action::UseWeapon] = engine::input::Keys::MOUSE_BUTTON_LEFT;
-        KBM_Controls[definitions::Action::UseWeaponAlternative] = engine::input::Keys::Q;
-        KBM_Controls[definitions::Action::SwitchWeapon] = engine::input::Keys::X;
-        KBM_Controls[definitions::Action::PickupEquippable] = engine::input::Keys::E;
-        KBM_Controls[definitions::Action::MoveLeft] = engine::input::Keys::A;
-        KBM_Controls[definitions::Action::MoveRight] = engine::input::Keys::D;
-        KBM_Controls[definitions::Action::Jump] = engine::input::Keys::SPACE;
-        KBM_Controls[definitions::Action::UseItem] = engine::input::Keys::G;
-        KBM_Controls[definitions::Action::InfiniteJumpCheat] = engine::input::Keys::F10;
-        KBM_Controls[definitions::Action::NoCooldownCheat] = engine::input::Keys::F11;
-        KBM_Controls[definitions::Action::ResetLivesCheat] = engine::input::Keys::F12;
+        const config::InputConfiguration inputConfiguration{};
+        const auto& keyboardControls = inputConfiguration.getKeyboardControls();
+        const auto& analogControls = inputConfiguration.getAnalogControls();
+        const auto& controllerControls = inputConfiguration.getControllerControls();
 
         std::vector<std::map<std::string, components::SpriteComponent>> playerAnimations;
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerGreen.png", assetsFolder + "datafile.json" }.build());
@@ -140,10 +116,10 @@ namespace builders {
             // Add keyboard if i is the same or higher than the amount of connected controller
             const auto& connectedControllers = m_inputManager->getConnectedControllers();
             if (std::find(connectedControllers.begin(), connectedControllers.end(), i) != connectedControllers.end()) {
-                components::PlayerInputComponent playerInputComponent{ (int)connectedControllers.at(i), controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ (int)connectedControllers.at(i), controllerControls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else {
-                components::PlayerInputComponent playerInputComponent{ -1, KBM_Controls, analogControls };
+                components::PlayerInputComponent playerInputComponent{ -1, keyboardControls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             }
 
