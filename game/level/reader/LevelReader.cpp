@@ -11,7 +11,6 @@
 #include "game/components/SpriteComponent.h"
 #include "game/systems/EquipmentSpawnSystem.h"
 #include "game/systems/PositionSystem.h"
-#include "game/systems/SpriteSystem.h"
 #include <iostream>
 
 namespace game {
@@ -35,7 +34,6 @@ namespace level {
         world.addComponent<components::DimensionComponent>(entityMeta, levelBoundsComponent);
 
         world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, world);
-        world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
         // Get a map with tile animations
         builders::SpriteBuilder tileSpriteBuilder{ baseThemePath + levelSheet + "/" + levelSheet + ".png", baseThemePath + "datafile.json" };

@@ -58,6 +58,7 @@ set(COMPONENT_SRC
         components/TeleportComponent.h
         components/DirectionComponent.h
         components/PunchComponent.h
+        components/PlayerSpritesComponent.h
         )
 
 set(SYSTEM_SRC
@@ -67,8 +68,6 @@ set(SYSTEM_SRC
         systems/PlayerInputSystem.h
         systems/PositionSystem.cpp
         systems/PositionSystem.h
-        systems/SpriteSystem.cpp
-        systems/SpriteSystem.h
         systems/AnimationSystem.cpp
         systems/AnimationSystem.h
         systems/WeaponSystem.cpp

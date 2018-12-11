@@ -36,9 +36,7 @@ namespace systems {
                 spriteComponent.frameTimeElapsed += timeStep;
                 auto elapsedSeconds{ std::chrono::duration_cast<std::chrono::milliseconds>(spriteComponent.frameTimeElapsed).count() / 1000.0 };
                 if (elapsedSeconds >= spriteComponent.frameTime) {
-                    spriteComponent.index++;
-                    spriteComponent.index = spriteComponent.index % spriteComponent.frameCount;
-                    spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
+                    advanceFrame(spriteComponent);
                 }
                 m_sprites.push_back(sprite);
             }
@@ -51,6 +49,19 @@ namespace systems {
         for (const auto& sprite : m_sprites) {
             renderer.draw(sprite);
         }
+    }
+
+    void AnimationSystem::advanceFrame(components::SpriteComponent& spriteComponent)
+    {
+        spriteComponent.index++;
+        if (spriteComponent.index >= spriteComponent.frameCount) {
+            if (spriteComponent.loops) {
+                spriteComponent.index = 0;
+            } else {
+                spriteComponent.completed = true;
+            }
+        }
+        spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
     }
 }
 }

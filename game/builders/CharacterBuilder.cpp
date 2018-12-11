@@ -12,6 +12,7 @@
 #include <game/components/JumpComponent.h>
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/PunchComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -30,7 +31,6 @@
 #include <game/systems/PlayerAnimationSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
-#include <game/systems/SpriteSystem.h>
 #include <game/systems/WeaponSystem.h>
 
 namespace game {
@@ -60,7 +60,6 @@ namespace builders {
         // Add the necessary systems into the ECS world before adding components
         m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
         m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
-        m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
         m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_physicsWorld, m_inputManager);
         m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
 
@@ -130,6 +129,11 @@ namespace builders {
                 auto spriteComponent = spriteComponentPair->second;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
+
+            // Create the animations storage for the player entity
+            const components::PlayerSpritesComponent playerSpritesComponent{ playerAnimations[i] };
+            m_ecsWorld.addComponent<components::PlayerSpritesComponent>(players[i], playerSpritesComponent);
+
             components::DirectionComponent directionComponent{};
             m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);
 
@@ -159,7 +163,6 @@ namespace builders {
 
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
-            entityAnimations.insert({ players[i].get(), playerAnimations[i] });
         };
 
         std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
@@ -167,7 +170,7 @@ namespace builders {
             // for the keyboard
             buildFunc(m_playerCount - 1); // -1 because this is a count, so it starts at 1, but the player ids start at 0
         }
-        m_ecsWorld.addSystem<systems::PlayerAnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, entityAnimations);
+        m_ecsWorld.addSystem<systems::PlayerAnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
     }
 }
 }

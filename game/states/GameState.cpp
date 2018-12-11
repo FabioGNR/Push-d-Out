@@ -30,7 +30,6 @@
 #include <game/systems/ProjectileDestroyerSystem.h>
 #include <game/systems/PunchingSystem.h>
 #include <game/systems/ScoreSystem.h>
-#include <game/systems/SpriteSystem.h>
 #include <game/systems/TeleportSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
@@ -80,7 +79,6 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
-    m_ecsWorld.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
     m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, &m_camera);
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);

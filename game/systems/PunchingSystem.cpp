@@ -7,7 +7,9 @@
 #include <game/components/DimensionComponent.h>
 #include <game/components/DirectionComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
+#include <game/components/SpriteComponent.h>
 #include <game/definitions/Action.h>
 
 namespace game::systems {
@@ -48,6 +50,7 @@ bool PunchingSystem::doesPlayerWantToPunch(const engine::ecs::Entity& player) co
 
 void PunchingSystem::punch(const engine::ecs::Entity& player, PunchComponent& punchComponent)
 {
+    playPunchAnimation(player);
     punchComponent.canPunch = false;
     punchComponent.timeSincePunch = std::chrono::nanoseconds(0);
     const auto* playerBody = m_ecsWorld->getComponent<BodyComponent>(player).body.get();
@@ -60,7 +63,6 @@ void PunchingSystem::punch(const engine::ecs::Entity& player, PunchComponent& pu
     common::Vector2D<double> horizontalRay = playerCenter + common::Vector2D<double>(directionFactor * punchRange, 0);
     common::Vector2D<double> upRay = playerCenter + common::Vector2D<double>(0, punchRange).rotateCounterClockwise(-directionFactor * 45);
     common::Vector2D<double> downRay = playerCenter + common::Vector2D<double>(0, -punchRange).rotateCounterClockwise(-directionFactor * 45);
-
     bool hasHit = attemptHitInDirection(playerBody, playerCenter, horizontalRay)
         || attemptHitInDirection(playerBody, playerCenter, upRay)
         || attemptHitInDirection(playerBody, playerCenter, downRay);
@@ -95,5 +97,16 @@ bool PunchingSystem::attemptHitInDirection(const engine::physics::Body* playerBo
     const auto distanceVector = to - from;
     closestHit.body->applyLinearImpulse({ distanceVector.x * 20.0, distanceVector.y * 20.0 + 6.0 });
     return true;
+}
+
+void PunchingSystem::playPunchAnimation(const engine::ecs::Entity& player)
+{
+    auto& spriteComponent = m_ecsWorld->getComponent<components::SpriteComponent>(player);
+    auto& animations = m_ecsWorld->getComponent<components::PlayerSpritesComponent>(player).animations;
+    const auto& punchAnimation = animations.find("Attacking");
+    if (punchAnimation != animations.end()) {
+        spriteComponent = punchAnimation->second;
+        spriteComponent.loops = false;
+    }
 }
 }

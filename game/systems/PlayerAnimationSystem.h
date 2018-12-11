@@ -9,12 +9,14 @@ namespace systems {
     class PlayerAnimationSystem : public engine::ecs::BaseSystem<PlayerAnimationSystem> {
     private:
         engine::ecs::World* m_ecsWorld;
-        std::map<engine::ecs::Entity, std::map<std::string, components::SpriteComponent>> playerAnimations;
+
+        std::string determineAnimationFromVelocity(const common::Vector2D<double>& velocity) const;
+        void setCurrentPlayerAnimation(engine::ecs::Entity& player, components::SpriteComponent& spriteComponent);
+        void updatePlayerSpriteDirection(engine::ecs::Entity& player, components::SpriteComponent& spriteComponent);
 
     public:
-        explicit PlayerAnimationSystem(engine::ecs::World* m_ecsWorld, std::map<engine::ecs::Entity, std::map<std::string, components::SpriteComponent>> playerAnimations)
+        explicit PlayerAnimationSystem(engine::ecs::World* m_ecsWorld)
             : m_ecsWorld{ m_ecsWorld }
-            , playerAnimations{ std::move(playerAnimations) }
         {
         }
         void update(std::chrono::nanoseconds timeStep) override;

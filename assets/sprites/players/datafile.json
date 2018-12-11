@@ -37,7 +37,7 @@
         {
             "name": "Attacking",
             "frameCount": 10,
-            "frameTime": 0.1,
+            "frameTime": 0.06,
             "frameSize": {
                 "x": 18,
                 "y": 23

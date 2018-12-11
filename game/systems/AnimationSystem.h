@@ -7,6 +7,7 @@
 #include <engine/graphics/IRenderer.h>
 #include <engine/graphics/drawable/RectangleShape.h>
 #include <engine/graphics/drawable/Sprite.h>
+#include <game/components/SpriteComponent.h>
 
 #include <utility>
 
@@ -17,6 +18,8 @@ namespace systems {
         engine::ecs::World* m_world;
         engine::graphics::Camera* m_camera;
         std::vector<engine::Sprite> m_sprites;
+
+        void advanceFrame(components::SpriteComponent& spriteComponent);
 
     public:
         AnimationSystem(engine::ecs::World* world, engine::graphics::Camera* camera)

@@ -17,6 +17,7 @@ class PunchingSystem : public engine::ecs::BaseSystem<PunchingSystem> {
 
     bool attemptHitInDirection(const engine::physics::Body* playerBody, const common::Vector2D<double>& from, const common::Vector2D<double>& to);
     void punch(const engine::ecs::Entity& player, components::PunchComponent& punchComponent);
+    void playPunchAnimation(const engine::ecs::Entity& player);
     bool doesPlayerWantToPunch(const engine::ecs::Entity& player) const;
 
 public:
