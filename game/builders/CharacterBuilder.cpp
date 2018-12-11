@@ -55,7 +55,7 @@ namespace builders {
         }
 
         // Set the dimension of all the players
-        common::Vector2D<double> dimension{ 1, 2 };
+        common::Vector2D<double> dimension{ 0.95, 1.90 };
 
         // Add the necessary systems into the ECS world before adding components
         m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
@@ -112,11 +112,13 @@ namespace builders {
             common::Vector2D<double> position = positions[randomValue - 1];
 
             // Create a dynamic body for the Physics World
-            components::BodyComponent bodyComponent{ m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id()) };
+            auto body = m_physicsWorld.createDynamicBody(position, dimension, players[i].get().id());
+            body->setGravityScale(3);
+            components::BodyComponent bodyComponent{ std::move(body) };
             m_ecsWorld.addComponent<components::BodyComponent>(players[i], std::move(bodyComponent));
 
             // Create the dimension component for player entity
-            components::DimensionComponent dimensionComponent{ common::Vector2D<double>(1.4, 2.1) };
+            components::DimensionComponent dimensionComponent{ common::Vector2D<double>(1.3, 2) };
             m_ecsWorld.addComponent<components::DimensionComponent>(players[i], dimensionComponent);
 
             // Create the position component for player entity

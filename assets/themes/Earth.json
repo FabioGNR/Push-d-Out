@@ -5,5 +5,5 @@
   "track": "02.wav",
   "sprites": "earth",
   "movementSpeed": 7,
-  "jumpSpeed": 7
+  "jumpSpeed": 15
 }

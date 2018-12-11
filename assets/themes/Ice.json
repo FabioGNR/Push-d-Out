@@ -5,6 +5,6 @@
   "track": "ice-theme.wav",
   "sprites": "ice",
   "movementSpeed": 20,
-  "jumpSpeed": 11,
+  "jumpSpeed": 15,
   "glide": true
 }
