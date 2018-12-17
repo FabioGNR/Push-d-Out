@@ -5,7 +5,7 @@
 
 namespace game::level::editor::ui {
 TileSpriteSelectionScrollbar::TileSpriteSelectionScrollbar(
-    TileSet& tileSet,
+    TileSet* tileSet,
     const common::Vector2D<int>& position,
     const common::Vector2D<int>& size)
     : m_tileSet(tileSet)
@@ -25,7 +25,7 @@ void TileSpriteSelectionScrollbar::draw(const engine::IRenderer& renderer) const
         fittedSquareSize / 2,
         fittedSquareSize / 2);
 
-    const auto& tiles = m_tileSet.getRangeFromCurrent(3);
+    const auto& tiles = m_tileSet->getRangeFromCurrent(3);
     for (size_t i = 0; i < tiles.size(); ++i) {
         const auto& bestSize = i == 1 ? chosenBlockSize : otherBlockSizes;
 
@@ -40,10 +40,14 @@ void TileSpriteSelectionScrollbar::draw(const engine::IRenderer& renderer) const
         }
 
         const auto sprite = [&]() {
-            if (tiles[i].empty()) {
+            if (tiles[i] == nullptr) {
                 return engine::Sprite("assets/sprites/eraser.png", position, bestSize);
             }
-            return engine::Sprite(tiles[i], position, bestSize);
+
+            auto actualTile = *tiles[i];
+            actualTile.setPosition(position);
+            actualTile.setSize(bestSize);
+            return actualTile;
         }();
 
         renderer.draw(sprite);

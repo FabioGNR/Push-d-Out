@@ -1,0 +1,594 @@
+{
+    "CharacterSpawns": [
+        {
+            "x": 13.0,
+            "y": 16.0
+        },
+        {
+            "x": 30.0,
+            "y": 13.0
+        },
+        {
+            "x": 6.0,
+            "y": 12.0
+        },
+        {
+            "x": 24.0,
+            "y": 6.0
+        }
+    ],
+    "EquipmentSpawns": [
+        {
+            "x": 29.0,
+            "y": 13.0
+        },
+        {
+            "x": 18.0,
+            "y": 10.0
+        },
+        {
+            "x": 11.0,
+            "y": 6.0
+        }
+    ],
+    "Meta": {
+        "height": 24,
+        "name": "earthlecel",
+        "theme": "Earth",
+        "width": 40
+    },
+    "PlatformTiles": [
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 13.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 14.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 15.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 16.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 18.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 19.0,
+            "y": 15.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 26.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 27.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 28.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 29.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 30.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 31.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 32.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 33.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 3.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 4.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 5.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 6.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 7.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 8.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 9.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 10.0,
+            "y": 11.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 16.0,
+            "y": 9.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 9.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 18.0,
+            "y": 9.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 19.0,
+            "y": 9.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 20.0,
+            "y": 9.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 21.0,
+            "y": 9.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftUpperCorner",
+            "x": 8.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 9.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 10.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 11.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 12.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 13.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 14.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 15.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 16.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 17.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 18.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 19.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 20.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 21.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 22.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 23.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 24.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 25.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 26.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 27.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightUpperCorner",
+            "x": 28.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftMiddle",
+            "x": 8.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 9.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 10.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 11.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 12.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 13.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 14.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 15.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 16.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 17.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 18.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 19.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 20.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 21.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 22.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 23.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 24.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 25.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 26.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleMiddle",
+            "x": 27.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightMiddle",
+            "x": 28.0,
+            "y": 4.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftLowerCorner",
+            "x": 8.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 9.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 10.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 11.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 12.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 13.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 14.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 15.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 16.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 17.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 18.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 19.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 20.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 21.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 22.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 23.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 24.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 25.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 26.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleLower",
+            "x": 27.0,
+            "y": 3.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightLowerCorner",
+            "x": 28.0,
+            "y": 3.0
+        }
+    ]
+}

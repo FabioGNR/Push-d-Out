@@ -9,6 +9,7 @@
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/InventoryComponent.h>
+#include <game/components/OnOutOfBoundsDeleteComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/ProjectileComponent.h>
@@ -49,6 +50,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     auto projectileComponent = ProjectileComponent(game::definitions::WeaponType::ForceGun, game::definitions::ProjectileType::Force);
     projectileComponent.force = direction;
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
+    ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
     ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/projectiles/projectiles.png", "assets/sprites/projectiles/projectiles.json" }.build();
@@ -87,6 +89,7 @@ engine::ecs::Entity& firePortalGun(const engine::ecs::Entity& entity, const comm
 
     auto projectileComponent = ProjectileComponent(WeaponType::PortalGun, alternative ? ProjectileType::OrangePortal : ProjectileType::BluePortal);
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
+    ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
 
     auto spritePath = "assets/sprites/projectiles/projectiles.png";
     auto sprites = game::builders::SpriteBuilder{ spritePath, "assets/sprites/projectiles/projectiles.json" }.build();
@@ -159,7 +162,7 @@ namespace systems {
                 auto& test = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
                 test = positionComponent;
 
-                const auto& inputMap = m_inputMaps.getMap(inputComponent.controllerId);
+                const auto& inputMap = m_inputMaps->getMap(inputComponent.controllerId);
                 const auto action = definitions::Action::UseWeapon;
                 const auto control = inputComponent.getKey(action);
                 const auto analogControl = inputComponent.getAnalog(action);

@@ -11,14 +11,14 @@ namespace systems {
     private:
         const double PICKUP_RANGE = 3;
         engine::ecs::World& m_world;
-        engine::input::maps::InputMaps& m_inputMaps;
+        engine::input::maps::InputMaps* m_inputMaps;
 
         void attemptPickup(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent);
         void attemptSwitch(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent);
         void placeInInventory(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent, engine::ecs::Entity* equipment) const;
 
     public:
-        InventorySystem(engine::ecs::World& world, engine::input::InputManager& inputManager);
+        InventorySystem(engine::ecs::World& world, engine::input::InputManager* inputManager);
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;

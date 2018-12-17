@@ -2,11 +2,12 @@
 
 #include "Body.h"
 #include "ContactListener.h"
-
+#include "RaycastHit.h"
 #include <engine/common/Vector2D.h>
 #include <engine/ecs/Entity.h>
 
 #include <chrono>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -16,6 +17,13 @@ struct b2BodyDef;
 
 namespace engine {
 namespace physics {
+    // body = body that was hit
+    // point = where the body was hit
+    // normal = angle of hit
+    // fraction = where on the line was the hit (0-1)
+    // returns new maximum fraction (-1 to leave unchanged)
+    using RaycastCallback = std::function<double(const RaycastHit& hit)>;
+
     class World {
     private:
         constexpr static int m_velocityIterations = 6;
@@ -45,13 +53,15 @@ namespace physics {
         const common::Vector2D<int>& getSize() const;
         void setGravity(common::Vector2D<double> gravity);
 
+        void raycast(const common::Vector2D<double>& start, const common::Vector2D<double>& end, const RaycastCallback& callback);
+
         b2Body* createBody(const b2BodyDef& def) const;
         void destroyBody(Body* body, b2Body* b2Body);
 
         void addContactListener(std::unique_ptr<ContactListener> contactListener);
 
         std::unique_ptr<Body> createStaticBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
-        std::unique_ptr<Body> createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
+        std::unique_ptr<Body> createDynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId, int groupIndex = 0);
         std::unique_ptr<Body> createKinematicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, ecs::EntityId);
     };
 }

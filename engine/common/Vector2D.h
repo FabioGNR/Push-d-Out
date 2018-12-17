@@ -227,6 +227,11 @@ struct Vector2D {
     {
         return { static_cast<X>(this->x), static_cast<X>(this->y) };
     }
+
+    bool approximatelyEquals(Vector2D<double> v, double threshold) const
+    {
+        return v.x + threshold >= x && v.x - threshold <= x && v.y + threshold >= y && v.y - threshold <= y;
+    }
 };
 
 template <typename X, typename Y>

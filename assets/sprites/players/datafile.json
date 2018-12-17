@@ -37,7 +37,7 @@
         {
             "name": "Attacking",
             "frameCount": 10,
-            "frameTime": 0.1,
+            "frameTime": 0.06,
             "frameSize": {
                 "x": 18,
                 "y": 23
@@ -99,6 +99,23 @@
             },
             "offset": {
                 "x": -7,
+                "y": 0
+            }
+        },
+	{
+            "name": "Jumping",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 18,
+                "y": 21
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 131
+            },
+            "offset": {
+                "x": -5,
                 "y": 0
             }
         }

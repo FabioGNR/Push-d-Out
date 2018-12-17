@@ -92,6 +92,7 @@ set(PHYSICS_SRC
         physics/KinematicBody.h
         physics/ContactListener.h
         physics/Contact.h
+        physics/RaycastHit.h
         )
 
 set(INPUT_SRC

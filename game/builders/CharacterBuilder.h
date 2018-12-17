@@ -11,16 +11,16 @@ namespace builders {
     protected:
         engine::ecs::World& m_ecsWorld;
         engine::physics::World& m_physicsWorld;
-        engine::input::InputManager& m_inputManager;
+        engine::input::InputManager* m_inputManager;
         std::string assetsFolder = "assets/sprites/players/";
         size_t m_playerCount;
 
     public:
-        CharacterBuilder(engine::ecs::World& world, engine::physics::World& physics, engine::input::InputManager& inputManager)
+        CharacterBuilder(engine::ecs::World& world, engine::physics::World& physics, engine::input::InputManager* inputManager)
             : m_ecsWorld(world)
             , m_physicsWorld(physics)
             , m_inputManager(inputManager)
-            , m_playerCount(inputManager.getConnectedControllers().size())
+            , m_playerCount(inputManager->getConnectedControllers().size())
         {
             if (game::Game::DEBUG && m_playerCount < 4) {
                 // for the keyboard

@@ -29,10 +29,10 @@ void activateReverseGravity(engine::ecs::Entity& entity,
 namespace game {
 namespace systems {
 
-    ItemSystem::ItemSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager& inputManager)
+    ItemSystem::ItemSystem(engine::ecs::World& ecsWorld, engine::physics::World& physicsWorld, engine::input::InputManager* inputManager)
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
-        , m_inputMaps(inputManager.getMap())
+        , m_inputMaps(inputManager->getMap())
     {
         activateFunctionMap[definitions::ItemType::ReverseGravity] = activateReverseGravity;
     }
@@ -51,14 +51,12 @@ namespace systems {
                 return; // the equipment in the item slot is not an item
             }
             auto& inputComponent = m_ecsWorld.getComponent<PlayerInputComponent>(entity);
-
             auto& item = m_ecsWorld.getComponent<components::ItemComponent>(*itemEntity);
-
-            auto& analogMap = m_inputMaps.getMap(inputComponent.controllerId);
+            auto& inputMap = m_inputMaps->getMap(inputComponent.controllerId);
             const auto action = definitions::Action::UseItem;
             const auto control = inputComponent.getKey(action);
 
-            if (analogMap.hasState(control, engine::input::States::PRESSED)) {
+            if (inputMap.hasState(control, engine::input::States::PRESSED)) {
                 if (activateFunctionMap.find(item.type) != activateFunctionMap.end()) {
                     activateFunctionMap[item.type](*itemEntity, m_physicsWorld, m_ecsWorld);
                 }

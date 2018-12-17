@@ -29,6 +29,20 @@ namespace sprite {
         common::Vector2D<int> position;
         common::Vector2D<int> size;
         common::Vector2D<int> offset;
+
+        bool flippedVertical{ false };
+        bool flippedHorizontal{ false };
+        double rotation{ 0 };
+
+        bool operator==(const SpriteResource& rhs) const
+        {
+            return spriteSheet == rhs.spriteSheet && position == rhs.position && size == rhs.size && offset == rhs.offset;
+        }
+
+        bool operator!=(const SpriteResource& rhs) const
+        {
+            return !(rhs == *this);
+        }
     };
 
     struct AnimationList {

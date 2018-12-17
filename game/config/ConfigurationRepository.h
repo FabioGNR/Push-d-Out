@@ -1,18 +1,20 @@
 #pragma once
-#include "UserConfig.h"
+#include "Configuration.h"
 #include "external/JSON/json.hpp"
 
 using json = nlohmann::json;
 
 namespace game::config {
 class ConfigurationRepository {
-    constexpr static const char* CONFIG_PATH = "user-config.json";
+    constexpr static const char* CONFIG_PATH = "config.json";
 
 public:
-    void saveConfig(const UserConfig& config);
-    UserConfig readConfig() const;
+    static Configuration get();
+    void save(const Configuration& config);
 };
 
-void to_json(json& j, const UserConfig& c);
-void from_json(const json& j, UserConfig& c);
+void to_json(json&, const Sound&);
+void from_json(const json&, Sound&);
+void to_json(json& j, const Configuration& c);
+void from_json(const json& j, Configuration& c);
 }

@@ -25,14 +25,23 @@ set(GAME_SRC
         states/OptionMenuState.h
         states/LevelSelectorState.cpp
         states/LevelSelectorState.h
-        listeners/ProjectileContactListener.cpp 
+        listeners/ProjectileContactListener.cpp
         listeners/ProjectileContactListener.h
-        listeners/PortalContactListener.cpp 
+        listeners/PortalContactListener.cpp
         listeners/PortalContactListener.h
         listeners/ProjectilePortalContactListener.h
         listeners/ProjectilePortalContactListener.cpp
         states/ScoreState.cpp
         states/ScoreState.h
+        config/Configuration.h
+        )
+
+set(AI_SRC
+        ai/Behaviour.h
+        ai/WanderingBehaviour.cpp
+        ai/WanderingBehaviour.h
+        ai/IdleBehaviour.cpp
+        ai/IdleBehaviour.h
         )
 
 set(COMPONENT_SRC
@@ -54,8 +63,14 @@ set(COMPONENT_SRC
         components/items/ReverseGravityComponent.h
         components/LifeComponent.h
         components/DestructibleComponent.h
+        components/ActiveCheatsComponent.h
         components/TeleportComponent.h
         components/DirectionComponent.h
+        components/TileComponent.h
+        components/PunchComponent.h
+        components/AIComponent.h
+        components/OnOutOfBoundsDeleteComponent.h
+        components/PlayerSpritesComponent.h
         )
 
 set(SYSTEM_SRC
@@ -65,8 +80,6 @@ set(SYSTEM_SRC
         systems/PlayerInputSystem.h
         systems/PositionSystem.cpp
         systems/PositionSystem.h
-        systems/SpriteSystem.cpp
-        systems/SpriteSystem.h
         systems/AnimationSystem.cpp
         systems/AnimationSystem.h
         systems/WeaponSystem.cpp
@@ -84,19 +97,29 @@ set(SYSTEM_SRC
         systems/GarbageCollectorSystem.cpp
         systems/GarbageCollectorSystem.h
         systems/LifeSystem.cpp
-        systems/LifeSystem.h 
-        systems/BackgroundSystem.cpp 
+        systems/LifeSystem.h
+        systems/BackgroundSystem.cpp
         systems/BackgroundSystem.h
-        systems/JumpSystem.cpp 
+        systems/JumpSystem.cpp
         systems/JumpSystem.h
-        systems/ProjectileDestroyerSystem.cpp
-        systems/ProjectileDestroyerSystem.h
+        systems/OutOfBoundsCleanUpSystem.cpp
+        systems/OutOfBoundsCleanUpSystem.h
         systems/CooldownSystem.cpp
         systems/CooldownSystem.h
         systems/TeleportSystem.cpp
         systems/TeleportSystem.h
         systems/ScoreSystem.cpp
         systems/ScoreSystem.h
+        systems/NpcSpawnSystem.cpp
+        systems/NpcSpawnSystem.h
+        systems/CheatsSystem.cpp
+        systems/CheatsSystem.h
+        systems/MVPSystem.cpp
+        systems/MVPSystem.h
+        systems/PunchingSystem.cpp
+        systems/PunchingSystem.h
+        systems/AISystem.cpp
+        systems/AISystem.h
         )
 
 set(DEFINITION_SRC
@@ -104,6 +127,9 @@ set(DEFINITION_SRC
         definitions/WeaponType.h
         definitions/ProjectileType.h
         definitions/ItemType.h
+        definitions/BodyGroupIndex.h
+        definitions/AIState.h
+        definitions/Cheat.h
         )
 
 set(LEVEL_SRC
@@ -133,6 +159,8 @@ set(LEVEL_SRC
         level/reader/Reader.h
         level/reader/ThemeReader.cpp
         level/reader/ThemeReader.h
+        level/Tiles.cpp
+        level/Tiles.h
         )
 
 set(EQUIPMENT_SRC
@@ -146,11 +174,11 @@ set(HUD_SRC
         hud/HUD.h
         hud/FpsCounter.cpp
         hud/FpsCounter.h
-        hud/ui/ItemBubble.cpp 
-        hud/ui/ItemBubble.h 
-        hud/ui/PlayerInfo.cpp 
-        hud/ui/PlayerInfo.h 
-        hud/ui/LifeBar.cpp 
+        hud/ui/ItemBubble.cpp
+        hud/ui/ItemBubble.h
+        hud/ui/PlayerInfo.cpp
+        hud/ui/PlayerInfo.h
+        hud/ui/LifeBar.cpp
         hud/ui/LifeBar.h
         )
 
@@ -158,6 +186,8 @@ set(CONFIG_SRC
         config/ConfigurationRepository.h
         config/ConfigurationRepository.cpp
         exceptions/CanNotSaveConfigException.h
+        config/InputConfiguration.cpp
+        config/InputConfiguration.h
         )
 
 #more engine stuff
@@ -171,6 +201,10 @@ set(BUILDER_SRC
         sprite/SpriteDomain.h
         builders/SpriteBuilder.cpp
         builders/SpriteBuilder.h
+        builders/BunnyBuilder.cpp
+        builders/BunnyBuilder.h
+        systems/PlayerAnimationSystem.cpp
+        systems/PlayerAnimationSystem.h
         )
 
 find_package(Boost COMPONENTS
@@ -185,6 +219,7 @@ target_include_directories(
 )
 
 add_executable(PushdOut
+        ${AI_SRC}
         ${GAME_SRC}
         ${COMPONENT_SRC}
         ${SYSTEM_SRC}
@@ -200,10 +235,10 @@ target_link_libraries(PushdOut engine ${Boost_LIBRARIES})
 
 #Copy asset folder to bin folder
 add_custom_command(
-    TARGET PushdOut
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+        TARGET PushdOut
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 
 #If needed, copy some DLLs over to bin folder
@@ -211,19 +246,46 @@ if (MSYS OR MINGW)
     get_filename_component(COMPILER_BIN_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 
     set(THIRD_PARTY_DLLS
-        ${COMPILER_BIN_PATH}/libBox2D.dll
-        ${COMPILER_BIN_PATH}/SDL2.dll
-        ${COMPILER_BIN_PATH}/libstdc++-6.dll
-        ${COMPILER_BIN_PATH}/libgcc_s_seh-1.dll
-        ${COMPILER_BIN_PATH}/libwinpthread-1.dll
-        )
+            # explicit libs
+            ${COMPILER_BIN_PATH}/libboost_filesystem-mt.dll
+            ${COMPILER_BIN_PATH}/libboost_system-mt.dll
+            ${COMPILER_BIN_PATH}/libBox2D.dll
+            ${COMPILER_BIN_PATH}/SDL2.dll
+            ${COMPILER_BIN_PATH}/SDL2_image.dll
+            ${COMPILER_BIN_PATH}/SDL2_mixer.dll
+            ${COMPILER_BIN_PATH}/SDL2_ttf.dll
+
+            # extra DLLs necessary for above libs
+            ${COMPILER_BIN_PATH}/libbz2-1.dll
+            ${COMPILER_BIN_PATH}/libFLAC-8.dll
+            ${COMPILER_BIN_PATH}/libfreetype-6.dll
+            ${COMPILER_BIN_PATH}/libgcc_s_seh-1.dll
+            ${COMPILER_BIN_PATH}/libglib-2.0-0.dll
+            ${COMPILER_BIN_PATH}/libgraphite2.dll
+            ${COMPILER_BIN_PATH}/libharfbuzz-0.dll
+            ${COMPILER_BIN_PATH}/libiconv-2.dll
+            ${COMPILER_BIN_PATH}/libintl-8.dll
+            ${COMPILER_BIN_PATH}/libjpeg-8.dll
+            ${COMPILER_BIN_PATH}/liblzma-5.dll
+            ${COMPILER_BIN_PATH}/libmpg123-0.dll
+            ${COMPILER_BIN_PATH}/libogg-0.dll
+            ${COMPILER_BIN_PATH}/libpcre-1.dll
+            ${COMPILER_BIN_PATH}/libpng16-16.dll
+            ${COMPILER_BIN_PATH}/libstdc++-6.dll
+            ${COMPILER_BIN_PATH}/libtiff-5.dll
+            ${COMPILER_BIN_PATH}/libvorbis-0.dll
+            ${COMPILER_BIN_PATH}/libvorbisfile-3.dll
+            ${COMPILER_BIN_PATH}/libwebp-7.dll
+            ${COMPILER_BIN_PATH}/libwinpthread-1.dll
+            ${COMPILER_BIN_PATH}/zlib1.dll
+            )
 
     foreach (file_i ${THIRD_PARTY_DLLS})
         add_custom_command(
-        TARGET PushdOut
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND}
-        ARGS -E copy ${file_i} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
-    )
+                TARGET PushdOut
+                POST_BUILD
+                COMMAND ${CMAKE_COMMAND}
+                ARGS -E copy ${file_i} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+        )
     endforeach (file_i)
 endif ()

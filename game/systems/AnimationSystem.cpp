@@ -30,13 +30,14 @@ namespace systems {
                 auto& spriteResource = spriteComponent.sprites[spriteComponent.index];
                 auto desiredSize = m_camera->scaleSize(dimensionComponent.dimension);
                 engine::Sprite sprite{ spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position };
+                sprite.setFlippedHorizontal(spriteResource.flippedHorizontal);
+                sprite.setFlippedVertical(spriteResource.flippedVertical);
+                sprite.setRotation(spriteResource.rotation);
                 sprite.setSize(desiredSize);
                 spriteComponent.frameTimeElapsed += timeStep;
                 auto elapsedSeconds{ std::chrono::duration_cast<std::chrono::milliseconds>(spriteComponent.frameTimeElapsed).count() / 1000.0 };
                 if (elapsedSeconds >= spriteComponent.frameTime) {
-                    spriteComponent.index++;
-                    spriteComponent.index = spriteComponent.index % spriteComponent.frameCount;
-                    spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
+                    advanceFrame(spriteComponent);
                 }
                 test.emplace_back(spriteComponent.renderPriority, sprite);
                 std::sort(test.begin(), test.end(), compareFunc);
@@ -50,6 +51,19 @@ namespace systems {
         for (const auto& spritePair : test) {
             renderer.draw(spritePair.second);
         }
+    }
+
+    void AnimationSystem::advanceFrame(components::SpriteComponent& spriteComponent)
+    {
+        spriteComponent.index++;
+        if (spriteComponent.index >= spriteComponent.frameCount) {
+            if (spriteComponent.loops) {
+                spriteComponent.index = 0;
+            } else {
+                spriteComponent.completed = true;
+            }
+        }
+        spriteComponent.frameTimeElapsed = std::chrono::nanoseconds{ 0 };
     }
 }
 }

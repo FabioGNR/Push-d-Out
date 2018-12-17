@@ -43,22 +43,17 @@ void BaseMenuState::init()
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         engine::ui::FlowDirection::Vertical);
-    auto nameLabel = std::make_unique<engine::ui::Label>(
+    buttonStack->addComponent(std::make_unique<engine::ui::Label>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
-        "PUSH'D OUT!");
-    buttonStack->addComponent(std::move(nameLabel));
+        "PUSH'D OUT!"));
     std::unique_ptr<engine::ui::IAction> resumeGameAction = std::make_unique<engine::ui::CustomAction>([&]() {
         m_context.previous();
     });
 
     prependButtons(*buttonStack);
-
-    auto optionsAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.next(std::make_unique<OptionMenuState>(m_context));
-    });
 
     auto optionsButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
@@ -66,7 +61,9 @@ void BaseMenuState::init()
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "OPTIONS");
-    optionsButton->setAction(std::move(optionsAction));
+    optionsButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.next(std::make_unique<OptionMenuState>(m_context));
+    }));
     buttonStack->addComponent(std::move(optionsButton));
 
     auto helpButton = std::make_unique<engine::ui::Button>(
@@ -81,20 +78,17 @@ void BaseMenuState::init()
     }));
     buttonStack->addComponent(std::move(helpButton));
 
-    std::unique_ptr<engine::ui::IAction> quitAction = std::make_unique<engine::ui::CustomAction>([&]() {
-        m_context.stop();
-    });
-
     auto quitButton = std::make_unique<engine::ui::Button>(
         engine::ui::ComponentSize(
             engine::ui::ComponentSizeType::Stretch,
             engine::ui::ComponentSizeType::Fit,
             common::Vector2D<double>(1, 1)),
         "QUIT");
-    quitButton->setAction(std::move(quitAction));
+    quitButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+        m_context.stop();
+    }));
 
     appendButtons(*buttonStack);
-
     buttonStack->addComponent(std::move(quitButton));
 
     auto banner = std::make_unique<engine::ui::Image>(
@@ -179,8 +173,7 @@ void BaseMenuState::openHelpMenu()
         componentSize,
         "FOR A NEW JUICY WEAPON OR ITEM TO BE TESTED ON YOUR FELLOW PLAYERS."));
 
-    auto image = std::make_unique<engine::ui::Image>(componentSize, "assets/sprites/controller.jpg");
-    stack->addComponent(std::move(image));
+    stack->addComponent(std::make_unique<engine::ui::Image>(componentSize, "assets/sprites/controller.jpg"));
 
     auto button = std::make_unique<engine::ui::Button>(componentSize, "BACK");
     button->setAction(std::make_unique<engine::ui::CustomAction>([&]() {

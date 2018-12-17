@@ -33,6 +33,23 @@
         "x": 0,
         "y": 0
       }
-    }
+    },
+    {
+      "name": "Crown",
+      "frameCount": 4,
+      "frameTime": 0.2,
+      "frameSize": {
+        "x": 15,
+        "y": 13
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 27
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    }    
   ]
 }

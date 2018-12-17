@@ -13,7 +13,7 @@ namespace physics {
     class World;
     class DynamicBody : public Body {
     public:
-        DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world);
+        DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world, int groupIndex = 0);
         DynamicBody(const DynamicBody& other) = delete;
         DynamicBody& operator=(const DynamicBody& other) = delete;
 

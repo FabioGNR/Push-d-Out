@@ -46,7 +46,9 @@ void Surface::setAlpha(int alpha)
 void Surface::draw(const IRenderer& renderer) const
 {
     for (const auto& shape : m_shapes) {
-        shape->draw(renderer);
+        if (shape != nullptr) {
+            shape->draw(renderer);
+        }
     }
 }
 

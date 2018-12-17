@@ -11,7 +11,7 @@
 #include "game/components/SpriteComponent.h"
 #include "game/systems/EquipmentSpawnSystem.h"
 #include "game/systems/PositionSystem.h"
-#include "game/systems/SpriteSystem.h"
+#include <game/components/TileComponent.h>
 #include <iostream>
 
 namespace game {
@@ -35,7 +35,6 @@ namespace level {
         world.addComponent<components::DimensionComponent>(entityMeta, levelBoundsComponent);
 
         world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, world);
-        world.addSystem<systems::SpriteSystem>(engine::definitions::SystemPriority::Medium);
 
         // Get a map with tile animations
         builders::SpriteBuilder tileSpriteBuilder{ baseThemePath + levelSheet + "/" + levelSheet + ".png", baseThemePath + "datafile.json" };
@@ -122,6 +121,7 @@ namespace level {
                     bodySize.x += defaultTileSize.x;
 
                     auto& entity = world.createEntity();
+                    world.addComponent<components::TileComponent>(entity);
                     common::Vector2D<double> position{ nextTile->x, nextTile->y };
 
                     // Add a position component to tile entity
@@ -150,6 +150,7 @@ namespace level {
             // Add a position component to tile entity
             auto posComponent = components::PositionComponent(position);
             world.addComponent<components::PositionComponent>(entity, posComponent);
+            world.addComponent<components::TileComponent>(entity);
 
             // Add a body component to tile entity
             auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, bodySize, entity.id()));

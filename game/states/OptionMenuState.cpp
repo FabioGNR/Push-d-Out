@@ -19,8 +19,7 @@ OptionMenuState::OptionMenuState(engine::IGame& context)
 
 void OptionMenuState::init()
 {
-    config::ConfigurationRepository repository{};
-    m_currentConfig = repository.readConfig();
+    m_currentConfig = config::ConfigurationRepository::get();
 
     const engine::ui::ComponentSize fitSize{
         engine::ui::ComponentSizeType::Fit,
@@ -39,19 +38,19 @@ void OptionMenuState::init()
 
     auto masterLevelLabel = std::make_unique<engine::ui::Label>(fitSize, "Master volume");
     optionsStack->addComponent(std::move(masterLevelLabel));
-    auto masterLevelSlider = std::make_unique<engine::ui::NumericSlider>(levelSliderSize, 0, 100, m_currentConfig.masterVolume);
+    auto masterLevelSlider = std::make_unique<engine::ui::NumericSlider>(levelSliderSize, 0, 100, m_currentConfig.sound.masterVolume);
     m_masterLevelSlider = masterLevelSlider.get();
     optionsStack->addComponent(std::move(masterLevelSlider));
 
     auto musicLevelLabel = std::make_unique<engine::ui::Label>(fitSize, "Music volume");
     optionsStack->addComponent(std::move(musicLevelLabel));
-    auto musicLevelSlider = std::make_unique<engine::ui::NumericSlider>(levelSliderSize, 0, 100, m_currentConfig.musicVolume);
+    auto musicLevelSlider = std::make_unique<engine::ui::NumericSlider>(levelSliderSize, 0, 100, m_currentConfig.sound.musicVolume);
     m_musicSlider = musicLevelSlider.get();
     optionsStack->addComponent(std::move(musicLevelSlider));
 
     auto sfxLevelLabel = std::make_unique<engine::ui::Label>(fitSize, "SFX volume");
     optionsStack->addComponent(std::move(sfxLevelLabel));
-    auto sfxLevelSlider = std::make_unique<engine::ui::NumericSlider>(levelSliderSize, 0, 100, m_currentConfig.sfxVolume);
+    auto sfxLevelSlider = std::make_unique<engine::ui::NumericSlider>(levelSliderSize, 0, 100, m_currentConfig.sound.sfxVolume);
     m_sfxSlider = sfxLevelSlider.get();
     optionsStack->addComponent(std::move(sfxLevelSlider));
 
@@ -130,14 +129,14 @@ void OptionMenuState::saveConfig()
 {
     config::ConfigurationRepository repository{};
     updateCurrentConfig();
-    repository.saveConfig(m_currentConfig);
+    repository.save(m_currentConfig);
 }
 
 void OptionMenuState::updateCurrentConfig()
 {
 
-    m_currentConfig.musicVolume = static_cast<int>(m_musicSlider->getValue());
-    m_currentConfig.sfxVolume = static_cast<int>(m_sfxSlider->getValue());
-    m_currentConfig.masterVolume = static_cast<int>(m_masterLevelSlider->getValue());
+    m_currentConfig.sound.musicVolume = static_cast<int>(m_musicSlider->getValue());
+    m_currentConfig.sound.sfxVolume = static_cast<int>(m_sfxSlider->getValue());
+    m_currentConfig.sound.masterVolume = static_cast<int>(m_masterLevelSlider->getValue());
 }
 }

@@ -28,7 +28,8 @@ void Game::init()
 
 void Game::onUpdate(std::chrono::nanoseconds timeStep)
 {
-    m_eventManager->getInput().notifyAll();
+
+    m_eventManager->getInput()->notifyAll();
     if (!m_eventManager->getEvents()) {
         stop();
     }
@@ -42,7 +43,7 @@ void Game::onRender()
     m_renderer->show();
 }
 
-engine::input::InputManager& Game::getInputManager()
+engine::input::InputManager* Game::getInputManager()
 {
     return m_eventManager->getInput();
 }
@@ -64,16 +65,15 @@ engine::sound::ISoundManager* Game::getSoundManager()
 
 void Game::applyConfig()
 {
-    config::ConfigurationRepository repository{};
-    const auto& config = repository.readConfig();
+    const auto& config = config::ConfigurationRepository::get();
     applyConfig(config);
 }
 
-void Game::applyConfig(const config::UserConfig& config)
+void Game::applyConfig(const config::Configuration& config)
 {
-    const auto volumeScalar = config.masterVolume / 100.0;
+    const auto volumeScalar = config.sound.masterVolume / 100.0;
     // set music volume lower than sfx volume (max is 80%)
-    m_soundManager->setMusicVolume(engine::sound::Volume(static_cast<int>(config.musicVolume * volumeScalar * 0.8)));
-    m_soundManager->setSfxVolume(engine::sound::Volume(static_cast<int>(config.sfxVolume * volumeScalar * 0.8)));
+    m_soundManager->setMusicVolume(engine::sound::Volume(static_cast<int>(config.sound.musicVolume * volumeScalar * 0.8)));
+    m_soundManager->setSfxVolume(engine::sound::Volume(static_cast<int>(config.sound.sfxVolume * volumeScalar * 0.8)));
 }
 }

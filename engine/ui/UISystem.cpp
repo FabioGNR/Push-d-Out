@@ -2,7 +2,7 @@
 namespace engine {
 namespace ui {
 
-    UISystem::UISystem(engine::input::InputManager& inputManager)
+    UISystem::UISystem(engine::input::InputManager* inputManager)
         : m_inputManager(inputManager)
     {
         setActive(true);
@@ -48,7 +48,7 @@ namespace ui {
 
     void UISystem::subscribeInput()
     {
-        m_inputSubscription = m_inputManager.subscribeAll([&](engine::input::maps::InputMap keymap, auto&) {
+        m_inputSubscription = m_inputManager->subscribeAll([&](engine::input::maps::InputMap keymap, auto&) {
             processInputEvent(keymap);
         });
     }

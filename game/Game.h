@@ -7,7 +7,7 @@
 #include <engine/graphics/SDL/SDLRenderer.h>
 #include <engine/sound/ISoundManager.h>
 #include <engine/window/Window.h>
-#include <game/config/UserConfig.h>
+#include <game/config/Configuration.h>
 #include <memory>
 #include <stack>
 
@@ -28,11 +28,11 @@ public:
     void init() override;
     void onUpdate(std::chrono::nanoseconds timeStep) override;
     void onRender() override;
-    void applyConfig(const config::UserConfig& config);
+    void applyConfig(const config::Configuration& config);
 
     engine::Window& window() const;
     common::Vector2D<int> getScreenSize() const;
-    engine::input::InputManager& getInputManager();
+    engine::input::InputManager* getInputManager();
     engine::sound::ISoundManager* getSoundManager();
 };
 }

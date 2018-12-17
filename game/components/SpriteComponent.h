@@ -13,6 +13,8 @@ namespace components {
         std::vector<sprite::SpriteResource> sprites;
         int frameCount = 1, index = 0;
         double frameTime = 0.1;
+        bool loops{ true };
+        bool completed{ false };
         std::chrono::nanoseconds frameTimeElapsed{ 0 };
         bool isAnimated = false;
         int renderPriority = 0;
@@ -24,7 +26,19 @@ namespace components {
             , isAnimated{ true } {};
 
         explicit SpriteComponent(sprite::SpriteResource sprite)
-            : sprites{ std::move(sprite) } {};
+            : sprites{ std::move(sprite) }
+        {
+        }
+
+        bool operator==(const components::SpriteComponent& rhs) const
+        {
+            return sprites == rhs.sprites;
+        }
+
+        bool operator!=(const components::SpriteComponent& rhs) const
+        {
+            return !(rhs == *this);
+        }
     };
 }
 }

@@ -27,12 +27,15 @@ private:
 
     engine::sound::ISoundManager* m_soundManager{};
 
-    engine::input::InputManager& m_inputManager;
+    engine::input::InputManager* m_inputManager;
     std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;
 
     std::string m_levelToPlay;
 
 public:
+    static int MVP;
+    static bool hasMVP;
+
     explicit GameState(std::string levelToPlay, engine::IGame& game);
     ~GameState() override = default;
 

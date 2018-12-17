@@ -1,8 +1,8 @@
 #pragma once
 
-#include <common/Vector2D.h>
-#include <graphics/Color.h>
-#include <graphics/IGraphicsElement.h>
+#include <engine/common/Vector2D.h>
+#include <engine/graphics/Color.h>
+#include <engine/graphics/IGraphicsElement.h>
 
 namespace engine {
 class LineShape : public IGraphicsElement {

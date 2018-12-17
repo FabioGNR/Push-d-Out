@@ -4,7 +4,7 @@
 
 namespace engine {
 namespace physics {
-    DynamicBody::DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world)
+    DynamicBody::DynamicBody(common::Vector2D<double> position, common::Vector2D<double> dimension, World& world, int groupIndex)
         : Body(position, dimension, &world)
     {
         b2BodyDef bodyDef;
@@ -21,6 +21,7 @@ namespace physics {
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &dynamicBox;
         fixtureDef.density = 1.0f;
+        fixtureDef.filter.groupIndex = static_cast<int16>(groupIndex);
 
         auto friction = m_world->getFriction();
         fixtureDef.friction = (float32)friction.x;

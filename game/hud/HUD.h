@@ -30,12 +30,11 @@ private:
 
     std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_fpsKeySubscription;
 
-    engine::input::InputManager& m_inputManager;
+    engine::input::InputManager* m_inputManager;
 
 public:
-    HUD(engine::Window&, engine::ecs::World&, engine::graphics::Camera*, engine::input::InputManager&);
+    HUD(engine::Window&, engine::ecs::World&, engine::graphics::Camera*, engine::input::InputManager*);
     ~HUD();
-
     void update(std::chrono::nanoseconds);
     void render(engine::IRenderer&);
 

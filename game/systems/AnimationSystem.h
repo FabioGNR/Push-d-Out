@@ -7,6 +7,7 @@
 #include <engine/graphics/IRenderer.h>
 #include <engine/graphics/drawable/RectangleShape.h>
 #include <engine/graphics/drawable/Sprite.h>
+#include <game/components/SpriteComponent.h>
 
 #include <utility>
 
@@ -19,6 +20,8 @@ namespace systems {
         std::vector<std::pair<int, engine::Sprite>> test;
         std::function<bool(std::pair<int, engine::Sprite> lhs, std::pair<int, engine::Sprite> rhs)> compareFunc =
             [](std::pair<int, engine::Sprite> lhs, std::pair<int, engine::Sprite> rhs) { return lhs.first < rhs.first; };
+
+        void advanceFrame(components::SpriteComponent& spriteComponent);
 
     public:
         AnimationSystem(engine::ecs::World* world, engine::graphics::Camera* camera)

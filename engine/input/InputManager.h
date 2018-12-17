@@ -27,7 +27,7 @@ namespace input {
 
         void notifyAll();
         void update();
-        maps::InputMaps& getMap();
+        maps::InputMaps* getMap();
         const std::vector<size_t>& getConnectedControllers() const;
     };
 }
