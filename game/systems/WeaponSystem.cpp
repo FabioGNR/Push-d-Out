@@ -27,18 +27,19 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     engine::ecs::World* ecsWorld,
     common::Vector2D<double>& direction)
 {
-    auto playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+    auto& playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
     common::Vector2D<double> shootDirection = direction;
-    shootDirection *= playerDimension / 2 + dimensionVector;
-    common::Vector2D<double> projPos = playerPosition + playerDimension / 2 + (shootDirection * 1.5);
+
+    shootDirection *= playerDimension / 2 + dimensionVector * 1.2;
+    common::Vector2D<double> projPos = playerPosition + playerDimension / 2 + shootDirection - dimensionVector / 2;
 
     auto& projectileEntity = ecsWorld->createEntity();
     auto posComponent = PositionComponent(playerPosition);
     ecsWorld->addComponent<PositionComponent>(projectileEntity, posComponent);
 
     auto projectileBody = physicsWorld->createDynamicBody(projPos, dimensionVector, projectileEntity.id());
-    projectileBody->setLinearVelocity(direction * 20);
+    projectileBody->setLinearVelocity(direction * 2);
     projectileBody->setDensity(2);
     projectileBody->setGravityScale(0);
     projectileBody->setBullet(true);
@@ -51,7 +52,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     projectileComponent.force = direction;
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
     ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
-    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
+    //ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/projectiles/projectiles.png", "assets/sprites/projectiles/projectiles.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");
@@ -170,10 +171,11 @@ namespace systems {
                 // primary fire
                 if (inputMap.getValue(analogControl) > 1) {
                     auto analogDirection = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                    shoot(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
+                    //shoot(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
                 } else if (inputMap.hasState(control, engine::input::States::DOWN)) {
-                    auto mousePosition = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    shoot(entity, weapon, calculateDirection(entity, mousePosition, directionComponent));
+                    auto mousePositionVector = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
+                    calculateDirection(entity, mousePositionVector, directionComponent);
+                    shoot(entity, weapon, mousePositionVector);
                 }
 
                 if (!weapon.hasSecondaryFire) {
@@ -187,16 +189,16 @@ namespace systems {
                 // alt fire
                 if (inputMap.getValue(secondaryAnalogControl) > 1) {
                     auto analogDirection = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                    shootAlternative(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
+                    //shootAlternative(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
                 } else if (inputMap.hasState(secondaryControl, engine::input::States::DOWN)) {
                     auto mousePosition = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    shootAlternative(entity, weapon, calculateDirection(entity, mousePosition, directionComponent));
+                    //shootAlternative(entity, weapon, calculateDirection(entity, mousePosition, directionComponent));
                 }
             }
         });
     }
 
-    void WeaponSystem::shoot(const engine::ecs::Entity& entity, game::components::WeaponComponent& weapon, common::Vector2D<double> fireDirection)
+    void WeaponSystem::shoot(const engine::ecs::Entity& entity, game::components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection)
     {
         using milliseconds = std::chrono::milliseconds;
         const double
@@ -230,21 +232,20 @@ namespace systems {
         }
     }
 
-    common::Vector2D<double> WeaponSystem::calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<int>& direction, const game::components::DirectionComponent& directionComponent)
+    void WeaponSystem::calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent)
     {
         if (direction.x == 0 && direction.y == 0) {
-            return common::Vector2D<double>((directionComponent.direction == DirectionComponent::Direction::RIGHT ? 1 : -1), 0);
+            direction = common::Vector2D<double>((directionComponent.direction == DirectionComponent::Direction::RIGHT ? 1 : -1), 0);
+            return;
         }
 
-        auto playerPosition = m_camera->translatePosition(m_ecsWorld->getComponent<PositionComponent>(entity).position);
+        auto playerPosition = m_ecsWorld->getComponent<PositionComponent>(entity).position;
+        auto playerDimensions = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+        auto playerTranslatedMidPointPosition = m_camera->translatePosition(playerPosition + playerDimensions / 2);
 
-        direction.x -= playerPosition.x;
-        direction.y -= playerPosition.y;
-
-        auto normalizedDirection = direction.normalize();
-        normalizedDirection.y = -normalizedDirection.y;
-
-        return normalizedDirection;
+        direction -= playerTranslatedMidPointPosition.castTo<double>();
+        direction = direction.normalize();
+        direction.y *= -1;
     }
 
     void WeaponSystem::render(engine::IRenderer& /* renderer */) {}
