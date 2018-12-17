@@ -137,8 +137,9 @@ namespace builders {
             auto forceTest = &ef.get(definitions::WeaponType::ForceGun);
             auto portalTest = &ef.get(definitions::WeaponType::PortalGun);
             m_ecsWorld.addComponent<components::PositionComponent>(*forceTest, components::PositionComponent{common::Vector2D<double>(0,0)});
-            m_ecsWorld.addComponent<components::DimensionComponent>(*forceTest, components::DimensionComponent{common::Vector2D<double>(2,1)});
-            m_ecsWorld.addComponent<components::DimensionComponent>(*portalTest, components::DimensionComponent{common::Vector2D<double>(2, 1)});
+            m_ecsWorld.addComponent<components::DimensionComponent>(*forceTest, components::DimensionComponent{common::Vector2D<double>(1.5,0.75)});
+            m_ecsWorld.addComponent<components::DimensionComponent>(*portalTest, components::DimensionComponent{common::Vector2D<double>(1.5, 0.75
+            )});
 
             inventoryComponent.activeEquipment.set(forceTest);
             inventoryComponent.otherEquipment.set(portalTest);
