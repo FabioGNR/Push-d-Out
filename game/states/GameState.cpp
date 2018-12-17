@@ -134,7 +134,6 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 
 void GameState::render(engine::IRenderer& renderer)
 {
-    renderer.draw(engine::RectangleShape{ common::Vector2D<int>(0, 0), m_world->getSize() * 32, engine::Color(20, 255, 20, 255) });
     m_ecsWorld.render(renderer);
     m_hud->render(renderer);
 }

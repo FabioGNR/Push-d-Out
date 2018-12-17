@@ -21,7 +21,7 @@ namespace systems {
             auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
             auto& dimensionComponent = m_world->getComponent<DimensionComponent>(entity);
             auto& spriteComponent = m_world->getComponent<SpriteComponent>(entity);
-            if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension)) {
+            if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension) && !spriteComponent.completed) {
                 common::Vector2D<int> position = m_camera->translatePosition(positionComponent.position);
                 common::Vector2D<int> size = m_camera->scaleSize(dimensionComponent.dimension);
 

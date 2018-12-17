@@ -8,7 +8,6 @@
 namespace game {
 namespace systems {
     class ScoreSystem : public engine::ecs::BaseSystem<ScoreSystem> {
-    private:
         engine::ecs::World* m_world;
         engine::IGame* m_context;
         std::map<int, long int> m_score{};

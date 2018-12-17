@@ -2,30 +2,51 @@
 
 #include <engine/game/State.h>
 #include <engine/ui/UISystem.h>
+#include <engine/ecs/World.h>
+#include <engine/graphics/Camera.h>
+#include <engine/physics/PhysicsManager.h>
+
+#include <game/hud/HUD.h>
 #include <game/Game.h>
+
+#include <chrono>
 #include <utility>
 
 namespace game {
 class ScoreState : public engine::State {
 private:
-    common::Vector2D<int> m_screenSize{};
-    std::unique_ptr<engine::ui::UISystem> m_UISystem;
+    std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
+    std::unique_ptr<engine::physics::World> m_world;
+    engine::graphics::Camera m_camera;
+    std::unique_ptr<game::hud::HUD> m_hud;
+    engine::ecs::World m_ecsWorld;
+
+    engine::sound::ISoundManager* m_soundManager{};
+
+    engine::input::InputManager* m_inputManager;
+    std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;
+
     std::map<int, long int> m_score{};
+
+    std::chrono::nanoseconds m_remainingTimeTillNextState = std::chrono::seconds{10};
 
 public:
     ScoreState(engine::IGame& context, std::map<int, long int> score)
         : engine::State{ context }
+        , m_inputManager(dynamic_cast<Game&>(context).getInputManager())
         , m_score{ std::move(score) }
     {
-        auto& game = dynamic_cast<Game&>(m_context);
-        m_screenSize = game.getScreenSize();
-        m_UISystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
+        m_physicsManager = std::make_unique<engine::physics::PhysicsManager>();
     }
+
     void update(std::chrono::nanoseconds timeStep) override;
     void render(engine::IRenderer& renderer) override;
     void init() override;
     void resume() override;
     void pause() override;
     void close() override;
+
+private:
+    void addExplosion();
 };
 }

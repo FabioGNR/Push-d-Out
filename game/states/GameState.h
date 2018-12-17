@@ -16,8 +16,6 @@
 namespace game {
 class GameState : public engine::State {
 private:
-    const static int UNIT_MULTIPLIER = 2;
-    const static int UNIT_SIZE = 16;
 
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     std::unique_ptr<engine::physics::World> m_world;
@@ -35,6 +33,8 @@ private:
 public:
     static int MVP;
     static bool hasMVP;
+    const static int UNIT_MULTIPLIER = 2;
+    const static int UNIT_SIZE = 16;
 
     explicit GameState(std::string levelToPlay, engine::IGame& game);
     ~GameState() override = default;
