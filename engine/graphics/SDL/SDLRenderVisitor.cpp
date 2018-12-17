@@ -210,7 +210,8 @@ void SDLRenderVisitor::visit(const Surface& surface) const
 
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(renderer, texture);
-
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
     SDL_SetTextureAlphaMod(texture, static_cast<Uint8>(surface.alpha()));
 
     surface.draw(m_renderer);
