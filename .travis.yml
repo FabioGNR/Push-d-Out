@@ -41,7 +41,7 @@ jobs:
         - mkdir build-tidy
         - cd build-tidy
         - cmake .. -DENABLE_CLANG_TIDY=ON
-        - make tidy &> output.txt
+        - travis_wait make tidy &> output.txt
         - |
           if [[ -n $(awk '/^[^[:blank:]]/{p=0} (/ warning:/||/error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt) ]]; then
               awk  '/^[^[:blank:]]/{p=0} (/ warning:/||/ error:/)&&(!/\/include\/SDL/)&&(!/external/){p=1} p' output.txt > output2.txt
