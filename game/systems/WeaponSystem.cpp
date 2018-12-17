@@ -174,8 +174,8 @@ namespace systems {
                     auto& weaponPos = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
                     auto& weaponDimension = m_ecsWorld->getComponent<DimensionComponent>(weaponEntity).dimension;
 
-                    weaponPos.position = positionComponent.position + playerDimension.dimension/2;
-                    weaponPos.position.y -= weaponDimension.y*0.75;
+                    weaponPos.position = positionComponent.position + playerDimension.dimension / 2;
+                    weaponPos.position.y -= weaponDimension.y * 0.75;
 
                     common::Vector2D<double> aimDirection;
 
@@ -192,10 +192,9 @@ namespace systems {
 
                     if (sprite.flippedHorizontal) {
                         aimAngle -= 180;
-                        weaponPos.position.x -= playerDimension.dimension.x*0.1 + weaponDimension.x;
-                    }
-                    else{
-                        weaponPos.position.x += playerDimension.dimension.x*0.1;
+                        weaponPos.position.x -= playerDimension.dimension.x * 0.1 + weaponDimension.x;
+                    } else {
+                        weaponPos.position.x += playerDimension.dimension.x * 0.1;
                     }
                     sprite.rotation = aimAngle;
                 });

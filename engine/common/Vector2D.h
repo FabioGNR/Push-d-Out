@@ -196,7 +196,7 @@ struct Vector2D {
         T a = this->x;
         T b = this->y;
         return tan(b/a)*(180/M_PI);*/
-        return atan2(this->y, this->x)*(180/M_PI);
+        return atan2(this->y, this->x) * (180 / M_PI);
     }
 
     T findAngle(const Vector2D<T>& other) const

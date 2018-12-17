@@ -13,9 +13,9 @@ namespace components {
     struct WeaponComponent : public engine::ecs::BaseComponent<WeaponComponent> {
         definitions::WeaponType type;
 
-        struct WeaponFire{
+        struct WeaponFire {
             double cooldown = 0;
-            std::chrono::nanoseconds timeSinceLastFired{0};
+            std::chrono::nanoseconds timeSinceLastFired{ 0 };
             bool wasFired = false;
             definitions::ProjectileType projectileType;
         };
