@@ -185,12 +185,21 @@ struct Vector2D {
         return returnVector;
     }
 
-    T dotProduct(const Vector2D<T>& other)
+    T dotProduct(const Vector2D<T>& other) const
     {
         return this->x * other.x + this->y * other.y;
     }
 
-    T findAngle(const Vector2D<T>& other)
+    T toAngle() const
+    {
+        /*
+        T a = this->x;
+        T b = this->y;
+        return tan(b/a)*(180/M_PI);*/
+        return atan2(this->y, this->x)*(180/M_PI);
+    }
+
+    T findAngle(const Vector2D<T>& other) const
     {
         T dot = this->dotProduct(other);
         auto cosAngle = dot / (this->magnitude() * other.magnitude());

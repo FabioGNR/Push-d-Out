@@ -24,7 +24,7 @@ namespace systems {
 
         void updateLastFiredTimers(const std::chrono::nanoseconds& timeStep) const;
         void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection);
-        void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
+        void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection);
 
         std::map<definitions::WeaponType, WeaponFireFunc> fireFunctionMap;
         std::map<definitions::WeaponType, WeaponFireFunc> altFireFunctionMap;

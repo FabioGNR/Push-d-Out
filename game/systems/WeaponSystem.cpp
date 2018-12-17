@@ -1,6 +1,7 @@
 #include "WeaponSystem.h"
 
 #include "engine/input/maps/InputMap.h"
+#include <algorithm>
 #include <chrono>
 #include <engine/graphics/IRenderer.h>
 #include <engine/physics/Body.h>
@@ -39,7 +40,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     ecsWorld->addComponent<PositionComponent>(projectileEntity, posComponent);
 
     auto projectileBody = physicsWorld->createDynamicBody(projPos, dimensionVector, projectileEntity.id());
-    projectileBody->setLinearVelocity(direction * 2);
+    projectileBody->setLinearVelocity(direction * 20);
     projectileBody->setDensity(2);
     projectileBody->setGravityScale(0);
     projectileBody->setBullet(true);
@@ -52,7 +53,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     projectileComponent.force = direction;
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
     ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
-    //ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
+    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/projectiles/projectiles.png", "assets/sprites/projectiles/projectiles.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");
@@ -162,16 +163,49 @@ namespace systems {
 
                 auto& test = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
                 test = positionComponent;
+                auto& spriteComp = m_ecsWorld->getComponent<SpriteComponent>(weaponEntity).sprites;
 
                 const auto& inputMap = m_inputMaps->getMap(inputComponent.controllerId);
                 const auto action = definitions::Action::UseWeapon;
                 const auto control = inputComponent.getKey(action);
                 const auto analogControl = inputComponent.getAnalog(action);
 
+                std::for_each(spriteComp.begin(), spriteComp.end(), [&](auto& sprite) {
+                    //auto mouseX = inputMap.getValue(engine::input::AnalogKeys::MOUSE_X);
+                    //auto mouseY = inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y);
+
+                    auto conX = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_X, engine::input::States::DOWN);
+                    auto conY = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_Y, engine::input::States::DOWN);
+
+                    if (conX || conY) {
+                        auto aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                        calculateDirection(entity, aimDirection, directionComponent);
+                        auto aimAngle = aimDirection.toAngle();
+                        sprite.flippedHorizontal = aimAngle > 180;
+
+                        if (aimAngle > 180) {
+                            aimAngle = 360 - aimAngle;
+                        }
+                        sprite.rotation = aimAngle;
+                    } else {
+                        auto aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
+                        calculateDirection(entity, aimDirection, directionComponent);
+                        auto aimAngle = -aimDirection.toAngle();
+                        sprite.flippedHorizontal = abs(aimAngle) > 90;
+
+                        if (sprite.flippedHorizontal) {
+                          aimAngle -= 180;
+                        }
+                        sprite.rotation = aimAngle;
+                        //std::cout << "AimAngle: " << aimDirection.toAngle() << " corrected: " << aimAngle << std::endl;
+                    }
+                });
+
                 // primary fire
                 if (inputMap.getValue(analogControl) > 1) {
-                    auto analogDirection = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                    //shoot(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
+                    auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                    calculateDirection(entity, analogDirection, directionComponent);
+                    shoot(entity, weapon, analogDirection);
                 } else if (inputMap.hasState(control, engine::input::States::DOWN)) {
                     auto mousePositionVector = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
                     calculateDirection(entity, mousePositionVector, directionComponent);
@@ -188,11 +222,13 @@ namespace systems {
 
                 // alt fire
                 if (inputMap.getValue(secondaryAnalogControl) > 1) {
-                    auto analogDirection = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                    //shootAlternative(entity, weapon, calculateDirection(entity, analogDirection, directionComponent));
+                    auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                    calculateDirection(entity, analogDirection, directionComponent);
+                    shootAlternative(entity, weapon, analogDirection);
                 } else if (inputMap.hasState(secondaryControl, engine::input::States::DOWN)) {
-                    auto mousePosition = common::Vector2D<int>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    //shootAlternative(entity, weapon, calculateDirection(entity, mousePosition, directionComponent));
+                    auto mousePosition = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
+                    calculateDirection(entity, mousePosition, directionComponent);
+                    shootAlternative(entity, weapon, mousePosition);
                 }
             }
         });
@@ -214,7 +250,7 @@ namespace systems {
         }
     }
 
-    void WeaponSystem::shootAlternative(engine::ecs::Entity& entity, game::components::WeaponComponent& weapon, common::Vector2D<double> fireDirection)
+    void WeaponSystem::shootAlternative(engine::ecs::Entity& entity, game::components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection)
     {
         if (!weapon.hasSecondaryFire) {
             return;

@@ -29,7 +29,7 @@ namespace events {
         case SDL_MOUSEBUTTONDOWN:
             return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::sdl::SDL_MouseKeys::get(event.button.button), true);
         case SDL_MOUSEBUTTONUP:
-            return std::make_unique<MouseEvent>(input::sdl::SDL_MouseKeys::get(event.button.button), false);
+            return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::sdl::SDL_MouseKeys::get(event.button.button), false);
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::sdl::SDL_Axis::get(event.caxis.axis);
             int value = std::abs(event.caxis.value) > deadZone ? event.caxis.value : 0;

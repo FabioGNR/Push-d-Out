@@ -27,12 +27,6 @@ namespace events {
             , m_isPressed(isPressed)
         {
         }
-
-        MouseEvent(input::Keys button, bool isPressed)
-            : m_key(button)
-            , m_isPressed(isPressed)
-        {
-        }
     };
 }
 }
