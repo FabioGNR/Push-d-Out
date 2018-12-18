@@ -181,14 +181,10 @@ namespace systems {
 
                     if (conX || conY) {
                         aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), -inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                        if (aimDirection.x == 0 && aimDirection.y == 0) {
-                            aimDirection = common::Vector2D<double>((directionComponent.direction == DirectionComponent::Direction::RIGHT ? 1 : -1), 0);
-
-                        }
-                        aimDirection = aimDirection.normalize();
+                        calculateDirection(entity, aimDirection, directionComponent, false);
                     } else {
                         aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                        calculateMouseDirection(entity, aimDirection, directionComponent);
+                        calculateDirection(entity, aimDirection, directionComponent, true);
                     }
 
                     auto aimAngle = -aimDirection.toAngle();
@@ -205,17 +201,12 @@ namespace systems {
 
                 // primary fire
                 if (inputMap.getValue(analogControl) > 0) {
-                    auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), -inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                    //calculateDirection(entity, analogDirection, directionComponent);
-                    if (analogDirection.x == 0 && analogDirection.y == 0) {
-                        analogDirection = common::Vector2D<double>((directionComponent.direction == DirectionComponent::Direction::RIGHT ? 1 : -1), 0);
-
-                    }
-                    analogDirection = analogDirection.normalize();
+                    auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                    calculateDirection(entity, analogDirection, directionComponent, false);
                     shoot(entity, weapon, analogDirection);
                 } else if (inputMap.hasState(control, engine::input::States::DOWN)) {
                     auto mousePositionVector = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    calculateMouseDirection(entity, mousePositionVector, directionComponent);
+                    calculateDirection(entity, mousePositionVector, directionComponent, true);
                     shoot(entity, weapon, mousePositionVector);
                 }
 
@@ -230,11 +221,11 @@ namespace systems {
                 // alt fire
                 if (inputMap.getValue(secondaryAnalogControl) > 0) {
                     auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
-                    //calculateDirection(entity, analogDirection, directionComponent);
+                    calculateDirection(entity, analogDirection, directionComponent, false);
                     shootAlternative(entity, weapon, analogDirection);
                 } else if (inputMap.hasState(secondaryControl, engine::input::States::DOWN)) {
                     auto mousePosition = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    calculateMouseDirection(entity, mousePosition, directionComponent);
+                    calculateDirection(entity, mousePosition, directionComponent, true);
                     shootAlternative(entity, weapon, mousePosition);
                 }
             }
@@ -275,18 +266,21 @@ namespace systems {
         }
     }
 
-    void WeaponSystem::calculateMouseDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent)
+    void WeaponSystem::calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent, bool mouse)
     {
         if (direction.x == 0 && direction.y == 0) {
             direction = common::Vector2D<double>((directionComponent.direction == DirectionComponent::Direction::RIGHT ? 1 : -1), 0);
             return;
         }
 
-        auto playerPosition = m_ecsWorld->getComponent<PositionComponent>(entity).position;
-        auto playerDimensions = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
-        auto playerTranslatedMidPointPosition = m_camera->translatePosition(playerPosition + playerDimensions / 2);
+        if(mouse){
+            auto playerPosition = m_ecsWorld->getComponent<PositionComponent>(entity).position;
+            auto playerDimensions = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+            auto playerTranslatedMidPointPosition = m_camera->translatePosition(playerPosition + playerDimensions / 2);
 
-        direction -= playerTranslatedMidPointPosition.castTo<double>();
+            direction -= playerTranslatedMidPointPosition.castTo<double>();
+        }
+
         direction = direction.normalize();
         direction.y *= -1;
     }

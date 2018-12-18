@@ -29,7 +29,7 @@ namespace systems {
         std::map<definitions::WeaponType, WeaponFireFunc> fireFunctionMap;
         std::map<definitions::WeaponType, WeaponFireFunc> altFireFunctionMap;
 
-        void calculateMouseDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent);
+        void calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent, bool mouse);
 
     public:
         WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::graphics::Camera* camera);
