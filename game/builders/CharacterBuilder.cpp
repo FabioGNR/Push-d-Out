@@ -4,6 +4,7 @@
 #include <engine/common/RNG.h>
 #include <engine/definitions/SystemPriority.h>
 #include <game/builders/CharacterSpawnGenerator.h>
+#include <game/components/AnimationsComponent.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/CharacterSpawnComponent.h>
 #include <game/components/DimensionComponent.h>
@@ -13,7 +14,6 @@
 #include <game/components/LifeComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
-#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/PunchComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -111,8 +111,8 @@ namespace builders {
             }
 
             // Create the animations storage for the player entity
-            const components::PlayerSpritesComponent playerSpritesComponent{ playerAnimations[i] };
-            m_ecsWorld.addComponent<components::PlayerSpritesComponent>(players[i], playerSpritesComponent);
+            const components::AnimationsComponent playerSpritesComponent{ playerAnimations[i] };
+            m_ecsWorld.addComponent<components::AnimationsComponent>(players[i], playerSpritesComponent);
 
             components::DirectionComponent directionComponent{};
             m_ecsWorld.addComponent<components::DirectionComponent>(players[i], directionComponent);

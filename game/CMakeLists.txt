@@ -70,8 +70,9 @@ set(COMPONENT_SRC
         components/PunchComponent.h
         components/AIComponent.h
         components/OnOutOfBoundsDeleteComponent.h
-        components/PlayerSpritesComponent.h
-        components/VisualEffectComponent.h)
+        components/AnimationsComponent.h
+        components/VisualEffectComponent.h
+        )
 
 set(SYSTEM_SRC
         systems/MovementSystem.cpp

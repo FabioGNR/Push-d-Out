@@ -35,15 +35,6 @@ namespace level {
         world.addComponent<components::DimensionComponent>(entityMeta, levelBoundsComponent);
 
         world.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, world);
-
-        // Get a map with tile animations
-        builders::SpriteBuilder tileSpriteBuilder{ baseThemePath + levelSheet + "/" + levelSheet + ".png", baseThemePath + "datafile.json" };
-        auto tileSpriteComponentMap = tileSpriteBuilder.build();
-
-        // Get a map with character spawn animations
-        builders::SpriteBuilder charSpawnSpriteBuilder{ baseThemePath + levelSheet + "/" + levelSheet + ".png", baseThemePath + "datafile.json" };
-        auto charSpawnSpriteComponentMap = charSpawnSpriteBuilder.build();
-
         // Get a map with equipment spawn animations
         builders::SpriteBuilder miscSpriteBuilder{ basePath + "misc/misc.png", basePath + "misc/misc.json" };
         auto miscSpriteComponentMap = miscSpriteBuilder.build();
@@ -58,13 +49,6 @@ namespace level {
             // Add a position component to character spawn entity
             auto posComponent = components::PositionComponent(position);
             world.addComponent<components::PositionComponent>(entity, posComponent);
-
-            // Add a sprite component to character spawn entity
-            auto spriteComponentPair = charSpawnSpriteComponentMap.find("single");
-            if (spriteComponentPair != charSpawnSpriteComponentMap.end()) {
-                auto spriteComponent = spriteComponentPair->second;
-                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
-            }
 
             // Add a character spawn component to character spawn entity
             auto characterSpawnComponent = components::CharacterSpawnComponent();
@@ -100,7 +84,7 @@ namespace level {
         std::string basePath{ "assets/sprites/themes/" };
         std::string levelSheet{ level.theme.sprites };
 
-        builders::SpriteBuilder tileSpriteBuilder{ basePath + levelSheet + "/" + levelSheet + ".png", basePath + "datafile.json" };
+        builders::SpriteBuilder tileSpriteBuilder{ basePath + levelSheet + "/tiles.png", basePath + "tiles.json" };
         auto tileSpriteComponentMap = tileSpriteBuilder.build();
 
         auto remainingTiles = level.tiles;

@@ -11,7 +11,7 @@ SpawnTile::SpawnTile(SpawnType spawnType, const common::Vector2D<int>& position,
 {
     if (m_spawnType == SpawnType::CHARACTER) {
         const common::Vector2D<int> spriteDimensions(122, 146);
-        auto sprite = std::make_unique<engine::Sprite>("assets/sprites/spawn_dummy.png", position,
+        auto sprite = std::make_unique<engine::Sprite>("assets/sprites/editor/spawn_dummy.png", position,
             spriteDimensions);
         m_tileSprite = sprite.get();
         m_tileSprite->setSize({ size.x, size.y * 2 });

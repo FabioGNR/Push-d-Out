@@ -1,7 +1,7 @@
 {
   "Animations": [
     {
-      "name": "Walking",
+      "name": "BunnyWalking",
       "frameCount": 6,
       "frameTime": 0.1,
       "frameSize": {
@@ -18,7 +18,7 @@
       }
     },
     {
-      "name": "Idle",
+      "name": "BunnyIdle",
       "frameCount": 3,
       "frameTime": 0.3,
       "frameSize": {
