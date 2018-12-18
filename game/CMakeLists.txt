@@ -70,8 +70,9 @@ set(COMPONENT_SRC
         components/PunchComponent.h
         components/AIComponent.h
         components/OnOutOfBoundsDeleteComponent.h
-        components/PlayerSpritesComponent.h
-        components/VisualEffectComponent.h)
+        components/AnimationsComponent.h
+        components/VisualEffectComponent.h
+        )
 
 set(SYSTEM_SRC
         systems/MovementSystem.cpp
@@ -124,6 +125,8 @@ set(SYSTEM_SRC
         systems/PlayerAnimationSystem.h
         systems/AISystem.cpp
         systems/AISystem.h
+        systems/PlayerNameSystem.cpp
+        systems/PlayerNameSystem.h
         )
 
 set(DEFINITION_SRC
@@ -207,7 +210,7 @@ set(BUILDER_SRC
         builders/SpriteBuilder.h
         builders/BunnyBuilder.cpp
         builders/BunnyBuilder.h
-        )
+        components/PlayerNameComponent.h)
 
 find_package(Boost COMPONENTS
         filesystem REQUIRED)
