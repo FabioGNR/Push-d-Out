@@ -4,6 +4,7 @@
 #include "game/components/ItemComponent.h"
 #include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
+#include "game/components/SpriteComponent.h"
 #include "game/definitions/Action.h"
 #include <engine/input/States.h>
 
@@ -56,6 +57,9 @@ namespace systems {
         if (equipableCandidate != nullptr) {
             // make sure the spawner knows the item was picked up
             auto& equipableComponent = m_world.getComponent<EquipableComponent>(*equipableCandidate);
+            auto& sprite = m_world.getComponent<SpriteComponent>(*equipableCandidate);
+            sprite.renderPriority = 3;
+
             equipableComponent.spawner.hasEquipment = false;
             // prevent the equipment from being picked up again
             m_world.removeComponent<PositionComponent>(*equipableCandidate);
