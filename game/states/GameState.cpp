@@ -34,6 +34,7 @@
 #include <game/systems/PunchingSystem.h>
 #include <game/systems/ScoreSystem.h>
 #include <game/systems/TeleportSystem.h>
+#include <game/systems/VisualEffectSystem.h>
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
 #include <utility>
@@ -89,6 +90,10 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::NpcSpawnSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get());
     m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, m_soundManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(),
+        m_inputManager, m_soundManager);
+    m_ecsWorld.addSystem<systems::VisualEffectSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
