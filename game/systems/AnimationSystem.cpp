@@ -15,7 +15,6 @@ namespace systems {
     void AnimationSystem::update(std::chrono::nanoseconds timeStep)
     {
         // First clear the list of sprites
-        //m_sprites.clear();
         m_sprites.clear();
 
         m_world->forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
