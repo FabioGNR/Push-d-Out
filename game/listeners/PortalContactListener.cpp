@@ -7,7 +7,7 @@
 #include <game/components/TeleportComponent.h>
 
 namespace game::listeners {
-void PortalContactListener::beginContact(engine::physics::Contact contact)
+void PortalContactListener::beginContact(engine::physics::Contact& contact)
 {
     try {
         auto& a = m_ecsWorld->getEntity(contact.a->getEntityId());
@@ -47,7 +47,7 @@ void PortalContactListener::teleport(engine::ecs::Entity& portal, engine::ecs::E
     }
 }
 
-void PortalContactListener::endContact(engine::physics::Contact contact)
+void PortalContactListener::endContact(engine::physics::Contact& contact)
 {
     try {
         auto& a = m_ecsWorld->getEntity(contact.a->getEntityId());
@@ -85,5 +85,13 @@ engine::ecs::Entity* PortalContactListener::findOtherPortal(engine::ecs::EntityI
         });
 
     return entity;
+}
+
+void PortalContactListener::preSolve(engine::physics::Contact& /* contact */)
+{
+}
+
+void PortalContactListener::postSolve(engine::physics::Contact& /* contact */)
+{
 }
 }

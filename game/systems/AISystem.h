@@ -9,14 +9,10 @@ namespace game::systems {
 class AISystem : public engine::ecs::BaseSystem<AISystem> {
 private:
     engine::ecs::World* m_world;
-    engine::physics::World* m_physics;
-    engine::graphics::Camera* m_camera;
 
 public:
-    explicit AISystem(engine::ecs::World* w, engine::physics::World* p, engine::graphics::Camera* c)
-        : m_world{ w }
-        , m_physics{ p }
-        , m_camera{ c } {};
+    explicit AISystem(engine::ecs::World* w)
+        : m_world{ w } {};
 
     void update(std::chrono::nanoseconds timeStep) override;
     void render(engine::IRenderer& renderer) override;

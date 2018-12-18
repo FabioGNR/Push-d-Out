@@ -19,8 +19,6 @@ set(GAME_SRC
         exceptions/NoPlayersFoundException.h
         exceptions/MissingCharacterSpawnException.h
         exceptions/PlayerAmountOutOfBoundsException.h
-        listeners/JumpContactListener.cpp
-        listeners/JumpContactListener.h
         states/OptionMenuState.cpp
         states/OptionMenuState.h
         states/LevelSelectorState.cpp
@@ -34,6 +32,8 @@ set(GAME_SRC
         states/ScoreState.cpp
         states/ScoreState.h
         config/Configuration.h
+        listeners/PlatformContactListener.cpp
+        listeners/PlatformContactListener.h
         )
 
 set(AI_SRC

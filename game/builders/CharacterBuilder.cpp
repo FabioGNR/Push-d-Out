@@ -11,6 +11,7 @@
 #include <game/components/InventoryComponent.h>
 #include <game/components/JumpComponent.h>
 #include <game/components/LifeComponent.h>
+#include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
@@ -139,6 +140,7 @@ namespace builders {
 
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
             m_ecsWorld.addComponent<components::PunchComponent>(players[i]);
+            m_ecsWorld.addComponent<components::MoveComponent>(players[i], common::Vector2D<double>(0, 0));
 
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);

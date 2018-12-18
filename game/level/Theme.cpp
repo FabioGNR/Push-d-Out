@@ -12,7 +12,8 @@ namespace level {
             { "sprites", theme.sprites },
             { "movementSpeed", theme.movementSpeed },
             { "jumpSpeed", theme.jumpSpeed },
-            { "glide", theme.glide }
+            { "airSpeedModifier", theme.airSpeedModifier },
+            { "slide", theme.slide }
         };
     }
 
@@ -26,11 +27,11 @@ namespace level {
         theme.gravity = j.at("gravity").get<double>();
         theme.movementSpeed = j.at("movementSpeed").get<double>();
         theme.jumpSpeed = j.at("jumpSpeed").get<double>();
+        theme.airSpeedModifier = j.at("airSpeedModifier").get<double>();
         theme.sprites = j.at("sprites").get<std::string>();
 
-        auto glide = j.find("glide");
-        if (glide != j.end()) {
-            theme.glide = j.at("glide").get<bool>();
+        if (j.find("slide") != j.end()) {
+            theme.slide = j.at("slide").get<bool>();
         }
     }
 }
