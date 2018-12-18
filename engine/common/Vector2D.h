@@ -225,6 +225,11 @@ struct Vector2D {
         return str;
     }
 
+    Vector2D<T> abs()
+    {
+        return Vector2D<T>(std::abs(x), std::abs(y));
+    };
+
     Vector2D<double> normalize()
     {
 

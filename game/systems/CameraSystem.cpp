@@ -1,109 +1,146 @@
 #include "CameraSystem.h"
 #include <cmath>
 #include <engine/common/Vector2D.h>
+#include <engine/graphics/Color.h>
+#include <engine/graphics/drawable/RectangleShape.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/LevelMetaComponent.h>
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/PositionComponent.h>
 
-namespace game {
-namespace systems {
-    using namespace game::components;
-    void CameraSystem::update(std::chrono::nanoseconds /* timeStep */)
-    {
-        common::Vector2D<double> upper{}, lower{}, cameraPosition{};
-        bool foundPlayers = findPlayerCenterOfMass(cameraPosition, lower, upper);
-        if (!foundPlayers) {
-            centerOnLevel();
-            return;
-        }
-        // determine zoom based on distance
-        const auto maxDistance = upper - lower;
-        const auto minimumVisibleRegion = common::Vector2D<double>::max(maxDistance + common::Vector2D<double>(5, 5),
-            common::Vector2D<double>(48, 27));
-        const double idealZoom = m_camera->getFittedZoom(minimumVisibleRegion);
-        m_camera->setZoom(idealZoom);
-        m_camera->setPosition(clampCameraPosition(cameraPosition));
-    }
+namespace game::systems {
+using namespace game::components;
+const common::Vector2D<double> CameraSystem::PADDING = { 3, 8.0 };
+const common::Vector2D<double> CameraSystem::CAMERA_SAFE_ZONE_MARGIN = { 4, 2 };
 
-    void CameraSystem::render(engine::IRenderer& /*renderer*/)
-    {
-    }
+void CameraSystem::update(std::chrono::nanoseconds timeStep)
+{
+    double seconds = timeStep.count() / 1e9;
+    setCameraMoveSpeed();
 
-    bool CameraSystem::findPlayerCenterOfMass(common::Vector2D<double>& center, common::Vector2D<double>& lower,
-        common::Vector2D<double>& upper)
-    {
-        const auto& levelDimensions = getLevelDimensions();
-        bool lowerBoundSet = false, upperBoundSet = false;
-        common::Vector2D<double> sumCenterPoints = common::Vector2D<double>(0, 0);
-        int amountOfCenterPoints = 0;
-        // Iterate through the characters to find the center point
-        m_ecsWorld->forEachEntityWith<PositionComponent,
-            PlayerInputComponent, DimensionComponent>([&](engine::ecs::Entity& entity) {
-            // only use positions that have not fallen out of the world
-            if (!isEntityWithinRegion(entity, levelDimensions)) {
-                return;
-            }
-            const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
-            const auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
-            const auto centerOfEntity = position + (dimension / 2.0);
-            sumCenterPoints += centerOfEntity;
-            amountOfCenterPoints++;
-            if (!lowerBoundSet) {
-                lowerBoundSet = true;
-                lower = position;
-            } else {
-                lower = common::Vector2D<double>::min(lower, position);
-            }
-            if (!upperBoundSet) {
-                upperBoundSet = true;
-                upper = position + dimension;
-            } else {
-                upper = common::Vector2D<double>::max(upper, position + dimension);
-            }
-        });
-        center = sumCenterPoints / amountOfCenterPoints;
-        return amountOfCenterPoints > 0;
-    }
+    auto boundaries = findTargetBoundaries();
+    m_camera->setPosition(findNextPosition(boundaries, seconds));
+    m_camera->setZoom(findSmoothZoom(boundaries, seconds));
+}
 
-    void CameraSystem::centerOnLevel()
-    {
-        const auto levelDimensions = getLevelDimensions();
-        const auto fittedZoom = m_camera->getFittedZoom(levelDimensions);
-        m_camera->setZoom(fittedZoom);
-        const auto cameraPosition = levelDimensions / 2;
-        m_camera->setPosition(clampCameraPosition(cameraPosition));
-    }
+void CameraSystem::render(engine::IRenderer& /* renderer */)
+{
+}
 
-    common::Vector2D<double> CameraSystem::getLevelDimensions() const
-    {
-        common::Vector2D<double> levelBounds{};
-        m_ecsWorld->forEachEntityWith<LevelMetaComponent, DimensionComponent>([&](engine::ecs::Entity& entity) {
-            levelBounds = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
-        });
-        return levelBounds;
-    }
+common::Vector2D<double> CameraSystem::getLevelDimensions() const
+{
+    common::Vector2D<double> boundaries{};
+    m_ecsWorld->forEachEntityWith<LevelMetaComponent, DimensionComponent>([&](engine::ecs::Entity& entity) {
+        boundaries = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+    });
+    return boundaries;
+}
 
-    common::Vector2D<double> CameraSystem::clampCameraPosition(common::Vector2D<double> pos) const
-    {
-        const auto levelDimensions = getLevelDimensions();
-        const auto visibleRegion = m_camera->getVisibleRegionSize();
-        // clamp camera position so camera does not show anything outside level
-        pos.y = std::min(levelDimensions.y - (visibleRegion.y / 2),
-            std::max(pos.y, visibleRegion.y / 2));
-        pos.x = std::min(levelDimensions.x - (visibleRegion.x / 2),
-            std::max(pos.x, visibleRegion.x / 2));
-        return pos;
-    }
+CameraSystem::Boundaries CameraSystem::findTargetBoundaries()
+{
+    common::Vector2D<double> acc;
+    int count = 0;
 
-    bool CameraSystem::isEntityWithinRegion(const engine::ecs::Entity& entity,
-        const common::Vector2D<double>& region) const
-    {
+    // calculate centroid
+    m_ecsWorld->forEachEntityWith<PositionComponent,
+        PlayerInputComponent,
+        DimensionComponent>([&](engine::ecs::Entity& entity) {
         const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
         const auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
-        bool isXWithinBounds = position.x > 0 && (position.x + dimension.x) < region.x;
-        bool isYWithinBounds = position.y > 0 && (position.y + dimension.y) < region.y;
-        return isXWithinBounds && isYWithinBounds;
+        auto center = position + (dimension / 2);
+
+        if (isWithinLevel(position, dimension)) {
+            acc += center;
+            ++count;
+        }
+    });
+
+    // get center of level if there are no players
+    if (count == 0) {
+        return { getLevelDimensions() / 2, getLevelDimensions() / 2 + CameraSystem::PADDING };
+    }
+
+    auto centroid = acc / count;
+    double radius = -1;
+    common::Vector2D<double> bounds;
+
+    // find radius
+    m_ecsWorld->forEachEntityWith<PositionComponent,
+        PlayerInputComponent,
+        DimensionComponent>([&](engine::ecs::Entity& entity) {
+        const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
+        const auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+        auto center = position + (dimension / 2);
+
+        if (isWithinLevel(position, dimension)) {
+            auto delta = (center - centroid).abs();
+            double length = delta.magnitude();
+
+            if (radius < 0 || length > radius) {
+                radius = length;
+                bounds = delta;
+            }
+        }
+    });
+
+    return { centroid, bounds + CameraSystem::PADDING };
+}
+
+bool CameraSystem::isWithinLevel(const common::Vector2D<double> point, const common::Vector2D<double> dimensions) const
+{
+    bool isXWithinBounds = (point.x + dimensions.x) > 0 && point.x < getLevelDimensions().x;
+    bool isYWithinBounds = (point.y + dimensions.y) > 0 && point.y < getLevelDimensions().y;
+    return isXWithinBounds && isYWithinBounds;
+}
+
+bool CameraSystem::isOutOfSafeCameraBounds(const common::Vector2D<double> point, const common::Vector2D<double> dimensions) const
+{
+    common::Vector2D<double> safeMargin = m_camera->getVisibleRegionSize() - (CameraSystem::CAMERA_SAFE_ZONE_MARGIN * 2);
+    bool isXWithinBounds = (point.x + dimensions.x) > m_currentPosition.x - (safeMargin.x / 2) && point.x < m_currentPosition.x + (safeMargin.x / 2);
+    bool isYWithinBounds = (point.y + dimensions.y) > m_currentPosition.y - (safeMargin.y / 2) && point.y < m_currentPosition.y + (safeMargin.y / 2);
+    return (!isXWithinBounds || !isYWithinBounds) && isWithinLevel(point, dimensions);
+}
+
+double CameraSystem::findSmoothZoom(Boundaries boundaries, double seconds)
+{
+    auto zoom = m_camera->getFittedZoom(common::Vector2D<double>(boundaries.size.x * 2, boundaries.size.y * 2));
+    auto oldZoom = m_camera->getZoom();
+    auto delta = oldZoom - zoom;
+
+    if (delta < 0) {
+        return std::min(oldZoom + (0.3 * seconds), zoom);
+    } else if (delta > 0) {
+        return std::max(oldZoom - (0.3 * seconds), zoom);
+    }
+    return oldZoom;
+}
+
+common::Vector2D<double> CameraSystem::findNextPosition(CameraSystem::Boundaries boundaries, double seconds)
+{
+    // prevent camera shake
+    auto delta = (m_currentPosition - boundaries.center).abs();
+    if (m_lastCenter == boundaries.center && delta.x < 0.5 && delta.y < 0.5) {
+        return m_currentPosition;
+    }
+
+    m_lastCenter = boundaries.center;
+    m_currentPosition += (boundaries.center - m_currentPosition).normalize() * seconds * m_moveSpeed;
+    return m_currentPosition;
+}
+
+void CameraSystem::setCameraMoveSpeed()
+{
+    m_moveSpeed = CameraSystem::CAMERA_MOVEMENT_SPEED;
+
+    for (auto it = m_ecsWorld->begin<components::PlayerInputComponent>(); it != m_ecsWorld->end<components::PlayerInputComponent>(); ++it) { // NOLINT
+        auto& entity = m_ecsWorld->getEntity(it->first);
+        auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
+        auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+
+        if (isOutOfSafeCameraBounds(position, dimension)) {
+            m_moveSpeed = CameraSystem::CAMERA_MOVEMENT_SPEED_FAST;
+            break;
+        }
     }
 }
 }
