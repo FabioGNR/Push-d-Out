@@ -14,6 +14,7 @@ namespace events {
     class SDLEventHandler : public IEventHandler {
     private:
         const int deadZone = 2000;
+        const double controllerAxisMax = 32768.0;
         std::vector<size_t> connectedControllers;
         std::unique_ptr<IEvent> mapEvent(const SDL_Event& event);
 
