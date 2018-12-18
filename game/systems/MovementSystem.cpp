@@ -77,12 +77,14 @@ namespace systems {
         for (auto& collision : collisions) {
             try {
                 auto& collisionEntity = m_world.getEntity(collision);
-                auto& collisionPosition = m_world.getComponent<components::PositionComponent>(collisionEntity).position;
-
-                if (position.y > collisionPosition.y) {
-                    return false;
+                if (collisionEntity.hasComponent<components::PositionComponent>()) {
+                    auto& collisionPosition = m_world.getComponent<components::PositionComponent>(collisionEntity).position;
+                    if (position.y > collisionPosition.y) {
+                        return false;
+                    }
                 }
             } catch (engine::exceptions::EntityNotFoundException&) {
+            } catch (engine::exceptions::ComponentNotFoundException&) {
             }
         }
 

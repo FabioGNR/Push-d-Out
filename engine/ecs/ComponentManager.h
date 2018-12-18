@@ -8,6 +8,7 @@
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
+#include <engine/exceptions/ComponentNotFoundException.h>
 
 namespace engine {
 namespace ecs {
@@ -58,12 +59,19 @@ namespace ecs {
 
         Component& get(const EntityId entityId) const
         {
+            if (m_components.find(entityId) == m_components.end()) {
+                throw exceptions::ComponentNotFoundException();
+            }
             return *static_cast<Component*>(m_components.at(entityId).get());
         }
 
         Component& get(const Entity& entity) const
         {
-            return get(entity.id());
+            try {
+                return get(entity.id());
+            } catch (...) {
+                throw;
+            }
         }
 
         ComponentMap& getAll()
