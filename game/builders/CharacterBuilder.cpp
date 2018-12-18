@@ -107,6 +107,7 @@ namespace builders {
             auto spriteComponentPair = playerAnimations[i].find("Idle");
             if (spriteComponentPair != playerAnimations[i].end()) {
                 auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = 1;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
 
@@ -133,17 +134,8 @@ namespace builders {
 
             equipment::EquipmentFactory ef{ m_ecsWorld };
 
-            // Add default force gun to player, and portal gun as secondary
+            // Add empty inventory to player
             components::InventoryComponent inventoryComponent{};
-            auto forceGun = &ef.get(definitions::WeaponType::ForceGun);
-            auto portalGun = &ef.get(definitions::WeaponType::PortalGun);
-            m_ecsWorld.addComponent<components::PositionComponent>(*forceGun, components::PositionComponent{ common::Vector2D<double>(0, 0) });
-            m_ecsWorld.addComponent<components::DimensionComponent>(*forceGun, components::DimensionComponent{ common::Vector2D<double>(1.5, 0.75) });
-            m_ecsWorld.addComponent<components::DimensionComponent>(*portalGun, components::DimensionComponent{ common::Vector2D<double>(1.5, 0.75) });
-
-            inventoryComponent.activeEquipment.set(forceGun);
-            inventoryComponent.otherEquipment.set(portalGun);
-
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
             m_ecsWorld.addComponent<components::PunchComponent>(players[i]);
             m_ecsWorld.addComponent<components::MoveComponent>(players[i], common::Vector2D<double>(0, 0));
