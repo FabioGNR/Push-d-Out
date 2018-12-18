@@ -88,8 +88,8 @@ namespace equipment {
         // items
         m_itemFactoryMap[definitions::ItemType::ReverseGravity] = pair(buildReverseGravity, common::Vector2D<double>(1, 1));
         // weapons
-        m_weaponFactoryMap[definitions::WeaponType::PortalGun] = pair(buildPortalGun, common::Vector2D<double>(1, 0.5));
-        m_weaponFactoryMap[definitions::WeaponType::ForceGun] = pair(buildForceGun, common::Vector2D<double>(1, 0.5));
+        m_weaponFactoryMap[definitions::WeaponType::PortalGun] = pair(buildPortalGun, common::Vector2D<double>(1.5, 0.75));
+        m_weaponFactoryMap[definitions::WeaponType::ForceGun] = pair(buildForceGun, common::Vector2D<double>(1.5, 0.75));
 
         // build vector of factories using the maps
         for (const auto& factoryPair : m_itemFactoryMap) {

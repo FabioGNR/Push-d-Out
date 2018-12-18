@@ -12,7 +12,6 @@ namespace input {
             auto& conMap = m_inputMap.getMap(con->m_ID);
             if (con->m_isAnalog) {
                 conMap.setValue(con->m_analogKey, con->m_axisValue);
-                std::cout <<"input: " << con->m_axisValue << std::endl;
             } else {
                 conMap.setValue(con->m_key, (con->m_keyDown ? States::PRESSED : States::RELEASED));
             }
