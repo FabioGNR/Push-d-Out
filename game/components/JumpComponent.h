@@ -7,11 +7,9 @@ namespace game {
 namespace components {
     struct JumpComponent : public engine::ecs::BaseComponent<JumpComponent> {
         common::Vector2D<double> delta;
-        bool mayJump;
 
         explicit JumpComponent(common::Vector2D<double> delta)
-            : delta{ delta }
-            , mayJump{ true } {};
+            : delta{ delta } {};
     };
 }
 }

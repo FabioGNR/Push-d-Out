@@ -2,6 +2,7 @@
 #include "SpriteBuilder.h"
 #include <game/components/AIComponent.h>
 #include <game/components/BodyComponent.h>
+#include <game/components/MoveComponent.h>
 #include <game/components/OnOutOfBoundsDeleteComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/config/ConfigurationRepository.h>
@@ -24,6 +25,7 @@ engine::ecs::Entity* BunnyBuilder::build()
 {
     m_world->addComponent<components::BodyComponent>(*m_entity, m_physics->createDynamicBody(m_position, m_dimensions, m_entity->id(), static_cast<int>(definitions::BodyGroupIndex::NPC)));
     m_world->addComponent<components::AIComponent>(*m_entity);
+    m_world->addComponent<components::MoveComponent>(*m_entity, common::Vector2D<double>(0, 0), true);
     m_world->addComponent<components::OnOutOfBoundsDeleteComponent>(*m_entity);
     return m_entity;
 }

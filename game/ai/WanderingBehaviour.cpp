@@ -2,6 +2,7 @@
 #include <engine/common/RNG.h>
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/AIComponent.h>
+#include <game/components/LevelMetaComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -34,7 +35,8 @@ void WanderingBehaviour::act(std::chrono::nanoseconds /* delta */)
             s.flippedHorizontal = distance.x > 0;
         }
 
-        m_world->addComponent<components::MoveComponent>(*m_entity, distance.normalize() * 2);
+        auto& move = m_world->getComponent<components::MoveComponent>(*m_entity);
+        move.delta = distance.normalize() * 2;
     }
 }
 
