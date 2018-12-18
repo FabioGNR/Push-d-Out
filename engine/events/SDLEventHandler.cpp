@@ -1,5 +1,6 @@
 #include "SDLEventHandler.h"
 #include <SDL.h>
+#include <algorithm>
 #include <events/models/ControllerEvent.h>
 #include <events/models/KeyDownEvent.h>
 #include <events/models/KeyUpEvent.h>
@@ -32,7 +33,7 @@ namespace events {
             return std::make_unique<MouseEvent>(event.button.x, event.button.y, input::sdl::SDL_MouseKeys::get(event.button.button), false);
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::sdl::SDL_Axis::get(event.caxis.axis);
-            double value = std::abs(event.caxis.value) > deadZone ? event.caxis.value/controllerAxisMax : 0.0;
+            double value = std::abs(event.caxis.value) > deadZone ? event.caxis.value / controllerAxisMax : 0.0;
             return std::make_unique<ControllerEvent>(event.cdevice.which, key, value);
         }
         case SDL_CONTROLLERBUTTONDOWN:
@@ -51,6 +52,13 @@ namespace events {
         case SDL_CONTROLLERDEVICEADDED: {
             SDL_GameControllerOpen(event.cdevice.which);
             connectedControllers.push_back((size_t)event.cdevice.which);
+            return nullptr;
+        }
+        case SDL_CONTROLLERDEVICEREMOVED: {
+            auto item = std::find(connectedControllers.begin(), connectedControllers.end(), (size_t)event.cdevice.which);
+            if (item != connectedControllers.end()) {
+                connectedControllers.erase(item);
+            }
             return nullptr;
         }
         default:
