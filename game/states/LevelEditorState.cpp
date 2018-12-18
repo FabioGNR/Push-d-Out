@@ -106,16 +106,16 @@ void LevelEditorState::initEditor(const game::level::Theme& theme)
         auto controlStickY = engine::input::AnalogKeys::CON_LEFTSTICK_Y;
 
         if (inputMap.hasState(engine::input::Keys::A, pressedState)
-            || (inputMap.hasState(controlStickX, pressedState) && inputMap.getValue(controlStickX) < -1)) {
+            || (inputMap.hasState(controlStickX, pressedState) && inputMap.getValue(controlStickX) < 0)) {
             m_editor.move(-1, 0);
         } else if (inputMap.hasState(engine::input::Keys::W, pressedState)
-            || (inputMap.hasState(controlStickY, pressedState) && inputMap.getValue(controlStickY) < -1)) {
+            || (inputMap.hasState(controlStickY, pressedState) && inputMap.getValue(controlStickY) < 0)) {
             m_editor.move(0, 1);
         } else if (inputMap.hasState(engine::input::Keys::S, pressedState)
-            || (inputMap.hasState(controlStickY, pressedState) && inputMap.getValue(controlStickY) > 1)) {
+            || (inputMap.hasState(controlStickY, pressedState) && inputMap.getValue(controlStickY) > 0)) {
             m_editor.move(0, -1);
         } else if (inputMap.hasState(engine::input::Keys::D, pressedState)
-            || (inputMap.hasState(controlStickX, pressedState) && inputMap.getValue(controlStickX) > 1)) {
+            || (inputMap.hasState(controlStickX, pressedState) && inputMap.getValue(controlStickX) > 0)) {
             m_editor.move(1, 0);
         }
 

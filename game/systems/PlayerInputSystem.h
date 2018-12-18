@@ -11,7 +11,7 @@ namespace game {
 namespace systems {
     class PlayerInputSystem : public engine::ecs::BaseSystem<PlayerInputSystem> {
     private:
-        const int moveDeadZone = 10000;
+        const double moveDeadZone = 0.5;
         engine::ecs::World& m_world;
         engine::sound::ISoundManager* m_soundManager;
         engine::input::maps::InputMaps* m_inputMaps;

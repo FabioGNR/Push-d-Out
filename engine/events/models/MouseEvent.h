@@ -8,8 +8,8 @@ namespace engine {
 namespace events {
     struct MouseEvent : public IControlEvent {
         input::Keys m_key;
-        int m_x;
-        int m_y;
+        double m_x;
+        double m_y;
         bool m_isPressed = false;
         bool m_isAnalog = false;
 

@@ -200,7 +200,7 @@ namespace systems {
                 });
 
                 // primary fire
-                if (inputMap.getValue(analogControl) > 1) {
+                if (inputMap.getValue(analogControl) > 0) {
                     auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
                     calculateDirection(entity, analogDirection, directionComponent);
                     shoot(entity, weapon, analogDirection);
@@ -219,7 +219,7 @@ namespace systems {
                 const auto secondaryAnalogControl = inputComponent.getAnalog(secondaryAction);
 
                 // alt fire
-                if (inputMap.getValue(secondaryAnalogControl) > 1) {
+                if (inputMap.getValue(secondaryAnalogControl) > 0) {
                     auto analogDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
                     calculateDirection(entity, analogDirection, directionComponent);
                     shootAlternative(entity, weapon, analogDirection);
