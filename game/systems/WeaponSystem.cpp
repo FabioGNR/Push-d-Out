@@ -180,7 +180,7 @@ namespace systems {
                     common::Vector2D<double> aimDirection;
 
                     if (conX || conY) {
-                        aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), -inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                        aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
                         calculateDirection(entity, aimDirection, directionComponent, false);
                     } else {
                         aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
