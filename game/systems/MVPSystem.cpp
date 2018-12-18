@@ -1,6 +1,7 @@
 #include "MVPSystem.h"
 #include <game/components/DimensionComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerNameComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/states/GameState.h>
 
@@ -14,7 +15,8 @@ namespace systems {
 
         m_world->forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
             auto playerInputComponent = m_world->getComponent<components::PlayerInputComponent>(entity);
-            if (playerInputComponent.controllerId == GameState::MVP) {
+            std::string name = m_world->getComponent<components::PlayerNameComponent>(entity).name;
+            if (name == GameState::MVP) {
                 auto positionComponent = m_world->getComponent<components::PositionComponent>(entity).position;
                 auto dimensionComponent = m_world->getComponent<components::DimensionComponent>(entity).dimension;
 

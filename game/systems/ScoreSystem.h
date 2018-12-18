@@ -11,7 +11,7 @@ namespace systems {
     private:
         engine::ecs::World* m_world;
         engine::IGame* m_context;
-        std::map<int, long int> m_score{};
+        std::map<std::string, long int> m_score{};
         int m_playerCount{};
 
     public:

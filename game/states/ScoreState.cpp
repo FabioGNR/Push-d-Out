@@ -9,7 +9,7 @@
 #include <sstream>
 
 namespace game {
-using ScorePair = std::pair<int, long int>;
+using ScorePair = std::pair<std::string, long int>;
 using Comparator = std::function<bool(ScorePair, ScorePair)>;
 
 void ScoreState::update(std::chrono::nanoseconds /*timeStep*/)
@@ -37,24 +37,15 @@ void ScoreState::init()
         engine::ui::ComponentSize(fitSize),
         engine::ui::FlowDirection::Vertical);
 
-    bool debugPlayerIsPresent = false;
-    auto debugPlayer = [](ScorePair value) { return value.first == -1; };
-    if (std::any_of(m_score.begin(), m_score.end(), debugPlayer)) {
-        debugPlayerIsPresent = true;
-    }
-
     Comparator compFunctor = [](ScorePair element1, ScorePair element2) {
         return element1.second > element2.second;
     };
     std::set<ScorePair, Comparator> scoreList(m_score.begin(), m_score.end(), compFunctor);
 
     for (ScorePair element : scoreList) {
-        int playerNumber = element.first;
-        if (debugPlayerIsPresent) {
-            ++playerNumber;
-        }
+        std::string name = element.first;
         std::stringstream s;
-        s << "P" << playerNumber + 1 << " has a score of " << element.second;
+        s << name << " has a score of " << element.second;
 
         if (element == *scoreList.begin()) {
             s << " (winner)";
@@ -65,7 +56,6 @@ void ScoreState::init()
     }
 
     GameState::MVP = scoreList.begin()->first;
-    GameState::hasMVP = true;
 
     std::unique_ptr<engine::ui::IAction> restart = std::make_unique<engine::ui::CustomAction>([&]() {
         auto* context = &m_context;

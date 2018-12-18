@@ -125,6 +125,8 @@ set(SYSTEM_SRC
         systems/PlayerAnimationSystem.h
         systems/AISystem.cpp
         systems/AISystem.h
+        systems/PlayerNameSystem.cpp
+        systems/PlayerNameSystem.h
         )
 
 set(DEFINITION_SRC
@@ -208,7 +210,7 @@ set(BUILDER_SRC
         builders/SpriteBuilder.h
         builders/BunnyBuilder.cpp
         builders/BunnyBuilder.h
-        )
+        components/PlayerNameComponent.h)
 
 find_package(Boost COMPONENTS
         filesystem REQUIRED)

@@ -33,8 +33,7 @@ private:
     std::string m_levelToPlay;
 
 public:
-    static int MVP;
-    static bool hasMVP;
+    static std::string MVP;
 
     explicit GameState(std::string levelToPlay, engine::IGame& game);
     ~GameState() override = default;

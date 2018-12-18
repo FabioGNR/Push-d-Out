@@ -4,6 +4,7 @@
 #include <engine/graphics/Camera.h>
 #include <game/components/LifeComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerNameComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/exceptions/PlayerAmountOutOfBoundsException.h>
 
@@ -60,12 +61,13 @@ void HUD::updateLives()
 {
     m_foundPlayers = 0;
     m_world.forEachEntityWith<components::LifeComponent>([&](engine::ecs::Entity& entity) {
+        std::string name = m_world.getComponent<components::PlayerNameComponent>(entity).name;
         // 4 is max players atm
         if (m_foundPlayers < 4) {
             // Assign new player to PlayerInfo UI
             if (m_playerInfo.count(entity.id()) == 0) {
                 auto size = m_hudSize.at(m_foundPlayers);
-                m_playerInfo[entity.id()] = std::make_unique<ui::PlayerInfo>(&entity, "P" + std::to_string(m_foundPlayers + 1), size.first, size.second, m_foundPlayers % 2);
+                m_playerInfo[entity.id()] = std::make_unique<ui::PlayerInfo>(&entity, name, size.first, size.second, m_foundPlayers % 2);
                 ++m_foundPlayers;
             }
         }

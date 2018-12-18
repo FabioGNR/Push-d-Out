@@ -14,6 +14,7 @@
 #include <game/components/LifeComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerNameComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/PunchComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -33,6 +34,7 @@
 #include <game/systems/MovementSystem.h>
 #include <game/systems/PlayerAnimationSystem.h>
 #include <game/systems/PlayerInputSystem.h>
+#include <game/systems/PlayerNameSystem.h>
 #include <game/systems/PositionSystem.h>
 #include <game/systems/WeaponSystem.h>
 
@@ -110,6 +112,10 @@ namespace builders {
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
 
+            // Add the player name
+            components::PlayerNameComponent name{ "P" + std::to_string((int)i + 1) };
+            m_ecsWorld.addComponent<components::PlayerNameComponent>(players[i], name);
+
             // Create the animations storage for the player entity
             const components::AnimationsComponent playerSpritesComponent{ playerAnimations[i] };
             m_ecsWorld.addComponent<components::AnimationsComponent>(players[i], playerSpritesComponent);
@@ -146,11 +152,11 @@ namespace builders {
             positions.erase(positions.begin() + randomValue - 1);
         };
 
-        std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
         if (game::Game::DEBUG && m_playerCount != connectedControllersVector.size()) {
             // for the keyboard
             buildFunc(m_playerCount - 1); // -1 because this is a count, so it starts at 1, but the player ids start at 0
         }
+        std::for_each(connectedControllersVector.begin(), connectedControllersVector.end(), buildFunc);
         m_ecsWorld.addSystem<systems::PlayerAnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
     }
 }
