@@ -30,10 +30,7 @@ void WanderingBehaviour::act(std::chrono::nanoseconds /* delta */)
         distance.y = 0;
 
         auto& sprite = m_world->getComponent<components::SpriteComponent>(*m_entity);
-        for (auto& s : sprite.sprites) {
-            s.flippedHorizontal = distance.x > 0;
-        }
-
+        sprite.flippedHorizontal = distance.x > 0;
         m_world->addComponent<components::MoveComponent>(*m_entity, distance.normalize() * 2);
     }
 }

@@ -160,44 +160,43 @@ namespace systems {
             if (inventory.activeEquipment.hasValue()) {
                 const engine::ecs::Entity weaponEntity = *inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld->getComponent<components::WeaponComponent>(weaponEntity);
-                auto& spriteComp = m_ecsWorld->getComponent<SpriteComponent>(weaponEntity).sprites;
+                auto& spriteComp = m_ecsWorld->getComponent<SpriteComponent>(weaponEntity);
 
                 const auto& inputMap = m_inputMaps->getMap(inputComponent.controllerId);
                 const auto action = definitions::Action::UseWeapon;
                 const auto control = inputComponent.getKey(action);
                 const auto analogControl = inputComponent.getAnalog(action);
 
-                std::for_each(spriteComp.begin(), spriteComp.end(), [&](auto& sprite) {
-                    auto conX = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_X, engine::input::States::DOWN);
-                    auto conY = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_Y, engine::input::States::DOWN);
-                    auto& playerDimension = m_ecsWorld->getComponent<DimensionComponent>(entity);
-                    auto& weaponPos = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
-                    auto& weaponDimension = m_ecsWorld->getComponent<DimensionComponent>(weaponEntity).dimension;
+                auto conX = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_X, engine::input::States::DOWN);
+                auto conY = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_Y, engine::input::States::DOWN);
+                auto& playerDimension = m_ecsWorld->getComponent<DimensionComponent>(entity);
+                auto& weaponPos = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
+                auto& weaponDimension = m_ecsWorld->getComponent<DimensionComponent>(weaponEntity).dimension;
 
-                    weaponPos.position = positionComponent.position + playerDimension.dimension / 2;
-                    weaponPos.position.y -= weaponDimension.y * 0.75;
+                weaponPos.position = positionComponent.position + playerDimension.dimension / 2;
+                weaponPos.position.y -= weaponDimension.y * 0.75;
 
-                    common::Vector2D<double> aimDirection;
+                common::Vector2D<double> aimDirection;
 
-                    if (conX || conY) {
-                        aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                if (conX || conY) {
+                    aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
 
-                    } else {
-                        aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
-                    }
+                } else {
+                    aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
+                }
 
-                    calculateDirection(entity, aimDirection, directionComponent);
-                    auto aimAngle = -aimDirection.toAngle();
-                    sprite.flippedHorizontal = abs(aimAngle) > 90;
+                calculateDirection(entity, aimDirection, directionComponent);
+                auto aimAngle = -aimDirection.toAngle();
+                spriteComp.flippedHorizontal = abs(aimAngle) > 90;
 
-                    if (sprite.flippedHorizontal) {
-                        aimAngle -= 180;
-                        weaponPos.position.x -= playerDimension.dimension.x * 0.1 + weaponDimension.x;
-                    } else {
-                        weaponPos.position.x += playerDimension.dimension.x * 0.1;
-                    }
-                    sprite.rotation = aimAngle;
-                });
+                if (spriteComp.flippedHorizontal) {
+                    aimAngle -= 180;
+                    weaponPos.position.x -= playerDimension.dimension.x * 0.1 + weaponDimension.x;
+                } else {
+                    weaponPos.position.x += playerDimension.dimension.x * 0.1;
+                }
+                spriteComp.rotation = aimAngle;
+                spriteComp.rotationCenter = { 0.05, 0.5 };
 
                 // primary fire
                 if (inputMap.getValue(analogControl) > 1) {

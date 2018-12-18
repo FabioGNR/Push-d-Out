@@ -34,9 +34,10 @@ namespace systems {
                 auto& spriteResource = spriteComponent.sprites[spriteComponent.index];
                 auto desiredSize = m_camera->scaleSize(dimensionComponent.dimension);
                 engine::Sprite sprite{ spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position };
-                sprite.setFlippedHorizontal(spriteResource.flippedHorizontal);
-                sprite.setFlippedVertical(spriteResource.flippedVertical);
-                sprite.setRotation(spriteResource.rotation);
+                sprite.setFlippedHorizontal(spriteComponent.flippedHorizontal);
+                sprite.setFlippedVertical(spriteComponent.flippedVertical);
+                sprite.setRotation(spriteComponent.rotation);
+                sprite.setRotationCenter(spriteComponent.rotationCenter);
                 sprite.setSize(desiredSize);
                 spriteComponent.frameTimeElapsed += timeStep;
                 auto elapsedSeconds{ std::chrono::duration_cast<std::chrono::milliseconds>(spriteComponent.frameTimeElapsed).count() / 1000.0 };
