@@ -22,11 +22,15 @@ namespace systems {
             auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
             auto& dimensionComponent = m_world->getComponent<DimensionComponent>(entity);
             auto& spriteComponent = m_world->getComponent<SpriteComponent>(entity);
+            if (spriteComponent.completed) {
+                return;
+            }
             if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension)) {
                 common::Vector2D<int> position = m_camera->translatePosition(positionComponent.position);
                 common::Vector2D<int> size = m_camera->scaleSize(dimensionComponent.dimension);
 
-                position.y = position.y - size.y;
+                position.y -= size.y;
+
                 auto& spriteResource = spriteComponent.sprites[spriteComponent.index];
                 auto desiredSize = m_camera->scaleSize(dimensionComponent.dimension);
                 engine::Sprite sprite{ spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position };

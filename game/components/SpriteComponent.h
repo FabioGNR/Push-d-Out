@@ -23,7 +23,9 @@ namespace components {
             : sprites{ move(sprites) }
             , frameCount{ frameCount }
             , frameTime{ frameTime }
-            , isAnimated{ true } {};
+            , isAnimated{ true }
+        {
+        }
 
         explicit SpriteComponent(sprite::SpriteResource sprite)
             : sprites{ std::move(sprite) }

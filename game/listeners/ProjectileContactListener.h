@@ -12,10 +12,12 @@ namespace listeners {
     private:
         engine::ecs::World* m_ecsWorld;
         engine::physics::World* m_physicsWorld;
+        constexpr static double FORCE_GUN_RADIUS = 6;
 
         void act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, common::Vector2D<double> position);
         void createPortal(common::Vector2D<double> position, bool alternative);
         void applyForce(engine::ecs::Entity& body, engine::ecs::Entity& projectile);
+        void explode(engine::ecs::Entity& projectile, double radius);
         engine::ecs::Entity* findPortal(bool alternative);
 
     public:

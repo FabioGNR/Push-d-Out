@@ -7,6 +7,9 @@
 #include <game/components/DimensionComponent.h>
 #include <game/components/PortalComponent.h>
 #include <game/components/PositionComponent.h>
+#include <game/components/VisualEffectComponent.h>
+#include <game/systems/VisualEffectSystem.h>
+#include <set>
 
 namespace game {
 namespace listeners {
@@ -31,12 +34,12 @@ namespace listeners {
         }
     }
 
-    void ProjectileContactListener::act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, common::Vector2D<double> position)
+    void ProjectileContactListener::act(engine::ecs::Entity& projectile, engine::ecs::Entity& /*body*/, common::Vector2D<double> position)
     {
-        auto& proj = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile);
-        switch (proj.type) {
+        auto& projectileComponent = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile);
+        switch (projectileComponent.type) {
         case definitions::ProjectileType::Force:
-            applyForce(body, projectile);
+            explode(projectile, FORCE_GUN_RADIUS);
             break;
         case definitions::ProjectileType::BluePortal:
             createPortal(position, false);
@@ -117,6 +120,54 @@ namespace listeners {
         auto& player = m_ecsWorld->getComponent<components::BodyComponent>(body).body;
         auto force = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile).force;
         player->applyLinearImpulse(force * 40);
+    }
+
+    void ProjectileContactListener::explode(engine::ecs::Entity& projectile, double radius)
+    {
+        int amountOfRays = 100;
+        double degrees = 360.0 / amountOfRays;
+        engine::physics::RaycastHit closestHit{};
+        std::set<engine::physics::Body*> pushedBodies;
+        bool hasHit{ false };
+        auto& projectilePos = m_ecsWorld->getComponent<components::PositionComponent>(projectile).position;
+        auto& projectileDim = m_ecsWorld->getComponent<components::DimensionComponent>(projectile).dimension;
+        const auto& projectileCenter = projectilePos + projectileDim / 2;
+
+        engine::physics::RaycastCallback callback = [&](engine::physics::RaycastHit hit) {
+            closestHit = hit;
+            hasHit = true;
+            return hit.fraction;
+        };
+
+        common::Vector2D<double> toBase{ 0, radius };
+
+        for (int i = 0; i < amountOfRays; i++) {
+            common::Vector2D<double> toVector = toBase.rotateCounterClockwise(i * degrees);
+            m_physicsWorld->raycast(projectileCenter, projectileCenter + toVector, callback);
+            if (hasHit && pushedBodies.find(closestHit.body) == pushedBodies.end()) {
+                common::Vector2D bodyPos = closestHit.body->getPosition() + closestHit.body->getDimensions() / 2;
+                auto impulseVector = bodyPos - projectileCenter;
+                closestHit.body->applyLinearImpulse(impulseVector * std::max(0.0, (radius - impulseVector.magnitude()) * 2));
+                pushedBodies.insert(closestHit.body); // prevent pushing a body more than once
+            }
+            hasHit = false; // reset hit for next ray
+        }
+
+        builders::SpriteBuilder spriteBuilder{ "assets/sprites/particles/particles.png", "assets/sprites/particles/particles.json" };
+        auto spriteComponents = spriteBuilder.build();
+        auto spriteComponentPair = spriteComponents.find("ForceExplosion");
+        if (spriteComponentPair != spriteComponents.end()) {
+            auto& spriteEntity = m_ecsWorld->createEntity();
+            auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.loops = false;
+            m_ecsWorld->addComponent<components::SpriteComponent>(spriteEntity, spriteComponent);
+            auto visualEffectComponent = components::VisualEffectComponent{};
+            m_ecsWorld->addComponent<components::VisualEffectComponent>(spriteEntity);
+            auto posComponent = components::PositionComponent{ projectileCenter - radius };
+            m_ecsWorld->addComponent<components::PositionComponent>(spriteEntity, posComponent);
+            auto dimComponent = components::DimensionComponent{ { radius * 2, radius * 2 } };
+            m_ecsWorld->addComponent<components::DimensionComponent>(spriteEntity, dimComponent);
+        }
     }
 }
 }
