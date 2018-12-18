@@ -79,7 +79,6 @@ namespace systems {
                 inventoryComponent.otherEquipment.set(&activeEquipment);
             }
             inventoryComponent.activeEquipment.set(&otherEquipment);
-            // TODO remove position component from active and add to other;
             auto pos = m_world.getComponent<PositionComponent>(player);
             m_world.removeComponent<PositionComponent>(*inventoryComponent.otherEquipment.get());
             m_world.addComponent<PositionComponent>(*inventoryComponent.activeEquipment.get(), pos);

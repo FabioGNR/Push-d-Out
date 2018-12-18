@@ -16,7 +16,7 @@ namespace systems {
     {
         // First clear the list of sprites
         //m_sprites.clear();
-        test.clear();
+        m_sprites.clear();
 
         m_world->forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
             auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
@@ -44,8 +44,8 @@ namespace systems {
                 if (elapsedSeconds >= spriteComponent.frameTime) {
                     advanceFrame(spriteComponent);
                 }
-                test.emplace_back(spriteComponent.renderPriority, sprite);
-                std::sort(test.begin(), test.end(), compareFunc);
+                m_sprites.emplace_back(spriteComponent.renderPriority, sprite);
+                std::sort(m_sprites.begin(), m_sprites.end(), compareFunc);
             }
         });
     }
@@ -53,7 +53,7 @@ namespace systems {
     void AnimationSystem::render(engine::IRenderer& renderer)
     {
         // Draw the sprites to the screen
-        for (const auto& spritePair : test) {
+        for (const auto& spritePair : m_sprites) {
             renderer.draw(spritePair.second);
         }
     }

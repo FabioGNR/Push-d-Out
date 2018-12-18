@@ -135,14 +135,14 @@ namespace builders {
 
             // Add default force gun to player, and portal gun as secondary
             components::InventoryComponent inventoryComponent{};
-            auto forceTest = &ef.get(definitions::WeaponType::ForceGun);
-            auto portalTest = &ef.get(definitions::WeaponType::PortalGun);
-            m_ecsWorld.addComponent<components::PositionComponent>(*forceTest, components::PositionComponent{ common::Vector2D<double>(0, 0) });
-            m_ecsWorld.addComponent<components::DimensionComponent>(*forceTest, components::DimensionComponent{ common::Vector2D<double>(1.5, 0.75) });
-            m_ecsWorld.addComponent<components::DimensionComponent>(*portalTest, components::DimensionComponent{ common::Vector2D<double>(1.5, 0.75) });
+            auto forceGun = &ef.get(definitions::WeaponType::ForceGun);
+            auto portalGun = &ef.get(definitions::WeaponType::PortalGun);
+            m_ecsWorld.addComponent<components::PositionComponent>(*forceGun, components::PositionComponent{ common::Vector2D<double>(0, 0) });
+            m_ecsWorld.addComponent<components::DimensionComponent>(*forceGun, components::DimensionComponent{ common::Vector2D<double>(1.5, 0.75) });
+            m_ecsWorld.addComponent<components::DimensionComponent>(*portalGun, components::DimensionComponent{ common::Vector2D<double>(1.5, 0.75) });
 
-            inventoryComponent.activeEquipment.set(forceTest);
-            inventoryComponent.otherEquipment.set(portalTest);
+            inventoryComponent.activeEquipment.set(forceGun);
+            inventoryComponent.otherEquipment.set(portalGun);
 
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
             m_ecsWorld.addComponent<components::PunchComponent>(players[i]);
