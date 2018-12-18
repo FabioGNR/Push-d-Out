@@ -33,7 +33,6 @@ namespace events {
         case SDL_CONTROLLERAXISMOTION: {
             input::AnalogKeys key = input::sdl::SDL_Axis::get(event.caxis.axis);
             double value = std::abs(event.caxis.value) > deadZone ? event.caxis.value/32768.0 : 0.0;
-            std::cout << "sdl: " << value << std::endl;
             return std::make_unique<ControllerEvent>(event.cdevice.which, key, value);
         }
         case SDL_CONTROLLERBUTTONDOWN:

@@ -1,5 +1,5 @@
 #include "InputMap.h"
-#include <iostream>
+#include <cmath>
 
 namespace engine {
 namespace input {
