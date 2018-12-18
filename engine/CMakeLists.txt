@@ -93,6 +93,8 @@ set(PHYSICS_SRC
         physics/ContactListener.h
         physics/Contact.h
         physics/RaycastHit.h
+        physics/ContactImpl.h
+        physics/ContactImpl.cpp
         )
 
 set(INPUT_SRC
@@ -158,7 +160,7 @@ set(EXCEPTION_SRC
         exceptions/SDLMixerException.h
         exceptions/ResourceNotFoundException.h
         exceptions/EntityNotFoundException.h
-        )
+        exceptions/ComponentNotFoundException.h)
 
 set(UI_SRC
         ui/Frame.cpp

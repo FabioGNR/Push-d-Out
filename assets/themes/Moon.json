@@ -4,6 +4,7 @@
   "friction": 3,
   "track": "01.wav",
   "sprites": "moon",
-  "movementSpeed": 7,
-  "jumpSpeed": 7
+  "movementSpeed": 10,
+  "jumpSpeed": 10,
+  "airSpeedModifier": 0.08
 }

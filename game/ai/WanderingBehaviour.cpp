@@ -31,7 +31,8 @@ void WanderingBehaviour::act(std::chrono::nanoseconds /* delta */)
 
         auto& sprite = m_world->getComponent<components::SpriteComponent>(*m_entity);
         sprite.flippedHorizontal = distance.x > 0;
-        m_world->addComponent<components::MoveComponent>(*m_entity, distance.normalize() * 2);
+        auto& move = m_world->getComponent<components::MoveComponent>(*m_entity);
+        move.delta = distance.normalize() * 2;
     }
 }
 
