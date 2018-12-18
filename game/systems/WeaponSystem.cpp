@@ -273,7 +273,7 @@ namespace systems {
             return;
         }
 
-        if(mouse){
+        if (mouse) {
             auto playerPosition = m_ecsWorld->getComponent<PositionComponent>(entity).position;
             auto playerDimensions = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
             auto playerTranslatedMidPointPosition = m_camera->translatePosition(playerPosition + playerDimensions / 2);
