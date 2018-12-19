@@ -5,28 +5,37 @@
 #include <engine/physics/ContactListener.h>
 #include <engine/physics/World.h>
 #include <game/components/PortalComponent.h>
+#include <game/definitions/ProjectileType.h>
 
 namespace game {
 namespace listeners {
     class ProjectileContactListener : public engine::physics::ContactListener {
+
+        struct ProjectileContactData{
+            common::Vector2D<double> position;
+            common::Vector2D<double> dimension;
+            common::Vector2D<double> contactNormal;
+            common::Vector2D<double> direction;
+            game::definitions::ProjectileType type;
+        };
+
     private:
-        constexpr static double FORCE_GUN_RADIUS = 6;
+        constexpr static double GRENADE_RADIUS = 9;
 
         struct PortalBlueprint {
-            engine::ecs::Entity* entity;
+            ProjectileContactData container;
             bool isAlternative;
-            engine::physics::Contact* contact;
         };
 
         engine::ecs::World* m_ecsWorld;
         engine::physics::World* m_physicsWorld;
         std::vector<PortalBlueprint> m_portalsToBuild;
 
-        void act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, engine::physics::Contact& contact);
-        void createPortal(engine::ecs::Entity& projectile, engine::physics::Contact& contact, bool alternative);
-        void createPortalNextUpdate(engine::ecs::Entity& projectile, engine::physics::Contact& contact, bool alternative);
-        void applyForce(engine::ecs::Entity& body, engine::physics::Contact& contact);
-        void explode(engine::ecs::Entity& projectile, double radius);
+        void act(ProjectileContactData projectile, engine::ecs::Entity& body);
+        void createPortal(ProjectileContactData projectile, bool alternative);
+        void createPortalNextUpdate(ProjectileContactData projectile, bool alternative);
+        void applyForce(engine::ecs::Entity& body, ProjectileContactData projectile);
+        void explode(ProjectileContactData projectile, double radius);
         engine::ecs::Entity* findPortal(bool alternative);
 
     public:

@@ -25,6 +25,7 @@ set(COMMON_SRC
         common/ResourceCache.h
         common/RNG.h
         common/RNG.cpp
+        common/LimitedResourceCache.h
         )
 
 set(ECS_SRC

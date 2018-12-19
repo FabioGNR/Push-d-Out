@@ -1,13 +1,13 @@
 #include "SDLSoundManager.h"
 
 #include <SDL_mixer.h>
+#include <common/LimitedResourceCache.h>
 #include <exceptions/SDLMixerException.h>
 
-// TODO: Use ResourceCache
-static std::map<std::string, std::unique_ptr<Mix_Chunk, void (*)(Mix_Chunk*)>> m_soundEffectCache;
+static common::LimitedResourceCache<std::string, std::unique_ptr<Mix_Chunk, void (*)(Mix_Chunk*)>, 50> m_soundEffectCache;
 
 // Mix_Music is a typedef, cannot forward declare
-static std::map<std::string, std::unique_ptr<Mix_Music, void (*)(Mix_Music*)>> m_musicCache;
+static common::LimitedResourceCache<std::string, std::unique_ptr<Mix_Music, void (*)(Mix_Music*)>, 50> m_musicCache;
 
 namespace engine {
 namespace sound {
@@ -40,9 +40,7 @@ namespace sound {
     {
         Mix_Chunk* chunk = nullptr;
 
-        const auto find = m_soundEffectCache.find(sound.soundPath());
-        // if not found
-        if (find == m_soundEffectCache.end()) {
+        if (!m_soundEffectCache.hasResource(sound.soundPath())) {
             std::unique_ptr<Mix_Chunk, void (*)(Mix_Chunk*)> newChunk = {
                 Mix_LoadWAV(sound.soundPath().c_str()),
                 Mix_FreeChunk
@@ -53,9 +51,9 @@ namespace sound {
             }
 
             chunk = newChunk.get();
-            m_soundEffectCache.insert({ sound.soundPath(), std::move(newChunk) });
+            m_soundEffectCache.addResource(sound.soundPath(), std::move(newChunk));
         } else {
-            chunk = find->second.get();
+            chunk = m_soundEffectCache.getResource(sound.soundPath()).get();
         }
 
         Mix_PlayChannel(-1, chunk, sound.loops());
@@ -64,10 +62,7 @@ namespace sound {
     void SDLSoundManager::play(const Music& sound)
     {
         Mix_Music* chunk = nullptr;
-
-        const auto find = m_musicCache.find(sound.soundPath());
-        // if not found
-        if (find == m_musicCache.end()) {
+        if (!m_musicCache.hasResource(sound.soundPath())) {
             std::unique_ptr<Mix_Music, void (*)(Mix_Music*)> newChunk = {
                 Mix_LoadMUS(sound.soundPath().c_str()),
                 Mix_FreeMusic
@@ -78,11 +73,10 @@ namespace sound {
             }
 
             chunk = newChunk.get();
-            m_musicCache.insert({ sound.soundPath(), std::move(newChunk) });
+            m_musicCache.addResource(sound.soundPath(), std::move(newChunk));
         } else {
-            chunk = find->second.get();
+            chunk = m_musicCache.getResource(sound.soundPath()).get();
         }
-
         Mix_PlayMusic(chunk, -1);
     }
 

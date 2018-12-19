@@ -27,6 +27,6 @@ void GarbageCollectorSystem::render(engine::IRenderer& /*renderer*/)
 
 void GarbageCollectorSystem::cleanUpEntity(engine::ecs::Entity* entityToDestroy)
 {
-    m_ecsWorld->destroyEntity(*entityToDestroy);
+    m_ecsWorld->destroyEntityNextUpdate(*entityToDestroy);
 }
 }

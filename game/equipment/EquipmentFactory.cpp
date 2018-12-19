@@ -42,6 +42,19 @@ namespace equipment {
         }
     }
 
+    void buildGrenadeLauncher(engine::ecs::Entity& entity,
+        engine::ecs::World& ecsWorld,
+        std::map<std::string, components::SpriteComponent> spriteComponentMap)
+    {
+        WeaponComponent weaponComponent{ definitions::WeaponType::GrenadeLauncher, 3, definitions::ProjectileType::Grenade };
+        ecsWorld.addComponent<WeaponComponent>(entity, weaponComponent);
+        auto spriteComponentPair = spriteComponentMap.find("GrenadeLauncher");
+        if (spriteComponentPair != spriteComponentMap.end()) {
+            auto spriteComponent = spriteComponentPair->second;
+            ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
+        }
+    }
+
     void buildPortalGun(engine::ecs::Entity& entity,
         engine::ecs::World& ecsWorld,
         std::map<std::string, components::SpriteComponent> spriteComponentMap)
@@ -90,6 +103,7 @@ namespace equipment {
         // weapons
         m_weaponFactoryMap[definitions::WeaponType::PortalGun] = pair(buildPortalGun, common::Vector2D<double>(1.5, 0.75));
         m_weaponFactoryMap[definitions::WeaponType::ForceGun] = pair(buildForceGun, common::Vector2D<double>(1.5, 0.75));
+        m_weaponFactoryMap[definitions::WeaponType::GrenadeLauncher] = pair(buildGrenadeLauncher, common::Vector2D<double>(1.5, 0.75));
 
         // build vector of factories using the maps
         for (const auto& factoryPair : m_itemFactoryMap) {

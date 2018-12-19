@@ -16,9 +16,8 @@ namespace systems {
     {
         // First clear the list of sprites
         m_sprites.clear();
-int i = 0;
+
         m_world->forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
-            i++;
             auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
             auto& dimensionComponent = m_world->getComponent<DimensionComponent>(entity);
             auto& spriteComponent = m_world->getComponent<SpriteComponent>(entity);
@@ -44,24 +43,18 @@ int i = 0;
                 if (elapsedSeconds >= spriteComponent.frameTime) {
                     advanceFrame(spriteComponent);
                 }
-
                 m_sprites.emplace_back(spriteComponent.renderPriority, sprite);
                 std::sort(m_sprites.begin(), m_sprites.end(), compareFunc);
             }
         });
-        //std::cout << "updateAnim: " << i << std::endl;
     }
 
     void AnimationSystem::render(engine::IRenderer& renderer)
     {
-
-        int i = 0;
         // Draw the sprites to the screen
         for (const auto& spritePair : m_sprites) {
             renderer.draw(spritePair.second);
-            i++;
         }
-        //std::cout << "Drew: " << i << std::endl;
     }
 
     void AnimationSystem::advanceFrame(components::SpriteComponent& spriteComponent)

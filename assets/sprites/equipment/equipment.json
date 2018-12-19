@@ -52,6 +52,23 @@
       }
     },
     {
+      "name": "GrenadeLauncher",
+      "frameCount": 12,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 32,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 16,
+        "y": 32
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
       "name": "Portal-0",
       "frameCount": 1,
       "frameTime": 0.1,

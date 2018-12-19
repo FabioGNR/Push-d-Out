@@ -18,6 +18,23 @@
       }
     },
     {
+      "name": "GrenadeProjectile",
+      "frameCount": 1,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 8,
+        "y": 8
+      },
+      "topLeft": {
+        "x": 16,
+        "y": 0
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
       "name": "BluePortalProjectile",
       "frameCount": 1,
       "frameTime": 0.1,
