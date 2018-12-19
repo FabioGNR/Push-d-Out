@@ -43,7 +43,7 @@ void ScoreState::init()
 
     std::set<ScorePair, Comparator> scoreList(m_score.begin(), m_score.end(), compFunctor);
 
-    for (const ScorePair &element : scoreList) {
+    for (const ScorePair& element : scoreList) {
         std::string name = element.first;
         std::stringstream s;
         auto score = std::round(element.second);
