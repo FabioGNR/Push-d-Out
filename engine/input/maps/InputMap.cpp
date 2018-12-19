@@ -1,5 +1,5 @@
 #include "InputMap.h"
-#include <cmath>
+#include <iostream>
 
 namespace engine {
 namespace input {
@@ -70,7 +70,7 @@ namespace input {
             return m_analogMap.empty() && m_analogStateMap.empty() && m_keyMap.empty();
         }
 
-        void InputMap::setValue(const engine::input::AnalogKeys key, const double value)
+        void InputMap::setValue(const engine::input::AnalogKeys key, const int value)
         {
             if (key == AnalogKeys::CON_UNKNOWN) {
                 return;
@@ -102,7 +102,7 @@ namespace input {
             return m_analogStateMap.at(key);
         }
 
-        double InputMap::getValue(const AnalogKeys key) const
+        int InputMap::getValue(const AnalogKeys key) const
         {
             if (m_analogMap.find(key) == m_analogMap.end()) {
                 return 0;

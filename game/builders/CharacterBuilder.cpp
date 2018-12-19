@@ -80,10 +80,10 @@ namespace builders {
         playerAnimations.push_back(builders::SpriteBuilder{ assetsFolder + "PlayerYellow.png", assetsFolder + "datafile.json" }.build());
 
         const auto& connectedControllersVector = m_inputManager->getConnectedControllers();
-        int i = 0;
+
         std::map<engine::ecs::Entity, std::map<std::string, components::SpriteComponent>> entityAnimations;
 
-        auto buildFunc = [&](const size_t& playerID) {
+        auto buildFunc = [&](const size_t& i) {
             // Make character jumpable
             m_ecsWorld.addComponent<components::JumpComponent>(players[i], common::Vector2D{ 0.0, 0.0 });
 
@@ -109,12 +109,11 @@ namespace builders {
             auto spriteComponentPair = playerAnimations[i].find("Idle");
             if (spriteComponentPair != playerAnimations[i].end()) {
                 auto spriteComponent = spriteComponentPair->second;
-                spriteComponent.renderPriority = 1;
                 m_ecsWorld.addComponent<components::SpriteComponent>(players[i], spriteComponent);
             }
 
             // Add the player name
-            components::PlayerNameComponent name{ "P" + std::to_string(i + 1) };
+            components::PlayerNameComponent name{ "P" + std::to_string((int)i + 1) };
             m_ecsWorld.addComponent<components::PlayerNameComponent>(players[i], name);
 
             // Create the animations storage for the player entity
@@ -126,8 +125,8 @@ namespace builders {
 
             // Add keyboard if i is the same or higher than the amount of connected controller
             const auto& connectedControllers = m_inputManager->getConnectedControllers();
-            if (std::find(connectedControllers.begin(), connectedControllers.end(), playerID) != connectedControllers.end()) {
-                components::PlayerInputComponent playerInputComponent{ (int)connectedControllers.at(playerID), controllerControls, analogControls };
+            if (std::find(connectedControllers.begin(), connectedControllers.end(), i) != connectedControllers.end()) {
+                components::PlayerInputComponent playerInputComponent{ (int)connectedControllers.at(i), controllerControls, analogControls };
                 m_ecsWorld.addComponent<components::PlayerInputComponent>(players[i], playerInputComponent);
             } else {
                 components::PlayerInputComponent playerInputComponent{ -1, keyboardControls, analogControls };
@@ -138,15 +137,19 @@ namespace builders {
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
 
-            // Add empty inventory to player
+            equipment::EquipmentFactory ef{ m_ecsWorld };
+
+            // Add default force gun to player, and portal gun as secondary
             components::InventoryComponent inventoryComponent{};
+            inventoryComponent.activeEquipment.set(&ef.get(definitions::WeaponType::ForceGun));
+            inventoryComponent.otherEquipment.set(&ef.get(definitions::WeaponType::PortalGun));
+
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);
             m_ecsWorld.addComponent<components::PunchComponent>(players[i]);
             m_ecsWorld.addComponent<components::MoveComponent>(players[i], common::Vector2D<double>(0, 0));
 
             // Remove the position
             positions.erase(positions.begin() + randomValue - 1);
-            i++;
         };
 
         if (game::Game::DEBUG && m_playerCount != connectedControllersVector.size()) {

@@ -115,13 +115,4 @@ double Sprite::getRotation() const
     return m_rotation;
 }
 
-void Sprite::setRotationCenter(const common::Vector2D<double>& center)
-{
-    m_rotationCenter = common::Vector2D<double>(center.x, center.y);
-}
-
-const common::Vector2D<double>& Sprite::getRotationCenter() const
-{
-    return m_rotationCenter;
-}
 } // end namespace engine

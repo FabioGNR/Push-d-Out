@@ -17,9 +17,7 @@ namespace systems {
     private:
         engine::ecs::World* m_world;
         engine::graphics::Camera* m_camera;
-        std::vector<std::pair<int, engine::Sprite>> m_sprites;
-        std::function<bool(std::pair<int, engine::Sprite> lhs, std::pair<int, engine::Sprite> rhs)> compareFunc =
-            [](std::pair<int, engine::Sprite> lhs, std::pair<int, engine::Sprite> rhs) { return lhs.first < rhs.first; };
+        std::vector<engine::Sprite> m_sprites;
 
         void advanceFrame(components::SpriteComponent& spriteComponent);
 

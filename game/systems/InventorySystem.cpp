@@ -4,7 +4,6 @@
 #include "game/components/ItemComponent.h"
 #include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
-#include "game/components/SpriteComponent.h"
 #include "game/definitions/Action.h"
 #include <engine/input/States.h>
 
@@ -33,7 +32,7 @@ namespace systems {
             const auto switchAction = definitions::Action::SwitchWeapon;
             const auto switchControl = inputComponent.getKey(switchAction);
             if (analogMap.hasState(switchControl, engine::input::States::PRESSED)) {
-                attemptSwitch(entity, inventoryComponent);
+                attemptSwitch(inventoryComponent);
             }
         });
     }
@@ -57,15 +56,12 @@ namespace systems {
         if (equipableCandidate != nullptr) {
             // make sure the spawner knows the item was picked up
             auto& equipableComponent = m_world.getComponent<EquipableComponent>(*equipableCandidate);
-            auto& sprite = m_world.getComponent<SpriteComponent>(*equipableCandidate);
-            sprite.renderPriority = 3;
-
             equipableComponent.spawner.hasEquipment = false;
             // prevent the equipment from being picked up again
             m_world.removeComponent<PositionComponent>(*equipableCandidate);
             m_world.removeComponent<EquipableComponent>(*equipableCandidate);
             // place the equipment in the inventory
-            placeInInventory(player, inventoryComponent, equipableCandidate);
+            placeInInventory(inventoryComponent, equipableCandidate);
         }
     }
 
@@ -74,7 +70,7 @@ namespace systems {
         // no rendering
     }
 
-    void InventorySystem::attemptSwitch(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent)
+    void InventorySystem::attemptSwitch(components::InventoryComponent& inventoryComponent)
     {
         if (inventoryComponent.otherEquipment.hasValue()) {
             auto& otherEquipment = *inventoryComponent.otherEquipment.get();
@@ -83,13 +79,10 @@ namespace systems {
                 inventoryComponent.otherEquipment.set(&activeEquipment);
             }
             inventoryComponent.activeEquipment.set(&otherEquipment);
-            auto pos = m_world.getComponent<PositionComponent>(player);
-            m_world.removeComponent<PositionComponent>(*inventoryComponent.otherEquipment.get());
-            m_world.addComponent<PositionComponent>(*inventoryComponent.activeEquipment.get(), pos);
         }
     }
 
-    void InventorySystem::placeInInventory(engine::ecs::Entity& player, components::InventoryComponent& inventoryComponent,
+    void InventorySystem::placeInInventory(components::InventoryComponent& inventoryComponent,
         engine::ecs::Entity* equipment) const
     {
         bool isItem = equipment->hasComponent<ItemComponent>();
@@ -110,7 +103,6 @@ namespace systems {
                     // This frees up the active equipment slot
                     auto& activeEquipment = *inventoryComponent.activeEquipment.get();
                     inventoryComponent.otherEquipment.set(&activeEquipment);
-                    m_world.removeComponent<PositionComponent>(*inventoryComponent.otherEquipment.get());
                 } else {
                     // no free slots, destroy the active equipment
                     // so there is room for the new equipment
@@ -121,9 +113,6 @@ namespace systems {
             }
             // add equipment to inventory
             inventoryComponent.activeEquipment.set(equipment);
-
-            auto pos = m_world.getComponent<PositionComponent>(player);
-            m_world.addComponent<PositionComponent>(*inventoryComponent.activeEquipment.get(), pos);
         }
     }
 }

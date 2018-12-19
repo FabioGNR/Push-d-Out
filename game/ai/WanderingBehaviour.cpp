@@ -3,6 +3,7 @@
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/AIComponent.h>
 #include <game/components/AnimationsComponent.h>
+#include <game/components/LevelMetaComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -31,7 +32,10 @@ void WanderingBehaviour::act(std::chrono::nanoseconds /* delta */)
         distance.y = 0;
 
         auto& sprite = m_world->getComponent<components::SpriteComponent>(*m_entity);
-        sprite.flippedHorizontal = distance.x > 0;
+        for (auto& s : sprite.sprites) {
+            s.flippedHorizontal = distance.x > 0;
+        }
+
         auto& move = m_world->getComponent<components::MoveComponent>(*m_entity);
         move.delta = distance.normalize() * 2;
     }

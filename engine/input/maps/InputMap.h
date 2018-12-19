@@ -10,8 +10,8 @@ namespace input {
     namespace maps {
         class InputMap {
         private:
-            const double stateDeadZone = 0.25;
-            std::map<AnalogKeys, double> m_analogMap;
+            const int stateDeadZone = 7500;
+            std::map<AnalogKeys, int> m_analogMap;
             std::map<AnalogKeys, States> m_analogStateMap;
             std::map<Keys, States> m_keyMap;
 
@@ -22,12 +22,12 @@ namespace input {
             bool isEmpty() const;
             void update();
 
-            void setValue(AnalogKeys key, double value);
+            void setValue(AnalogKeys key, int value);
             void setValue(Keys key, States state);
 
             States getState(Keys key) const;
             States getState(AnalogKeys key) const;
-            double getValue(AnalogKeys key) const;
+            int getValue(AnalogKeys key) const;
 
             bool hasState(Keys key, States state) const;
             bool hasState(AnalogKeys key, States state) const;

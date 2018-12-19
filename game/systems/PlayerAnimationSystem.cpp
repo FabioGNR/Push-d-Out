@@ -50,7 +50,9 @@ namespace systems {
     {
         auto& directionComponent = m_ecsWorld->getComponent<components::DirectionComponent>(player);
         // flip player sprite for current direction
-        spriteComponent.flippedHorizontal = directionComponent.direction == components::DirectionComponent::Direction::LEFT;
+        std::for_each(spriteComponent.sprites.begin(), spriteComponent.sprites.end(), [&](auto& sprite) {
+            sprite.flippedHorizontal = directionComponent.direction == components::DirectionComponent::Direction::LEFT;
+        });
     }
 
     std::string PlayerAnimationSystem::determineAnimationFromVelocity(const common::Vector2D<double>& velocity) const
