@@ -2,7 +2,7 @@
 
 #include "engine/graphics/IRenderer.h"
 #include "engine/window/SDLWindow.h"
-#include <engine/common/ResourceCache.h>
+#include <engine/common/LimitedResourceCache.h>
 #include <engine/graphics/drawable/Surface.h>
 
 #include <map>
@@ -25,10 +25,10 @@ class SDLRenderer : public IRenderer {
     using FontFontsizePair = std::pair<std::string, int>;
     using RenderTarget = SDL_Texture*;
 
-    mutable common::ResourceCache<FontFontsizePair, std::shared_ptr<TTF_Font>> fontCache;
-    mutable std::map<RenderTarget, common::ResourceCache<Font, SurfaceTexturePair>> textCache;
-    mutable common::ResourceCache<Sprite, SurfaceTexturePair> spriteCache;
-    mutable common::ResourceCache<const Surface*, std::shared_ptr<SDL_Texture>> surfaceCache;
+    mutable common::LimitedResourceCache<FontFontsizePair, std::shared_ptr<TTF_Font>, 150> fontCache;
+    mutable std::map<RenderTarget, common::LimitedResourceCache<Font, SurfaceTexturePair, 150>> textCache;
+    mutable common::LimitedResourceCache<Sprite, SurfaceTexturePair, 300> spriteCache;
+    mutable common::LimitedResourceCache<const Surface*, std::shared_ptr<SDL_Texture>, 300> surfaceCache;
 
 public:
     explicit SDLRenderer(const SDLWindow& window);

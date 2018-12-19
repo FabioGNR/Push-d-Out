@@ -6,7 +6,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <common/ResourceCache.h>
 #include <memory>
 
 namespace engine {
