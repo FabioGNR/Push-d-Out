@@ -110,6 +110,7 @@ namespace systems {
                     // This frees up the active equipment slot
                     auto& activeEquipment = *inventoryComponent.activeEquipment.get();
                     inventoryComponent.otherEquipment.set(&activeEquipment);
+                    m_world.removeComponent<PositionComponent>(*inventoryComponent.otherEquipment.get());
                 } else {
                     // no free slots, destroy the active equipment
                     // so there is room for the new equipment

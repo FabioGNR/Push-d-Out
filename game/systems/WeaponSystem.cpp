@@ -15,6 +15,7 @@
 #include <game/components/PositionComponent.h>
 #include <game/components/ProjectileComponent.h>
 #include <game/components/SpriteComponent.h>
+#include <game/config/InputConfiguration.h>
 #include <game/listeners/ProjectileContactListener.h>
 #include <game/listeners/ProjectilePortalContactListener.h>
 #include <memory>
@@ -50,10 +51,9 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
     ecsWorld->addComponent<DimensionComponent>(projectileEntity, dimensionComponent);
 
     auto projectileComponent = ProjectileComponent(game::definitions::WeaponType::ForceGun, game::definitions::ProjectileType::Force);
-    projectileComponent.force = direction;
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
     ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
-    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
+    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce((direction * 600) * -1, playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/projectiles/projectiles.png", "assets/sprites/projectiles/projectiles.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");
@@ -72,8 +72,9 @@ engine::ecs::Entity& firePortalGun(const engine::ecs::Entity& entity, const comm
     auto playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
     common::Vector2D<double> shootDirection = direction;
-    shootDirection *= playerDimension / 2 + dimensionVector;
-    common::Vector2D<double> projPos = position + playerDimension / 2 + (shootDirection * 1.5);
+
+    shootDirection *= playerDimension / 2 + dimensionVector * 1.2;
+    common::Vector2D<double> projPos = position + playerDimension / 2 + shootDirection - dimensionVector / 2;
 
     // Create projectile
     auto& projectileEntity = ecsWorld->createEntity();
@@ -158,6 +159,8 @@ namespace systems {
             const auto positionComponent = m_ecsWorld->getComponent<PositionComponent>(entity);
 
             if (inventory.activeEquipment.hasValue()) {
+                using analogKeys = engine::input::AnalogKeys;
+
                 const engine::ecs::Entity weaponEntity = *inventory.activeEquipment.get();
                 auto& weapon = m_ecsWorld->getComponent<components::WeaponComponent>(weaponEntity);
                 auto& spriteComp = m_ecsWorld->getComponent<SpriteComponent>(weaponEntity);
@@ -167,8 +170,6 @@ namespace systems {
                 const auto control = inputComponent.getKey(action);
                 const auto analogControl = inputComponent.getAnalog(action);
 
-                auto conX = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_X, engine::input::States::DOWN);
-                auto conY = inputMap.hasState(engine::input::AnalogKeys::CON_RIGHTSTICK_Y, engine::input::States::DOWN);
                 auto& playerDimension = m_ecsWorld->getComponent<DimensionComponent>(entity);
                 auto& weaponPos = m_ecsWorld->getComponent<PositionComponent>(weaponEntity);
                 auto& weaponDimension = m_ecsWorld->getComponent<DimensionComponent>(weaponEntity).dimension;
@@ -177,12 +178,11 @@ namespace systems {
                 weaponPos.position.y -= weaponDimension.y * 0.75;
 
                 common::Vector2D<double> aimDirection;
-
-                if (conX || conY) {
-                    aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_X), inputMap.getValue(engine::input::AnalogKeys::CON_RIGHTSTICK_Y));
+                if (inputMap.hasState(analogKeys::CON_RIGHTSTICK_X, engine::input::States::DOWN) || inputMap.hasState(analogKeys::CON_RIGHTSTICK_Y, engine::input::States::DOWN)) {
+                    aimDirection = common::Vector2D<double>(inputMap.getValue(analogKeys::CON_RIGHTSTICK_X), inputMap.getValue(analogKeys::CON_RIGHTSTICK_Y));
                     calculateDirection(entity, aimDirection, directionComponent, false);
                 } else {
-                    aimDirection = common::Vector2D<double>(inputMap.getValue(engine::input::AnalogKeys::MOUSE_X), inputMap.getValue(engine::input::AnalogKeys::MOUSE_Y));
+                    aimDirection = common::Vector2D<double>(inputMap.getValue(analogKeys::MOUSE_X), inputMap.getValue(analogKeys::MOUSE_Y));
                     calculateDirection(entity, aimDirection, directionComponent, true);
                 }
 
