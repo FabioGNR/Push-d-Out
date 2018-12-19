@@ -13,7 +13,7 @@ namespace systems {
     }
     void game::systems::PlayerNameSystem::render(engine::IRenderer& renderer)
     {
-        m_world->forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
+        m_world->forEachEntityWith<components::PlayerNameComponent>([&](auto& entity) {
             common::Vector2D<double> position = m_world->getComponent<components::PositionComponent>(entity).position;
             common::Vector2D<double> dimension = m_world->getComponent<components::DimensionComponent>(entity).dimension;
             std::string name = m_world->getComponent<components::PlayerNameComponent>(entity).name;

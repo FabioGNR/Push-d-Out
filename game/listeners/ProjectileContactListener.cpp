@@ -74,6 +74,7 @@ namespace listeners {
 
     void ProjectileContactListener::createPortalNextUpdate(ProjectileContactData projectile, bool alternative)
     {
+
         PortalBlueprint bp {};
         bp.container = projectile;
         bp.isAlternative = alternative;
@@ -114,7 +115,7 @@ namespace listeners {
             auto portalComponent = components::PortalComponent(!alternative);
             m_ecsWorld->addComponent<components::PortalComponent>(portal, portalComponent);
 
-            game::builders::SpriteBuilder builder {
+            game::builders::SpriteBuilder builder{
                 "assets/sprites/equipment/equipment.png",
                 "assets/sprites/equipment/equipment.json"
             };
@@ -151,8 +152,9 @@ namespace listeners {
     {
         int amountOfRays = 100;
         double degrees = 360.0 / amountOfRays;
-        engine::physics::RaycastHit closestHit {};
+        engine::physics::RaycastHit closestHit{};
         std::set<engine::physics::Body*> pushedBodies;
+
         bool hasHit { false };
         const auto& projectileCenter = projectile.position + projectile.dimension / 2;
 
@@ -162,7 +164,7 @@ namespace listeners {
             return hit.fraction;
         };
 
-        common::Vector2D<double> toBase { 0, radius };
+        common::Vector2D<double> toBase{ 0, radius };
 
         for (int i = 0; i < amountOfRays; i++) {
             common::Vector2D<double> toVector = toBase.rotateCounterClockwise(i * degrees);
@@ -176,7 +178,7 @@ namespace listeners {
             hasHit = false; // reset hit for next ray
         }
 
-        builders::SpriteBuilder spriteBuilder { "assets/sprites/particles/particles.png", "assets/sprites/particles/particles.json" };
+        builders::SpriteBuilder spriteBuilder{ "assets/sprites/particles/particles.png", "assets/sprites/particles/particles.json" };
         auto spriteComponents = spriteBuilder.build();
         auto spriteComponentPair = spriteComponents.find("ForceExplosion");
         if (spriteComponentPair != spriteComponents.end()) {
@@ -184,11 +186,11 @@ namespace listeners {
             auto spriteComponent = spriteComponentPair->second;
             spriteComponent.loops = false;
             m_ecsWorld->addComponent<components::SpriteComponent>(spriteEntity, spriteComponent);
-            auto visualEffectComponent = components::VisualEffectComponent {};
+            auto visualEffectComponent = components::VisualEffectComponent{};
             m_ecsWorld->addComponent<components::VisualEffectComponent>(spriteEntity);
-            auto posComponent = components::PositionComponent { projectileCenter - radius };
+            auto posComponent = components::PositionComponent{ projectileCenter - radius };
             m_ecsWorld->addComponent<components::PositionComponent>(spriteEntity, posComponent);
-            auto dimComponent = components::DimensionComponent { { radius * 2, radius * 2 } };
+            auto dimComponent = components::DimensionComponent{ { radius * 2, radius * 2 } };
             m_ecsWorld->addComponent<components::DimensionComponent>(spriteEntity, dimComponent);
         }
     }

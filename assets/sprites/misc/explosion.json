@@ -1,0 +1,21 @@
+{
+  "Animations": [
+    {
+      "name": "explosion",
+      "frameCount": 73,
+      "frameTime": 0.02,
+      "frameSize": {
+        "x": 100,
+        "y": 100
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}

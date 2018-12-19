@@ -1,0 +1,132 @@
+{
+    "CharacterSpawns": [
+        {
+            "x": 17.0,
+            "y": 17.0
+        },
+        {
+            "x": 4.0,
+            "y": 13.0
+        },
+        {
+            "x": 17.0,
+            "y": 13.0
+        },
+        {
+            "x": 17.0,
+            "y": 9.0
+        }
+    ],
+    "EquipmentSpawns": [
+    ],
+    "Meta": {
+        "height": 24,
+        "name": "win",
+        "theme": "Earth",
+        "width": 40
+    },
+    "PlatformTiles": [
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 16.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 18.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 1.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 2.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 3.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 4.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 5.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 16.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 18.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 16.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 18.0,
+            "y": 8.0
+        }
+    ]
+}
