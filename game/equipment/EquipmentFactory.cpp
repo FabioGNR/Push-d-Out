@@ -23,6 +23,7 @@ namespace equipment {
         auto spriteComponentPair = spriteComponentMap.find("ReverseGravity");
         if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.renderPriority = -1;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
     }
@@ -36,6 +37,7 @@ namespace equipment {
         auto spriteComponentPair = spriteComponentMap.find("ForceGun");
         if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.renderPriority = -1;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
     }
@@ -50,6 +52,7 @@ namespace equipment {
         auto spriteComponentPair = spriteComponentMap.find("PortalGun");
         if (spriteComponentPair != spriteComponentMap.end()) {
             auto spriteComponent = spriteComponentPair->second;
+            spriteComponent.renderPriority = -1;
             ecsWorld.addComponent<components::SpriteComponent>(entity, spriteComponent);
         }
     }
@@ -85,8 +88,8 @@ namespace equipment {
         // items
         m_itemFactoryMap[definitions::ItemType::ReverseGravity] = pair(buildReverseGravity, common::Vector2D<double>(1, 1));
         // weapons
-        m_weaponFactoryMap[definitions::WeaponType::PortalGun] = pair(buildPortalGun, common::Vector2D<double>(2, 1));
-        m_weaponFactoryMap[definitions::WeaponType::ForceGun] = pair(buildForceGun, common::Vector2D<double>(2, 1));
+        m_weaponFactoryMap[definitions::WeaponType::PortalGun] = pair(buildPortalGun, common::Vector2D<double>(1.5, 0.75));
+        m_weaponFactoryMap[definitions::WeaponType::ForceGun] = pair(buildForceGun, common::Vector2D<double>(1.5, 0.75));
 
         // build vector of factories using the maps
         for (const auto& factoryPair : m_itemFactoryMap) {

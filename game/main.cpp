@@ -3,7 +3,7 @@
 
 int main()
 {
-    game::Game::DEBUG = true;
+    game::Game::DEBUG = true; // Truly set var from Game.h/.cpp
     engine::WindowProperties windowProperties{};
     windowProperties.title = "Push'd Out!";
     windowProperties.maximized = true;

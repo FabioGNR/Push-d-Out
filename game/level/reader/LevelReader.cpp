@@ -70,6 +70,7 @@ namespace level {
             auto spriteComponentPair = miscSpriteComponentMap.find("EquipmentSpawner");
             if (spriteComponentPair != miscSpriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = -10;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 
@@ -116,6 +117,7 @@ namespace level {
                     auto spriteComponentPair = tileSpriteComponentMap.find(nextTile->sprite);
                     if (spriteComponentPair != tileSpriteComponentMap.end()) {
                         auto spriteComponent = spriteComponentPair->second;
+                        spriteComponent.renderPriority = 10;
                         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
                     }
 
@@ -144,6 +146,7 @@ namespace level {
             auto spriteComponentPair = tileSpriteComponentMap.find(currentTile.sprite);
             if (spriteComponentPair != tileSpriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = 10;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 

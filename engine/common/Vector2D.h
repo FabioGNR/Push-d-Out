@@ -15,6 +15,7 @@ struct Vector2D {
     T y;
 
     constexpr static int PRECISION = 1000000;
+    constexpr static double PI = 3.14159265358979323846;
 
     Vector2D(T x1, T y1)
         : x{ x1 }
@@ -192,12 +193,17 @@ struct Vector2D {
         return returnVector;
     }
 
-    T dotProduct(const Vector2D<T>& other)
+    T dotProduct(const Vector2D<T>& other) const
     {
         return this->x * other.x + this->y * other.y;
     }
 
-    T findAngle(const Vector2D<T>& other)
+    T toAngle() const
+    {
+        return atan2(this->y, this->x) * (180 / PI);
+    }
+
+    T findAngle(const Vector2D<T>& other) const
     {
         T dot = this->dotProduct(other);
         auto cosAngle = dot / (this->magnitude() * other.magnitude());

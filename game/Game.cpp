@@ -10,7 +10,7 @@
 #include <game/config/ConfigurationRepository.h>
 
 namespace game {
-bool Game::DEBUG = false;
+bool Game::DEBUG = false; // Init var
 
 Game::Game(engine::WindowProperties& properties)
 {
