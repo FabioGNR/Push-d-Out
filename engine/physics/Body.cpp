@@ -61,7 +61,7 @@ namespace physics {
         }
     }
 
-    ecs::EntityId Body::getEntityId() const
+    ecs::EntityId Body::getEntityId()
     {
         return *static_cast<ecs::EntityId*>(m_body->GetUserData());
     }
@@ -89,21 +89,6 @@ namespace physics {
     void Body::setDensity(double density)
     {
         m_body->GetFixtureList()->SetDensity(density);
-    }
-
-    std::vector<ecs::EntityId> Body::getCollidingEntities() const
-    {
-        std::vector<ecs::EntityId> contacts;
-        auto next = m_body->GetContactList();
-
-        while (next != nullptr) {
-            auto a = *static_cast<ecs::EntityId*>(next->contact->GetFixtureA()->GetBody()->GetUserData());
-            auto b = *static_cast<ecs::EntityId*>(next->contact->GetFixtureB()->GetBody()->GetUserData());
-            a != getEntityId() ? contacts.push_back(a) : contacts.push_back(b);
-            next = next->next;
-        }
-
-        return contacts;
     }
 }
 }

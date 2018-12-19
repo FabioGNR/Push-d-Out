@@ -1,7 +1,6 @@
 #include "AnimationSystem.h"
 #include "PlayerInputSystem.h"
 #include "game/components/DimensionComponent.h"
-#include "game/components/PlayerInputComponent.h"
 #include "game/components/PositionComponent.h"
 #include "game/components/SpriteComponent.h"
 
@@ -18,19 +17,15 @@ namespace systems {
         // First clear the list of sprites
         m_sprites.clear();
 
-        m_world->forEachEntityWith<PlayerInputComponent, PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
+        m_world->forEachEntityWith<PositionComponent, DimensionComponent, SpriteComponent>([&](engine::ecs::Entity& entity) {
             auto& positionComponent = m_world->getComponent<PositionComponent>(entity);
             auto& dimensionComponent = m_world->getComponent<DimensionComponent>(entity);
             auto& spriteComponent = m_world->getComponent<SpriteComponent>(entity);
-            if (spriteComponent.completed) {
-                return;
-            }
-            if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension)) {
+            if (m_camera->isRectangleVisible(positionComponent.position, dimensionComponent.dimension) && !spriteComponent.completed) {
                 common::Vector2D<int> position = m_camera->translatePosition(positionComponent.position);
                 common::Vector2D<int> size = m_camera->scaleSize(dimensionComponent.dimension);
 
-                position.y -= size.y;
-
+                position.y = position.y - size.y;
                 auto& spriteResource = spriteComponent.sprites[spriteComponent.index];
                 auto desiredSize = m_camera->scaleSize(dimensionComponent.dimension);
                 engine::Sprite sprite{ spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position };

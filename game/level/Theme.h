@@ -16,9 +16,9 @@ namespace level {
         double friction = 0.0;
         double gravity = 0.0;
         double movementSpeed = 0.0;
-        double airSpeedModifier = 1.0;
         double jumpSpeed = 0.0;
-        bool slide = false;
+
+        bool glide = false;
 
         Theme() = default;
     };

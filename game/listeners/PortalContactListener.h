@@ -19,10 +19,8 @@ namespace listeners {
         explicit PortalContactListener(engine::ecs::World* world)
             : m_ecsWorld{ world } {};
 
-        void beginContact(engine::physics::Contact& contact) override;
-        void endContact(engine::physics::Contact& contact) override;
-        void preSolve(engine::physics::Contact& contact) override;
-        void postSolve(engine::physics::Contact& contact) override;
+        void beginContact(engine::physics::Contact contact) override;
+        void endContact(engine::physics::Contact contact) override;
     };
 }
 }

@@ -4,9 +4,9 @@
 #include <string>
 
 namespace game::components {
-struct AnimationsComponent : public engine::ecs::BaseComponent<AnimationsComponent> {
+struct PlayerSpritesComponent : public engine::ecs::BaseComponent<PlayerSpritesComponent> {
     std::map<std::string, components::SpriteComponent> animations{};
-    AnimationsComponent(std::map<std::string, components::SpriteComponent> animations)
+    PlayerSpritesComponent(std::map<std::string, components::SpriteComponent> animations)
         : animations{ animations }
     {
     }

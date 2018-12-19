@@ -7,11 +7,9 @@ namespace game {
 namespace components {
     struct MoveComponent : public engine::ecs::BaseComponent<MoveComponent> {
         common::Vector2D<double> delta;
-        bool useImpulse = false;
 
-        explicit MoveComponent(common::Vector2D<double> delta, bool useImpulse = false)
-            : delta{ delta }
-            , useImpulse{ useImpulse } {};
+        explicit MoveComponent(common::Vector2D<double> delta)
+            : delta{ delta } {};
     };
 }
 }

@@ -11,7 +11,7 @@
 namespace game {
 namespace listeners {
 
-    void ProjectilePortalContactListener::beginContact(engine::physics::Contact& contact)
+    void ProjectilePortalContactListener::beginContact(engine::physics::Contact contact)
     {
         try {
             auto& a = m_ecsWorld->getEntity(contact.a->getEntityId());
@@ -32,6 +32,7 @@ namespace listeners {
     void ProjectilePortalContactListener::teleportProjectile(engine::ecs::Entity& projectile,
         engine::ecs::Entity& portal)
     {
+        auto& body = m_ecsWorld->getComponent<components::BodyComponent>(projectile).body;
         auto* other = findOtherPortal(portal.id());
 
         if (other != nullptr) {
@@ -39,13 +40,11 @@ namespace listeners {
             auto pos2 = m_ecsWorld->getComponent<components::PositionComponent>(*other).position;
 
             auto delta = pos2 - pos1;
-            auto vel = m_ecsWorld->getComponent<components::BodyComponent>(projectile).body->getLinearVelocity();
-            auto direction = vel.normalize();
-            m_projectilesToUpdate[projectile.id()] = m_ecsWorld->getComponent<components::PositionComponent>(projectile).position + delta + direction;
+            body->setPosition(m_ecsWorld->getComponent<components::PositionComponent>(projectile).position + delta);
         }
     }
 
-    void ProjectilePortalContactListener::endContact(engine::physics::Contact& /* contact */)
+    void ProjectilePortalContactListener::endContact(engine::physics::Contact /* contact */)
     {
     }
 
@@ -53,9 +52,7 @@ namespace listeners {
     {
         engine::ecs::Entity* entity = nullptr;
 
-        m_ecsWorld->forEachEntityWith<components::PortalComponent,
-            components::PositionComponent,
-            components::BodyComponent>(
+        m_ecsWorld->forEachEntityWith<components::PortalComponent, components::PositionComponent, components::BodyComponent>(
             [&](engine::ecs::Entity& e) {
                 if (e.id() != id) {
                     entity = &e;
@@ -63,24 +60,6 @@ namespace listeners {
             });
 
         return entity;
-    }
-
-    void ProjectilePortalContactListener::preSolve(engine::physics::Contact& /* contact */)
-    {
-    }
-
-    void ProjectilePortalContactListener::postSolve(engine::physics::Contact& /* contact */)
-    {
-    }
-
-    void ProjectilePortalContactListener::update(std::chrono::nanoseconds /* dt */)
-    {
-        std::for_each(m_projectilesToUpdate.begin(), m_projectilesToUpdate.end(), [&](auto& entity) {
-            auto& body = m_ecsWorld->getComponent<components::BodyComponent>(m_ecsWorld->getEntity(entity.first)).body;
-            body->setPosition(entity.second);
-        });
-
-        m_projectilesToUpdate.clear();
     }
 }
 }

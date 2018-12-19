@@ -28,15 +28,19 @@ void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
             || analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), engine::input::States::DOWN)) {
             move(delta, true, dirComp);
         }
-
         if (delta != common::Vector2D<double>(0, 0)) {
-            auto& move = m_world.getComponent<MoveComponent>(entity);
-            move.delta = delta;
+            auto move = components::MoveComponent(delta);
+            m_world.addComponent<MoveComponent>(entity, move);
         }
     });
 
     m_world.forEachEntityWith<PlayerInputComponent, JumpComponent>([&](engine::ecs::Entity& entity) {
         auto& jumpComp = m_world.getComponent<JumpComponent>(entity);
+
+        if (!jumpComp.mayJump) {
+            return; // if it may not jump
+        }
+
         auto& PIC = m_world.getComponent<components::PlayerInputComponent>(entity);
         auto& analogMap = m_inputMaps->getMap(PIC.controllerId); // id of controller
 
@@ -46,7 +50,10 @@ void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
             jump(delta);
         }
 
-        jumpComp.delta = delta;
+        if (delta != common::Vector2D<double>(0, 0)) {
+            jumpComp.delta = delta;
+            jumpComp.mayJump = false; // disable jump till it hits the ground
+        }
     });
 }
 
@@ -72,6 +79,13 @@ void PlayerInputSystem::jump(common::Vector2D<double>& delta)
     if (levelIt != m_world.end<LevelMetaComponent>()) {
         level = dynamic_cast<LevelMetaComponent*>(levelIt->second.get());
     }
+
+    std::stringstream soundPath{};
+    soundPath << "assets/sounds/jump-";
+    soundPath << std::to_string(common::RNG::generate(0, 1));
+    soundPath << ".wav";
+    const engine::sound::SoundEffect sound(soundPath.str(), 0);
+    m_soundManager->play(sound);
 
     delta.y += level != nullptr ? level->theme.jumpSpeed : 10;
 }

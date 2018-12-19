@@ -4,16 +4,10 @@
 
 namespace engine {
 namespace physics {
-    class Contact {
-    public:
-        virtual ~Contact() = default;
-
-        std::vector<common::Vector2D<double>> points;
-        common::Vector2D<double> normal;
+    struct Contact {
+        common::Vector2D<double> point;
         Body* a = nullptr;
         Body* b = nullptr;
-
-        virtual void setEnabled(bool enabled) = 0;
     };
 }
 }

@@ -16,7 +16,7 @@
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
-#include <game/components/AnimationsComponent.h>
+#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/config/ConfigurationRepository.h>
@@ -37,7 +37,6 @@
 #include <game/systems/MovementSystem.h>
 #include <game/systems/NpcSpawnSystem.h>
 #include <game/systems/OutOfBoundsCleanUpSystem.h>
-#include <game/systems/VisualEffectSystem.h>
 #include <game/systems/PlayerInputSystem.h>
 #include <game/systems/PositionSystem.h>
 #include <game/systems/PunchingSystem.h>
@@ -48,7 +47,7 @@
 #include <sstream>
 
 namespace game {
-using ScorePair = std::pair<int, long double>;
+using ScorePair = std::pair<int, long int>;
 using Comparator = std::function<bool(ScorePair, ScorePair)>;
 
 void ScoreState::update(std::chrono::nanoseconds timeStep)
@@ -79,7 +78,6 @@ void ScoreState::init()
     Comparator compFunctor = [](ScorePair element1, ScorePair element2) {
         return element1.second > element2.second;
     };
-
     std::set<ScorePair, Comparator> scoreList(m_score.begin(), m_score.end(), compFunctor);
 
     GameState::MVP = scoreList.begin()->first;
@@ -106,28 +104,22 @@ void ScoreState::init()
     m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
 
-    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
-    m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_soundManager);
+    // Add various systems
+    m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager, m_soundManager);
+    m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world);
     m_ecsWorld.addSystem<systems::PositionSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld);
     m_ecsWorld.addSystem<systems::WeaponSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, &m_camera);
     m_ecsWorld.addSystem<systems::ItemSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_inputManager);
     m_ecsWorld.addSystem<systems::InventorySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::items::ReverseGravitySystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, *m_world, m_soundManager);
     m_ecsWorld.addSystem<systems::TeleportSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
+    m_ecsWorld.addSystem<systems::NpcSpawnSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get());
     m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, m_soundManager);
-    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(),
-                                                  m_inputManager, m_soundManager);
-    m_ecsWorld.addSystem<systems::VisualEffectSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
-    m_ecsWorld.addSystem<systems::AISystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld);
-    m_ecsWorld.addSystem<systems::CheatsSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::OutOfBoundsCleanUpSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
-    m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager->getConnectedControllers().size());
-
 
     // Build characters into the ECS and physics world
     game::builders::CharacterBuilder builder{ m_ecsWorld, *m_world, m_inputManager };
@@ -206,7 +198,7 @@ void ScoreState::initPlayers()
     std::vector<engine::ecs::Entity*> inputsToRemove;
 
     common::Vector2D<double> winnerPos;
-    m_ecsWorld.forEachEntityWith<components::PlayerInputComponent, components::AnimationsComponent>([&](auto& entity) {
+    m_ecsWorld.forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
         const auto& playerInputComponent = m_ecsWorld.getComponent<components::PlayerInputComponent>(entity);
 
         if (playerInputComponent.controllerId == GameState::MVP) {
@@ -216,7 +208,7 @@ void ScoreState::initPlayers()
 
         if (playerInputComponent.controllerId != scoreList.rbegin()->first) {
             auto& spriteComponent = m_ecsWorld.getComponent<components::SpriteComponent>(entity);
-            auto& animations = m_ecsWorld.getComponent<components::AnimationsComponent>(entity).animations;
+            auto& animations = m_ecsWorld.getComponent<components::PlayerSpritesComponent>(entity).animations;
 
             const auto& ani = animations.find("Excited");
             if (ani != animations.end()) {
@@ -239,7 +231,7 @@ void ScoreState::initPlayers()
 
     int position = 0;
 
-    m_ecsWorld.forEachEntityWith<components::AnimationsComponent>([&](auto& entity) {
+    m_ecsWorld.forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
         const auto& playerInputComponent = m_ecsWorld.getComponent<components::PlayerInputComponent>(entity);
         auto& body = *m_ecsWorld.getComponent<components::BodyComponent>(entity).body;
 

@@ -3,11 +3,11 @@
 #include <engine/physics/DynamicBody.h>
 #include <engine/sound/SoundEffect.h>
 #include <functional>
-#include <game/components/AnimationsComponent.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/DirectionComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/definitions/Action.h>
@@ -102,7 +102,7 @@ bool PunchingSystem::attemptHitInDirection(const engine::physics::Body* playerBo
 void PunchingSystem::playPunchAnimation(const engine::ecs::Entity& player)
 {
     auto& spriteComponent = m_ecsWorld->getComponent<components::SpriteComponent>(player);
-    auto& animations = m_ecsWorld->getComponent<components::AnimationsComponent>(player).animations;
+    auto& animations = m_ecsWorld->getComponent<components::PlayerSpritesComponent>(player).animations;
     const auto& punchAnimation = animations.find("Attacking");
     if (punchAnimation != animations.end()) {
         spriteComponent = punchAnimation->second;

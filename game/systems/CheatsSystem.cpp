@@ -11,8 +11,8 @@ bool executeInfiniteJump(engine::ecs::World* ecsWorld,
     engine::ecs::Entity& entity)
 {
     if (entity.hasComponent<game::components::JumpComponent>()) {
-        // auto& jumpComponent = ecsWorld->getComponent<game::components::JumpComponent>(entity);
-        // TODO: fix pls
+        auto& jumpComponent = ecsWorld->getComponent<game::components::JumpComponent>(entity);
+        jumpComponent.mayJump = true;
     }
     return false;
 }

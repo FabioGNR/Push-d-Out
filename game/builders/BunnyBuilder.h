@@ -16,8 +16,6 @@ private:
     common::Vector2D<double> m_position{ 0, 0 };
     common::Vector2D<double> m_dimensions{ 1, 1 };
 
-    void addSprites();
-
 public:
     explicit BunnyBuilder(engine::ecs::World* w, engine::physics::World* p);
     BunnyBuilder& setPosition(common::Vector2D<double>);

@@ -5,17 +5,13 @@
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
-#include <game/components/PlayerInputComponent.h>
 #include <game/components/PortalComponent.h>
 #include <game/components/PositionComponent.h>
-#include <game/components/VisualEffectComponent.h>
-#include <game/systems/VisualEffectSystem.h>
-#include <set>
 
 namespace game {
 namespace listeners {
 
-    void ProjectileContactListener::beginContact(engine::physics::Contact& contact)
+    void ProjectileContactListener::beginContact(engine::physics::Contact contact)
     {
         try {
             auto& a = m_ecsWorld->getEntity(contact.a->getEntityId());
@@ -24,34 +20,29 @@ namespace listeners {
             if (a.hasComponent<components::ProjectileComponent>()
                 && !b.hasComponent<components::PortalComponent>()
                 && b.hasComponent<components::BodyComponent>()) {
-                act(a, b, contact);
+                act(a, b, m_ecsWorld->getComponent<components::PositionComponent>(a).position);
             } else if (a.hasComponent<components::BodyComponent>()
                 && !a.hasComponent<components::PortalComponent>()
                 && b.hasComponent<components::ProjectileComponent>()) {
-                act(b, a, contact);
+                act(b, a, m_ecsWorld->getComponent<components::PositionComponent>(b).position);
             }
         } catch (engine::exceptions::EntityNotFoundException&) {
             return; // nothing to do here
         }
     }
 
-    void ProjectileContactListener::act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, engine::physics::Contact& contact)
+    void ProjectileContactListener::act(engine::ecs::Entity& projectile, engine::ecs::Entity& body, common::Vector2D<double> position)
     {
-        auto& projectileComponent = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile);
-
-        if (body.hasComponent<components::PlayerInputComponent>()) {
-            applyForce(body, contact);
-        }
-
-        switch (projectileComponent.type) {
+        auto& proj = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile);
+        switch (proj.type) {
         case definitions::ProjectileType::Force:
-            explode(projectile, FORCE_GUN_RADIUS);
+            applyForce(body, projectile);
             break;
         case definitions::ProjectileType::BluePortal:
-            createPortalNextUpdate(projectile, contact, false);
+            createPortal(position, false);
             break;
         case definitions::ProjectileType::OrangePortal:
-            createPortalNextUpdate(projectile, contact, true);
+            createPortal(position, true);
             break;
         case definitions::ProjectileType::None:
             break;
@@ -60,24 +51,13 @@ namespace listeners {
         m_ecsWorld->destroyEntityNextUpdate(projectile);
     }
 
-    void ProjectileContactListener::createPortalNextUpdate(engine::ecs::Entity& projectile, engine::physics::Contact& contact, bool alternative)
-    {
-        PortalBlueprint bp {};
-        bp.entity = &projectile;
-        bp.contact = &contact;
-        bp.isAlternative = alternative;
-        m_portalsToBuild.push_back(bp);
-    }
-
-    void ProjectileContactListener::endContact(engine::physics::Contact& /* contact */)
+    void ProjectileContactListener::endContact(engine::physics::Contact /* contact */)
     {
     }
 
-    void ProjectileContactListener::createPortal(engine::ecs::Entity& projectile, engine::physics::Contact& contact, bool alternative)
+    void ProjectileContactListener::createPortal(common::Vector2D<double> position, bool alternative)
     {
-        auto position = m_ecsWorld->getComponent<components::PositionComponent>(projectile).position;
-        position += contact.normal;
-
+        position.y += 1;
         auto* entity = findPortal(alternative);
         if (entity != nullptr) {
             auto& pos = m_ecsWorld->getComponent<components::PositionComponent>(*entity);
@@ -90,6 +70,7 @@ namespace listeners {
 
             auto& portal = m_ecsWorld->createEntity();
             auto body = m_physicsWorld->createStaticBody(position, common::Vector2D<double>(.1, 2), portal.id());
+            body->setGravityScale(2);
             body->setSensor(true);
 
             auto posComponent = components::PositionComponent(position);
@@ -104,7 +85,7 @@ namespace listeners {
             auto portalComponent = components::PortalComponent(!alternative);
             m_ecsWorld->addComponent<components::PortalComponent>(portal, portalComponent);
 
-            game::builders::SpriteBuilder builder {
+            game::builders::SpriteBuilder builder{
                 "assets/sprites/equipment/equipment.png",
                 "assets/sprites/equipment/equipment.json"
             };
@@ -131,74 +112,11 @@ namespace listeners {
         return entity;
     }
 
-    void ProjectileContactListener::applyForce(engine::ecs::Entity& body, engine::physics::Contact& contact)
+    void ProjectileContactListener::applyForce(engine::ecs::Entity& body, engine::ecs::Entity& projectile)
     {
         auto& player = m_ecsWorld->getComponent<components::BodyComponent>(body).body;
-        player->applyLinearImpulse(common::Vector2D(-contact.normal.x, -contact.normal.y) * 40);
-    }
-
-    void ProjectileContactListener::explode(engine::ecs::Entity& projectile, double radius)
-    {
-        int amountOfRays = 100;
-        double degrees = 360.0 / amountOfRays;
-        engine::physics::RaycastHit closestHit {};
-        std::set<engine::physics::Body*> pushedBodies;
-        bool hasHit { false };
-        auto& projectilePos = m_ecsWorld->getComponent<components::PositionComponent>(projectile).position;
-        auto& projectileDim = m_ecsWorld->getComponent<components::DimensionComponent>(projectile).dimension;
-        const auto& projectileCenter = projectilePos + projectileDim / 2;
-
-        engine::physics::RaycastCallback callback = [&](engine::physics::RaycastHit hit) {
-            closestHit = hit;
-            hasHit = true;
-            return hit.fraction;
-        };
-
-        common::Vector2D<double> toBase { 0, radius };
-
-        for (int i = 0; i < amountOfRays; i++) {
-            common::Vector2D<double> toVector = toBase.rotateCounterClockwise(i * degrees);
-            m_physicsWorld->raycast(projectileCenter, projectileCenter + toVector, callback);
-            if (hasHit && pushedBodies.find(closestHit.body) == pushedBodies.end()) {
-                common::Vector2D bodyPos = closestHit.body->getPosition() + closestHit.body->getDimensions() / 2;
-                auto impulseVector = bodyPos - projectileCenter;
-                closestHit.body->applyLinearImpulse(impulseVector * std::max(0.0, (radius - impulseVector.magnitude()) * 2));
-                pushedBodies.insert(closestHit.body); // prevent pushing a body more than once
-            }
-            hasHit = false; // reset hit for next ray
-        }
-
-        builders::SpriteBuilder spriteBuilder { "assets/sprites/particles/particles.png", "assets/sprites/particles/particles.json" };
-        auto spriteComponents = spriteBuilder.build();
-        auto spriteComponentPair = spriteComponents.find("ForceExplosion");
-        if (spriteComponentPair != spriteComponents.end()) {
-            auto& spriteEntity = m_ecsWorld->createEntity();
-            auto spriteComponent = spriteComponentPair->second;
-            spriteComponent.loops = false;
-            m_ecsWorld->addComponent<components::SpriteComponent>(spriteEntity, spriteComponent);
-            auto visualEffectComponent = components::VisualEffectComponent {};
-            m_ecsWorld->addComponent<components::VisualEffectComponent>(spriteEntity);
-            auto posComponent = components::PositionComponent { projectileCenter - radius };
-            m_ecsWorld->addComponent<components::PositionComponent>(spriteEntity, posComponent);
-            auto dimComponent = components::DimensionComponent { { radius * 2, radius * 2 } };
-            m_ecsWorld->addComponent<components::DimensionComponent>(spriteEntity, dimComponent);
-        }
-    }
-
-    void ProjectileContactListener::preSolve(engine::physics::Contact& /* contact */)
-    {
-    }
-
-    void ProjectileContactListener::postSolve(engine::physics::Contact& /* contact */)
-    {
-    }
-
-    void ProjectileContactListener::update(std::chrono::nanoseconds /* nanoseconds */)
-    {
-        for (auto& portal : m_portalsToBuild) {
-            createPortal(*portal.entity, *portal.contact, portal.isAlternative);
-        }
-        m_portalsToBuild.clear();
+        auto force = m_ecsWorld->getComponent<components::ProjectileComponent>(projectile).force;
+        player->applyLinearImpulse(force * 40);
     }
 }
 }

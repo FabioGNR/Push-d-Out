@@ -1,10 +1,9 @@
 {
   "name": "Earth",
-  "gravity": -10,
+  "gravity": -9.81,
   "friction": 3,
   "track": "02.wav",
   "sprites": "earth",
-  "movementSpeed": 10,
-  "jumpSpeed": 18,
-  "airSpeedModifier": 0.08
+  "movementSpeed": 7,
+  "jumpSpeed": 7
 }

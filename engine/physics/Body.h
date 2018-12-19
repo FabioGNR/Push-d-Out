@@ -3,7 +3,6 @@
 #include "engine/common/Vector2D.h"
 #include "engine/ecs/Entity.h"
 #include <memory>
-#include <vector>
 
 class b2Body;
 
@@ -58,8 +57,7 @@ namespace physics {
         virtual void setGravityScale(double scale);
         virtual void setEntityId(ecs::EntityId);
         virtual void setBullet(bool);
-        virtual ecs::EntityId getEntityId() const;
-        virtual std::vector<ecs::EntityId> getCollidingEntities() const;
+        virtual ecs::EntityId getEntityId();
     };
 }
 }

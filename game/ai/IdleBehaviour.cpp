@@ -1,7 +1,6 @@
 #include "IdleBehaviour.h"
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/AIComponent.h>
-#include <game/components/AnimationsComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/config/ConfigurationRepository.h>
 
@@ -20,13 +19,11 @@ void IdleBehaviour::act(std::chrono::nanoseconds deltaTime)
 void IdleBehaviour::init()
 {
     m_timeout = COOLDOWN;
-    if (m_entity->hasComponent<components::AnimationsComponent>()) {
-        auto animations = m_world->getComponent<components::AnimationsComponent>(*m_entity).animations;
-        auto sprite = animations.at("BunnyIdle");
-        m_world->removeComponent<components::SpriteComponent>(*m_entity);
-        m_world->addComponent<components::SpriteComponent>(*m_entity, sprite.sprites, sprite.frameCount,
-            sprite.frameTime);
-    }
+    auto config = config::ConfigurationRepository::get();
+    auto sheet = builders::SpriteBuilder{ config.assets + "sprites/npc/bunny.png", config.assets + "sprites/npc/bunny.json" }.build();
+    auto sprite = sheet.at("Idle");
+    m_world->removeComponent<components::SpriteComponent>(*m_entity);
+    m_world->addComponent<components::SpriteComponent>(*m_entity, sprite.sprites, sprite.frameCount, sprite.frameTime);
 }
 
 void IdleBehaviour::exit()

@@ -41,7 +41,7 @@ void TileSpriteSelectionScrollbar::draw(const engine::IRenderer& renderer) const
 
         const auto sprite = [&]() {
             if (tiles[i] == nullptr) {
-                return engine::Sprite("assets/sprites/editor/eraser.png", position, bestSize);
+                return engine::Sprite("assets/sprites/eraser.png", position, bestSize);
             }
 
             auto actualTile = *tiles[i];
