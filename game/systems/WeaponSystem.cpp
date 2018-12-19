@@ -23,11 +23,11 @@
 using namespace game::components;
 using namespace game::definitions;
 
-engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity &entity,
-                                         const common::Vector2D<double> &playerPosition,
-                                         engine::physics::World *physicsWorld,
-                                         engine::ecs::World *ecsWorld,
-                                         common::Vector2D<double> &direction)
+engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity& entity,
+    const common::Vector2D<double>& playerPosition,
+    engine::physics::World* physicsWorld,
+    engine::ecs::World* ecsWorld,
+    common::Vector2D<double>& direction)
 {
     auto playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
@@ -36,11 +36,11 @@ engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity &entity,
     common::Vector2D<double> projPos = playerPosition + playerDimension / 2 + (shootDirection * 1.5);
 
     auto& projectileEntity = ecsWorld->createEntity();
-    auto posComponent = PositionComponent(playerPosition);
+    auto posComponent = PositionComponent(projPos);
     ecsWorld->addComponent<PositionComponent>(projectileEntity, posComponent);
 
     auto projectileBody = physicsWorld->createDynamicBody(projPos, dimensionVector, projectileEntity.id());
-    projectileBody->setLinearVelocity(direction * 20);
+    projectileBody->setLinearVelocity(direction * 18);
     projectileBody->setDensity(2);
     projectileBody->setGravityScale(2);
     projectileBody->setBullet(true);
@@ -52,7 +52,7 @@ engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity &entity,
     auto projectileComponent = ProjectileComponent(game::definitions::WeaponType::GrenadeLauncher, game::definitions::ProjectileType::Grenade);
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
     ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
-    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce(common::Vector2D<double>((direction.x > 0 ? -600 : 600), 0), playerPosition);
+    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce((direction * 1000) * -1, playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/projectiles/projectiles.png", "assets/sprites/projectiles/projectiles.json" }.build();
     auto sprite = sprites.find("GrenadeProjectile");
@@ -62,11 +62,11 @@ engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity &entity,
     return projectileEntity;
 }
 
-engine::ecs::Entity& fireForceGun(const engine::ecs::Entity &entity,
-                                  const common::Vector2D<double> &playerPosition,
-                                  engine::physics::World *physicsWorld,
-                                  engine::ecs::World *ecsWorld,
-                                  common::Vector2D<double> &direction)
+engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
+    const common::Vector2D<double>& playerPosition,
+    engine::physics::World* physicsWorld,
+    engine::ecs::World* ecsWorld,
+    common::Vector2D<double>& direction)
 {
     auto& playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
@@ -76,7 +76,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity &entity,
     common::Vector2D<double> projPos = playerPosition + playerDimension / 2 + shootDirection - dimensionVector / 2;
 
     auto& projectileEntity = ecsWorld->createEntity();
-    auto posComponent = PositionComponent(playerPosition);
+    auto posComponent = PositionComponent(projPos);
     ecsWorld->addComponent<PositionComponent>(projectileEntity, posComponent);
 
     auto projectileBody = physicsWorld->createDynamicBody(projPos, dimensionVector, projectileEntity.id());
@@ -92,7 +92,7 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity &entity,
     auto projectileComponent = ProjectileComponent(game::definitions::WeaponType::ForceGun, game::definitions::ProjectileType::Force);
     ecsWorld->addComponent<ProjectileComponent>(projectileEntity, projectileComponent);
     ecsWorld->addComponent<OnOutOfBoundsDeleteComponent>(projectileEntity);
-    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce((direction * 600) * -1, playerPosition);
+    ecsWorld->getComponent<BodyComponent>(entity).body->applyForce((direction * 500) * -1, playerPosition);
 
     auto sprites = game::builders::SpriteBuilder{ "assets/sprites/projectiles/projectiles.png", "assets/sprites/projectiles/projectiles.json" }.build();
     auto sprite = sprites.find("ForceGunProjectile");

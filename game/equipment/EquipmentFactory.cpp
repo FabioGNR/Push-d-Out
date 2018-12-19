@@ -32,7 +32,7 @@ namespace equipment {
         engine::ecs::World& ecsWorld,
         std::map<std::string, components::SpriteComponent> spriteComponentMap)
     {
-        WeaponComponent weaponComponent{ definitions::WeaponType::ForceGun, 1, definitions::ProjectileType::Force };
+        WeaponComponent weaponComponent{ definitions::WeaponType::ForceGun, 0.75, definitions::ProjectileType::Force };
         ecsWorld.addComponent<WeaponComponent>(entity, weaponComponent);
         auto spriteComponentPair = spriteComponentMap.find("ForceGun");
         if (spriteComponentPair != spriteComponentMap.end()) {
