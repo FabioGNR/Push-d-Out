@@ -8,8 +8,17 @@
 #include <engine/graphics/drawable/RectangleShape.h>
 #include <engine/graphics/drawable/Sprite.h>
 #include <game/components/SpriteComponent.h>
+#include <queue>
 
 #include <utility>
+
+class Compare {
+public:
+    bool operator()(std::pair<int, engine::Sprite>& lhs, std::pair<int, engine::Sprite>& rhs)
+    {
+        return lhs.first < rhs.first;
+    }
+};
 
 namespace game {
 namespace systems {
@@ -18,8 +27,9 @@ namespace systems {
         engine::ecs::World* m_world;
         engine::graphics::Camera* m_camera;
         std::vector<std::pair<int, engine::Sprite>> m_sprites;
-        std::function<bool(std::pair<int, engine::Sprite> lhs, std::pair<int, engine::Sprite> rhs)> compareFunc =
-            [](std::pair<int, engine::Sprite> lhs, std::pair<int, engine::Sprite> rhs) { return lhs.first < rhs.first; };
+        std::function<bool(std::pair<int, engine::Sprite>& lhs, std::pair<int, engine::Sprite>& rhs)> compareFunc =
+            [](std::pair<int, engine::Sprite>& lhs, std::pair<int, engine::Sprite>& rhs) { return lhs.first < rhs.first; };
+        std::priority_queue<std::pair<int, engine::Sprite>, std::vector<std::pair<int, engine::Sprite>>, Compare> pq;
 
         void advanceFrame(components::SpriteComponent& spriteComponent);
 
