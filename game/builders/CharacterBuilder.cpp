@@ -138,8 +138,6 @@ namespace builders {
             components::LifeComponent lifeComponent{ 3 };
             m_ecsWorld.addComponent<components::LifeComponent>(players[i], lifeComponent);
 
-            equipment::EquipmentFactory ef{ m_ecsWorld };
-
             // Add empty inventory to player
             components::InventoryComponent inventoryComponent{};
             m_ecsWorld.addComponent<components::InventoryComponent>(players[i], inventoryComponent);

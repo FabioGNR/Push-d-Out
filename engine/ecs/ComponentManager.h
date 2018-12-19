@@ -4,11 +4,11 @@
 #include "Entity.h"
 
 #include <cassert>
+#include <engine/exceptions/ComponentNotFoundException.h>
 #include <memory>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
-#include <engine/exceptions/ComponentNotFoundException.h>
 
 namespace engine {
 namespace ecs {
