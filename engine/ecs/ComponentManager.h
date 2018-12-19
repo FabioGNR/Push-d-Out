@@ -4,7 +4,6 @@
 #include "Entity.h"
 
 #include <cassert>
-#include <engine/exceptions/ComponentNotFoundException.h>
 #include <memory>
 #include <type_traits>
 #include <unordered_map>
@@ -59,19 +58,12 @@ namespace ecs {
 
         Component& get(const EntityId entityId) const
         {
-            if (m_components.find(entityId) == m_components.end()) {
-                throw exceptions::ComponentNotFoundException();
-            }
             return *static_cast<Component*>(m_components.at(entityId).get());
         }
 
         Component& get(const Entity& entity) const
         {
-            try {
-                return get(entity.id());
-            } catch (...) {
-                throw;
-            }
+            return get(entity.id());
         }
 
         ComponentMap& getAll()

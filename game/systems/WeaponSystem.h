@@ -23,13 +23,13 @@ namespace systems {
         engine::input::maps::InputMaps* m_inputMaps;
 
         void updateLastFiredTimers(const std::chrono::nanoseconds& timeStep) const;
-        void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection);
-        void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection);
+        void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
+        void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
 
         std::map<definitions::WeaponType, WeaponFireFunc> fireFunctionMap;
         std::map<definitions::WeaponType, WeaponFireFunc> altFireFunctionMap;
 
-        void calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent, bool mouse);
+        common::Vector2D<double> calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<int>& direction, const game::components::DirectionComponent& directionComponent);
 
     public:
         WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::graphics::Camera* camera);

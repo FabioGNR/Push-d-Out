@@ -14,7 +14,7 @@ namespace ui {
         if (navigate) {
             size_t navigatableComponentCount = getNavigatableComponentCount();
             bool goForward = inputMap.hasState(Keys::S, States::PRESSED);
-            goForward = inputMap.getValue(AnalogKeys::CON_LEFTSTICK_Y) > 0 ? true : goForward;
+            goForward = inputMap.getValue(AnalogKeys::CON_LEFTSTICK_Y) > 1 ? true : goForward;
             if (goForward) {
                 m_activeComponent++;
                 if (m_activeComponent >= navigatableComponentCount) {

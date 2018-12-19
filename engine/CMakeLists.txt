@@ -160,7 +160,7 @@ set(EXCEPTION_SRC
         exceptions/SDLMixerException.h
         exceptions/ResourceNotFoundException.h
         exceptions/EntityNotFoundException.h
-        exceptions/ComponentNotFoundException.h)
+        )
 
 set(UI_SRC
         ui/Frame.cpp

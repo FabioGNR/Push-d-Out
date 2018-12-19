@@ -10,7 +10,7 @@ namespace events {
         int m_ID;
         input::Keys m_key;
         input::AnalogKeys m_analogKey;
-        double m_axisValue;
+        int m_axisValue;
         bool m_keyDown;
         bool m_isAnalog = false;
 
@@ -19,7 +19,7 @@ namespace events {
             , m_key{ key }
             , m_keyDown{ keyDown } {};
 
-        ControllerEvent(int ID, input::AnalogKeys analogKey, double axisValue)
+        ControllerEvent(int ID, input::AnalogKeys analogKey, int axisValue)
             : m_ID(ID)
             , m_analogKey(analogKey)
             , m_axisValue(axisValue)

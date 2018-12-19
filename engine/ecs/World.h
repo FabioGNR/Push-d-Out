@@ -43,11 +43,7 @@ namespace ecs {
         template <typename Component>
         Component& getComponent(const Entity& entity)
         {
-            try {
-                return m_componentManager.getManager<Component>().get(entity);
-            } catch (...) {
-                throw;
-            }
+            return m_componentManager.getManager<Component>().get(entity);
         }
 
         template <typename Component, typename... ComponentArgs>
