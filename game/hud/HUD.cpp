@@ -61,7 +61,7 @@ HUD::HUD(engine::Window& window,
         return a.name < b.name;
     });
 
-    for (int i = 0; i < players.size(); ++i) {
+    for (size_t i = 0; i < players.size(); ++i) {
         const auto& player = players[i];
         const auto& size = m_hudSize.at(i);
         m_playerInfo[player.name] = std::make_unique<ui::PlayerInfo>(player.id, player.name, player.color, size.first, size.second, i % 2);
