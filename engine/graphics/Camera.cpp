@@ -65,10 +65,8 @@ namespace graphics {
         const auto viewStart = getViewStart();
         const auto viewEnd = viewStart + getVisibleRegionSize();
         const auto end = position + size;
-        bool xVisible = (position.x >= viewStart.x && position.x <= viewEnd.x)
-            || (end.x >= viewStart.x && end.x <= viewEnd.x);
-        bool yVisible = (position.y >= viewStart.y && position.y <= viewEnd.y)
-            || (end.y >= viewStart.y && end.y <= viewEnd.y);
+        bool xVisible = (end.x >= viewStart.x && position.x <= viewEnd.x);
+        bool yVisible = (end.y >= viewStart.y && position.y <= viewEnd.y);
         return xVisible && yVisible;
     }
 

@@ -42,7 +42,7 @@ namespace systems {
                 if (elapsedSeconds >= spriteComponent.frameTime) {
                     advanceFrame(spriteComponent);
                 }
-                m_sprites.push_back(sprite);
+                m_sprites.emplace_back(sprite);
             }
         });
     }

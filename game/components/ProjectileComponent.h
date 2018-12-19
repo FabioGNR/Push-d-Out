@@ -3,6 +3,7 @@
 #include <engine/ecs/Component.h>
 #include <game/definitions/ProjectileType.h>
 #include <game/definitions/WeaponType.h>
+#include "engine/common/Vector2D.h"
 
 namespace game {
 namespace components {

@@ -7,7 +7,7 @@
 #include <game/components/PlayerInputComponent.h>
 #include <game/components/WeaponComponent.h>
 
-bool executeInfiniteJump(engine::ecs::World* ecsWorld,
+bool executeInfiniteJump(engine::ecs::World* /*ecsWorld*/,
     engine::ecs::Entity& entity)
 {
     if (entity.hasComponent<game::components::JumpComponent>()) {
