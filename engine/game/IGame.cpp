@@ -87,4 +87,14 @@ void IGame::clearStates()
         m_states.pop();
     }
 }
+
+State* IGame::getPreviousStateByIndex(int index)
+{
+    if (m_states.empty() || m_states.size() == 1) {
+        return nullptr;
+    }
+    auto currentState = std::find(m_states.begin(), m_states.end(), m_states.top());
+    currentState -= index;
+    return (*currentState).get();
+}
 }

@@ -3,6 +3,7 @@
 namespace game::level {
 enum class TileType {
     PLATFORM,
-    SPAWN
+    SPAWN,
+    PROP
 };
 }

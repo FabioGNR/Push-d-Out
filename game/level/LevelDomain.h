@@ -21,6 +21,12 @@ namespace level {
         PlatformKind kind{};
     };
 
+    struct Prop {
+        double x{};
+        double y{};
+        std::string sprite{};
+    };
+
     struct SpawnPoint {
         double x;
         double y;
@@ -35,6 +41,7 @@ namespace level {
         int width;
 
         std::vector<Tile> tiles;
+        std::vector<Prop> props;
         std::vector<SpawnPoint> CharacterSpawns;
         std::vector<SpawnPoint> EquipmentSpawns;
     };
@@ -44,6 +51,9 @@ namespace level {
 
     void to_json(json& j, const Tile& t);
     void from_json(const json& j, Tile& t);
+
+    void to_json(json& j, const Prop& p);
+    void from_json(const json& j, Prop& p);
 
     void to_json(json& j, const SpawnPoint& s);
     void from_json(const json& j, SpawnPoint& s);

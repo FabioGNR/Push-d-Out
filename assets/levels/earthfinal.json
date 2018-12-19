@@ -1,0 +1,551 @@
+{
+    "CharacterSpawns": [
+        {
+            "x": 14.0,
+            "y": 18.0
+        },
+        {
+            "x": 25.0,
+            "y": 18.0
+        },
+        {
+            "x": 10.0,
+            "y": 9.0
+        },
+        {
+            "x": 29.0,
+            "y": 9.0
+        }
+    ],
+    "EquipmentSpawns": [
+        {
+            "x": 4.0,
+            "y": 15.0
+        },
+        {
+            "x": 35.0,
+            "y": 15.0
+        },
+        {
+            "x": 2.0,
+            "y": 2.0
+        },
+        {
+            "x": 37.0,
+            "y": 2.0
+        }
+    ],
+    "Meta": {
+        "height": 24,
+        "name": "earthfinal",
+        "theme": "Earth",
+        "width": 40
+    },
+    "PlatformTiles": [
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 12.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 13.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 14.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 15.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 16.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 23.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 24.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 25.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 26.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 27.0,
+            "y": 17.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 1.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 2.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 3.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 4.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 5.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 6.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 7.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 8.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 31.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 32.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 33.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 34.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 35.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 36.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 37.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 38.0,
+            "y": 14.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 16.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 18.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 19.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 20.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 21.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 22.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 23.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 24.0,
+            "y": 12.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 8.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 9.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 10.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 11.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 12.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 27.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 28.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 29.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 30.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 31.0,
+            "y": 8.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 17.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 18.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 19.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 20.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 21.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 22.0,
+            "y": 5.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 0.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 1.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 2.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 3.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 4.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 5.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 6.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 14.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 15.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 16.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 17.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 18.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 19.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 20.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 21.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 22.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 23.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 24.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 25.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 33.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 34.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 35.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 36.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 37.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleSingleDepth",
+            "x": 38.0,
+            "y": 1.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 39.0,
+            "y": 1.0
+        }
+    ],
+    "Props": [
+        {
+            "sprite": "tree",
+            "x": 13.0,
+            "y": 18.0
+        },
+        {
+            "sprite": "tree",
+            "x": 6.0,
+            "y": 15.0
+        },
+        {
+            "sprite": "fence",
+            "x": 33.0,
+            "y": 15.0
+        },
+        {
+            "sprite": "rock",
+            "x": 1.0,
+            "y": 15.0
+        },
+        {
+            "sprite": "rock2",
+            "x": 20.0,
+            "y": 13.0
+        },
+        {
+            "sprite": "tree",
+            "x": 29.0,
+            "y": 9.0
+        },
+        {
+            "sprite": "rock",
+            "x": 20.0,
+            "y": 2.0
+        }
+    ]
+}

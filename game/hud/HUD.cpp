@@ -1,4 +1,6 @@
 #include "HUD.h"
+#include "ui/PlayerInfo.h"
+#include "ui/PlayerName.h"
 
 #include <engine/common/RNG.h>
 #include <engine/graphics/Camera.h>
@@ -7,6 +9,8 @@
 #include <game/components/PlayerNameComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/exceptions/PlayerAmountOutOfBoundsException.h>
+
+#include <string>
 
 namespace game::hud {
 HUD::HUD(engine::Window& window,
@@ -32,6 +36,36 @@ HUD::HUD(engine::Window& window,
     m_hudSize.at(1) = std::pair(common::Vector2D<int>{ windowSize.x - size.x, 0 }, size);
     m_hudSize.at(2) = std::pair(common::Vector2D<int>{ 0, windowSize.y - size.y }, size);
     m_hudSize.at(3) = std::pair(common::Vector2D<int>{ windowSize.x - size.x, windowSize.y - size.y }, size);
+
+    struct Info {
+        engine::ecs::Entity* id;
+        std::string name;
+        ui::PlayerName::Color color;
+    };
+    std::vector<Info> players;
+    const std::map<std::string, ui::PlayerName::Color> spriteToColor = {
+        { "assets/sprites/players/PlayerBlue.png", ui::PlayerName::Color::BLUE },
+        { "assets/sprites/players/PlayerRed.png", ui::PlayerName::Color::RED },
+        { "assets/sprites/players/PlayerGreen.png", ui::PlayerName::Color::GREEN },
+        { "assets/sprites/players/PlayerYellow.png", ui::PlayerName::Color::YELLOW },
+    };
+
+    m_world.forEachEntityWith<components::PlayerNameComponent, components::SpriteComponent, components::LifeComponent>([&](engine::ecs::Entity& entity) {
+        const auto& name = m_world.getComponent<components::PlayerNameComponent>(entity).name;
+        const auto& sprite = m_world.getComponent<components::SpriteComponent>(entity).sprites.front().spriteSheet;
+        auto color = spriteToColor.at(sprite);
+
+        players.push_back({ &entity, name, color });
+    });
+    std::sort(players.begin(), players.end(), [](const auto& a, const auto& b) -> bool {
+        return a.name < b.name;
+    });
+
+    for (int i = 0; i < players.size(); ++i) {
+        const auto& player = players[i];
+        const auto& size = m_hudSize.at(i);
+        m_playerInfo[player.name] = std::make_unique<ui::PlayerInfo>(player.id, player.name, player.color, size.first, size.second, i % 2);
+    }
 }
 
 HUD::~HUD()
@@ -59,22 +93,12 @@ void HUD::render(engine::IRenderer& renderer)
 
 void HUD::updateLives()
 {
-    m_foundPlayers = 0;
     m_world.forEachEntityWith<components::LifeComponent>([&](engine::ecs::Entity& entity) {
         std::string name = m_world.getComponent<components::PlayerNameComponent>(entity).name;
-        // 4 is max players atm
-        if (m_foundPlayers < 4) {
-            // Assign new player to PlayerInfo UI
-            if (m_playerInfo.count(entity.id()) == 0) {
-                auto size = m_hudSize.at(m_foundPlayers);
-                m_playerInfo[entity.id()] = std::make_unique<ui::PlayerInfo>(&entity, name, size.first, size.second, m_foundPlayers % 2);
-                ++m_foundPlayers;
-            }
-        }
 
         const auto lives = m_world.getComponent<components::LifeComponent>(entity).count;
 
-        auto* playerInfo = m_playerInfo.at(entity.id()).get();
+        auto* playerInfo = m_playerInfo.at(name).get();
         playerInfo->setRemainingLifes(lives);
         if (lives <= 0) {
             playerInfo->setAlpha(75);

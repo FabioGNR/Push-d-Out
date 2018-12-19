@@ -39,6 +39,10 @@ namespace level {
         builders::SpriteBuilder miscSpriteBuilder{ basePath + "misc/misc.png", basePath + "misc/misc.json" };
         auto miscSpriteComponentMap = miscSpriteBuilder.build();
 
+        // Get a map with equipment spawn animations
+        builders::SpriteBuilder propSpriteBuilder{ baseThemePath + levelSheet + "/props.png", baseThemePath + levelSheet + "/props.json" };
+        auto propSpriteMap = propSpriteBuilder.build();
+
         makePlatforms(world, physics, level);
 
         for (const auto& curSpawn : level.CharacterSpawns) {
@@ -76,6 +80,27 @@ namespace level {
             // Add an equipment spawner component to equipment spawn entity
             auto spawnerComponent = components::EquipmentSpawnerComponent(10);
             world.addComponent<components::EquipmentSpawnerComponent>(entity, spawnerComponent);
+        }
+
+        for (const auto& prop : level.props) {
+
+            auto spriteComponentPair = propSpriteMap.find(prop.sprite);
+            if (spriteComponentPair != propSpriteMap.end()) {
+                auto& entity = world.createEntity();
+
+                common::Vector2D<double> position{ prop.x, prop.y };
+
+                // Add a position component to prop entity
+                auto posComponent = components::PositionComponent(position);
+                world.addComponent<components::PositionComponent>(entity, posComponent);
+
+                const auto& spriteComponent = spriteComponentPair->second;
+                world.addComponent<components::SpriteComponent>(entity, spriteComponent);
+
+                const auto& spriteSize = spriteComponent.sprites.front().size;
+                auto dimensionComponent = components::DimensionComponent(spriteSize.castTo<double>() / 16);
+                world.addComponent<components::DimensionComponent>(entity, dimensionComponent);
+            }
         }
     }
 
@@ -129,20 +154,21 @@ namespace level {
             } while (nextTile != nullptr);
 
             auto& entity = world.createEntity();
-            common::Vector2D<double> position{ currentTile.x, currentTile.y };
-
-            // Add a position component to tile entity
-            auto posComponent = components::PositionComponent(position);
-            world.addComponent<components::PositionComponent>(entity, posComponent);
-            world.addComponent<components::TileComponent>(entity);
-
-            // Add a body component to tile entity
-            auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, bodySize, entity.id()));
-            world.addComponent<components::BodyComponent>(entity, std::move(bodyComponent));
 
             // Add a sprite component to tile entity
             auto spriteComponentPair = tileSpriteComponentMap.find(currentTile.sprite);
             if (spriteComponentPair != tileSpriteComponentMap.end()) {
+                common::Vector2D<double> position{ currentTile.x, currentTile.y };
+
+                // Add a position component to tile entity
+                auto posComponent = components::PositionComponent(position);
+                world.addComponent<components::PositionComponent>(entity, posComponent);
+                world.addComponent<components::TileComponent>(entity);
+
+                // Add a body component to tile entity
+                auto bodyComponent = components::BodyComponent(physics.createStaticBody(position, bodySize, entity.id()));
+                world.addComponent<components::BodyComponent>(entity, std::move(bodyComponent));
+
                 auto spriteComponent = spriteComponentPair->second;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }

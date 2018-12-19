@@ -20,14 +20,12 @@ const common::Vector2D<double> PlayerInfo::ITEM_POSITION = common::Vector2D<doub
 const common::Vector2D<double> PlayerInfo::ITEM_POSITION_FLIPPED = common::Vector2D<double>(150, 80);
 const common::Vector2D<double> PlayerInfo::LIFE_POSITION = common::Vector2D<double>(120, 0);
 const common::Vector2D<double> PlayerInfo::LIFE_POSITION_FLIPPED = common::Vector2D<double>(220, 0);
-const common::Vector2D<double> PlayerInfo::NAME_POSITION = common::Vector2D<double>(150, 120);
-const common::Vector2D<double> PlayerInfo::NAME_POSITION_FLIPPED = common::Vector2D<double>(200, 120);
+const common::Vector2D<double> PlayerInfo::NAME_POSITION = common::Vector2D<double>(130, 120);
+const common::Vector2D<double> PlayerInfo::NAME_POSITION_FLIPPED = common::Vector2D<double>(220, 120);
 
-PlayerInfo::PlayerInfo(engine::ecs::Entity* entity, std::string playerName, const common::Vector2D<int>& position, const ::common::Vector2D<int>& size, bool flipped)
+PlayerInfo::PlayerInfo(engine::ecs::Entity* entity, const std::string& playerName, PlayerName::Color color, const common::Vector2D<int>& position, const ::common::Vector2D<int>& size, bool flipped)
     : m_surface(position, size, 255)
     , m_flipped(flipped)
-    , m_playerName(std::move(playerName))
-    , m_name(nullptr)
     , m_primarySlot(nullptr)
     , m_secondarySlot(nullptr)
     , m_itemSlot(nullptr)
@@ -35,9 +33,9 @@ PlayerInfo::PlayerInfo(engine::ecs::Entity* entity, std::string playerName, cons
     , m_player(entity)
 {
     if (m_flipped) {
-        initFlipped();
+        initFlipped(playerName, color);
     } else {
-        init();
+        init(playerName, color);
     }
 }
 
@@ -69,16 +67,15 @@ const common::Vector2D<int>& PlayerInfo::size() const
     return m_surface.size();
 }
 
-void PlayerInfo::init()
+void PlayerInfo::init(const std::string& name, PlayerName::Color color)
 {
-    auto name = std::make_unique<engine::Font>(
-        "assets/fonts/8bit.ttf",
-        m_playerName,
-        24,
-        engine::Color(255, 255, 255, 255),
-        PlayerInfo::NAME_POSITION.castTo<int>());
-    m_name = name.get();
-    m_surface.addShape(std::move(name));
+    auto playerName = std::make_unique<PlayerName>(
+        name,
+        color,
+        PlayerInfo::NAME_POSITION.castTo<int>(),
+        common::Vector2D<int>{ 64, 64 });
+    m_playerName = playerName.get();
+    m_surface.addShape(std::move(playerName));
 
     auto primarySlot = std::make_unique<ItemBubble>(
         PlayerInfo::PRIMARY_POSITION,
@@ -105,18 +102,17 @@ void PlayerInfo::init()
     m_surface.addShape(std::move(lifeBar));
 }
 
-void PlayerInfo::initFlipped()
+void PlayerInfo::initFlipped(const std::string& name, PlayerName::Color color)
 {
     auto width = m_surface.size().x;
 
-    auto name = std::make_unique<engine::Font>(
-        "assets/fonts/8bit.ttf",
-        m_playerName,
-        24,
-        engine::Color(255, 255, 255, 255),
-        common::Vector2D(width - PlayerInfo::NAME_POSITION_FLIPPED.x, PlayerInfo::NAME_POSITION_FLIPPED.y).castTo<int>());
-    m_name = name.get();
-    m_surface.addShape(std::move(name));
+    auto playerName = std::make_unique<PlayerName>(
+        name,
+        color,
+        common::Vector2D(width - PlayerInfo::NAME_POSITION_FLIPPED.x, PlayerInfo::NAME_POSITION_FLIPPED.y).castTo<int>(),
+        common::Vector2D<int>{ 64, 64 });
+    m_playerName = playerName.get();
+    m_surface.addShape(std::move(playerName));
 
     auto primarySlot = std::make_unique<ItemBubble>(
         common::Vector2D(width - PlayerInfo::PRIMARY_POSITION_FLIPPED.x, PlayerInfo::PRIMARY_POSITION_FLIPPED.y),

@@ -71,9 +71,6 @@ void GameState::init()
     engine::sound::Music music("assets/sounds/" + level.theme.trackName);
     m_soundManager->play(music);
 
-    // Create HUD
-    m_hud = std::make_unique<game::hud::HUD>(game.window(), m_ecsWorld, &m_camera, m_inputManager);
-
     // Add various systems
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_soundManager);
@@ -110,6 +107,9 @@ void GameState::init()
     builder.build();
 
     m_ecsWorld.addSystem<systems::PlayerNameSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+
+    // Create HUD
+    m_hud = std::make_unique<game::hud::HUD>(game.window(), m_ecsWorld, &m_camera, m_inputManager);
 
     std::map<std::string, components::SpriteComponent> map = builders::SpriteBuilder{ "assets/sprites/misc/misc.png", "assets/sprites/misc/misc.json" }.build();
     m_ecsWorld.forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {

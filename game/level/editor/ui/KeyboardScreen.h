@@ -2,6 +2,7 @@
 
 #include <engine/graphics/drawable/Font.h>
 #include <engine/graphics/drawable/RectangleShape.h>
+#include <engine/graphics/drawable/Sprite.h>
 
 #include <array>
 #include <functional>
@@ -13,7 +14,7 @@ class IRenderer;
 
 namespace game::level::editor::ui {
 struct KeyboardButton {
-    engine::RectangleShape buttonShape;
+    engine::Sprite buttonShape;
     engine::Font buttonText;
     std::function<void()> onClick;
 };
@@ -76,15 +77,16 @@ private:
     {
         for (size_t i = 0; i < row.NUM_BUTTONS; ++i) {
             row.buttons.at(i) = std::make_unique<KeyboardButton>(KeyboardButton{
-                engine::RectangleShape{
+                engine::Sprite{
+                    "assets/sprites/ui/button_grey_up.png",
                     common::Vector2D<int>{ static_cast<int>(buttonPositionBegin.x + i * buttonSize.x), buttonPositionBegin.y },
                     buttonSize,
-                    engine::Color(0, 0, 0, 255) },
+                },
                 engine::Font{
                     "assets/fonts/Pixeled.ttf",
                     keyboardText.at(i),
                     32,
-                    engine::Color{ 255, 255, 255, 255 },
+                    engine::Color{ 30, 30, 30, 255 },
                     common::Vector2D<int>{ static_cast<int>(buttonPositionBegin.x + i * buttonSize.x + buttonSize.x / 2), buttonPositionBegin.y } },
                 [i, func]() {
                     func(i);

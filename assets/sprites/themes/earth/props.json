@@ -1,0 +1,106 @@
+{
+    "Animations": [
+        {
+            "name": "fence",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "house",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 48
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 32 
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "lightpost",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 48
+            },
+            "topLeft": {
+                "x": 48,
+                "y": 32 
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rock",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 48,
+                "y": 0 
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rock2",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 64,
+                "y": 16 
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "tree",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 64,
+                "y": 48 
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    ]
+}

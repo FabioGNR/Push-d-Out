@@ -8,12 +8,11 @@
 #include <array>
 #include <memory>
 
-namespace engine {
-class IRenderer;
-}
+#include "ISelectionScrollbar.h"
 
 namespace game::level::editor::ui {
-class TileSpriteSelectionScrollbar : public engine::IGraphicsElement {
+class TileSpriteSelectionScrollbar : public ISelectionScrollbar {
+protected:
     TileSet* m_tileSet;
     engine::Sprite m_backgroundShape;
 
@@ -25,7 +24,7 @@ public:
     const common::Vector2D<int>& position() const override;
     void setPosition(const common::Vector2D<int>& position) override;
 
-    const common::Vector2D<int>& getSize();
-    void setSize(const common::Vector2D<int>& size);
+    const common::Vector2D<int>& getSize() override;
+    void setSize(const common::Vector2D<int>& size) override;
 };
 } // end namespace

@@ -6,6 +6,8 @@ namespace ui {
         Stretch,
         Fit,
         Minimum,
+        Relative,
+        Absolute
     };
 }
 }

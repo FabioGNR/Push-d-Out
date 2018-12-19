@@ -13,6 +13,8 @@ class Font : public IGraphicsElement {
     int m_fontSize;
     Color m_color;
 
+    int m_fontOutline{ 0 };
+
     common::Vector2D<int> m_position;
 
 public:

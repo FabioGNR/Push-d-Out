@@ -62,7 +62,7 @@ void KeyboardScreen::draw(const engine::IRenderer& renderer) const
 
 void KeyboardScreen::move(int x, int y)
 {
-    getButton(m_currentX, m_currentY)->buttonShape.setColor(engine::Color{ 0, 0, 0, 255 });
+    getButton(m_currentX, m_currentY)->buttonShape.setSpritePath("assets/sprites/ui/button_grey_up.png");
     m_currentY = std::clamp(m_currentY - y, 0, 4);
     switch (m_currentY) {
     case 0: {
@@ -83,7 +83,7 @@ void KeyboardScreen::move(int x, int y)
     default:
         break;
     }
-    getButton(m_currentX, m_currentY)->buttonShape.setColor(engine::Color{ 128, 128, 128, 255 });
+    getButton(m_currentX, m_currentY)->buttonShape.setSpritePath("assets/sprites/ui/button_grey_down.png");
 }
 
 void KeyboardScreen::initNumRow(const common::Vector2D<int>& buttonPositionBegin, const common::Vector2D<int>& buttonSize)

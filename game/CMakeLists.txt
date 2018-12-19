@@ -156,8 +156,11 @@ set(LEVEL_SRC
         level/editor/ui/PlatformTile.h
         level/editor/ui/SpawnTile.cpp
         level/editor/ui/SpawnTile.h
+        level/editor/ui/PropTile.cpp
+        level/editor/ui/PropTile.h
         level/editor/ui/TileSet.cpp
         level/editor/ui/TileSet.h
+        level/editor/ui/ISelectionScrollbar.h
         level/editor/ui/TileSpriteSelectionScrollbar.cpp
         level/editor/ui/TileSpriteSelectionScrollbar.h
         level/reader/LevelReader.cpp
@@ -187,6 +190,8 @@ set(HUD_SRC
         hud/ui/PlayerInfo.h
         hud/ui/LifeBar.cpp
         hud/ui/LifeBar.h
+        hud/ui/PlayerName.cpp 
+        hud/ui/PlayerName.h
         )
 
 set(CONFIG_SRC
@@ -212,6 +217,13 @@ set(BUILDER_SRC
         builders/BunnyBuilder.h
         components/PlayerNameComponent.h)
 
+set(UI_SRC
+        ui/MenuButton.cpp 
+        ui/MenuButton.h 
+        ui/MenuSlider.cpp 
+        ui/MenuSlider.h
+        )
+
 find_package(Boost COMPONENTS
         filesystem REQUIRED)
 
@@ -234,6 +246,7 @@ add_executable(PushdOut
         ${HUD_SRC}
         ${EQUIPMENT_SRC}
         ${CONFIG_SRC}
+        ${UI_SRC}
         )
 
 target_link_libraries(PushdOut engine ${Boost_LIBRARIES})

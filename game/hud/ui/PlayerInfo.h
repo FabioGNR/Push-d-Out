@@ -2,14 +2,18 @@
 
 #include "ItemBubble.h"
 #include "LifeBar.h"
+#include "PlayerName.h"
 
 #include <engine/graphics/IGraphicsElement.h>
 #include <engine/graphics/drawable/Font.h>
+#include <engine/graphics/drawable/Sprite.h>
 #include <engine/graphics/drawable/Surface.h>
 
 #include <engine/ecs/Entity.h>
 #include <engine/ecs/World.h>
+
 #include <memory>
+#include <string>
 
 namespace game::hud::ui {
 class PlayerInfo : public engine::IGraphicsElement {
@@ -32,21 +36,20 @@ private:
     engine::Surface m_surface;
     bool m_flipped;
 
-    std::string m_playerName;
-    engine::Font* m_name;
+    PlayerName* m_playerName;
     ItemBubble* m_primarySlot;
     ItemBubble* m_secondarySlot;
     ItemBubble* m_itemSlot;
     LifeBar* m_lifeBar;
     engine::ecs::Entity* m_player;
 
-    void init();
-    void initFlipped();
+    void init(const std::string& name, PlayerName::Color color);
+    void initFlipped(const std::string& name, PlayerName::Color color);
 
     void updateEquipment(engine::ecs::World& world, engine::ecs::Entity*, ItemBubble* bubble);
 
 public:
-    PlayerInfo(engine::ecs::Entity* entity, std::string playerName, const common::Vector2D<int>& position, const ::common::Vector2D<int>& size, bool flipped = false);
+    PlayerInfo(engine::ecs::Entity* entity, const std::string& playerName, PlayerName::Color, const common::Vector2D<int>& position, const ::common::Vector2D<int>& size, bool flipped = false);
     ~PlayerInfo() override = default;
 
     const common::Vector2D<int>& position() const override;

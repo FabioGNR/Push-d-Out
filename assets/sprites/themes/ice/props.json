@@ -1,0 +1,106 @@
+{
+    "Animations": [
+        {
+            "name": "iceberg",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 48
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rock",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 16,
+                "y": 16
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 48 
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "spaceship",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 96,
+                "y": 80
+            },
+            "topLeft": {
+                "x": 48,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "sattelite",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 80,
+                "y": 48
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 80
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "tree",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 48
+            },
+            "topLeft": {
+                "x": 80,
+                "y": 80
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "snowman",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 16,
+                "y": 48
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    ]
+}

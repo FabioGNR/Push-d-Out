@@ -27,9 +27,12 @@ namespace ui {
         common::Vector2D<int> getMarginStart() const { return m_marginStart; }
         common::Vector2D<int> getPadding() const { return m_padding; }
         common::Vector2D<double> getRelativeRatio() const { return m_relativeRatio; }
-
         common::Vector2D<int> getSize(common::Vector2D<int> requiredSize,
             common::Vector2D<int> availableSize) const;
+
+        ComponentSizeType getTypeX() const;
+
+        ComponentSizeType getTypeY() const;
 
     private:
         ComponentSizeType m_typeX;
