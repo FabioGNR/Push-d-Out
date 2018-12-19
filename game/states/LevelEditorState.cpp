@@ -2,6 +2,8 @@
 #include "LevelEditorMenuState.h"
 
 #include <game/Game.h>
+#include <game/level/reader/ThemeReader.h>
+#include <game/ui/MenuButton.h>
 
 #include <engine/ui/components/Button.h>
 #include <engine/ui/components/CustomAction.h>
@@ -10,16 +12,19 @@
 #include <engine/ui/components/LayoutPanel.h>
 
 #include <boost/filesystem.hpp>
-#include <game/level/reader/ThemeReader.h>
 
 namespace game {
 LevelEditorState::LevelEditorState(engine::IGame& context)
     : State(context)
     , m_inputManager(dynamic_cast<Game&>(context).getInputManager())
+    , m_background("", { 0, 0 }, { 0, 0 })
+    , m_backgroundOverlay("assets/sprites/ui/radial_overlay.png", { 0, 0 }, { 0, 0 })
 {
     auto& game = dynamic_cast<Game&>(m_context);
     m_screenSize = game.getScreenSize();
     m_uiSystem = std::make_unique<engine::ui::UISystem>(game.getInputManager());
+    m_backgroundOverlay.setSize(m_screenSize);
+    m_background.setSize(m_screenSize);
 }
 
 void LevelEditorState::init()
@@ -28,7 +33,7 @@ void LevelEditorState::init()
     m_showThemeSelection = true;
 
     const auto fitSize = engine::ui::ComponentSize(
-        engine::ui::ComponentSizeType::Stretch,
+        engine::ui::ComponentSizeType::Fit,
         engine::ui::ComponentSizeType::Fit);
     auto rootLayout = std::make_unique<engine::ui::LayoutPanel>(
         engine::ui::ComponentSize(
@@ -37,7 +42,7 @@ void LevelEditorState::init()
         engine::ui::FlowDirection::Horizontal);
     auto centerLayout = std::make_unique<engine::ui::LayoutPanel>(fitSize, engine::ui::FlowDirection::Vertical);
     auto buttonStack = std::make_unique<engine::ui::StackPanel>(fitSize, engine::ui::FlowDirection::Vertical);
-    auto nameLabel = std::make_unique<engine::ui::Label>(fitSize, "Select a level");
+    auto nameLabel = std::make_unique<engine::ui::Label>(fitSize, "Select a theme", 12, engine::Color{ 255, 255, 255 });
     buttonStack->addComponent(std::move(nameLabel));
 
     namespace fs = boost::filesystem;
@@ -49,16 +54,25 @@ void LevelEditorState::init()
         }
         const std::string filePath = file.path().string();
         const auto fileName = file.path().stem().string();
-        std::unique_ptr<engine::ui::IAction> levelAction = std::make_unique<engine::ui::CustomAction>([&, filePath]() {
-            game::level::ThemeReader reader;
-            auto json = reader.parse(filePath);
-            auto theme = reader.build(json);
-            initEditor(theme);
-        });
 
-        auto levelButton = std::make_unique<engine::ui::Button>(fitSize, fileName);
-        levelButton->setAction(std::move(levelAction));
-        buttonStack->addComponent(std::move(levelButton));
+        buttonStack->addComponent(makeButton(fileName,
+            [&, filePath]() {
+                game::level::ThemeReader reader;
+                auto json = reader.parse(filePath);
+                auto theme = reader.build(json);
+
+                const auto to_lower = [](std::string str) -> std::string {
+                    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+                    return str;
+                };
+                m_background.setSpritePath("assets/sprites/themes/" + to_lower(theme.name) + "/background.png");
+            },
+            [&, filePath] {
+                game::level::ThemeReader reader;
+                auto json = reader.parse(filePath);
+
+                initEditor(reader.build(json));
+            }));
     }
 
     centerLayout->addComponent(std::move(buttonStack), engine::ui::LayoutAnchor::Center);
@@ -75,6 +89,10 @@ void LevelEditorState::update(std::chrono::nanoseconds timeStep)
 void LevelEditorState::render(engine::IRenderer& renderer)
 {
     if (m_showThemeSelection) {
+        if (!m_background.spritePath().empty()) {
+            renderer.draw(m_background);
+            renderer.draw(m_backgroundOverlay);
+        }
         m_uiSystem->draw(renderer, m_screenSize);
     } else {
         m_editor.draw(renderer);
@@ -94,11 +112,15 @@ void LevelEditorState::initEditor(const game::level::Theme& theme)
     m_inputSubscription = m_inputManager->subscribeAll([&](engine::input::maps::InputMap inputMap, auto&) {
         auto pressedState = engine::input::States::PRESSED;
 
+        if (!m_editor.isActive) {
+            return;
+        }
+
         // Check EXIT condition
         if (inputMap.hasState(engine::input::Keys::ESCAPE, engine::input::States::PRESSED)
             || inputMap.hasState(engine::input::Keys::CON_START, engine::input::States::PRESSED)) {
-            auto menuState = std::make_unique<LevelEditorMenuState>(&m_editor, m_context);
-            m_context.next(std::move(menuState));
+            m_editor.isActive = false;
+            m_context.next(std::make_unique<LevelEditorMenuState>(&m_editor, m_context));
         }
 
         // Tile Movement
@@ -147,5 +169,19 @@ void LevelEditorState::initEditor(const game::level::Theme& theme)
             m_editor.toggleKeyboard();
         }
     });
+}
+
+std::unique_ptr<engine::ui::Button>
+LevelEditorState::makeButton(const std::string& text, std::function<void()> onHover, std::function<void()> function)
+{
+    auto button = std::make_unique<game::ui::MenuButton>(
+        engine::ui::ComponentSize(
+            engine::ui::ComponentSizeType::Stretch,
+            engine::ui::ComponentSizeType::Fit,
+            common::Vector2D<double>(0.2, 1)),
+        text,
+        std::move(onHover));
+    button->setAction(std::make_unique<engine::ui::CustomAction>(std::move(function)));
+    return std::move(button);
 }
 } // end namespace

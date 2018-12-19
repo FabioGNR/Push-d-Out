@@ -1,0 +1,107 @@
+{
+    "Animations": [
+        {
+            "name": "rock",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "rock2",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 32 
+            },
+            "topLeft": {
+                "x": 48,
+                "y": 0
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "star",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 48,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 32
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "statue",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 48,
+                "y": 32
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "tree",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 0,
+                "y": 64
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "name": "stars",
+            "frameCount": 1,
+            "frameTime": 0.1,
+            "frameSize": {
+                "x": 32,
+                "y": 32
+            },
+            "topLeft": {
+                "x": 32,
+                "y": 64
+            },
+            "offset": {
+                "x": 0,
+                "y": 0
+            }
+        }
+
+    ]
+}

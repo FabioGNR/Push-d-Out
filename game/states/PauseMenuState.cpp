@@ -16,34 +16,32 @@ using namespace std::chrono_literals;
 namespace game {
 PauseMenuState::PauseMenuState(engine::IGame& context)
     : BaseMenuState(context)
+    , m_backgroundOverlay("assets/sprites/ui/radial_overlay.png", { 0, 0 }, { 0, 0 })
 {
+    auto& game = dynamic_cast<Game&>(m_context);
+    m_backgroundOverlay.setSize(game.getScreenSize());
 }
 
 void PauseMenuState::prependButtons(engine::ui::StackPanel& panel)
 {
-    const auto& buttonSize = engine::ui::ComponentSize(
-        engine::ui::ComponentSizeType::Stretch,
-        engine::ui::ComponentSizeType::Fit);
-    auto resumeButton = std::make_unique<engine::ui::Button>(buttonSize,
-        "RESUME");
-    resumeButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+    panel.addComponent(makeStretchedButton("RESUME", [&] {
         m_context.previous();
     }));
-    panel.addComponent(std::move(resumeButton));
 }
 
 void PauseMenuState::appendButtons(engine::ui::StackPanel& panel)
 {
-    const auto& buttonSize = engine::ui::ComponentSize(
-        engine::ui::ComponentSizeType::Stretch,
-        engine::ui::ComponentSizeType::Fit);
-
-    auto mainMenuButton = std::make_unique<engine::ui::Button>(buttonSize, "MAIN MENU");
-    mainMenuButton->setAction(std::make_unique<engine::ui::CustomAction>([&]() {
+    panel.addComponent(makeStretchedButton("MAIN MENU", [&] {
         auto* context = &m_context;
         context->clearStates();
         context->next(std::make_unique<MainMenuState>(*context));
     }));
-    panel.addComponent(std::move(mainMenuButton));
+}
+
+void PauseMenuState::render(engine::IRenderer& renderer)
+{
+    m_context.getPreviousStateByIndex(1)->render(renderer);
+    renderer.draw(m_backgroundOverlay);
+    BaseMenuState::render(renderer);
 }
 }

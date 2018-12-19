@@ -6,6 +6,7 @@
 #include <game/components/DimensionComponent.h>
 #include <game/components/LevelMetaComponent.h>
 #include <game/components/PlayerInputComponent.h>
+#include <game/components/PlayerNameComponent.h>
 #include <game/components/PositionComponent.h>
 
 namespace game::systems {
@@ -44,7 +45,7 @@ CameraSystem::Boundaries CameraSystem::findTargetBoundaries()
 
     // calculate centroid
     m_ecsWorld->forEachEntityWith<PositionComponent,
-        PlayerInputComponent,
+        PlayerNameComponent,
         DimensionComponent>([&](engine::ecs::Entity& entity) {
         const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity).position;
         const auto& dimension = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;

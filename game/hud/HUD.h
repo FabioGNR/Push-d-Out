@@ -21,12 +21,11 @@ private:
     engine::Window& m_window;
     engine::graphics::Camera* m_camera;
 
-    std::map<engine::ecs::EntityId, std::unique_ptr<ui::PlayerInfo>> m_playerInfo;
+    std::map<std::string, std::unique_ptr<ui::PlayerInfo>> m_playerInfo;
     std::array<std::pair<common::Vector2D<int>, common::Vector2D<int>>, 4> m_hudSize;
 
     bool m_showFps = false;
     game::hud::FpsCounter m_fpsCounter;
-    int m_foundPlayers = 0;
 
     std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_fpsKeySubscription;
 

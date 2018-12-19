@@ -11,6 +11,7 @@ namespace game {
 class MainMenuState : public BaseMenuState {
 private:
     engine::sound::ISoundManager* m_soundManager{};
+    engine::Sprite m_background;
 
 protected:
     void prependButtons(engine::ui::StackPanel& panel) override;
@@ -25,5 +26,7 @@ public:
     void pause() override;
     void close() override;
     void init() override;
+
+    void render(engine::IRenderer& renderer) override;
 };
 }

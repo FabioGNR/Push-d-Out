@@ -22,10 +22,10 @@ std::map<game::definitions::Action, engine::input::Keys> InputConfiguration::get
 {
     std::map<game::definitions::Action, engine::input::Keys> controls;
     controls[definitions::Action::Jump] = engine::input::Keys::CON_A;
-    controls[definitions::Action::UseItem] = engine::input::Keys::CON_LEFTSTICK;
+    controls[definitions::Action::UseItem] = engine::input::Keys::CON_X;
     controls[definitions::Action::PickupEquippable] = engine::input::Keys::CON_LEFTSHOULDER;
-    controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_RIGHTSHOULDER;
-    controls[definitions::Action::Punch] = engine::input::Keys::CON_Y;
+    controls[definitions::Action::SwitchWeapon] = engine::input::Keys::CON_Y;
+    controls[definitions::Action::Punch] = engine::input::Keys::CON_B;
     return controls;
 }
 

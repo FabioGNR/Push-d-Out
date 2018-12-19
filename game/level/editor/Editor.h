@@ -22,10 +22,13 @@ namespace game::level {
 class Editor {
 
     editor::ui::TileSet m_platformTileSet;
+    editor::ui::TileSet m_propTileSet;
 
     game::level::Theme m_theme;
 
     std::vector<std::unique_ptr<editor::ui::ITile>> m_tiles;
+    std::vector<std::unique_ptr<editor::ui::ITile>> m_props;
+
     common::Vector2D<int> m_tileMatrixSize;
     common::Vector2D<int> m_tileSize;
 
@@ -51,6 +54,7 @@ class Editor {
     };
     // hack to map Sprite back to Spritesheet
     std::unordered_map<common::Vector2D<int>, std::string, VectorKeyHasher> m_spritePositionToName;
+    std::unordered_map<common::Vector2D<int>, std::string, VectorKeyHasher> m_propPositionToName;
 
 public:
     Editor();
@@ -61,6 +65,8 @@ public:
     int index(int x, int y) const;
     editor::ui::ITile& getTile(int x, int y);
     editor::ui::ITile& getCurrentTile();
+    editor::ui::ITile& getProp(int x, int y);
+    editor::ui::ITile& getCurrentProp();
 
     void move(int x, int y);
 
@@ -79,8 +85,11 @@ public:
 
     void exportAsJson(const std::string& fileName);
 
+    bool isActive = true;
+
 private:
     void initializeTileSet();
+    void initializePropSet();
     void updateSelectionScrollbar();
 };
 }

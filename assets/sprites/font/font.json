@@ -1,0 +1,72 @@
+{
+  "Animations": [
+    {
+      "name": "red",
+      "frameCount": 36,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+        {
+      "name": "green",
+      "frameCount": 36,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 16
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+        {
+      "name": "blue",
+      "frameCount": 36,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 32
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "yellow",
+      "frameCount": 36,
+      "frameTime": 0.1,
+      "frameSize": {
+        "x": 16,
+        "y": 16
+      },
+      "topLeft": {
+        "x": 0,
+        "y": 48
+      },
+      "offset": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}

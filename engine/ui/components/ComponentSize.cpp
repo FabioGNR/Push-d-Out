@@ -17,6 +17,12 @@ namespace ui {
             break;
         case ComponentSizeType::Fit:
             break;
+        case ComponentSizeType::Relative:
+            requiredSize.x = static_cast<int>(requiredSize.x * m_relativeRatio.x);
+            break;
+        case ComponentSizeType::Absolute:
+            requiredSize.x = m_relativeRatio.x;
+            break;
         }
         switch (m_typeY) {
         case ComponentSizeType::Stretch:
@@ -27,8 +33,24 @@ namespace ui {
             break;
         case ComponentSizeType::Fit:
             break;
+        case ComponentSizeType::Relative:
+            requiredSize.y = static_cast<int>(requiredSize.y * m_relativeRatio.y);
+            break;
+        case ComponentSizeType::Absolute:
+            requiredSize.y = m_relativeRatio.y;
+            break;
         }
         return requiredSize;
+    }
+
+    ComponentSizeType ComponentSize::getTypeX() const
+    {
+        return m_typeX;
+    }
+
+    ComponentSizeType ComponentSize::getTypeY() const
+    {
+        return m_typeY;
     }
 }
 }

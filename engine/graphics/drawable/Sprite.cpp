@@ -87,7 +87,7 @@ void Sprite::setRotation(double rotation)
 
 bool Sprite::operator==(const Sprite& rhs) const
 {
-    return m_spritePath == rhs.m_spritePath;
+    return m_spritePath == rhs.m_spritePath && m_flippedHorizontal == rhs.m_flippedHorizontal && m_flippedVertical == rhs.m_flippedVertical;
 }
 
 bool Sprite::operator!=(const Sprite& rhs) const

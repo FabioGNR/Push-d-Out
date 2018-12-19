@@ -27,7 +27,6 @@ SDLWindow::SDLWindow(WindowProperties properties)
 
 SDLWindow::~SDLWindow()
 {
-    SDL_Quit();
 }
 
 int SDLWindow::getFlagsValue() const

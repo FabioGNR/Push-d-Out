@@ -6,7 +6,7 @@ namespace ui {
     {
         common::Vector2D<int> calculatedSize = calculateSize(context.renderer, context.availableSize);
         m_font.setPosition(context.pos + m_size.getPadding());
-        m_font.setColor(Color(255, 255, 255, 255));
+        m_font.setColor(m_color);
         context.renderer.draw(m_font);
         context.pos += calculatedSize;
         return context;

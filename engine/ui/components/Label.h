@@ -6,10 +6,13 @@
 namespace engine {
 namespace ui {
     class Label : public Component, public TextComponent {
+    private:
+        Color m_color;
     public:
-        Label(ComponentSize size, const std::string& text, int textSize = 12)
+        Label(ComponentSize size, const std::string& text, int textSize = 12, Color color = Color{0, 0, 0})
             : Component(size)
             , TextComponent(text, textSize)
+            , m_color{color}
         {
         }
 

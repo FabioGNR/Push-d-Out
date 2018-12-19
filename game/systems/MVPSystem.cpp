@@ -13,9 +13,8 @@ namespace systems {
         auto& crownPosition = m_world->getComponent<components::PositionComponent>(crownEntity).position;
         auto& crownDimension = m_world->getComponent<components::DimensionComponent>(crownEntity).dimension;
 
-        m_world->forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
-            auto playerInputComponent = m_world->getComponent<components::PlayerInputComponent>(entity);
-            std::string name = m_world->getComponent<components::PlayerNameComponent>(entity).name;
+        m_world->forEachEntityWith<components::PlayerNameComponent>([&](auto& entity) {
+            const std::string& name = m_world->getComponent<components::PlayerNameComponent>(entity).name;
             if (name == GameState::MVP) {
                 auto positionComponent = m_world->getComponent<components::PositionComponent>(entity).position;
                 auto dimensionComponent = m_world->getComponent<components::DimensionComponent>(entity).dimension;

@@ -71,15 +71,6 @@ void GameState::init()
     engine::sound::Music music("assets/sounds/" + level.theme.trackName);
     m_soundManager->play(music);
 
-    // Set-up camera
-    m_camera = engine::graphics::Camera(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
-    m_camera.setPosition({ level.width / 2.0, level.height / 2.0 });
-    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
-
-    // Create HUD
-    m_hud = std::make_unique<game::hud::HUD>(game.window(), m_ecsWorld, &m_camera, m_inputManager);
-
     // Add various systems
     m_ecsWorld.addSystem<systems::PlayerInputSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::JumpSystem>(engine::definitions::SystemPriority::Medium, m_ecsWorld, m_soundManager);
@@ -93,17 +84,20 @@ void GameState::init()
     m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(), m_inputManager, m_soundManager);
     m_ecsWorld.addSystem<systems::LifeSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
-    m_ecsWorld.addSystem<systems::PunchingSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, m_world.get(),
-        m_inputManager, m_soundManager);
     m_ecsWorld.addSystem<systems::VisualEffectSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::CooldownSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
-    m_ecsWorld.addSystem<systems::AnimationSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::MovementSystem>(engine::definitions::SystemPriority::Low, m_ecsWorld);
     m_ecsWorld.addSystem<systems::AISystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::CheatsSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, m_inputManager);
     m_ecsWorld.addSystem<systems::OutOfBoundsCleanUpSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_camera);
     m_ecsWorld.addSystem<systems::GarbageCollectorSystem>(engine::definitions::SystemPriority::High, &m_ecsWorld);
     m_ecsWorld.addSystem<systems::ScoreSystem>(engine::definitions::SystemPriority::Low, &m_ecsWorld, &m_context, m_inputManager->getConnectedControllers().size());
+
+    // Set-up camera
+    m_camera = engine::graphics::Camera(UNIT_MULTIPLIER * UNIT_SIZE, game.getScreenSize());
+    m_camera.setPosition({ level.width / 2.0, level.height / 2.0 });
+    m_ecsWorld.addSystem<systems::CameraSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+    m_ecsWorld.addSystem<systems::BackgroundSystem>(engine::definitions::SystemPriority::High, m_ecsWorld, game.getScreenSize());
 
     // Add some nice contact listeners
     m_world->addContactListener(std::make_unique<listeners::PlatformContactListener>(m_ecsWorld, m_inputManager->getMap()));
@@ -113,6 +107,9 @@ void GameState::init()
     builder.build();
 
     m_ecsWorld.addSystem<systems::PlayerNameSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+
+    // Create HUD
+    m_hud = std::make_unique<game::hud::HUD>(game.window(), m_ecsWorld, &m_camera, m_inputManager);
 
     std::map<std::string, components::SpriteComponent> map = builders::SpriteBuilder{ "assets/sprites/misc/misc.png", "assets/sprites/misc/misc.json" }.build();
     m_ecsWorld.forEachEntityWith<components::PlayerInputComponent>([&](auto& entity) {
@@ -145,7 +142,6 @@ void GameState::update(std::chrono::nanoseconds timeStep)
 
 void GameState::render(engine::IRenderer& renderer)
 {
-    renderer.draw(engine::RectangleShape{ common::Vector2D<int>(0, 0), m_world->getSize() * 32, engine::Color(20, 255, 20, 255) });
     m_ecsWorld.render(renderer);
     m_hud->render(renderer);
 }

@@ -63,7 +63,7 @@ public:
             m_surface.addShape(std::move(sprite));
         }
     }
-    const engine::Sprite* getTileSprite() const
+    engine::Sprite* getTileSprite() const
     {
         return m_tileSprite;
     }

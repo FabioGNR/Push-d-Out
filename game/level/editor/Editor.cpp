@@ -3,11 +3,13 @@
 #include <game/builders/SpriteBuilder.h>
 #include <game/level/LevelDomain.h>
 #include <game/level/editor/ui/PlatformTile.h>
+#include <game/level/editor/ui/PropTile.h>
 #include <game/level/editor/ui/SpawnTile.h>
 
 #include <engine/graphics/IRenderer.h>
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <memory>
@@ -35,14 +37,20 @@ void Editor::init(const game::level::Theme& theme, const common::Vector2D<int>& 
     m_tileSelection.setSize({ 200, 100 });
 
     initializeTileSet();
+    initializePropSet();
 
     m_keyboardScreen = std::make_unique<ui::KeyboardScreen>(m_tileMatrixSize * m_tileSize);
 
     m_tiles.clear();
     m_tiles.reserve(m_tileMatrixSize.x * m_tileMatrixSize.y);
+    m_props.clear();
+    m_props.reserve(m_tileMatrixSize.x * m_tileMatrixSize.y);
 
     m_tileCursors.clear();
     m_tileCursors.push_back(std::make_unique<ui::PlatformTile>(
+        common::Vector2D<int>(0, 0),
+        m_tileSize));
+    m_tileCursors.push_back(std::make_unique<ui::PropTile>(
         common::Vector2D<int>(0, 0),
         m_tileSize));
     m_tileCursors.push_back(std::make_unique<ui::SpawnTile>(
@@ -57,6 +65,9 @@ void Editor::init(const game::level::Theme& theme, const common::Vector2D<int>& 
     for (int y = 0; y < m_tileMatrixSize.y; ++y) {
         for (int x = 0; x < m_tileMatrixSize.x; ++x) {
             m_tiles.push_back(std::make_unique<ui::PlatformTile>(
+                common::Vector2D<int>(x * m_tileSize.x, y * m_tileSize.y),
+                m_tileSize));
+            m_props.push_back(std::make_unique<ui::PropTile>(
                 common::Vector2D<int>(x * m_tileSize.x, y * m_tileSize.y),
                 m_tileSize));
         }
@@ -88,16 +99,32 @@ void Editor::draw(engine::IRenderer& renderer)
     for (const auto& tile : m_tiles) {
         tile->draw(renderer);
     }
-
-    m_cursor.draw(renderer);
+    for (const auto& prop : m_props) {
+        prop->draw(renderer);
+    }
 
     if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PLATFORM) {
         m_tileSelection.draw(renderer);
-    }
-
-    if (m_tileCursors[m_selectedTileCursor]) {
+        m_tileCursors[m_selectedTileCursor]->draw(renderer);
+    } else if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PROP) {
+        const auto& snapToGrid = [&](engine::Sprite& sprite) -> int {
+            const auto bottom = sprite.position().y + sprite.size().y;
+            return std::round(bottom / m_tileSize.y) * m_tileSize.y;
+        };
+        auto* tileSprite = m_tileCursors[m_selectedTileCursor]->getTileSprite();
+        if (tileSprite != nullptr) {
+            auto& sprite = *tileSprite;
+            int preferredPos = snapToGrid(sprite);
+            sprite.setPosition({ sprite.position().x, preferredPos - sprite.size().y });
+            renderer.draw(sprite);
+        } else {
+            m_tileCursors[m_selectedTileCursor]->draw(renderer);
+        }
+    } else {
         m_tileCursors[m_selectedTileCursor]->draw(renderer);
     }
+
+    m_cursor.draw(renderer);
 }
 
 int Editor::index(int x, int y) const
@@ -109,9 +136,17 @@ ui::ITile& Editor::getTile(int x, int y)
 {
     return *m_tiles[index(x, y)];
 }
+ui::ITile& Editor::getProp(int x, int y)
+{
+    return *m_props[index(x, y)];
+}
 
 void Editor::move(int x, int y)
 {
+    if (!isActive) {
+        return;
+    }
+
     if (m_showKeyboard) {
         m_keyboardScreen->move(x, y);
         return;
@@ -129,11 +164,18 @@ ui::ITile& Editor::getCurrentTile()
 {
     return *m_tiles[index(m_currentTile.x, m_currentTile.y)];
 }
+ui::ITile& Editor::getCurrentProp()
+{
+    return *m_props[index(m_currentTile.x, m_currentTile.y)];
+}
 
 void Editor::nextTileSprite()
 {
     if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PLATFORM) {
         m_tileCursors[m_selectedTileCursor]->setTileSprite(m_platformTileSet.getNextTileTexture());
+        move(0, 0);
+    } else if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PROP) {
+        m_tileCursors[m_selectedTileCursor]->setTileSprite(m_propTileSet.getNextTileTexture());
         move(0, 0);
     }
 }
@@ -143,6 +185,9 @@ void Editor::previousTileSprite()
     if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PLATFORM) {
         m_tileCursors[m_selectedTileCursor]->setTileSprite(m_platformTileSet.getPreviousTileTexture());
         move(0, 0);
+    } else if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PROP) {
+        m_tileCursors[m_selectedTileCursor]->setTileSprite(m_propTileSet.getPreviousTileTexture());
+        move(0, 0);
     }
 }
 
@@ -151,10 +196,13 @@ void Editor::updateSelectionScrollbar()
     // if current tile is too close to the left side
     // and the selectionBox does not fit on the left
     // move it to the right
-    if (m_tileCursors[m_selectedTileCursor]->position().x < m_tileSelection.getSize().x) {
-        m_tileSelection.setPosition(getCurrentTile().position() + common::Vector2D<int>{ m_tileSize.x, 0 });
+    auto* tileSelection = &m_tileSelection;
+    const auto& tile = m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PLATFORM ? getCurrentTile() : getCurrentProp();
+
+    if (m_tileCursors[m_selectedTileCursor]->position().x < tileSelection->getSize().x) {
+        tileSelection->setPosition(tile.position() + common::Vector2D<int>{ m_tileSize.x, 0 });
     } else {
-        m_tileSelection.setPosition(getCurrentTile().position() - common::Vector2D<int>{ m_tileSelection.getSize().x, 0 });
+        tileSelection->setPosition(tile.position() - common::Vector2D<int>{ tileSelection->getSize().x, 0 });
     }
 }
 
@@ -194,6 +242,11 @@ void Editor::makeSelection()
         m_tiles[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<editor::ui::PlatformTile>(
             tile->position(), getCurrentTile().position());
         getCurrentTile().setTileSprite(m_tileCursors[m_selectedTileCursor]->getTileSprite());
+    } else if (m_tileCursors[m_selectedTileCursor]->getTileType() == TileType::PROP) {
+        auto* tile = dynamic_cast<editor::ui::PropTile*>(m_tileCursors[m_selectedTileCursor].get());
+        m_props[index(m_currentTile.x, m_currentTile.y)] = std::make_unique<editor::ui::PropTile>(
+            tile->position(), getCurrentTile().position());
+        getCurrentProp().setTileSprite(m_tileCursors[m_selectedTileCursor]->getTileSprite());
     }
 }
 
@@ -215,7 +268,7 @@ void Editor::exportAsJson(const std::string& fileName)
                         m_spritePositionToName[getTile(x, y).getTileSprite()->sourcePosition()],
                         PlatformKind::Solid });
                 }
-            } else {
+            } else if (getTile(x, y).getTileType() == TileType::SPAWN) {
                 const auto* spawnTile = dynamic_cast<ui::SpawnTile*>(&getTile(x, y));
                 if (spawnTile->getSpawnType() == ui::SpawnTile::SpawnType::CHARACTER) {
                     level.CharacterSpawns.push_back(SpawnPoint{
@@ -225,6 +278,18 @@ void Editor::exportAsJson(const std::string& fileName)
                     level.EquipmentSpawns.push_back(SpawnPoint{
                         static_cast<double>(x),
                         static_cast<double>(m_tileMatrixSize.y - y) });
+                }
+            }
+            if (getProp(x, y).getTileType() == TileType::PROP) {
+                auto& prop = getProp(x, y);
+                if (prop.getTileSprite() != nullptr) {
+                    auto* sprite = prop.getTileSprite();
+                    auto offset = sprite->size().y / m_tileSize.y;
+
+                    level.props.push_back(Prop{
+                        static_cast<double>(x),
+                        static_cast<double>(m_tileMatrixSize.y - y - offset + 1),
+                        m_propPositionToName[prop.getTileSprite()->sourcePosition()] });
                 }
             }
         }
@@ -274,4 +339,29 @@ void Editor::initializeTileSet()
     }
 }
 
+void Editor::initializePropSet()
+{
+
+    m_propTileSet.clear();
+
+    // add empty tile for nothing
+    m_propTileSet.addTileTexture(nullptr);
+
+    // ;-;
+    const auto to_lower = [](std::string str) -> std::string {
+        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+        return str;
+    };
+
+    game::builders::SpriteBuilder spriteBuilder("assets/sprites/themes/" + to_lower(m_theme.name) + "/props.png", "assets/sprites/themes/" + to_lower(m_theme.name) + "/props.json");
+    const auto spriteMap = spriteBuilder.build();
+    const auto scale = m_tileSize.y / 16;
+    for (const auto& [spriteName, component] : spriteMap) {
+        const auto& spriteResource = component.sprites.front();
+        auto sprite = std::make_unique<engine::Sprite>(spriteResource.spriteSheet, spriteResource.offset, spriteResource.size, spriteResource.position);
+        sprite->setSize(sprite->size() * scale * 2);
+        m_propTileSet.addTileTexture(std::move(sprite));
+        m_propPositionToName[spriteResource.position] = spriteName;
+    }
+}
 } // end namespace

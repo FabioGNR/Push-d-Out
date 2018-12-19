@@ -5,6 +5,6 @@
   "track": "01.wav",
   "sprites": "moon",
   "movementSpeed": 10,
-  "jumpSpeed": 10,
+  "jumpSpeed": 15,
   "airSpeedModifier": 0.08
 }

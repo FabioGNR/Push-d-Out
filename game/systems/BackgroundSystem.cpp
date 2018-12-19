@@ -3,13 +3,18 @@
 
 namespace game {
 namespace systems {
-
-    void BackgroundSystem::update(std::chrono::nanoseconds /* timeStep */)
+    BackgroundSystem::BackgroundSystem(engine::ecs::World& ecsWorld, common::Vector2D<int> screenSize)
+        : m_ecsWorld{ ecsWorld }
+        , m_screenSize{ screenSize }
     {
         m_ecsWorld.forEachEntityWith<components::LevelMetaComponent>([&](engine::ecs::Entity& entity) {
             auto levelMeta = m_ecsWorld.getComponent<components::LevelMetaComponent>(entity);
             m_sprite = "assets/sprites/themes/" + levelMeta.theme.sprites + "/background.png";
         });
+    }
+
+    void BackgroundSystem::update(std::chrono::nanoseconds /* timeStep */)
+    {
     }
 
     void BackgroundSystem::render(engine::IRenderer& renderer)

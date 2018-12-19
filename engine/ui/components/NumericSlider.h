@@ -4,7 +4,7 @@
 
 namespace engine::ui {
 class NumericSlider : public Component {
-private:
+protected:
     double m_minimum;
     double m_maximum;
     double m_value;
@@ -17,14 +17,14 @@ private:
     const Color m_selectedColor{ 0, 255, 255 };
     const Color m_valueBackgroundColor{ 255, 255, 255 };
     const Color m_boundBackgroundColor{ 155, 155, 155 };
-    common::Vector2D<int> getBoxSize(const Font& font, const IRenderer& renderer) const;
 
+    common::Vector2D<int> getBoxSize(const Font& font, const IRenderer& renderer) const;
     std::string formatNumber(double number);
 
-    void drawLine(DrawContext context, const common::Vector2D<int>& calculatedSize);
-    void drawValueBox(DrawContext context, const common::Vector2D<int>& calculatedSize);
-    void drawMinimumBox(DrawContext context);
-    void drawMaximumBox(DrawContext context, const common::Vector2D<int>& calculatedSize);
+    virtual void drawLine(DrawContext context, const common::Vector2D<int>& calculatedSize);
+    virtual void drawValueBox(DrawContext context, const common::Vector2D<int>& calculatedSize);
+    virtual void drawMinimumBox(DrawContext context);
+    virtual void drawMaximumBox(DrawContext context, const common::Vector2D<int>& calculatedSize);
 
 public:
     NumericSlider(ComponentSize size, double minimum, double maximum, double value)
