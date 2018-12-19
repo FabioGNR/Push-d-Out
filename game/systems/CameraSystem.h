@@ -23,12 +23,15 @@ public:
 private:
     static const common::Vector2D<double> PADDING;
     static const common::Vector2D<double> CAMERA_SAFE_ZONE_MARGIN;
-    static constexpr double CAMERA_MOVEMENT_SPEED = 3;
+    static constexpr double CAMERA_MOVEMENT_SPEED = 1.5;
+    static constexpr double CAMERA_ZOOM_SPEED = 0.5;
     static constexpr double CAMERA_MOVEMENT_SPEED_FAST = 20;
+    static constexpr double CAMERA_ZOOM_SPEED_FAST = 5;
 
     common::Vector2D<double> m_currentPosition;
     common::Vector2D<double> m_lastCenter;
     double m_moveSpeed;
+    double m_zoomSpeed;
 
     engine::graphics::Camera* m_camera;
     engine::ecs::World* m_ecsWorld;

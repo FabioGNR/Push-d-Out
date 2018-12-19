@@ -10,8 +10,8 @@
 
 namespace game::systems {
 using namespace game::components;
-const common::Vector2D<double> CameraSystem::PADDING = { 3, 8.0 };
-const common::Vector2D<double> CameraSystem::CAMERA_SAFE_ZONE_MARGIN = { 4, 2 };
+const common::Vector2D<double> CameraSystem::PADDING = { 6, 4 };
+const common::Vector2D<double> CameraSystem::CAMERA_SAFE_ZONE_MARGIN = { 6, 4 };
 
 void CameraSystem::update(std::chrono::nanoseconds timeStep)
 {
@@ -103,34 +103,23 @@ bool CameraSystem::isOutOfSafeCameraBounds(const common::Vector2D<double> point,
 
 double CameraSystem::findSmoothZoom(Boundaries boundaries, double seconds)
 {
-    auto zoom = m_camera->getFittedZoom(common::Vector2D<double>(boundaries.size.x * 2, boundaries.size.y * 2));
-    auto oldZoom = m_camera->getZoom();
-    auto delta = oldZoom - zoom;
-
-    if (delta < 0) {
-        return std::min(oldZoom + (0.3 * seconds), zoom);
-    } else if (delta > 0) {
-        return std::max(oldZoom - (0.3 * seconds), zoom);
-    }
-    return oldZoom;
+    auto targetZoom = m_camera->getFittedZoom(common::Vector2D<double>(boundaries.size.x * 2, boundaries.size.y * 2));
+    auto currentZoom = m_camera->getZoom();
+    return currentZoom + (-(currentZoom - targetZoom) * m_zoomSpeed * seconds);
 }
 
 common::Vector2D<double> CameraSystem::findNextPosition(CameraSystem::Boundaries boundaries, double seconds)
 {
     // prevent camera shake
-    auto delta = (m_currentPosition - boundaries.center).abs();
-    if (m_lastCenter == boundaries.center && delta.x < 0.5 && delta.y < 0.5) {
-        return m_currentPosition;
-    }
-
     m_lastCenter = boundaries.center;
-    m_currentPosition += (boundaries.center - m_currentPosition).normalize() * seconds * m_moveSpeed;
+    m_currentPosition += (boundaries.center - m_currentPosition) * m_moveSpeed * seconds;
     return m_currentPosition;
 }
 
 void CameraSystem::setCameraMoveSpeed()
 {
     m_moveSpeed = CameraSystem::CAMERA_MOVEMENT_SPEED;
+    m_zoomSpeed = CameraSystem::CAMERA_ZOOM_SPEED;
 
     for (auto it = m_ecsWorld->begin<components::PlayerInputComponent>(); it != m_ecsWorld->end<components::PlayerInputComponent>(); ++it) { // NOLINT
         auto& entity = m_ecsWorld->getEntity(it->first);
@@ -139,6 +128,7 @@ void CameraSystem::setCameraMoveSpeed()
 
         if (isOutOfSafeCameraBounds(position, dimension)) {
             m_moveSpeed = CameraSystem::CAMERA_MOVEMENT_SPEED_FAST;
+            m_zoomSpeed = CameraSystem::CAMERA_ZOOM_SPEED_FAST;
             break;
         }
     }
