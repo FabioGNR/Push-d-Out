@@ -26,12 +26,12 @@ private:
     engine::input::InputManager* m_inputManager;
     std::shared_ptr<engine::events::Subscription<engine::input::maps::InputMap>> m_inputSubscription;
 
-    std::map<int, long int> m_score{};
+    std::map<int, long double> m_score{};
 
     std::chrono::nanoseconds m_remainingTimeTillNextState = std::chrono::seconds{ 10 };
 
 public:
-    ScoreState(engine::IGame& context, std::map<int, long int> score)
+    ScoreState(engine::IGame& context, std::map<int, long double> score)
         : engine::State{ context }
         , m_inputManager(dynamic_cast<Game&>(context).getInputManager())
         , m_score{ std::move(score) }

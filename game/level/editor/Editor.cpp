@@ -20,7 +20,7 @@ Editor::Editor()
     : m_tileMatrixSize(0, 0)
     , m_tileSize(0, 0)
     , m_currentTile(0, 0)
-    , m_cursor("assets/sprites/cursor.png")
+    , m_cursor("assets/sprites/editor/cursor.png")
     , m_tileSelection(&m_platformTileSet, { 0, 0 }, { 0, 0 })
     , m_backgroundSprite(nullptr)
     , m_keyboardScreen(nullptr)
@@ -262,7 +262,7 @@ void Editor::initializeTileSet()
 
     setBackground("assets/sprites/themes/" + to_lower(m_theme.name) + "/background.png");
 
-    game::builders::SpriteBuilder spriteBuilder("assets/sprites/themes/" + to_lower(m_theme.name) + "/" + to_lower(m_theme.name) + ".png", "assets/sprites/themes/datafile.json");
+    game::builders::SpriteBuilder spriteBuilder("assets/sprites/themes/" + to_lower(m_theme.name) + "/tiles.png", "assets/sprites/themes/tiles.json");
     const auto spriteMap = spriteBuilder.build();
     for (const auto& [spriteName, component] : spriteMap) {
         const auto& spriteResource = component.sprites.front();

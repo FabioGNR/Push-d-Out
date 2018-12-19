@@ -58,6 +58,20 @@ struct Vector2D {
         return left;
     }
 
+    friend Vector2D<T> operator-(Vector2D<T> left, const Vector2D<T>& right)
+    {
+        left.x -= right.x;
+        left.y -= right.y;
+        return left;
+    }
+
+    friend Vector2D<T> operator-(Vector2D<T> left, T decrement)
+    {
+        left.x -= decrement;
+        left.y -= decrement;
+        return left;
+    }
+
     Vector2D<T>& operator*=(double factor)
     {
         x *= factor;
@@ -135,13 +149,6 @@ struct Vector2D {
         return left;
     }
 
-    friend Vector2D<T> operator-(Vector2D<T> left, const Vector2D<T>& right)
-    {
-        left.x -= right.x;
-        left.y -= right.y;
-        return left;
-    }
-
     friend bool operator==(const Vector2D& left, const Vector2D& right)
     {
         auto returnValue = (left.x == right.x && left.y == right.y);
@@ -211,6 +218,11 @@ struct Vector2D {
         str << "{" << vector.x << ", " << vector.y << "}";
         return str;
     }
+
+    Vector2D<T> abs()
+    {
+        return Vector2D<T>(std::abs(x), std::abs(y));
+    };
 
     Vector2D<double> normalize()
     {

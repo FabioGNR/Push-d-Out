@@ -10,7 +10,7 @@ namespace systems {
     class ScoreSystem : public engine::ecs::BaseSystem<ScoreSystem> {
         engine::ecs::World* m_world;
         engine::IGame* m_context;
-        std::map<int, long int> m_score{};
+        std::map<int, long double> m_score{};
         int m_playerCount{};
 
     public:

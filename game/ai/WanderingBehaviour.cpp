@@ -2,6 +2,8 @@
 #include <engine/common/RNG.h>
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/AIComponent.h>
+#include <game/components/AnimationsComponent.h>
+#include <game/components/LevelMetaComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
@@ -34,7 +36,8 @@ void WanderingBehaviour::act(std::chrono::nanoseconds /* delta */)
             s.flippedHorizontal = distance.x > 0;
         }
 
-        m_world->addComponent<components::MoveComponent>(*m_entity, distance.normalize() * 2);
+        auto& move = m_world->getComponent<components::MoveComponent>(*m_entity);
+        move.delta = distance.normalize() * 2;
     }
 }
 
@@ -67,12 +70,13 @@ void WanderingBehaviour::init()
 {
     auto& ai = m_world->getComponent<components::AIComponent>(*m_entity);
     ai.target = nullptr;
-
-    auto config = config::ConfigurationRepository::get();
-    auto sheet = builders::SpriteBuilder{ config.assets + "sprites/npc/bunny.png", config.assets + "sprites/npc/bunny.json" }.build();
-    auto sprite = sheet.at("Walking");
-    m_world->removeComponent<components::SpriteComponent>(*m_entity);
-    m_world->addComponent<components::SpriteComponent>(*m_entity, sprite.sprites, sprite.frameCount, sprite.frameTime);
+    if (m_entity->hasComponent<components::AnimationsComponent>()) {
+        auto animations = m_world->getComponent<components::AnimationsComponent>(*m_entity).animations;
+        auto sprite = animations.at("BunnyWalking");
+        m_world->removeComponent<components::SpriteComponent>(*m_entity);
+        m_world->addComponent<components::SpriteComponent>(*m_entity, sprite.sprites, sprite.frameCount,
+            sprite.frameTime);
+    }
 }
 
 void WanderingBehaviour::exit()

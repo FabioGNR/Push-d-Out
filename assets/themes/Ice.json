@@ -1,10 +1,11 @@
 {
   "name": "Ice",
-  "gravity": -9.81,
+  "gravity": -10,
   "friction": 0.5,
   "track": "ice-theme.wav",
   "sprites": "ice",
   "movementSpeed": 20,
-  "jumpSpeed": 11,
-  "glide": true
+  "jumpSpeed": 18,
+  "airSpeedModifier": 0.8,
+  "slide": true
 }

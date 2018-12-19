@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Body.h"
+#include "ContactImpl.h"
 #include "DynamicBody.h"
 #include "KinematicBody.h"
 #include "StaticBody.h"
@@ -27,12 +28,7 @@ namespace physics {
         {
         }
 
-        std::vector<Contact> m_beginContactEvents;
-        std::vector<Contact> m_endContactEvents;
-
         void raycast(const common::Vector2D<double>& start, const common::Vector2D<double>& end, const RaycastCallback& callback);
-
-        void clearEvents(Body* body);
 
         ~WorldImpl() override = default;
 
@@ -45,7 +41,7 @@ namespace physics {
     private:
         class Box2DRaycastCallback;
 
-        void BeginContact(b2Contact* contact) override
+        std::unique_ptr<ContactImpl> mapContact(b2Contact* contact)
         {
             Body* body1 = nullptr;
             Body* body2 = nullptr;
@@ -62,36 +58,64 @@ namespace physics {
 
             b2WorldManifold worldManifold;
             contact->GetWorldManifold(&worldManifold);
-            const auto normal = worldManifold.normal;
+            auto size = static_cast<size_t>(contact->GetManifold()->pointCount);
+            auto normal = common::Vector2D<double>(worldManifold.normal.x, worldManifold.normal.y);
+
+            std::vector<common::Vector2D<double>> points{};
+            points.reserve(size);
+
+            for (size_t i = 0; i < size; ++i) {
+                points.emplace_back(worldManifold.points[i].x, worldManifold.points[i].y);
+            }
 
             if (body1 != nullptr && body2 != nullptr) {
-                Contact c{ body1->getPosition() + common::Vector2D<double>(normal.x, normal.y), body1, body2 };
-                m_beginContactEvents.push_back(c);
+                auto c = std::make_unique<ContactImpl>(contact);
+                c->points = points;
+                c->a = body1;
+                c->b = body2;
+                c->normal = normal;
+                return c;
+            }
+            return nullptr;
+        }
+
+        void BeginContact(b2Contact* contact) override
+        {
+            auto c = mapContact(contact);
+            if (c != nullptr) {
+                std::for_each(contactListeners.begin(), contactListeners.end(), [&](auto& cl) {
+                    cl->beginContact(*c);
+                });
             }
         }
 
         void EndContact(b2Contact* contact) override
         {
-            Body* body1 = nullptr;
-            Body* body2 = nullptr;
-
-            for (auto& body : bodies) {
-                if (contact->GetFixtureA()->GetBody() == body->m_body) {
-                    body1 = body;
-                }
-
-                if (contact->GetFixtureB()->GetBody() == body->m_body) {
-                    body2 = body;
-                }
+            auto c = mapContact(contact);
+            if (c != nullptr) {
+                std::for_each(contactListeners.begin(), contactListeners.end(), [&](auto& cl) {
+                    cl->endContact(*c);
+                });
             }
+        }
 
-            b2WorldManifold worldManifold;
-            contact->GetWorldManifold(&worldManifold);
-            const auto normal = worldManifold.normal;
+        void PreSolve(b2Contact* contact, const b2Manifold* /* oldManifold */) override
+        {
+            auto c = mapContact(contact);
+            if (c != nullptr) {
+                std::for_each(contactListeners.begin(), contactListeners.end(), [&](auto& cl) {
+                    cl->preSolve(*c);
+                });
+            }
+        }
 
-            if (body1 != nullptr && body2 != nullptr) {
-                Contact c{ body1->getPosition() + common::Vector2D<double>(normal.x, normal.y), body1, body2 };
-                m_endContactEvents.push_back(c);
+        void PostSolve(b2Contact* contact, const b2ContactImpulse* /* impulse */) override
+        {
+            auto c = mapContact(contact);
+            if (c != nullptr) {
+                std::for_each(contactListeners.begin(), contactListeners.end(), [&](auto& cl) {
+                    cl->postSolve(*c);
+                });
             }
         }
 
@@ -104,6 +128,7 @@ namespace physics {
 
         std::unique_ptr<b2World> world;
         std::vector<Body*> bodies;
+        std::vector<b2Body*> bodiesToDestroy;
 
         std::vector<std::unique_ptr<ContactListener>> contactListeners;
     };
@@ -135,19 +160,6 @@ namespace physics {
             return -1; // no callback was called so just skip this one
         }
     };
-
-    void World::WorldImpl::clearEvents(Body* body)
-    {
-        m_beginContactEvents.erase(std::remove_if(m_beginContactEvents.begin(), m_beginContactEvents.end(), [&](auto& contact) {
-            return contact.a == body || contact.b == body;
-        }),
-            m_beginContactEvents.end());
-
-        m_endContactEvents.erase(std::remove_if(m_endContactEvents.begin(), m_endContactEvents.end(), [&](auto& contact) {
-            return contact.a == body || contact.b == body;
-        }),
-            m_endContactEvents.end());
-    }
 
     void World::WorldImpl::raycast(const common::Vector2D<double>& start, const common::Vector2D<double>& end,
         const RaycastCallback& callback)
@@ -250,32 +262,10 @@ namespace physics {
 
     void World::update(std::chrono::nanoseconds deltaTime)
     {
-        // handle contact events
-        while (!m_impl->m_beginContactEvents.empty()) {
-            auto& contact = m_impl->m_beginContactEvents.back();
-
-            std::for_each(
-                m_impl->contactListeners.begin(),
-                m_impl->contactListeners.end(),
-                [&](auto& cl) {
-                    cl->beginContact(contact);
-                });
-
-            m_impl->m_beginContactEvents.pop_back();
+        for (auto* body : m_impl->bodiesToDestroy) {
+            m_impl->world->DestroyBody(body);
         }
-
-        while (!m_impl->m_endContactEvents.empty()) {
-            auto& contact = m_impl->m_endContactEvents.back();
-
-            std::for_each(
-                m_impl->contactListeners.begin(),
-                m_impl->contactListeners.end(),
-                [&](auto& cl) {
-                    cl->endContact(contact);
-                });
-
-            m_impl->m_endContactEvents.pop_back();
-        }
+        m_impl->bodiesToDestroy.clear();
 
         auto step = (deltaTime.count() / 1.0e9f);
 
@@ -284,6 +274,10 @@ namespace physics {
 
         for (auto body : m_impl->bodies) {
             body->update();
+        }
+
+        for (auto& cl : m_impl->contactListeners) {
+            cl->update(deltaTime);
         }
     }
 
@@ -299,10 +293,10 @@ namespace physics {
 
     void World::destroyBody(Body* body, b2Body* b2Body)
     {
-        m_impl->clearEvents(body);
         auto it = std::find(m_impl->bodies.begin(), m_impl->bodies.end(), body);
         m_impl->bodies.erase(it);
-        m_impl->world->DestroyBody(b2Body);
+
+        m_impl->bodiesToDestroy.push_back(b2Body);
     }
 
     void World::setGravity(common::Vector2D<double> gravity)

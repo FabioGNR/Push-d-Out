@@ -1,9 +1,9 @@
 #include "PlayerAnimationSystem.h"
+#include <game/components/AnimationsComponent.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/DirectionComponent.h>
 #include <game/components/MoveComponent.h>
 #include <game/components/PlayerInputComponent.h>
-#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
 
 namespace game {
@@ -15,7 +15,7 @@ namespace systems {
             components::PlayerInputComponent,
             components::BodyComponent,
             components::SpriteComponent,
-            components::PlayerSpritesComponent,
+            components::AnimationsComponent,
             components::DirectionComponent>([&](engine::ecs::Entity& entity) {
             auto& spriteComponent = m_ecsWorld->getComponent<components::SpriteComponent>(entity);
             if (spriteComponent.loops || spriteComponent.completed) {
@@ -32,7 +32,7 @@ namespace systems {
     void PlayerAnimationSystem::setCurrentPlayerAnimation(engine::ecs::Entity& player,
         components::SpriteComponent& spriteComponent)
     {
-        const auto& animations = m_ecsWorld->getComponent<components::PlayerSpritesComponent>(player).animations;
+        const auto& animations = m_ecsWorld->getComponent<components::AnimationsComponent>(player).animations;
         auto& bodyComponent = m_ecsWorld->getComponent<components::BodyComponent>(player);
         std::string nextAnimationName = determineAnimationFromVelocity(bodyComponent.body->getLinearVelocity());
         if (nextAnimationName.length() == 0) {

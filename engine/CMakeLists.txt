@@ -93,6 +93,8 @@ set(PHYSICS_SRC
         physics/ContactListener.h
         physics/Contact.h
         physics/RaycastHit.h
+        physics/ContactImpl.h
+        physics/ContactImpl.cpp
         )
 
 set(INPUT_SRC

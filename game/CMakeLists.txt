@@ -19,8 +19,6 @@ set(GAME_SRC
         exceptions/NoPlayersFoundException.h
         exceptions/MissingCharacterSpawnException.h
         exceptions/PlayerAmountOutOfBoundsException.h
-        listeners/JumpContactListener.cpp
-        listeners/JumpContactListener.h
         states/OptionMenuState.cpp
         states/OptionMenuState.h
         states/LevelSelectorState.cpp
@@ -34,6 +32,8 @@ set(GAME_SRC
         states/ScoreState.cpp
         states/ScoreState.h
         config/Configuration.h
+        listeners/PlatformContactListener.cpp
+        listeners/PlatformContactListener.h
         )
 
 set(AI_SRC
@@ -70,7 +70,8 @@ set(COMPONENT_SRC
         components/PunchComponent.h
         components/AIComponent.h
         components/OnOutOfBoundsDeleteComponent.h
-        components/PlayerSpritesComponent.h
+        components/AnimationsComponent.h
+        components/VisualEffectComponent.h
         )
 
 set(SYSTEM_SRC
@@ -118,8 +119,14 @@ set(SYSTEM_SRC
         systems/MVPSystem.h
         systems/PunchingSystem.cpp
         systems/PunchingSystem.h
+        systems/VisualEffectSystem.cpp
+        systems/VisualEffectSystem.h
+        systems/PlayerAnimationSystem.cpp
+        systems/PlayerAnimationSystem.h
         systems/AISystem.cpp
         systems/AISystem.h
+        systems/PlayerNameSystem.cpp
+        systems/PlayerNameSystem.h
         )
 
 set(DEFINITION_SRC
@@ -203,9 +210,7 @@ set(BUILDER_SRC
         builders/SpriteBuilder.h
         builders/BunnyBuilder.cpp
         builders/BunnyBuilder.h
-        systems/PlayerAnimationSystem.cpp
-        systems/PlayerAnimationSystem.h
-        )
+        components/PlayerNameComponent.h)
 
 find_package(Boost COMPONENTS
         filesystem REQUIRED)

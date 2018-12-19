@@ -1,0 +1,21 @@
+{
+    "Animations": [
+    {
+        "name": "ForceExplosion",
+        "frameCount": 10,
+        "frameTime": 0.05,
+        "frameSize": {
+            "x": 160,
+            "y": 160
+        },
+        "topLeft": {
+            "x": 0,
+            "y": 0
+        },
+        "offset": {
+            "x": 0,
+            "y": 0
+        }
+    }
+    ]
+}

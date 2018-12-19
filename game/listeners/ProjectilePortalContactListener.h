@@ -11,6 +11,7 @@ namespace listeners {
     class ProjectilePortalContactListener : public engine::physics::ContactListener {
     private:
         engine::ecs::World* m_ecsWorld;
+        std::unordered_map<engine::ecs::EntityId, common::Vector2D<double>> m_projectilesToUpdate;
 
         void teleportProjectile(engine::ecs::Entity& projectile, engine::ecs::Entity& portal);
         engine::ecs::Entity* findOtherPortal(engine::ecs::EntityId id);
@@ -19,8 +20,11 @@ namespace listeners {
         explicit ProjectilePortalContactListener(engine::ecs::World* world)
             : m_ecsWorld{ world } {};
 
-        void beginContact(engine::physics::Contact contact) override;
-        void endContact(engine::physics::Contact contact) override;
+        void beginContact(engine::physics::Contact& contact) override;
+        void endContact(engine::physics::Contact& contact) override;
+        void preSolve(engine::physics::Contact& contact) override;
+        void postSolve(engine::physics::Contact& contact) override;
+        void update(std::chrono::nanoseconds nanoseconds) override;
     };
 }
 }
