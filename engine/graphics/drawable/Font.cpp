@@ -58,7 +58,6 @@ bool Font::operator==(const Font& rhs) const
 {
     return m_fontPath == rhs.m_fontPath
         && m_text == rhs.m_text
-        && m_position == rhs.m_position
         && m_fontSize == rhs.m_fontSize
         && m_color == rhs.m_color;
 }
