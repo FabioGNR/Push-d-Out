@@ -47,6 +47,7 @@ public:
     void close() override;
 
 private:
-    void addExplosion();
+    void addExplosion(const common::Vector2D<double>& pos);
+    void initPlayers();
 };
 }

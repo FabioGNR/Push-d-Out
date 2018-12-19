@@ -1,0 +1,137 @@
+{
+    "CharacterSpawns": [
+        {
+            "x": 16.0,
+            "y": 17.0
+        },
+        {
+            "x": 5.0,
+            "y": 14.0
+        },
+        {
+            "x": 16.0,
+            "y": 14.0
+        },
+        {
+            "x": 16.0,
+            "y": 11.0
+        }
+    ],
+    "EquipmentSpawns": [],
+    "Meta": {
+        "height": 24,
+        "name": "winner",
+        "theme": "Earth",
+        "width": 40
+    },
+    "PlatformTiles": [
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 16.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 17.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 18.0,
+            "y": 16.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 1.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 2.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 3.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 4.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 5.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 6.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 16.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 17.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 18.0,
+            "y": 13.0
+        },
+        {
+            "kind": 0,
+            "sprite": "leftSingleDepth",
+            "x": 15.0,
+            "y": 10.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 16.0,
+            "y": 10.0
+        },
+        {
+            "kind": 0,
+            "sprite": "middleUpper",
+            "x": 17.0,
+            "y": 10.0
+        },
+        {
+            "kind": 0,
+            "sprite": "rightSingleDepth",
+            "x": 18.0,
+            "y": 10.0
+        }
+    ]
+}

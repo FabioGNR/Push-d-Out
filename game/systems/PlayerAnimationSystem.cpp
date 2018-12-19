@@ -12,6 +12,7 @@ namespace systems {
     void PlayerAnimationSystem::update(std::chrono::nanoseconds /* timeStep */)
     {
         m_ecsWorld->forEachEntityWith<components::PositionComponent,
+            components::PlayerInputComponent,
             components::BodyComponent,
             components::SpriteComponent,
             components::PlayerSpritesComponent,
