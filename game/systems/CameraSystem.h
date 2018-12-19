@@ -25,8 +25,8 @@ private:
     static const common::Vector2D<double> CAMERA_SAFE_ZONE_MARGIN;
     static constexpr double CAMERA_MOVEMENT_SPEED = 1.5;
     static constexpr double CAMERA_ZOOM_SPEED = 0.5;
-    static constexpr double CAMERA_MOVEMENT_SPEED_FAST = 20;
-    static constexpr double CAMERA_ZOOM_SPEED_FAST = 5;
+    static constexpr double CAMERA_MOVEMENT_SPEED_FAST = 1.5;
+    static constexpr double CAMERA_ZOOM_SPEED_FAST = 3;
 
     common::Vector2D<double> m_currentPosition;
     common::Vector2D<double> m_lastCenter;

@@ -10,8 +10,9 @@
 
 namespace game::systems {
 using namespace game::components;
-const common::Vector2D<double> CameraSystem::PADDING = { 6, 4 };
-const common::Vector2D<double> CameraSystem::CAMERA_SAFE_ZONE_MARGIN = { 6, 4 };
+
+const common::Vector2D<double> CameraSystem::PADDING = { 8, 6 };
+const common::Vector2D<double> CameraSystem::CAMERA_SAFE_ZONE_MARGIN = { 4, 2 };
 
 void CameraSystem::update(std::chrono::nanoseconds timeStep)
 {

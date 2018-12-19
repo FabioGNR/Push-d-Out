@@ -9,7 +9,7 @@
 #include <sstream>
 
 namespace game {
-using ScorePair = std::pair<std::string, long int>;
+using ScorePair = std::pair<std::string, long double>;
 using Comparator = std::function<bool(ScorePair, ScorePair)>;
 
 void ScoreState::update(std::chrono::nanoseconds /*timeStep*/)
@@ -40,15 +40,20 @@ void ScoreState::init()
     Comparator compFunctor = [](ScorePair element1, ScorePair element2) {
         return element1.second > element2.second;
     };
+
     std::set<ScorePair, Comparator> scoreList(m_score.begin(), m_score.end(), compFunctor);
 
-    for (ScorePair element : scoreList) {
+    for (const ScorePair &element : scoreList) {
         std::string name = element.first;
         std::stringstream s;
-        s << name << " has a score of " << element.second;
+        auto score = std::round(element.second);
+
+        s << name << " has a score of ";
 
         if (element == *scoreList.begin()) {
-            s << " (winner)";
+            s << score + 1000 /* bonus points yay */ << " (winner)";
+        } else {
+            s << score;
         }
 
         auto playerLabel = std::make_unique<engine::ui::Label>(engine::ui::ComponentSize(fitSize), s.str());

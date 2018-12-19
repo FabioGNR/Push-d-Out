@@ -10,10 +10,10 @@ class ScoreState : public engine::State {
 private:
     common::Vector2D<int> m_screenSize{};
     std::unique_ptr<engine::ui::UISystem> m_UISystem;
-    std::map<std::string, long int> m_score{};
+    std::map<std::string, long double> m_score{};
 
 public:
-    ScoreState(engine::IGame& context, std::map<std::string, long int> score)
+    ScoreState(engine::IGame& context, std::map<std::string, long double> score)
         : engine::State{ context }
         , m_score{ std::move(score) }
     {
