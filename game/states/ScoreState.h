@@ -1,13 +1,13 @@
 #pragma once
 
-#include <engine/game/State.h>
-#include <engine/ui/UISystem.h>
 #include <engine/ecs/World.h>
+#include <engine/game/State.h>
 #include <engine/graphics/Camera.h>
 #include <engine/physics/PhysicsManager.h>
+#include <engine/ui/UISystem.h>
 
-#include <game/hud/HUD.h>
 #include <game/Game.h>
+#include <game/hud/HUD.h>
 
 #include <chrono>
 #include <utility>
@@ -28,7 +28,7 @@ private:
 
     std::map<int, long int> m_score{};
 
-    std::chrono::nanoseconds m_remainingTimeTillNextState = std::chrono::seconds{10};
+    std::chrono::nanoseconds m_remainingTimeTillNextState = std::chrono::seconds{ 10 };
 
 public:
     ScoreState(engine::IGame& context, std::map<int, long int> score)

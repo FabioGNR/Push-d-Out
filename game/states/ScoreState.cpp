@@ -1,24 +1,24 @@
 #include "ScoreState.h"
 #include "GameState.h"
-#include "PauseMenuState.h"
 #include "LevelSelectorState.h"
+#include "PauseMenuState.h"
 
 #include <engine/game/IGame.h>
 #include <engine/graphics/Camera.h>
+#include <engine/physics/Body.h>
 #include <engine/physics/PhysicsManager.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
-#include <engine/physics/Body.h>
 
 #include <game/Game.h>
 #include <game/builders/BunnyBuilder.h>
 #include <game/builders/CharacterBuilder.h>
 #include <game/builders/CharacterSpawnGenerator.h>
 #include <game/builders/SpriteBuilder.h>
-#include <game/components/DimensionComponent.h>
 #include <game/components/BodyComponent.h>
+#include <game/components/DimensionComponent.h>
+#include <game/components/PlayerSpritesComponent.h>
 #include <game/components/PositionComponent.h>
 #include <game/components/SpriteComponent.h>
-#include <game/components/PlayerSpritesComponent.h>
 #include <game/config/ConfigurationRepository.h>
 #include <game/level/Theme.h>
 #include <game/level/reader/LevelReader.h>
@@ -45,7 +45,6 @@
 #include <game/systems/WeaponSystem.h>
 #include <game/systems/items/ReverseGravitySystem.h>
 #include <sstream>
-#include <game/components/BodyComponent.h>
 
 namespace game {
 using ScorePair = std::pair<int, long int>;
@@ -66,12 +65,12 @@ void ScoreState::render(engine::IRenderer& renderer)
     m_ecsWorld.render(renderer);
 
     const std::string message = " seconds left.";
-    auto secondsLeft = std::chrono::duration_cast<std::chrono::seconds> (m_remainingTimeTillNextState);
-    renderer.draw(engine::Font{"assets/fonts/Pixeled.ttf",
-                               std::to_string(secondsLeft.count()) + message,
-                               60,
-                               engine::Color(255, 255, 255, 0),
-                               {300, 200}});
+    auto secondsLeft = std::chrono::duration_cast<std::chrono::seconds>(m_remainingTimeTillNextState);
+    renderer.draw(engine::Font{ "assets/fonts/Pixeled.ttf",
+        std::to_string(secondsLeft.count()) + message,
+        60,
+        engine::Color(255, 255, 255, 0),
+        { 300, 200 } });
 }
 
 void ScoreState::init()
@@ -165,7 +164,8 @@ void ScoreState::close()
     m_inputSubscription = nullptr;
 }
 
-void ScoreState::addExplosion(const common::Vector2D<double>& pos) {
+void ScoreState::addExplosion(const common::Vector2D<double>& pos)
+{
     std::string basePath{ "assets/sprites/" };
     std::string baseThemePath{ basePath + "themes/" };
 
@@ -188,7 +188,8 @@ void ScoreState::addExplosion(const common::Vector2D<double>& pos) {
     }
 }
 
-void ScoreState::initPlayers() {
+void ScoreState::initPlayers()
+{
     Comparator compFunctor = [](ScorePair element1, ScorePair element2) {
         return element1.second > element2.second;
     };

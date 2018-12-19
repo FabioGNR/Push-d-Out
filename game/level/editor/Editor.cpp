@@ -264,7 +264,7 @@ void Editor::initializeTileSet()
 
     game::builders::SpriteBuilder spriteBuilder("assets/sprites/themes/" + to_lower(m_theme.name) + "/" + to_lower(m_theme.name) + ".png", "assets/sprites/themes/datafile.json");
     const auto spriteMap = spriteBuilder.build();
-    for (const auto & [ spriteName, component ] : spriteMap) {
+    for (const auto& [spriteName, component] : spriteMap) {
         const auto& spriteResource = component.sprites.front();
         auto sprite = std::make_unique<engine::Sprite>(spriteResource.spriteSheet, spriteResource.offset, spriteResource.size, spriteResource.position);
         sprite->setSize(m_tileSize);

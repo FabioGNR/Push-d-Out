@@ -16,7 +16,6 @@
 namespace game {
 class GameState : public engine::State {
 private:
-
     std::unique_ptr<engine::physics::PhysicsManager> m_physicsManager;
     std::unique_ptr<engine::physics::World> m_world;
     engine::graphics::Camera m_camera;
