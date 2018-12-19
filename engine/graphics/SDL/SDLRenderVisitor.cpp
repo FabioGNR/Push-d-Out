@@ -1,7 +1,6 @@
 #include "SDLRenderVisitor.h"
 #include "SDLRenderer.h"
 
-#include <common/ResourceCache.h>
 #include <graphics/drawable/Circle.h>
 #include <graphics/drawable/Font.h>
 #include <graphics/drawable/LineShape.h>

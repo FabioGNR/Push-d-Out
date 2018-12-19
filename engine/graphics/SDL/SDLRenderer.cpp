@@ -6,7 +6,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <common/ResourceCache.h>
 #include <memory>
 
 namespace engine {
@@ -15,10 +14,10 @@ SDLRenderer::SDLRenderer(const SDLWindow& window)
     : m_renderer{ nullptr, nullptr }
     , m_dimensions{ window.getDimensions().x, window.getDimensions().y }
 {
-    auto flags = SDL_RENDERER_ACCELERATED;
+    auto windowFlags = SDL_RENDERER_ACCELERATED;
 
     m_renderer = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>(
-        SDL_CreateRenderer(window.m_window.get(), -1, flags),
+        SDL_CreateRenderer(window.m_window.get(), -1, windowFlags),
         SDL_DestroyRenderer);
 
     static bool isTtfInitialized = false;
@@ -30,8 +29,8 @@ SDLRenderer::SDLRenderer(const SDLWindow& window)
 
     static bool isImageInitialized = false;
     if (!isImageInitialized) {
-        const auto flags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
-        if (((IMG_Init(flags) & flags)) == 0) {
+        const auto imgFlags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
+        if (((IMG_Init(imgFlags) & imgFlags)) == 0) {
             throw std::runtime_error(IMG_GetError());
         }
     }
