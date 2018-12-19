@@ -30,11 +30,21 @@ namespace systems {
 
                     m_world->removeComponent<components::EquipmentComponent>(entity);
                     m_world->removeComponent<components::ItemComponent>(entity);
-                    m_world->removeComponent<components::InventoryComponent>(entity);
 
-                    // Add an empty
-                    components::InventoryComponent inventoryComponent{};
-                    m_world->addComponent<components::InventoryComponent>(entity, inventoryComponent);
+                    // clear inventory
+                    auto& inv = m_world->getComponent<components::InventoryComponent>(entity);
+                    if (inv.item.hasValue()) {
+                        m_world->destroyEntityNextUpdate(*inv.item.get());
+                        inv.item.clear();
+                    }
+                    if (inv.activeEquipment.hasValue()) {
+                        m_world->destroyEntityNextUpdate(*inv.activeEquipment.get());
+                        inv.activeEquipment.clear();
+                    }
+                    if (inv.otherEquipment.hasValue()) {
+                        m_world->destroyEntityNextUpdate(*inv.otherEquipment.get());
+                        inv.otherEquipment.clear();
+                    }
 
                     auto positions = builders::CharacterSpawnGenerator::collect(*m_world);
                     int randomValue = common::RNG::generate(1, static_cast<int>(positions.size()));
