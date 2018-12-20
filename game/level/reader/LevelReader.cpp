@@ -95,7 +95,8 @@ namespace level {
                 auto posComponent = components::PositionComponent(position);
                 world.addComponent<components::PositionComponent>(entity, posComponent);
 
-                const auto& spriteComponent = spriteComponentPair->second;
+                auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = -11;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
 
                 const auto& spriteSize = spriteComponent.sprites.front().size;
