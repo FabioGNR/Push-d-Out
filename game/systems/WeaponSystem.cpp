@@ -176,8 +176,8 @@ namespace systems {
     WeaponSystem::WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::sound::ISoundManager* soundManager, engine::graphics::Camera* camera)
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
-        , m_soundManager(soundManager)
         , m_camera(camera)
+        , m_soundManager(soundManager)
         , m_inputMaps(inputManager->getMap())
     {
         fireFunctionMap[definitions::WeaponType::ForceGun] = fireForceGun;
