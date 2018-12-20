@@ -18,6 +18,10 @@
         }
     ],
     "EquipmentSpawns": [
+        {
+            "x": 2.0,
+            "y": 13.0
+        }
     ],
     "Meta": {
         "height": 24,
@@ -58,19 +62,19 @@
         },
         {
             "kind": 0,
-            "sprite": "middleSingleDepth",
+            "sprite": "middleUpper",
             "x": 2.0,
             "y": 12.0
         },
         {
             "kind": 0,
-            "sprite": "middleSingleDepth",
+            "sprite": "middleUpper",
             "x": 3.0,
             "y": 12.0
         },
         {
             "kind": 0,
-            "sprite": "middleSingleDepth",
+            "sprite": "middleUpper",
             "x": 4.0,
             "y": 12.0
         },
