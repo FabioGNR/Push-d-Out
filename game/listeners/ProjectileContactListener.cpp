@@ -28,7 +28,7 @@ namespace listeners {
                 auto& projectileDim = m_ecsWorld->getComponent<components::DimensionComponent>(a).dimension;
                 auto& projectileComponent = m_ecsWorld->getComponent<components::ProjectileComponent>(a);
                 auto& bodyComponent = m_ecsWorld->getComponent<components::BodyComponent>(a);
-                ProjectileContactData projCont{projectilePos, projectileDim, contact.normal, bodyComponent.body->getLinearVelocity(), projectileComponent.type};
+                ProjectileContactData projCont{ projectilePos, projectileDim, contact.normal, bodyComponent.body->getLinearVelocity(), projectileComponent.type };
                 m_ecsWorld->destroyEntityNextUpdate(a);
                 act(projCont, b);
             } else if (a.hasComponent<components::BodyComponent>()
@@ -38,7 +38,7 @@ namespace listeners {
                 auto& projectileDim = m_ecsWorld->getComponent<components::DimensionComponent>(b).dimension;
                 auto& projectileComponent = m_ecsWorld->getComponent<components::ProjectileComponent>(b);
                 auto& bodyComponent = m_ecsWorld->getComponent<components::BodyComponent>(b);
-                ProjectileContactData projCont{projectilePos, projectileDim, contact.normal, bodyComponent.body->getLinearVelocity(), projectileComponent.type};
+                ProjectileContactData projCont{ projectilePos, projectileDim, contact.normal, bodyComponent.body->getLinearVelocity(), projectileComponent.type };
                 m_ecsWorld->destroyEntityNextUpdate(b);
                 act(projCont, a);
             }
@@ -75,7 +75,7 @@ namespace listeners {
     void ProjectileContactListener::createPortalNextUpdate(ProjectileContactData projectile, bool alternative)
     {
 
-        PortalBlueprint bp {};
+        PortalBlueprint bp{};
         bp.container = projectile;
         bp.isAlternative = alternative;
         m_portalsToBuild.push_back(bp);
@@ -155,7 +155,7 @@ namespace listeners {
         engine::physics::RaycastHit closestHit{};
         std::set<engine::physics::Body*> pushedBodies;
 
-        bool hasHit { false };
+        bool hasHit{ false };
         const auto& projectileCenter = projectile.position + projectile.dimension / 2;
 
         engine::physics::RaycastCallback callback = [&](engine::physics::RaycastHit hit) {

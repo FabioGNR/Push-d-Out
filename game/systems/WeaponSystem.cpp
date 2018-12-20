@@ -5,6 +5,7 @@
 #include <engine/graphics/IRenderer.h>
 #include <engine/physics/Body.h>
 #include <engine/physics/DynamicBody.h>
+#include <engine/sound/SoundEffect.h>
 #include <game/builders/SpriteBuilder.h>
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
@@ -21,11 +22,12 @@
 using namespace game::components;
 using namespace game::definitions;
 
-engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity &entity,
-                                         const common::Vector2D<double> &playerPosition,
-                                         engine::physics::World *physicsWorld,
-                                         engine::ecs::World *ecsWorld,
-                                         common::Vector2D<double> &direction)
+engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity& entity,
+    const common::Vector2D<double>& playerPosition,
+    engine::physics::World* physicsWorld,
+    engine::ecs::World* ecsWorld,
+    engine::sound::ISoundManager* soundManager,
+    common::Vector2D<double>& direction)
 {
     auto playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
@@ -57,14 +59,17 @@ engine::ecs::Entity& fireGrenadeLauncher(const engine::ecs::Entity &entity,
     if (sprite != sprites.end()) {
         ecsWorld->addComponent<SpriteComponent>(projectileEntity, sprite->second);
     }
+    engine::sound::SoundEffect sound("assets/sounds/grenade.wav", 0);
+    soundManager->play(sound);
     return projectileEntity;
 }
 
-engine::ecs::Entity& fireForceGun(const engine::ecs::Entity &entity,
-                                  const common::Vector2D<double> &playerPosition,
-                                  engine::physics::World *physicsWorld,
-                                  engine::ecs::World *ecsWorld,
-                                  common::Vector2D<double> &direction)
+engine::ecs::Entity& fireForceGun(const engine::ecs::Entity& entity,
+    const common::Vector2D<double>& playerPosition,
+    engine::physics::World* physicsWorld,
+    engine::ecs::World* ecsWorld,
+    engine::sound::ISoundManager* soundManager,
+    common::Vector2D<double>& direction)
 {
     auto playerDimension = ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     common::Vector2D<double> dimensionVector(0.5, 0.5);
@@ -97,12 +102,15 @@ engine::ecs::Entity& fireForceGun(const engine::ecs::Entity &entity,
     if (sprite != sprites.end()) {
         ecsWorld->addComponent<SpriteComponent>(projectileEntity, sprite->second);
     }
+    engine::sound::SoundEffect sound("assets/sounds/pew.wav", 0);
+    soundManager->play(sound);
     return projectileEntity;
 }
 
 engine::ecs::Entity& firePortalGun(const engine::ecs::Entity& entity, const common::Vector2D<double> position,
     engine::physics::World* physicsWorld,
     engine::ecs::World* ecsWorld,
+    engine::sound::ISoundManager* soundManager,
     common::Vector2D<double>& direction,
     bool alternative)
 {
@@ -136,31 +144,36 @@ engine::ecs::Entity& firePortalGun(const engine::ecs::Entity& entity, const comm
     if (sprite != sprites.end()) {
         ecsWorld->addComponent<SpriteComponent>(projectileEntity, sprite->second);
     }
+    engine::sound::SoundEffect sound("assets/sounds/portal.wav", 0);
+    soundManager->play(sound);
     return projectileEntity;
 }
 
 engine::ecs::Entity& firePrimaryPortalGun(const engine::ecs::Entity& entity, const common::Vector2D<double> position,
     engine::physics::World* physicsWorld,
     engine::ecs::World* ecsWorld,
+    engine::sound::ISoundManager* soundManager,
     common::Vector2D<double>& direction)
 {
-    return firePortalGun(entity, position, physicsWorld, ecsWorld, direction, false);
+    return firePortalGun(entity, position, physicsWorld, ecsWorld, soundManager, direction, false);
 }
 
 engine::ecs::Entity& fireSecondaryPortalGun(const engine::ecs::Entity& entity, const common::Vector2D<double> position,
     engine::physics::World* physicsWorld,
     engine::ecs::World* ecsWorld,
+    engine::sound::ISoundManager* soundManager,
     common::Vector2D<double>& direction)
 {
-    return firePortalGun(entity, position, physicsWorld, ecsWorld, direction, true);
+    return firePortalGun(entity, position, physicsWorld, ecsWorld, soundManager, direction, true);
 }
 
 namespace game {
 namespace systems {
 
-    WeaponSystem::WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::graphics::Camera* camera)
+    WeaponSystem::WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::sound::ISoundManager* soundManager, engine::graphics::Camera* camera)
         : m_ecsWorld(ecsWorld)
         , m_physicsWorld(physicsWorld)
+        , m_soundManager(soundManager)
         , m_camera(camera)
         , m_inputMaps(inputManager->getMap())
     {
@@ -241,7 +254,7 @@ namespace systems {
         if (!weapon.wasPrimaryFired || secondsSinceFired > weapon.primaryCooldown) {
             if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
                 const auto& position = m_ecsWorld->getComponent<PositionComponent>(entity);
-                fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld, fireDirection);
+                fireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld, m_soundManager, fireDirection);
                 weapon.timeSinceLastPrimaryFired = std::chrono::nanoseconds(0);
                 weapon.wasPrimaryFired = true;
             }
@@ -259,7 +272,7 @@ namespace systems {
         if (!weapon.wasSecondaryFired || secondsSinceFired > weapon.secondaryCooldown) {
             if (fireFunctionMap.find(weapon.type) != fireFunctionMap.end()) {
                 auto& position = m_ecsWorld->getComponent<PositionComponent>(entity);
-                altFireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld, fireDirection);
+                altFireFunctionMap[weapon.type](entity, position.position, m_physicsWorld, m_ecsWorld, m_soundManager, fireDirection);
                 weapon.timeSinceLastSecondaryFired = std::chrono::nanoseconds(0);
                 weapon.wasSecondaryFired = true;
             }

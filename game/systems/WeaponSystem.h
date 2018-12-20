@@ -11,9 +11,11 @@
 #include <game/definitions/Action.h>
 #include <game/definitions/WeaponType.h>
 
+#include <engine/sound/ISoundManager.h>
+
 namespace game {
 namespace systems {
-    using WeaponFireFunc = std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World*, engine::ecs::World*, common::Vector2D<double>& direction)>;
+    using WeaponFireFunc = std::function<engine::ecs::Entity&(const engine::ecs::Entity&, const common::Vector2D<double>&, engine::physics::World*, engine::ecs::World*, engine::sound::ISoundManager*, common::Vector2D<double>& direction)>;
 
     class WeaponSystem : public engine::ecs::BaseSystem<WeaponSystem> {
     private:
@@ -21,6 +23,7 @@ namespace systems {
         engine::physics::World* m_physicsWorld;
         engine::graphics::Camera* m_camera;
         engine::input::maps::InputMaps* m_inputMaps;
+        engine::sound::ISoundManager* m_soundManager;
 
         void updateLastFiredTimers(const std::chrono::nanoseconds& timeStep) const;
         void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
@@ -32,7 +35,7 @@ namespace systems {
         common::Vector2D<double> calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<int>& direction, const game::components::DirectionComponent& directionComponent);
 
     public:
-        WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::graphics::Camera* camera);
+        WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::sound::ISoundManager* soundManager, engine::graphics::Camera* camera);
 
         void update(std::chrono::nanoseconds timeStep) override;
         void render(engine::IRenderer& renderer) override;

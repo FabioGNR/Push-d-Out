@@ -53,7 +53,7 @@ void LevelSelectorState::init()
         engine::ui::FlowDirection::Horizontal);
     auto centerLayout = std::make_unique<engine::ui::LayoutPanel>(fitSize, engine::ui::FlowDirection::Vertical);
     auto buttonStack = std::make_unique<engine::ui::StackPanel>(fitSize, engine::ui::FlowDirection::Vertical);
-    auto nameLabel = std::make_unique<engine::ui::Label>(fitSize, "Select a level", 12, engine::Color{255, 255, 255});
+    auto nameLabel = std::make_unique<engine::ui::Label>(fitSize, "Select a level", 12, engine::Color{ 255, 255, 255 });
     buttonStack->addComponent(std::move(nameLabel));
 
     namespace fs = boost::filesystem;

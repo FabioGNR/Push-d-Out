@@ -14,6 +14,8 @@ namespace systems {
         });
     }
 
-    void CooldownSystem::render(engine::IRenderer& /*renderer*/) {}
+    void CooldownSystem::render(engine::IRenderer& renderer)
+    {
+    }
 }
 }
