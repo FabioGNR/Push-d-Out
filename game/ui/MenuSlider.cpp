@@ -64,7 +64,7 @@ void MenuSlider::drawMinimumBox(engine::ui::DrawContext context)
     context.renderer.draw(m_arrowLeft);
 }
 
-void MenuSlider::drawMaximumBox(engine::ui::DrawContext context, const common::Vector2D<int>& calculatedSize)
+void MenuSlider::drawMaximumBox(engine::ui::DrawContext context, const common::Vector2D<int>& /*calculatedSize*/)
 {
 
     m_arrowRight.setPosition(m_slider.position() + common::Vector2D<int>(m_slider.size().x, 0));

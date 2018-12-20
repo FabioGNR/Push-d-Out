@@ -33,16 +33,18 @@ namespace systems {
                 auto& spriteResource = spriteComponent.sprites[spriteComponent.index];
                 auto desiredSize = m_camera->scaleSize(dimensionComponent.dimension);
                 engine::Sprite sprite{ spriteResource.spriteSheet, position + spriteResource.offset, spriteResource.size, spriteResource.position };
-                sprite.setFlippedHorizontal(spriteResource.flippedHorizontal);
-                sprite.setFlippedVertical(spriteResource.flippedVertical);
-                sprite.setRotation(spriteResource.rotation);
+                sprite.setFlippedHorizontal(spriteComponent.flippedHorizontal);
+                sprite.setFlippedVertical(spriteComponent.flippedVertical);
+                sprite.setRotation(spriteComponent.rotation);
+                sprite.setRotationCenter(spriteComponent.rotationCenter);
                 sprite.setSize(desiredSize);
                 spriteComponent.frameTimeElapsed += timeStep;
                 auto elapsedSeconds{ std::chrono::duration_cast<std::chrono::milliseconds>(spriteComponent.frameTimeElapsed).count() / 1000.0 };
                 if (elapsedSeconds >= spriteComponent.frameTime) {
                     advanceFrame(spriteComponent);
                 }
-                m_sprites.emplace_back(sprite);
+                m_sprites.emplace_back(spriteComponent.renderPriority, sprite);
+                std::sort(m_sprites.begin(), m_sprites.end(), compareFunc);
             }
         });
     }
@@ -50,8 +52,8 @@ namespace systems {
     void AnimationSystem::render(engine::IRenderer& renderer)
     {
         // Draw the sprites to the screen
-        for (const auto& sprite : m_sprites) {
-            renderer.draw(sprite);
+        for (const auto& spritePair : m_sprites) {
+            renderer.draw(spritePair.second);
         }
     }
 

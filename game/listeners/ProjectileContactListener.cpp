@@ -74,7 +74,6 @@ namespace listeners {
 
     void ProjectileContactListener::createPortalNextUpdate(ProjectileContactData projectile, bool alternative)
     {
-
         PortalBlueprint bp{};
         bp.container = projectile;
         bp.isAlternative = alternative;
@@ -154,8 +153,8 @@ namespace listeners {
         double degrees = 360.0 / amountOfRays;
         engine::physics::RaycastHit closestHit{};
         std::set<engine::physics::Body*> pushedBodies;
-
         bool hasHit{ false };
+      
         const auto& projectileCenter = projectile.position + projectile.dimension / 2;
 
         engine::physics::RaycastCallback callback = [&](engine::physics::RaycastHit hit) {

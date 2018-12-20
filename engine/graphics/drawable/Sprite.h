@@ -17,9 +17,9 @@ class Sprite : public IGraphicsElement {
     bool m_flippedVertical{ false };
     bool m_flippedHorizontal{ false };
     double m_rotation{ 0 };
+    common::Vector2D<double> m_rotationCenter{ 0.5, 0.5 };
 
 public:
-    Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition, bool flipped, double rotation);
     Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> sourceSize, common::Vector2D<int> sourcePosition);
     Sprite(std::string spritePath, common::Vector2D<int> position, common::Vector2D<int> size);
 
@@ -39,10 +39,13 @@ public:
     void setFlippedVertical(bool isFlipped);
     void setFlippedHorizontal(bool isFlipped);
     void setRotation(double rotation);
+    void setRotationCenter(const common::Vector2D<double>& center);
 
     bool isFlippedVertical() const;
     bool isFlippedHorizontal() const;
+    bool hasRotationCenter() const;
     double getRotation() const;
+    const common::Vector2D<double>& getRotationCenter() const;
 
     bool operator==(const Sprite& rhs) const;
     bool operator!=(const Sprite& rhs) const;

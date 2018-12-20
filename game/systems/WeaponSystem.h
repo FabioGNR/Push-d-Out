@@ -22,17 +22,18 @@ namespace systems {
         engine::ecs::World* m_ecsWorld;
         engine::physics::World* m_physicsWorld;
         engine::graphics::Camera* m_camera;
-        engine::input::maps::InputMaps* m_inputMaps;
         engine::sound::ISoundManager* m_soundManager;
+        engine::input::maps::InputMaps* m_inputMaps;
+
 
         void updateLastFiredTimers(const std::chrono::nanoseconds& timeStep) const;
-        void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
-        void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double> fireDirection);
+        void shoot(const engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection);
+        void shootAlternative(engine::ecs::Entity& entity, components::WeaponComponent& weapon, common::Vector2D<double>& fireDirection);
 
         std::map<definitions::WeaponType, WeaponFireFunc> fireFunctionMap;
         std::map<definitions::WeaponType, WeaponFireFunc> altFireFunctionMap;
 
-        common::Vector2D<double> calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<int>& direction, const game::components::DirectionComponent& directionComponent);
+        void calculateDirection(const engine::ecs::Entity& entity, common::Vector2D<double>& direction, const game::components::DirectionComponent& directionComponent, bool mouse);
 
     public:
         WeaponSystem(engine::ecs::World* ecsWorld, engine::physics::World* physicsWorld, engine::input::InputManager* inputManager, engine::sound::ISoundManager* soundManager, engine::graphics::Camera* camera);

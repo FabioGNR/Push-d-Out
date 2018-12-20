@@ -1,5 +1,6 @@
 #include "PlayerInputSystem.h"
 
+#include <cmath>
 #include <engine/common/RNG.h>
 #include <engine/sound/Music.h>
 #include <engine/sound/SDL/SDLSoundManager.h>
@@ -21,17 +22,26 @@ void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
         auto delta = common::Vector2D<double>(0, 0);
         auto& analogMap = m_inputMaps->getMap(PIC.controllerId); // id of controller
 
-        if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight)) > moveDeadZone
-            || analogMap.hasState(PIC.getKey(definitions::Action::MoveRight), engine::input::States::DOWN)) {
-            move(delta, false, dirComp);
-        } else if (analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft)) < -moveDeadZone
-            || analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), engine::input::States::DOWN)) {
-            move(delta, true, dirComp);
+        double right = analogMap.getValue(PIC.getAnalog(definitions::Action::MoveRight));
+        double left = analogMap.getValue(PIC.getAnalog(definitions::Action::MoveLeft));
+        if (right > moveDeadZone) {
+            delta.x = right;
+            applySpeed(delta);
+        } else if (left < -moveDeadZone) {
+            delta.x = left;
+            applySpeed(delta);
+        } else if (analogMap.hasState(PIC.getKey(definitions::Action::MoveRight), engine::input::States::DOWN)) {
+            delta.x = 1;
+            applySpeed(delta);
+        } else if (analogMap.hasState(PIC.getKey(definitions::Action::MoveLeft), engine::input::States::DOWN)) {
+            delta.x = -1;
+            applySpeed(delta);
         }
 
         if (delta != common::Vector2D<double>(0, 0)) {
             auto& move = m_world.getComponent<MoveComponent>(entity);
             move.delta = delta;
+            dirComp.direction = delta.x > 0 ? DirectionComponent::Direction::RIGHT : DirectionComponent::Direction::LEFT;
         }
     });
 
@@ -50,9 +60,7 @@ void PlayerInputSystem::update(std::chrono::nanoseconds /* timeStep */)
     });
 }
 
-void PlayerInputSystem::move(common::Vector2D<double>& delta,
-    bool invert,
-    components::DirectionComponent& directionComponent)
+void PlayerInputSystem::applySpeed(common::Vector2D<double>& delta)
 {
     auto levelIt = m_world.begin<LevelMetaComponent>();
     LevelMetaComponent* level = nullptr;
@@ -60,9 +68,8 @@ void PlayerInputSystem::move(common::Vector2D<double>& delta,
         level = dynamic_cast<LevelMetaComponent*>(levelIt->second.get());
     }
 
-    auto deltaX = level != nullptr ? level->theme.movementSpeed : 20;
-    delta.x += invert ? -deltaX : deltaX;
-    directionComponent.direction = (invert) ? DirectionComponent::Direction::LEFT : DirectionComponent::Direction::RIGHT;
+    auto movementSpeed = level != nullptr ? level->theme.movementSpeed : 20;
+    delta.x *= movementSpeed;
 }
 
 void PlayerInputSystem::jump(common::Vector2D<double>& delta)

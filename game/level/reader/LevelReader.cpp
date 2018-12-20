@@ -74,6 +74,7 @@ namespace level {
             auto spriteComponentPair = miscSpriteComponentMap.find("EquipmentSpawner");
             if (spriteComponentPair != miscSpriteComponentMap.end()) {
                 auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = -10;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 
@@ -94,7 +95,8 @@ namespace level {
                 auto posComponent = components::PositionComponent(position);
                 world.addComponent<components::PositionComponent>(entity, posComponent);
 
-                const auto& spriteComponent = spriteComponentPair->second;
+                auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = -11;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
 
                 const auto& spriteSize = spriteComponent.sprites.front().size;
@@ -141,6 +143,7 @@ namespace level {
                     auto spriteComponentPair = tileSpriteComponentMap.find(nextTile->sprite);
                     if (spriteComponentPair != tileSpriteComponentMap.end()) {
                         auto spriteComponent = spriteComponentPair->second;
+                        spriteComponent.renderPriority = 10;
                         world.addComponent<components::SpriteComponent>(entity, spriteComponent);
                     }
 
@@ -170,6 +173,7 @@ namespace level {
                 world.addComponent<components::BodyComponent>(entity, std::move(bodyComponent));
 
                 auto spriteComponent = spriteComponentPair->second;
+                spriteComponent.renderPriority = 10;
                 world.addComponent<components::SpriteComponent>(entity, spriteComponent);
             }
 

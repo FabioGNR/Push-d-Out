@@ -177,7 +177,21 @@ void SDLRenderVisitor::visit(const Sprite& sprite) const
     if (sprite.isFlippedVertical()) {
         rendererFlip = static_cast<SDL_RendererFlip>(rendererFlip | SDL_FLIP_VERTICAL);
     }
-    SDL_RenderCopyEx(renderer, texture, &sourceRect, &positionRect, sprite.getRotation(), nullptr, rendererFlip);
+    if (sprite.getRotation() != 0.0) {
+        const auto& relativeRotationCenter = sprite.getRotationCenter();
+        common::Vector2D<int> rotationCenterPoint = { static_cast<int>(relativeRotationCenter.x * positionRect.w),
+            static_cast<int>(relativeRotationCenter.y * positionRect.h) };
+        if (sprite.isFlippedHorizontal()) {
+            rotationCenterPoint.x = positionRect.w - rotationCenterPoint.x;
+        }
+        if (sprite.isFlippedVertical()) {
+            rotationCenterPoint.y = positionRect.h - rotationCenterPoint.y;
+        }
+        SDL_Point sdlRotationCenter{ rotationCenterPoint.x, rotationCenterPoint.y };
+        SDL_RenderCopyEx(renderer, texture, &sourceRect, &positionRect, sprite.getRotation(), &sdlRotationCenter, rendererFlip);
+    } else {
+        SDL_RenderCopyEx(renderer, texture, &sourceRect, &positionRect, 0.0, nullptr, rendererFlip);
+    }
 }
 
 void SDLRenderVisitor::visit(const Circle& circle) const

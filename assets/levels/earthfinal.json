@@ -1,6 +1,7 @@
 {
     "CharacterSpawns": [
         {
+
             "x": 14.0,
             "y": 18.0
         },
@@ -19,6 +20,7 @@
     ],
     "EquipmentSpawns": [
         {
+
             "x": 4.0,
             "y": 15.0
         },
