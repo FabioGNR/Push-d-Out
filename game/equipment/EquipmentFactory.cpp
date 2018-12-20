@@ -101,6 +101,7 @@ namespace equipment {
         // items
         m_itemFactoryMap[definitions::ItemType::ReverseGravity] = pair(buildReverseGravity, common::Vector2D<double>(1, 1));
         // weapons
+
         m_weaponFactoryMap[definitions::WeaponType::PortalGun] = pair(buildPortalGun, common::Vector2D<double>(1.5, 0.75));
         m_weaponFactoryMap[definitions::WeaponType::ForceGun] = pair(buildForceGun, common::Vector2D<double>(1.5, 0.75));
         m_weaponFactoryMap[definitions::WeaponType::GrenadeLauncher] = pair(buildGrenadeLauncher, common::Vector2D<double>(1.5, 0.75));

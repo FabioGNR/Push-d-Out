@@ -11,7 +11,7 @@ namespace game {
 namespace listeners {
     class ProjectileContactListener : public engine::physics::ContactListener {
 
-        struct ProjectileContactData{
+        struct ProjectileContactData {
             common::Vector2D<double> position;
             common::Vector2D<double> dimension;
             common::Vector2D<double> contactNormal;

@@ -33,7 +33,7 @@ common::Vector2D<double> CameraSystem::getLevelDimensions() const
 {
     common::Vector2D<double> boundaries{};
     m_ecsWorld->forEachEntityWith<LevelMetaComponent, DimensionComponent>([&](engine::ecs::Entity& entity) {
-        boundaries = m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
+        boundaries += m_ecsWorld->getComponent<DimensionComponent>(entity).dimension;
     });
     return boundaries;
 }
@@ -90,8 +90,10 @@ CameraSystem::Boundaries CameraSystem::findTargetBoundaries()
 
 bool CameraSystem::isWithinLevel(const common::Vector2D<double> point, const common::Vector2D<double> dimensions) const
 {
-    bool isXWithinBounds = (point.x + dimensions.x) > 0 && point.x < getLevelDimensions().x;
-    bool isYWithinBounds = (point.y + dimensions.y) > 0 && point.y < getLevelDimensions().y;
+    const int padding = 25;
+
+    bool isXWithinBounds = (point.x + dimensions.x) > 0 - padding && point.x < getLevelDimensions().x + padding;
+    bool isYWithinBounds = (point.y + dimensions.y) > 0 - padding && point.y < getLevelDimensions().y + padding;
     return isXWithinBounds && isYWithinBounds;
 }
 

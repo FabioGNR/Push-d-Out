@@ -154,7 +154,7 @@ namespace listeners {
         engine::physics::RaycastHit closestHit{};
         std::set<engine::physics::Body*> pushedBodies;
         bool hasHit{ false };
-
+      
         const auto& projectileCenter = projectile.position + projectile.dimension / 2;
 
         engine::physics::RaycastCallback callback = [&](engine::physics::RaycastHit hit) {
