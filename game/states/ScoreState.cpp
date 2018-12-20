@@ -14,7 +14,9 @@
 #include <game/components/BodyComponent.h>
 #include <game/components/DimensionComponent.h>
 #include <game/components/PlayerNameComponent.h>
+#include <game/components/EquipmentSpawnerComponent.h>
 #include <game/components/PositionComponent.h>
+#include <game/components/InventoryComponent.h>
 #include <game/components/SpriteComponent.h>
 #include <game/config/ConfigurationRepository.h>
 #include <game/level/Theme.h>
@@ -49,6 +51,7 @@
 #include <memory>
 #include <set>
 #include <sstream>
+#include <game/equipment/EquipmentFactory.h>
 
 namespace game {
 using ScorePair = std::pair<std::string, long double>;
@@ -150,6 +153,10 @@ void ScoreState::init()
     builder.build();
 
     m_ecsWorld.addSystem<systems::PlayerNameSystem>(engine::definitions::SystemPriority::Medium, &m_ecsWorld, &m_camera);
+    m_ecsWorld.forEachEntityWith<components::EquipmentSpawnerComponent, components::PositionComponent, components::DimensionComponent>([&](engine::ecs::Entity& entity) {
+        auto &spawnerComponent = m_ecsWorld.getComponent<components::EquipmentSpawnerComponent>(entity);
+        spawnerComponent.timeSinceSpawn = std::chrono::seconds((int)spawnerComponent.spawnIntervalSeconds);
+    });
 
     initPlayers();
 }
